@@ -5,6 +5,8 @@
  */
 package CalendarUtilities;
 
+import java.awt.Color;
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import javax.swing.JLabel;
@@ -33,8 +35,10 @@ public class PnlDayPanel extends javax.swing.JPanel {
     }
     
     public PnlDayPanel(){
+        this.setLayout(null);
         this.lblDayNumber = new javax.swing.JLabel();
         this.btnAppointmentList = new ArrayList<>();
+        this.setVisible(true);
     }
 
     public JLabel getLblDayNumber() {
@@ -79,6 +83,8 @@ public class PnlDayPanel extends javax.swing.JPanel {
             }
         });
         
+        this.add(this.lblDayNumber);
+        
         this.scaleLblDayNumber();
     }
 
@@ -89,13 +95,17 @@ public class PnlDayPanel extends javax.swing.JPanel {
                 this.getHeight() / 5);
         //scale the size of label
         this.lblDayNumber.setFont(new java.awt.Font(this.lblDayNumber.getFont().getName(), java.awt.Font.PLAIN, this.getWidth() / 10));
+        
+        if (this.day.getDayOfWeek() == DayOfWeek.SUNDAY){
+            this.lblDayNumber.setForeground(Color.red);
+        }
     }
 
     public void setType (TYPE type){
         if (type == TYPE.CURRENT_MONTH){
             this.setBackground(java.awt.Color.WHITE);
         } else{
-            this.setBackground(java.awt.Color.DARK_GRAY);
+            this.setBackground(java.awt.Color.LIGHT_GRAY);
         }
     }
     

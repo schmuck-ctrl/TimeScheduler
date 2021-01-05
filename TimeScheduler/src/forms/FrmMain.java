@@ -5,6 +5,7 @@
  */
 package forms;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -66,6 +67,7 @@ public class FrmMain extends javax.swing.JFrame {
         pnlEventRoot = new javax.swing.JPanel();
         frmEvent1 = new forms.FrmEvent();
         pnlCalendarRoot = new javax.swing.JPanel();
+        frmCalendar1 = new forms.FrmCalendar();
         pnlFooter = new javax.swing.JPanel();
         btnTest = new javax.swing.JButton();
 
@@ -108,18 +110,25 @@ public class FrmMain extends javax.swing.JFrame {
         splitPnlContent.setLeftComponent(pnlEventRoot);
 
         pnlCalendarRoot.setLayout(new java.awt.BorderLayout());
+        pnlCalendarRoot.add(frmCalendar1, java.awt.BorderLayout.CENTER);
+
         splitPnlContent.setRightComponent(pnlCalendarRoot);
 
         getContentPane().add(splitPnlContent, java.awt.BorderLayout.CENTER);
 
         btnTest.setText("Test Button");
+        btnTest.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTestActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlFooterLayout = new javax.swing.GroupLayout(pnlFooter);
         pnlFooter.setLayout(pnlFooterLayout);
         pnlFooterLayout.setHorizontalGroup(
             pnlFooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFooterLayout.createSequentialGroup()
-                .addContainerGap(714, Short.MAX_VALUE)
+                .addContainerGap(739, Short.MAX_VALUE)
                 .addComponent(btnTest)
                 .addContainerGap())
         );
@@ -136,6 +145,12 @@ public class FrmMain extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnTestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTestActionPerformed
+
+        this.frmCalendar1.setLocalDate(java.time.LocalDate.of(2020, java.time.Month.DECEMBER, 15));
+        
+    }//GEN-LAST:event_btnTestActionPerformed
 
     /**
      * @param args the command line arguments
@@ -174,6 +189,7 @@ public class FrmMain extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnTest;
+    private forms.FrmCalendar frmCalendar1;
     private forms.FrmEvent frmEvent1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel lblHeadline;
