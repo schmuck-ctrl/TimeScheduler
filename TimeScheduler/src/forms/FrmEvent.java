@@ -5,12 +5,18 @@
  */
 package forms;
 
+import classes.Event;
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 /**
  *
  * @author nilss
  */
 public class FrmEvent extends javax.swing.JPanel {
 
+    private Event event = null;
+    
     /**
      * Creates new form FrmEvent
      */
@@ -18,6 +24,16 @@ public class FrmEvent extends javax.swing.JPanel {
         initComponents();
     }
 
+    public void setEvent(Event event) {
+        if(event != null) {
+            this.event = event;
+            
+            txtEventName.setText(this.event.getName());
+            dtPicker.datePicker.setDate(LocalDate.of(this.event.getDate().getYear(), this.event.getDate().getMonth(), this.event.getDate().getDayOfMonth()));
+            dtPicker.timePicker.setTime(LocalTime.of(this.event.getDate().getHour(), this.event.getDate().getMinute()));
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -44,12 +60,20 @@ public class FrmEvent extends javax.swing.JPanel {
         cbEventNotification = new javax.swing.JComboBox<>();
         lblEventPArticipants = new javax.swing.JLabel();
         pnlEventParticipants = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList<>();
+        jButton1 = new javax.swing.JButton();
         lblEventAttachments = new javax.swing.JLabel();
         pnlEventAttachments = new javax.swing.JPanel();
+        jButton2 = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jList2 = new javax.swing.JList<>();
         pnlFooter = new javax.swing.JPanel();
         btnDelete = new javax.swing.JButton();
         btnOk = new javax.swing.JButton();
 
+        setMinimumSize(new java.awt.Dimension(200, 300));
+        setPreferredSize(new java.awt.Dimension(200, 300));
         setLayout(new java.awt.BorderLayout());
 
         pnlHeader.setPreferredSize(new java.awt.Dimension(400, 30));
@@ -60,6 +84,7 @@ public class FrmEvent extends javax.swing.JPanel {
 
         pnlContent.setLayout(new javax.swing.BoxLayout(pnlContent, javax.swing.BoxLayout.Y_AXIS));
 
+        lblEventName.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblEventName.setText("Name:");
         lblEventName.setToolTipText("");
         pnlContent.add(lblEventName);
@@ -92,15 +117,36 @@ public class FrmEvent extends javax.swing.JPanel {
         lblEventPArticipants.setText("Participants:");
         pnlContent.add(lblEventPArticipants);
 
+        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane1.setViewportView(jList1);
+
+        jButton1.setText("jButton1");
+
         javax.swing.GroupLayout pnlEventParticipantsLayout = new javax.swing.GroupLayout(pnlEventParticipants);
         pnlEventParticipants.setLayout(pnlEventParticipantsLayout);
         pnlEventParticipantsLayout.setHorizontalGroup(
             pnlEventParticipantsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 284, Short.MAX_VALUE)
+            .addGroup(pnlEventParticipantsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1)
+                .addContainerGap())
         );
         pnlEventParticipantsLayout.setVerticalGroup(
             pnlEventParticipantsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 54, Short.MAX_VALUE)
+            .addGroup(pnlEventParticipantsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlEventParticipantsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlEventParticipantsLayout.createSequentialGroup()
+                        .addComponent(jButton1)
+                        .addGap(0, 28, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pnlContent.add(pnlEventParticipants);
@@ -108,15 +154,34 @@ public class FrmEvent extends javax.swing.JPanel {
         lblEventAttachments.setText("Attachments:");
         pnlContent.add(lblEventAttachments);
 
+        jButton2.setText("jButton2");
+
+        jList2.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane2.setViewportView(jList2);
+
         javax.swing.GroupLayout pnlEventAttachmentsLayout = new javax.swing.GroupLayout(pnlEventAttachments);
         pnlEventAttachments.setLayout(pnlEventAttachmentsLayout);
         pnlEventAttachmentsLayout.setHorizontalGroup(
             pnlEventAttachmentsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 284, Short.MAX_VALUE)
+            .addGroup(pnlEventAttachmentsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton2)
+                .addContainerGap())
         );
         pnlEventAttachmentsLayout.setVerticalGroup(
             pnlEventAttachmentsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 54, Short.MAX_VALUE)
+            .addGroup(pnlEventAttachmentsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlEventAttachmentsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton2)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pnlContent.add(pnlEventAttachments);
@@ -143,6 +208,12 @@ public class FrmEvent extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> cbEventNotification;
     private javax.swing.JComboBox<String> cbEventPriority;
     private com.github.lgooddatepicker.components.DateTimePicker dtPicker;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JList<String> jList1;
+    private javax.swing.JList<String> jList2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblDateTime;
     private javax.swing.JLabel lblEventAttachments;
     private javax.swing.JLabel lblEventDuration;

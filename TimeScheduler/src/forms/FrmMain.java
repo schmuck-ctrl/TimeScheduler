@@ -64,6 +64,7 @@ public class FrmMain extends javax.swing.JFrame {
         lblHeadline = new javax.swing.JLabel();
         splitPnlContent = new javax.swing.JSplitPane();
         pnlEventRoot = new javax.swing.JPanel();
+        frmEvent1 = new forms.FrmEvent();
         pnlCalendarRoot = new javax.swing.JPanel();
         pnlFooter = new javax.swing.JPanel();
         btnTest = new javax.swing.JButton();
@@ -99,33 +100,14 @@ public class FrmMain extends javax.swing.JFrame {
 
         getContentPane().add(pnlHeader, java.awt.BorderLayout.PAGE_START);
 
-        pnlEventRoot.setMinimumSize(new java.awt.Dimension(200, 0));
-        pnlEventRoot.setPreferredSize(new java.awt.Dimension(200, 264));
-
-        javax.swing.GroupLayout pnlEventRootLayout = new javax.swing.GroupLayout(pnlEventRoot);
-        pnlEventRoot.setLayout(pnlEventRootLayout);
-        pnlEventRootLayout.setHorizontalGroup(
-            pnlEventRootLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        pnlEventRootLayout.setVerticalGroup(
-            pnlEventRootLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 276, Short.MAX_VALUE)
-        );
+        pnlEventRoot.setMinimumSize(new java.awt.Dimension(300, 0));
+        pnlEventRoot.setPreferredSize(new java.awt.Dimension(300, 264));
+        pnlEventRoot.setLayout(new java.awt.BorderLayout());
+        pnlEventRoot.add(frmEvent1, java.awt.BorderLayout.CENTER);
 
         splitPnlContent.setLeftComponent(pnlEventRoot);
 
-        javax.swing.GroupLayout pnlCalendarRootLayout = new javax.swing.GroupLayout(pnlCalendarRoot);
-        pnlCalendarRoot.setLayout(pnlCalendarRootLayout);
-        pnlCalendarRootLayout.setHorizontalGroup(
-            pnlCalendarRootLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 729, Short.MAX_VALUE)
-        );
-        pnlCalendarRootLayout.setVerticalGroup(
-            pnlCalendarRootLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 276, Short.MAX_VALUE)
-        );
-
+        pnlCalendarRoot.setLayout(new java.awt.BorderLayout());
         splitPnlContent.setRightComponent(pnlCalendarRoot);
 
         getContentPane().add(splitPnlContent, java.awt.BorderLayout.CENTER);
@@ -137,7 +119,7 @@ public class FrmMain extends javax.swing.JFrame {
         pnlFooterLayout.setHorizontalGroup(
             pnlFooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFooterLayout.createSequentialGroup()
-                .addContainerGap(635, Short.MAX_VALUE)
+                .addContainerGap(714, Short.MAX_VALUE)
                 .addComponent(btnTest)
                 .addContainerGap())
         );
@@ -192,6 +174,7 @@ public class FrmMain extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnTest;
+    private forms.FrmEvent frmEvent1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel lblHeadline;
     private javax.swing.JButton mnuAdminInterface;
