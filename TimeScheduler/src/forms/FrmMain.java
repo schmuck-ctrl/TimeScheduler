@@ -57,6 +57,11 @@ public class FrmMain extends javax.swing.JFrame {
     private void initComponents() {
 
         pnlHeader = new javax.swing.JPanel();
+        pnlMenuBar = new javax.swing.JPanel();
+        mnuAdminInterface = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        pnlHeadline = new javax.swing.JPanel();
+        lblHeadline = new javax.swing.JLabel();
         splitPnlContent = new javax.swing.JSplitPane();
         pnlEventRoot = new javax.swing.JPanel();
         pnlCalendarRoot = new javax.swing.JPanel();
@@ -65,18 +70,37 @@ public class FrmMain extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        javax.swing.GroupLayout pnlHeaderLayout = new javax.swing.GroupLayout(pnlHeader);
-        pnlHeader.setLayout(pnlHeaderLayout);
-        pnlHeaderLayout.setHorizontalGroup(
-            pnlHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 736, Short.MAX_VALUE)
-        );
-        pnlHeaderLayout.setVerticalGroup(
-            pnlHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
+        pnlHeader.setMinimumSize(new java.awt.Dimension(145, 88));
+        pnlHeader.setPreferredSize(new java.awt.Dimension(736, 88));
+        pnlHeader.setLayout(new java.awt.GridLayout(2, 1));
+
+        pnlMenuBar.setPreferredSize(new java.awt.Dimension(736, 33));
+        pnlMenuBar.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        mnuAdminInterface.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/user-settings-line.png"))); // NOI18N
+        mnuAdminInterface.setText("Admin Interface");
+        mnuAdminInterface.setToolTipText("");
+        pnlMenuBar.add(mnuAdminInterface, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 0, -1, -1));
+
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/calendar-2-line.png"))); // NOI18N
+        pnlMenuBar.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        pnlHeader.add(pnlMenuBar);
+
+        pnlHeadline.setMinimumSize(new java.awt.Dimension(100, 50));
+        pnlHeadline.setPreferredSize(new java.awt.Dimension(736, 50));
+        pnlHeadline.setLayout(new java.awt.BorderLayout());
+
+        lblHeadline.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        lblHeadline.setText("Welcome message!");
+        pnlHeadline.add(lblHeadline, java.awt.BorderLayout.CENTER);
+
+        pnlHeader.add(pnlHeadline);
 
         getContentPane().add(pnlHeader, java.awt.BorderLayout.PAGE_START);
+
+        pnlEventRoot.setMinimumSize(new java.awt.Dimension(200, 0));
+        pnlEventRoot.setPreferredSize(new java.awt.Dimension(200, 264));
 
         javax.swing.GroupLayout pnlEventRootLayout = new javax.swing.GroupLayout(pnlEventRoot);
         pnlEventRoot.setLayout(pnlEventRootLayout);
@@ -86,7 +110,7 @@ public class FrmMain extends javax.swing.JFrame {
         );
         pnlEventRootLayout.setVerticalGroup(
             pnlEventRootLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 264, Short.MAX_VALUE)
+            .addGap(0, 276, Short.MAX_VALUE)
         );
 
         splitPnlContent.setLeftComponent(pnlEventRoot);
@@ -99,7 +123,7 @@ public class FrmMain extends javax.swing.JFrame {
         );
         pnlCalendarRootLayout.setVerticalGroup(
             pnlCalendarRootLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 264, Short.MAX_VALUE)
+            .addGap(0, 276, Short.MAX_VALUE)
         );
 
         splitPnlContent.setRightComponent(pnlCalendarRoot);
@@ -120,7 +144,7 @@ public class FrmMain extends javax.swing.JFrame {
         pnlFooterLayout.setVerticalGroup(
             pnlFooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFooterLayout.createSequentialGroup()
-                .addContainerGap(58, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnTest, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -142,7 +166,7 @@ public class FrmMain extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -168,10 +192,15 @@ public class FrmMain extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnTest;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JLabel lblHeadline;
+    private javax.swing.JButton mnuAdminInterface;
     private javax.swing.JPanel pnlCalendarRoot;
     private javax.swing.JPanel pnlEventRoot;
     private javax.swing.JPanel pnlFooter;
     private javax.swing.JPanel pnlHeader;
+    private javax.swing.JPanel pnlHeadline;
+    private javax.swing.JPanel pnlMenuBar;
     private javax.swing.JSplitPane splitPnlContent;
     // End of variables declaration//GEN-END:variables
 }
