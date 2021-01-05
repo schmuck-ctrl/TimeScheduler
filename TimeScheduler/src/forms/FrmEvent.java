@@ -6,8 +6,10 @@
 package forms;
 
 import classes.Event;
+import classes.Operator;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import javax.swing.DefaultListModel;
 
 /**
  *
@@ -16,7 +18,7 @@ import java.time.LocalTime;
 public class FrmEvent extends javax.swing.JPanel {
 
     private Event event = null;
-    
+
     /**
      * Creates new form FrmEvent
      */
@@ -25,13 +27,62 @@ public class FrmEvent extends javax.swing.JPanel {
     }
 
     public void setEvent(Event event) {
-        if(event != null) {
+        if (event != null) {
             this.event = event;
-            
+
             txtEventName.setText(this.event.getName());
             dtPicker.datePicker.setDate(LocalDate.of(this.event.getDate().getYear(), this.event.getDate().getMonth(), this.event.getDate().getDayOfMonth()));
             dtPicker.timePicker.setTime(LocalTime.of(this.event.getDate().getHour(), this.event.getDate().getMinute()));
+            txtEventDuration.setText(String.valueOf(this.event.getDuration()));
+            txtEventLocation.setText(this.event.getLocation());
+
+            switch (this.event.getPriority()) {
+                case LOW:
+                    cbEventNotification.getModel().setSelectedItem("low");
+                    break;
+                case MEDIUM:
+                    cbEventNotification.getModel().setSelectedItem("medium");
+                    break;
+                case HIGH:
+                    cbEventNotification.getModel().setSelectedItem("high");
+                    break;
+            }
+
+            switch (this.event.getNotification()) {
+                case NONE:
+                    cbEventNotification.getModel().setSelectedItem("none");
+                    break;
+                case TEN_MINUTES:
+                    cbEventNotification.getModel().setSelectedItem("10 minutes");
+                    break;
+                case ONE_HOUR:
+                    cbEventNotification.getModel().setSelectedItem("1 hour");
+                    break;
+                case THREE_DAYS:
+                    cbEventNotification.getModel().setSelectedItem("3 days");
+                    break;
+                case ONE_WEEK:
+                    cbEventNotification.getModel().setSelectedItem("1 week");
+                    break;
+            }
+
+            javax.swing.DefaultListModel<Operator> liModelParticipants = new DefaultListModel();
+            for (int i = 0; i < this.event.getParticipants().size(); i++) {
+                liModelParticipants.addElement(this.event.getParticipants().get(i));
+            }
+
+            javax.swing.DefaultListModel<String> liModelAttachments = new DefaultListModel();
+            for (int i = 0; i < this.event.getAttachments().size(); i++) {
+                liModelAttachments.addElement(this.event.getAttachments().get(i).getName());
+            }
+
         }
+    }
+
+    public Event getEvent() {
+        
+        
+        return this.event;
     }
     
     /**
@@ -105,23 +156,18 @@ public class FrmEvent extends javax.swing.JPanel {
         lblEventPriority.setText("Priority");
         pnlContent.add(lblEventPriority);
 
-        cbEventPriority.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbEventPriority.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "low", "medium", "high" }));
         pnlContent.add(cbEventPriority);
 
         lblEventNotification.setText("Notification:");
         pnlContent.add(lblEventNotification);
 
-        cbEventNotification.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbEventNotification.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "none", "10 minutes", "1 hour", "3 days", "1 week" }));
         pnlContent.add(cbEventNotification);
 
         lblEventPArticipants.setText("Participants:");
         pnlContent.add(lblEventPArticipants);
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         jScrollPane1.setViewportView(jList1);
 
         jButton1.setText("jButton1");
@@ -156,11 +202,6 @@ public class FrmEvent extends javax.swing.JPanel {
 
         jButton2.setText("jButton2");
 
-        jList2.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         jScrollPane2.setViewportView(jList2);
 
         javax.swing.GroupLayout pnlEventAttachmentsLayout = new javax.swing.GroupLayout(pnlEventAttachments);
