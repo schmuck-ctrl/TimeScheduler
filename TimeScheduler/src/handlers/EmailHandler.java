@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package handlers;
-import Classes.*;
+import classes.*;
 /*
 import java.util.ArrayList;
 import java.util.Properties;
