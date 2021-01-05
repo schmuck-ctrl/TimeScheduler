@@ -9,6 +9,24 @@ package classes;
  *
  * @author Vadym
  */
-public class Admin {
-    
+public class Admin extends Operator {
+
+    @Override
+    public Role getRole() {
+        return Role.ADMIN;
+    }
+
+    public Admin(String firstName, String lastName, String userEmail) {
+        setFirstName(firstName);
+        setLastName(lastName);
+        setEmail(userEmail);
+    }
+
+    public Admin(int id, String firstName, String lastName, String userEmail) {
+        setUserId(id);
+        setFirstName(firstName);
+        setLastName(lastName);
+        setEmail(userEmail);
+    }
+
 }
