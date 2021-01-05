@@ -20,12 +20,12 @@ public class PnlWeekdays extends javax.swing.JPanel{
     private final java.util.ArrayList<javax.swing.JLabel> lblList;
     private final int height;
     
-    public PnlWeekdays(){
+    public PnlWeekdays(int height){
         super();
         
         //initialize global variables
         this.lblList = new ArrayList<>();
-        this.height = 20;
+        this.height = height;
         
         //some settings
         this.setLayout(null);

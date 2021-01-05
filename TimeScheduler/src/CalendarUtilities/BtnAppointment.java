@@ -6,6 +6,8 @@
 package CalendarUtilities;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
 
 /**
  *
@@ -31,6 +33,40 @@ public class BtnAppointment extends javax.swing.JButton {
         
         //set color of button
         this.setPriority(event.getPriority());
+        
+        //add listener
+       this.addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                forms.FrmMain.getInstance().displayEventDetails(event.getID());
+            }
+       });
+       
+       this.addMouseListener(new java.awt.event.MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() >= 2){
+                    forms.FrmMain.getInstance().editEvent(event.getID());
+                }
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+            }
+       });
+    
     }
 
     public void setEvent(classes.Event event) {
@@ -38,6 +74,7 @@ public class BtnAppointment extends javax.swing.JButton {
             this.event = event;
         }
     }
+    
     public classes.Event getEvent(){
         return this.event;
     }
@@ -55,5 +92,4 @@ public class BtnAppointment extends javax.swing.JButton {
     public classes.Event.Priority getPriority(){
         return this.event.getPriority();
     }
-    
 }
