@@ -5,19 +5,48 @@
  */
 package forms;
 
+import java.time.LocalDateTime;
+
 /**
  *
  * @author nilss
  */
 public class FrmMain extends javax.swing.JFrame {
 
+    private static FrmMain form = null;
+
+    public static FrmMain getInstance() {
+        if (form != null) {
+            return form;
+        } else {
+            form = new FrmMain();
+            return form;
+        }
+    }
+    
     /**
      * Creates new form FrmMain
      */
-    public FrmMain() {
+    private FrmMain() {
         initComponents();
     }
 
+    // <editor-fold defaultstate="collapsed" desc="Methods"> 
+    
+    public void displayEventDetails(int eventID) {
+        
+    }
+    
+    public void editEvent(int eventID) {
+        
+    }
+    
+    public void displayAllEventsOfDay(LocalDateTime today) {
+        
+    }
+    
+    // </editor-fold> 
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -27,20 +56,79 @@ public class FrmMain extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        pnlHeader = new javax.swing.JPanel();
+        splitPnlContent = new javax.swing.JSplitPane();
+        pnlEventRoot = new javax.swing.JPanel();
+        pnlCalendarRoot = new javax.swing.JPanel();
+        pnlFooter = new javax.swing.JPanel();
+        btnTest = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+        javax.swing.GroupLayout pnlHeaderLayout = new javax.swing.GroupLayout(pnlHeader);
+        pnlHeader.setLayout(pnlHeaderLayout);
+        pnlHeaderLayout.setHorizontalGroup(
+            pnlHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 736, Short.MAX_VALUE)
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+        pnlHeaderLayout.setVerticalGroup(
+            pnlHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
         );
 
+        getContentPane().add(pnlHeader, java.awt.BorderLayout.PAGE_START);
+
+        javax.swing.GroupLayout pnlEventRootLayout = new javax.swing.GroupLayout(pnlEventRoot);
+        pnlEventRoot.setLayout(pnlEventRootLayout);
+        pnlEventRootLayout.setHorizontalGroup(
+            pnlEventRootLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        pnlEventRootLayout.setVerticalGroup(
+            pnlEventRootLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 264, Short.MAX_VALUE)
+        );
+
+        splitPnlContent.setLeftComponent(pnlEventRoot);
+
+        javax.swing.GroupLayout pnlCalendarRootLayout = new javax.swing.GroupLayout(pnlCalendarRoot);
+        pnlCalendarRoot.setLayout(pnlCalendarRootLayout);
+        pnlCalendarRootLayout.setHorizontalGroup(
+            pnlCalendarRootLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 729, Short.MAX_VALUE)
+        );
+        pnlCalendarRootLayout.setVerticalGroup(
+            pnlCalendarRootLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 264, Short.MAX_VALUE)
+        );
+
+        splitPnlContent.setRightComponent(pnlCalendarRoot);
+
+        getContentPane().add(splitPnlContent, java.awt.BorderLayout.CENTER);
+
+        btnTest.setText("Test Button");
+
+        javax.swing.GroupLayout pnlFooterLayout = new javax.swing.GroupLayout(pnlFooter);
+        pnlFooter.setLayout(pnlFooterLayout);
+        pnlFooterLayout.setHorizontalGroup(
+            pnlFooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFooterLayout.createSequentialGroup()
+                .addContainerGap(635, Short.MAX_VALUE)
+                .addComponent(btnTest)
+                .addContainerGap())
+        );
+        pnlFooterLayout.setVerticalGroup(
+            pnlFooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFooterLayout.createSequentialGroup()
+                .addContainerGap(58, Short.MAX_VALUE)
+                .addComponent(btnTest, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        getContentPane().add(pnlFooter, java.awt.BorderLayout.PAGE_END);
+
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     /**
@@ -79,5 +167,11 @@ public class FrmMain extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnTest;
+    private javax.swing.JPanel pnlCalendarRoot;
+    private javax.swing.JPanel pnlEventRoot;
+    private javax.swing.JPanel pnlFooter;
+    private javax.swing.JPanel pnlHeader;
+    private javax.swing.JSplitPane splitPnlContent;
     // End of variables declaration//GEN-END:variables
 }
