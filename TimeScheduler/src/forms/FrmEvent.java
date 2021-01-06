@@ -5,11 +5,18 @@
  */
 package forms;
 
+import EventUtilities.AttachmentListModel;
+import EventUtilities.ParticipantListModel;
 import classes.Event;
 import classes.Operator;
+import handlers.EventHandler;
+import java.io.File;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import javax.swing.DefaultListModel;
+import javax.swing.JList;
 
 /**
  *
@@ -17,8 +24,12 @@ import javax.swing.DefaultListModel;
  */
 public class FrmEvent extends javax.swing.JPanel {
 
+    // <editor-fold defaultstate="collapsed" desc="Global Variables">
     private Event event = null;
 
+    // </editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="Constructors">
     /**
      * Creates new form FrmEvent
      */
@@ -26,6 +37,9 @@ public class FrmEvent extends javax.swing.JPanel {
         initComponents();
     }
 
+    // </editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="Methods">
     public void setEvent(Event event) {
         if (event != null) {
             this.event = event;
@@ -65,26 +79,120 @@ public class FrmEvent extends javax.swing.JPanel {
                     cbEventNotification.getModel().setSelectedItem("1 week");
                     break;
             }
-
-            javax.swing.DefaultListModel<Operator> liModelParticipants = new DefaultListModel();
+            
+            ParticipantListModel liModelParticipants = new ParticipantListModel();
             for (int i = 0; i < this.event.getParticipants().size(); i++) {
                 liModelParticipants.addElement(this.event.getParticipants().get(i));
             }
 
-            javax.swing.DefaultListModel<String> liModelAttachments = new DefaultListModel();
+            liEventParticipants.setModel(liModelParticipants);
+            
+            AttachmentListModel liModelAttachments = new AttachmentListModel();
             for (int i = 0; i < this.event.getAttachments().size(); i++) {
-                liModelAttachments.addElement(this.event.getAttachments().get(i).getName());
+                liModelAttachments.addElement(this.event.getAttachments().get(i));
             }
+            
+            liEventAttachments.setModel(liModelAttachments);
 
         }
     }
 
-    public Event getEvent() {
-        
+    private Event getInput() {
+
+        int id = -1;
+        String name = null;
+        Operator organisator = null;
+        LocalDateTime date = null;
+        int duration = 0;
+        String location = null;
+        ArrayList<Operator> participants = null;
+        ArrayList<File> attachments = null;
+        Event.Priority priority = null;
+        Event.Notification notification = Event.Notification.NONE;
+        LocalDateTime reminder = null;
+
+        if (!txtEventName.getText().isBlank()) {
+            name = txtEventName.getText();
+        }
+
+        if (!txtEventDuration.getText().isBlank()) {
+            duration = Integer.parseInt(txtEventDuration.getText());
+        }
+
+        if (!txtEventLocation.getText().isBlank()) {
+            location = txtEventDuration.getText();
+        }
+
+        int year = dtPicker.datePicker.getDate().getYear();
+        int month = dtPicker.datePicker.getDate().getMonthValue();
+        int dayOfMonth = dtPicker.datePicker.getDate().getDayOfMonth();
+        int hour = dtPicker.timePicker.getTime().getHour();
+        int minute = dtPicker.timePicker.getTime().getMinute();
+
+        date = LocalDateTime.of(year, month, dayOfMonth, hour, minute);
+
+        switch (cbEventNotification.getSelectedItem().toString()) {
+            case "none":
+                notification = Event.Notification.NONE;
+                break;
+            case "10 minutes":
+                notification = Event.Notification.TEN_MINUTES;
+                break;
+            case "1 hour":
+                notification = Event.Notification.ONE_HOUR;
+                break;
+            case "3 days":
+                notification = Event.Notification.THREE_DAYS;
+                break;
+            case "1 week":
+                notification = Event.Notification.ONE_WEEK;
+                break;
+            default:
+                break;
+        }
+
+        switch (cbEventPriority.getSelectedItem().toString()) {
+            case "low":
+                priority = Event.Priority.LOW;
+                break;
+            case "medium":
+                priority = Event.Priority.MEDIUM;
+                break;
+            case "high":
+                priority = Event.Priority.HIGH;
+                break;
+            default:
+                break;
+        }
+
+        for (int i = 0; i < liEventParticipants.getModel().getSize(); i++) {
+            Operator participant = new handlers.UserHandler().getUser(liEventParticipants.getModel().getElementAt(i));
+            participants.add(participant);
+        }
+
+        for (int i = 0; i < liEventAttachments.getModel().getSize(); i++) {
+            File attachment = new File(liEventParticipants.getModel().getElementAt(i));
+            attachments.add(attachment);
+        }
         
         return this.event;
     }
     
+    private void newEvent(Event newEvent) {
+        if(newEvent != null) {
+            EventHandler eHandler = new EventHandler();
+            eHandler.addEvent(0, newEvent);
+        }
+    }
+    
+    private void editEvent(Event event) {
+        if(event != null) {
+            EventHandler eHandler = new EventHandler();
+            eHandler.editEvent(WIDTH, event);
+        }
+    }
+
+// </editor-fold>
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -115,17 +223,17 @@ public class FrmEvent extends javax.swing.JPanel {
         lblEventNotification = new javax.swing.JLabel();
         cbEventNotification = new javax.swing.JComboBox<>();
         filler6 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20), new java.awt.Dimension(32767, 20));
-        lblEventPArticipants = new javax.swing.JLabel();
+        lblEventParticipants = new javax.swing.JLabel();
         pnlEventParticipants = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
+        liEventParticipants = new javax.swing.JList<>();
         jButton1 = new javax.swing.JButton();
         filler7 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20), new java.awt.Dimension(32767, 20));
         lblEventAttachments = new javax.swing.JLabel();
         pnlEventAttachments = new javax.swing.JPanel();
         jButton2 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jList2 = new javax.swing.JList<>();
+        liEventAttachments = new javax.swing.JList<>();
         filler8 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20), new java.awt.Dimension(32767, 20));
         pnlFooter = new javax.swing.JPanel();
         btnDelete = new javax.swing.JButton();
@@ -179,10 +287,10 @@ public class FrmEvent extends javax.swing.JPanel {
         pnlContent.add(cbEventNotification);
         pnlContent.add(filler6);
 
-        lblEventPArticipants.setText("Participants:");
-        pnlContent.add(lblEventPArticipants);
+        lblEventParticipants.setText("Participants:");
+        pnlContent.add(lblEventParticipants);
 
-        jScrollPane1.setViewportView(jList1);
+        jScrollPane1.setViewportView(liEventParticipants);
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/add-circle-line.png"))); // NOI18N
 
@@ -217,7 +325,7 @@ public class FrmEvent extends javax.swing.JPanel {
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/add-circle-line.png"))); // NOI18N
 
-        jScrollPane2.setViewportView(jList2);
+        jScrollPane2.setViewportView(liEventAttachments);
 
         javax.swing.GroupLayout pnlEventAttachmentsLayout = new javax.swing.GroupLayout(pnlEventAttachments);
         pnlEventAttachments.setLayout(pnlEventAttachmentsLayout);
@@ -275,8 +383,6 @@ public class FrmEvent extends javax.swing.JPanel {
     private javax.swing.Box.Filler filler8;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JList<String> jList1;
-    private javax.swing.JList<String> jList2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblDateTime;
@@ -285,9 +391,11 @@ public class FrmEvent extends javax.swing.JPanel {
     private javax.swing.JLabel lblEventLocation;
     private javax.swing.JLabel lblEventName;
     private javax.swing.JLabel lblEventNotification;
-    private javax.swing.JLabel lblEventPArticipants;
+    private javax.swing.JLabel lblEventParticipants;
     private javax.swing.JLabel lblEventPriority;
     private javax.swing.JLabel lblHeadline;
+    private javax.swing.JList<String> liEventAttachments;
+    private javax.swing.JList<String> liEventParticipants;
     private javax.swing.JPanel pnlContent;
     private javax.swing.JPanel pnlEventAttachments;
     private javax.swing.JPanel pnlEventParticipants;

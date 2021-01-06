@@ -38,22 +38,22 @@ public class UserHandler {
     }
     
     public void addUser(User newUser, String password){
-        //dbHandler.addEvent(0, Event);
+        //dbHandler.
     }
     
     public void editUser(Operator newUser){
-        
+        dbHandler.editUser(newUser);
     }
     
-    public void deleteUser(Operator toBeDeleted){  
-
+    public void deleteUser(Operator user){  
+        dbHandler.deleteUser(user);
     }
     
     public ArrayList<Operator> searchUser(String searchTerm) {
         ArrayList<Operator> searchResult = null;
         
         if(!searchTerm.isBlank())
-            searchResult = null;
+            searchResult = dbHandler.getAllUsersLike(searchTerm);
         
         return searchResult;
     }
