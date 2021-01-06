@@ -7,6 +7,7 @@ package CalendarUtilities;
 
 import java.awt.Color;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -23,19 +24,15 @@ public class PnlDayPanel extends javax.swing.JPanel {
         LAST_MONTH, CURRENT_MONTH, NEXT_MONTH
     }
 
+    private enum Scroll{
+        DOWN, UP;
+    }
+    
     private java.util.ArrayList<BtnAppointment> btnAppointmentList;
     private javax.swing.JLabel lblDayNumber;
     private java.time.LocalDate day;
     private java.awt.Color selectionColor;
     private TYPE type;
-
-    public PnlDayPanel(java.util.ArrayList<BtnAppointment> btnAppointmentList, java.time.LocalDate day) {
-        this.lblDayNumber = new javax.swing.JLabel();
-        this.setBtnAppointmentList(btnAppointmentList);
-        this.setDay(day);
-        this.initializeLblDayNumber();
-        this.scaleLblDayNumber();
-    }
 
     public PnlDayPanel() {
         this.selectionColor = Color.decode("0x0088FF");
@@ -54,6 +51,13 @@ public class PnlDayPanel extends javax.swing.JPanel {
                 scaleButtons();
             }
 
+        });
+    
+        this.addMouseWheelListener(new java.awt.event.MouseWheelListener() {
+            @Override
+            public void mouseWheelMoved(MouseWheelEvent e) {
+                System.out.println("Mausrad wurde bewegt bei " + day.getMonth() + "." + day.getDayOfMonth() + "." + day.getYear());
+            }
         });
     }
 
@@ -174,6 +178,10 @@ public class PnlDayPanel extends javax.swing.JPanel {
             btn.setPriority(btn.getEvent().getPriority());
     }
     
+    private void scrollEventButtons(Scroll type){
+        
+    }
+    
     public void setType(TYPE type) {
         this.type = type;
         if (type == TYPE.CURRENT_MONTH) {
@@ -230,21 +238,7 @@ public class PnlDayPanel extends javax.swing.JPanel {
                 bt.setBounds(0, count * (int) Math.ceil((float)this.getHeight() / 4) + labelOffset, this.getWidth(), (int) Math.ceil((float)this.getHeight() / 5) - buttonPadding);
                 bt.setVisible(true);
                 count++;
-            } else if (count >= maxCount && this.btnAppointmentList.size() > maxCount){
-                
-                int width = this.getWidth() / 4;
-                int height = this.getHeight() / 10;
-                
-                javax.swing.JButton button = new BtnShowAllAppointments(day);
-                button.setName(showMoreBtnText);
-                button.setBounds((this.getWidth() / 2) - (width / 2), this.getHeight() - height, width, height);
-                
-                
-                this.add(button);
-                
-                this.repaint();
-                this.revalidate();
-            }
+            } 
         }
     }
 
