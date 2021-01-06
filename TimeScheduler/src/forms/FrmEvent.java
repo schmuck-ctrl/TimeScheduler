@@ -80,11 +80,11 @@ public class FrmEvent extends javax.swing.JPanel {
                     break;
             }
             
-            ParticipantListModel liModelParticipants = new ParticipantListModel();
+            /*ParticipantListModel liModelParticipants = new ParticipantListModel();
             for (int i = 0; i < this.event.getParticipants().size(); i++) {
                 liModelParticipants.addElement(this.event.getParticipants().get(i));
             }
-
+            
             liEventParticipants.setModel(liModelParticipants);
             
             AttachmentListModel liModelAttachments = new AttachmentListModel();
@@ -92,7 +92,7 @@ public class FrmEvent extends javax.swing.JPanel {
                 liModelAttachments.addElement(this.event.getAttachments().get(i));
             }
             
-            liEventAttachments.setModel(liModelAttachments);
+            liEventAttachments.setModel(liModelAttachments);*/
 
         }
     }
