@@ -7,7 +7,7 @@ package CalendarUtilities;
 
 import java.awt.Color;
 import java.time.DayOfWeek;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import javax.swing.JLabel;
 import javax.swing.event.AncestorEvent;
@@ -24,14 +24,15 @@ public class PnlDayPanel extends javax.swing.JPanel {
     
     private java.util.ArrayList<BtnAppointment> btnAppointmentList;
     private javax.swing.JLabel lblDayNumber;
-    private java.time.LocalDateTime day;
+    private java.time.LocalDate day;
     private TYPE type;
 
-    public PnlDayPanel(java.util.ArrayList<BtnAppointment> btnAppointmentList, java.time.LocalDateTime day) {
+    public PnlDayPanel(java.util.ArrayList<BtnAppointment> btnAppointmentList, java.time.LocalDate day) {
         this.lblDayNumber = new javax.swing.JLabel();
         this.setBtnAppointmentList(btnAppointmentList);
         this.setDay(day);
         this.initializeLblDayNumber();
+        this.scaleLblDayNumber();
     }
     
     public PnlDayPanel(){
@@ -49,11 +50,11 @@ public class PnlDayPanel extends javax.swing.JPanel {
         this.lblDayNumber = lblDayNumber;
     }
 
-    public LocalDateTime getDay() {
+    public LocalDate getDay() {
         return day;
     }
 
-    public void setDay(LocalDateTime day) {
+    public void setDay(LocalDate day) {
         this.day = day;
         this.initializeLblDayNumber();
     }
@@ -95,6 +96,10 @@ public class PnlDayPanel extends javax.swing.JPanel {
                 this.getHeight() / 5);
         //scale the size of label
         this.lblDayNumber.setFont(new java.awt.Font(this.lblDayNumber.getFont().getName(), java.awt.Font.PLAIN, this.getWidth() / 10));
+        
+        int year = this.day.getYear();
+        if (year == 2021)
+            System.out.println("Day:\t" + this.day.getDayOfMonth() + "\tMonth:\t" + this.day.getMonthValue() + "\tYear:\t" + this.day.getYear());
         
         if (this.day.getDayOfWeek() == DayOfWeek.SUNDAY){
             this.lblDayNumber.setForeground(Color.red);
