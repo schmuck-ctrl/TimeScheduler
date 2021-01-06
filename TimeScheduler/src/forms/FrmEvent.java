@@ -7,6 +7,7 @@ package forms;
 
 import EventUtilities.AttachmentListModel;
 import EventUtilities.ParticipantListModel;
+import classes.Admin;
 import classes.Event;
 import classes.Operator;
 import handlers.EventHandler;
@@ -28,7 +29,6 @@ public class FrmEvent extends javax.swing.JPanel {
     private Event event = null;
 
     // </editor-fold>
-    
     // <editor-fold defaultstate="collapsed" desc="Constructors">
     /**
      * Creates new form FrmEvent
@@ -38,7 +38,6 @@ public class FrmEvent extends javax.swing.JPanel {
     }
 
     // </editor-fold>
-    
     // <editor-fold defaultstate="collapsed" desc="Methods">
     public void setEvent(Event event) {
         if (event != null) {
@@ -79,20 +78,26 @@ public class FrmEvent extends javax.swing.JPanel {
                     cbEventNotification.getModel().setSelectedItem("1 week");
                     break;
             }
-            
-            /*ParticipantListModel liModelParticipants = new ParticipantListModel();
-            for (int i = 0; i < this.event.getParticipants().size(); i++) {
-                liModelParticipants.addElement(this.event.getParticipants().get(i));
+
+            if (this.event.getParticipants() != null) {
+
+                ParticipantListModel liModelParticipants = new ParticipantListModel();
+                for (int i = 0; i < this.event.getParticipants().size(); i++) {
+                    liModelParticipants.add(i, this.event.getParticipants().get(i));
+                }
+
+                liEventParticipants.setModel(liModelParticipants);
+
             }
-            
-            liEventParticipants.setModel(liModelParticipants);
-            
-            AttachmentListModel liModelAttachments = new AttachmentListModel();
-            for (int i = 0; i < this.event.getAttachments().size(); i++) {
-                liModelAttachments.addElement(this.event.getAttachments().get(i));
+
+            if (this.event.getAttachments() != null) {
+                AttachmentListModel liModelAttachments = new AttachmentListModel();
+                for (int i = 0; i < this.event.getAttachments().size(); i++) {
+                    liModelAttachments.addElement(this.event.getAttachments().get(i));
+                }
+
+                liEventAttachments.setModel(liModelAttachments);
             }
-            
-            liEventAttachments.setModel(liModelAttachments);*/
 
         }
     }
@@ -101,12 +106,12 @@ public class FrmEvent extends javax.swing.JPanel {
 
         int id = -1;
         String name = null;
-        Operator organisator = null;
+        Operator organisator = forms.FrmMain.getInstance().getCurrentUser();
         LocalDateTime date = null;
         int duration = 0;
         String location = null;
-        ArrayList<Operator> participants = null;
-        ArrayList<File> attachments = null;
+        ArrayList<Operator> participants = new ArrayList();
+        ArrayList<File> attachments = new ArrayList();
         Event.Priority priority = null;
         Event.Notification notification = Event.Notification.NONE;
         LocalDateTime reminder = null;
@@ -174,21 +179,23 @@ public class FrmEvent extends javax.swing.JPanel {
             File attachment = new File(liEventParticipants.getModel().getElementAt(i));
             attachments.add(attachment);
         }
+
+        Event newEvent = new Event(name, organisator, date, duration, location, participants, attachments, priority, notification);
         
-        return this.event;
+        return newEvent;
     }
-    
+
     private void newEvent(Event newEvent) {
-        if(newEvent != null) {
+        if (newEvent != null) {
             EventHandler eHandler = new EventHandler();
-            eHandler.addEvent(0, newEvent);
+            eHandler.addEvent(1, newEvent);
         }
     }
-    
+
     private void editEvent(Event event) {
-        if(event != null) {
+        if (event != null) {
             EventHandler eHandler = new EventHandler();
-            eHandler.editEvent(WIDTH, event);
+            eHandler.editEvent(event);
         }
     }
 
@@ -361,10 +368,19 @@ public class FrmEvent extends javax.swing.JPanel {
 
         btnOk.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/save-line.png"))); // NOI18N
         btnOk.setText("Ok");
+        btnOk.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOkActionPerformed(evt);
+            }
+        });
         pnlFooter.add(btnOk);
 
         add(pnlFooter, java.awt.BorderLayout.PAGE_END);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOkActionPerformed
+        newEvent(getInput());
+    }//GEN-LAST:event_btnOkActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

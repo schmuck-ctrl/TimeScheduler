@@ -44,7 +44,7 @@ public class EventHandler {
         dbHandler.addEvent(userID, event);
     }
 
-    public void editEvent(int eventID, Event event) {
+    public void editEvent(Event event) {
         //dbHandler.
     }
 
