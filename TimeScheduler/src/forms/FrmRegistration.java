@@ -23,9 +23,9 @@ public class FrmRegistration extends javax.swing.JFrame {
      */
     public FrmRegistration() {
         initComponents();
-        this.pnlHeader.setBackground(new Color(243, 242, 241));
+        this.pnlHeader.setBackground(new Color(255, 255, 255));
         this.pnlContent.setBackground(new Color(255, 255, 255));
-        this.pnlFooter.setBackground(new Color(243, 242, 241));
+        this.pnlFooter.setBackground(new Color(255, 255, 255));
     }
 
     /**
@@ -74,21 +74,21 @@ public class FrmRegistration extends javax.swing.JFrame {
         pnlFooterLayout.setHorizontalGroup(
             pnlFooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFooterLayout.createSequentialGroup()
-                .addContainerGap(208, Short.MAX_VALUE)
-                .addComponent(btnRegistration, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(204, 204, 204))
+                .addContainerGap(212, Short.MAX_VALUE)
+                .addComponent(btnRegistration, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(198, 198, 198))
         );
         pnlFooterLayout.setVerticalGroup(
             pnlFooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlFooterLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(btnRegistration, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(59, Short.MAX_VALUE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         getContentPane().add(pnlFooter, java.awt.BorderLayout.PAGE_END);
 
-        lblRegistration.setFont(new java.awt.Font("Segoe UI Black", 0, 24)); // NOI18N
+        lblRegistration.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         lblRegistration.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblRegistration.setText("Registration");
 
@@ -97,38 +97,43 @@ public class FrmRegistration extends javax.swing.JFrame {
         pnlHeaderLayout.setHorizontalGroup(
             pnlHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlHeaderLayout.createSequentialGroup()
-                .addGap(212, 212, 212)
-                .addComponent(lblRegistration, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(226, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(lblRegistration, javax.swing.GroupLayout.DEFAULT_SIZE, 628, Short.MAX_VALUE)
+                .addContainerGap())
         );
         pnlHeaderLayout.setVerticalGroup(
             pnlHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlHeaderLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblRegistration, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(60, Short.MAX_VALUE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         getContentPane().add(pnlHeader, java.awt.BorderLayout.PAGE_START);
 
         lblFirstName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblFirstName.setForeground(new java.awt.Color(0, 0, 0));
+        lblFirstName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblFirstName.setText("First Name:");
 
         lblLastName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblLastName.setForeground(new java.awt.Color(0, 0, 0));
+        lblLastName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblLastName.setText("Last Name:");
 
         lblEmail.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblEmail.setForeground(new java.awt.Color(0, 0, 0));
+        lblEmail.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblEmail.setText("E-Mail:");
 
         lblPassword.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblPassword.setForeground(new java.awt.Color(0, 0, 0));
+        lblPassword.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblPassword.setText("Password:");
 
         lblRepeatPassword.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblRepeatPassword.setForeground(new java.awt.Color(0, 0, 0));
+        lblRepeatPassword.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblRepeatPassword.setText("Repeat Password:");
 
         txtFirstName.setBackground(new java.awt.Color(243, 242, 241));
@@ -202,27 +207,22 @@ public class FrmRegistration extends javax.swing.JFrame {
         lblFirstNameError.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblFirstNameError.setForeground(new java.awt.Color(204, 0, 51));
         lblFirstNameError.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblFirstNameError.setText("s");
 
         lblLastNameError.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblLastNameError.setForeground(new java.awt.Color(204, 0, 51));
         lblLastNameError.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblLastNameError.setText("s");
 
         lblEmailError.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblEmailError.setForeground(new java.awt.Color(204, 0, 51));
         lblEmailError.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblEmailError.setText("s");
 
         lblPasswordError.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblPasswordError.setForeground(new java.awt.Color(204, 0, 51));
         lblPasswordError.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblPasswordError.setText("s");
 
         lblRepeatPasswordError.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblRepeatPasswordError.setForeground(new java.awt.Color(204, 0, 51));
         lblRepeatPasswordError.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblRepeatPasswordError.setText("s");
 
         javax.swing.GroupLayout pnlContentLayout = new javax.swing.GroupLayout(pnlContent);
         pnlContent.setLayout(pnlContentLayout);
@@ -230,13 +230,13 @@ public class FrmRegistration extends javax.swing.JFrame {
             pnlContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlContentLayout.createSequentialGroup()
                 .addGap(33, 33, 33)
-                .addGroup(pnlContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(pnlContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblRepeatPassword, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblPassword, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblEmail, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblLastName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblFirstName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(72, 72, 72)
+                    .addComponent(lblEmail, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
                 .addGroup(pnlContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(pnlContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(txtFirstName, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -251,7 +251,7 @@ public class FrmRegistration extends javax.swing.JFrame {
                     .addComponent(lblEmailError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblPasswordError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblRepeatPasswordError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(38, Short.MAX_VALUE))
+                .addGap(42, 42, 42))
         );
         pnlContentLayout.setVerticalGroup(
             pnlContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -282,7 +282,7 @@ public class FrmRegistration extends javax.swing.JFrame {
                     .addComponent(lblRepeatPassword)
                     .addComponent(ptxtRepeatPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblRepeatPasswordError))
-                .addContainerGap(48, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         getContentPane().add(pnlContent, java.awt.BorderLayout.CENTER);
