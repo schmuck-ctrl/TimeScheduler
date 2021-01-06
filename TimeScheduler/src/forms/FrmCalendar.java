@@ -41,8 +41,12 @@ public class FrmCalendar extends javax.swing.JPanel {
     }
 
     private void createView() {
-        
+
         this.removeAll();
+        this.revalidate();
+        this.repaint();
+        
+        this.panelArray = null;
 
         int numberOfColumns = 7;
         int numberOfRows = (this.calculateOverflowDaysOfLastMonth()
@@ -72,15 +76,15 @@ public class FrmCalendar extends javax.swing.JPanel {
                 if (lastMonthOverflow > 0) {
                     this.panelArray[i][j] = new PnlDayPanel();
                     // + 1 because of day offset somehow
-                    this.panelArray[i][j].setDay(java.time.LocalDateTime.of(lastMonthYear, this.currentDate.getMonthValue(), lastMonthStartDate, 0, 0));
+                    this.panelArray[i][j].setDay(java.time.LocalDate.of(lastMonthYear, this.currentDate.getMonthValue(), lastMonthStartDate));
                     this.panelArray[i][j].setType(PnlDayPanel.TYPE.LAST_MONTH);
 
                     lastMonthOverflow--;
                     lastMonthStartDate++;
                     //go in this if, if we have days from next month
-                } else if (nextMonthOverflow > 0) {
+                } else if (nextMonthOverflow > 0 && currentMonthCounter > this.calculateDaysOfMonth(this.currentDate.getMonthValue(), this.currentDate.getYear())) {
                     this.panelArray[i][j] = new PnlDayPanel();
-                    this.panelArray[i][j].setDay(java.time.LocalDateTime.of(nextMonthYear, this.currentDate.getMonthValue(), nextMonthStartDate, 0, 0));
+                    this.panelArray[i][j].setDay(java.time.LocalDate.of(nextMonthYear, this.currentDate.getMonthValue(), nextMonthStartDate));
                     this.panelArray[i][j].setType(PnlDayPanel.TYPE.NEXT_MONTH);
 
                     nextMonthOverflow--;
@@ -88,7 +92,7 @@ public class FrmCalendar extends javax.swing.JPanel {
                     //go in if, if we are in current month
                 } else {
                     this.panelArray[i][j] = new PnlDayPanel();
-                    this.panelArray[i][j].setDay(java.time.LocalDateTime.of(currentMonthYear, this.currentDate.getMonthValue(), currentMonthCounter, 0, 0));
+                    this.panelArray[i][j].setDay(java.time.LocalDate.of(currentMonthYear, this.currentDate.getMonthValue(), currentMonthCounter));
                     this.panelArray[i][j].setType(PnlDayPanel.TYPE.CURRENT_MONTH);
                     currentMonthCounter++;
                 }
@@ -108,18 +112,17 @@ public class FrmCalendar extends javax.swing.JPanel {
         for (int i = 0; i < numberOfRows; i++) {
 
             for (int j = 0; j < numberOfColumns; j++) {
-                
-                
 
-                int xLocation = j * (int) (Math.ceil((float)this.getWidth() / numberOfColumns));
-                int yLocation = ((int) (i * Math.ceil((float)(this.getHeight() - this.pnlWeekdaysheight) / numberOfRows))) + this.pnlWeekdaysheight; 
+                int xLocation = j * (int) (Math.ceil((float) this.getWidth() / numberOfColumns));
+                int yLocation = ((int) (i * Math.ceil((float) (this.getHeight() - this.pnlWeekdaysheight) / numberOfRows))) + this.pnlWeekdaysheight;
                 //yLocation = ((int) (rowCount * Math.ceil((float) (this.getHeight() - this.yOffsetDaysPanel) / rowCountMax))) + this.yOffsetDaysPanel;
-                int width = (int) Math.ceil((float)this.getWidth() / 7) - this.padding;
-                int height = (int) Math.ceil((float)(this.getHeight() - this.pnlWeekdaysheight) / numberOfRows) - this.padding;
-                
-                //System.out.println("xLocation:\t" + xLocation + "\tyLocation:\t" + yLocation + "\tRow:\t" + i + "\tColumn:\t" + j + "\tWidth:\t" + width + "\tHeight\t" + height + "\tParentWidth:\t" + this.getWidth() + "\tParentHeight:\t" + this.getHeight());
+                int width = (int) Math.ceil((float) this.getWidth() / 7) - this.padding;
+                int height = (int) Math.ceil((float) (this.getHeight() - this.pnlWeekdaysheight) / numberOfRows) - this.padding;
 
+                //System.out.println("xLocation:\t" + xLocation + "\tyLocation:\t" + yLocation + "\tRow:\t" + i + "\tColumn:\t" + j + "\tWidth:\t" + width + "\tHeight\t" + height + "\tParentWidth:\t" + this.getWidth() + "\tParentHeight:\t" + this.getHeight());
                 this.panelArray[i][j].setBounds(xLocation, yLocation, width, height);
+                this.panelArray[i][j].revalidate();
+                this.panelArray[i][j].repaint();
             }
         }
     }
@@ -159,34 +162,38 @@ public class FrmCalendar extends javax.swing.JPanel {
     }
 
     private int calculateOverflowDaysOfNextMonth() {
-        
+
         int _month = this.currentDate.getMonthValue();
         int _year = this.currentDate.getYear();
-        
-        if (_month >= 12){
-            _month = 0; 
+
+        if (_month >= 12) {
+            _month = 0;
             _year = _year + 1;
-        } 
-        
+        }
+
         java.util.Calendar cal = java.util.Calendar.getInstance();
         cal.set(_year, _month, 1);
-        
+
         int firstDayOfNextMonth = cal.get(java.util.Calendar.DAY_OF_WEEK);
-        
-        if (firstDayOfNextMonth != 2){
+
+        if (firstDayOfNextMonth != 2) {
             firstDayOfNextMonth = firstDayOfNextMonth - 2;
         } else {
             return 0;
-        }     
+        }
         return 7 - firstDayOfNextMonth;
     }
 
-    public void setLocalDate(java.time.LocalDate dt){
+    public void setLocalDate(java.time.LocalDate dt) {
         this.currentDate = dt;
-        
+
         this.createView();
+        this.scaleView();
+        
+        this.revalidate();
+        this.repaint();
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -216,6 +223,8 @@ public class FrmCalendar extends javax.swing.JPanel {
 
     private void formComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentResized
         scaleView();
+        this.revalidate();
+        this.repaint();
     }//GEN-LAST:event_formComponentResized
 
 
