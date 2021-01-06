@@ -6,6 +6,8 @@
 package forms;
 
 import classes.Event;
+import classes.Operator;
+import handlers.DatabaseHandler;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -17,6 +19,8 @@ import java.util.ArrayList;
  */
 public class FrmMain extends javax.swing.JFrame {
 
+    private Operator user = null;
+    
     private static FrmMain form = null;
 
     public static FrmMain getInstance() {
@@ -37,9 +41,19 @@ public class FrmMain extends javax.swing.JFrame {
 
     // <editor-fold defaultstate="collapsed" desc="Methods"> 
     
+    public void setCurrentUser(Operator currentUser) {
+        if(currentUser != null)
+            this.user = currentUser;
+    }
+    
+    public Operator getCurrentUser() {
+        return this.user;
+    }
+    
     //FUNKTIONEN DIE VOM CALENDAR AUFGERUFEN WERDEN
     public void displayEventDetails(int eventID) {
-        
+        DatabaseHandler dbHandler = new DatabaseHandler();
+        frmEvent.setEvent(dbHandler.getEventById(eventID));
     }
     
     public void editEvent(int eventID) {
@@ -73,9 +87,9 @@ public class FrmMain extends javax.swing.JFrame {
         lblHeadline = new javax.swing.JLabel();
         splitPnlContent = new javax.swing.JSplitPane();
         pnlEventRoot = new javax.swing.JPanel();
-        frmEvent1 = new forms.FrmEvent();
+        frmEvent = new forms.FrmEvent();
         pnlCalendarRoot = new javax.swing.JPanel();
-        frmCalendar1 = new forms.FrmCalendar();
+        frmCalendar = new forms.FrmCalendar();
         pnlFooter = new javax.swing.JPanel();
         btnTest = new javax.swing.JButton();
 
@@ -118,12 +132,12 @@ public class FrmMain extends javax.swing.JFrame {
         pnlEventRoot.setMinimumSize(new java.awt.Dimension(300, 0));
         pnlEventRoot.setPreferredSize(new java.awt.Dimension(300, 264));
         pnlEventRoot.setLayout(new java.awt.BorderLayout());
-        pnlEventRoot.add(frmEvent1, java.awt.BorderLayout.CENTER);
+        pnlEventRoot.add(frmEvent, java.awt.BorderLayout.CENTER);
 
         splitPnlContent.setLeftComponent(pnlEventRoot);
 
         pnlCalendarRoot.setLayout(new java.awt.BorderLayout());
-        pnlCalendarRoot.add(frmCalendar1, java.awt.BorderLayout.CENTER);
+        pnlCalendarRoot.add(frmCalendar, java.awt.BorderLayout.CENTER);
 
         splitPnlContent.setRightComponent(pnlCalendarRoot);
 
@@ -161,7 +175,7 @@ public class FrmMain extends javax.swing.JFrame {
 
     private void btnTestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTestActionPerformed
 
-        this.frmCalendar1.setLocalDate(java.time.LocalDate.of(2020, 12, 15));
+        this.frmCalendar.setLocalDate(java.time.LocalDate.of(2020, 12, 15));
         
         java.util.ArrayList<classes.Event> eventList = new ArrayList<>();
         
@@ -210,8 +224,9 @@ public class FrmMain extends javax.swing.JFrame {
         eventList.add(e7);
         eventList.add(e8);
         
-        this.frmCalendar1.addEvents(eventList);
+        this.frmCalendar.addEvents(eventList);
         
+        displayEventDetails(1);
     }//GEN-LAST:event_btnTestActionPerformed
 
     private void mnuAdminInterfaceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdminInterfaceActionPerformed
@@ -256,8 +271,8 @@ public class FrmMain extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnTest;
-    private forms.FrmCalendar frmCalendar1;
-    private forms.FrmEvent frmEvent1;
+    private forms.FrmCalendar frmCalendar;
+    private forms.FrmEvent frmEvent;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel lblHeadline;
     private javax.swing.JButton mnuAdminInterface;
