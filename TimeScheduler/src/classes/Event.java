@@ -166,6 +166,13 @@ public class Event {
     
     private LocalDateTime calculateReminder() {
         
-        return null;
+        switch(this.notification){
+            case NONE: return this.date; 
+            case ONE_HOUR: return LocalDateTime.of(this.date.getYear(), this.date.getMonth(), this.date.getDayOfMonth(), this.date.getHour() - 1, this.date.getMinute());
+            case TEN_MINUTES: return LocalDateTime.of(this.date.getYear(), this.date.getMonth(), this.date.getDayOfMonth(), this.date.getHour(), this.date.getMinute() - 10);
+            case ONE_WEEK: return LocalDateTime.of(this.date.getYear(), this.date.getMonth(), this.date.getDayOfMonth() - 7, this.date.getHour(), this.date.getMinute());
+            case THREE_DAYS: return LocalDateTime.of(this.date.getYear(), this.date.getMonth(), this.date.getDayOfMonth() - 3, this.date.getHour(), this.date.getMinute());
+            default: return null;
+        }
     }
 }
