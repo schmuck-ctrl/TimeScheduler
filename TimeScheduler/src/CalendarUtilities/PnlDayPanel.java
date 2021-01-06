@@ -187,11 +187,11 @@ public class PnlDayPanel extends javax.swing.JPanel {
 
         try {
             if (type == type.DOWN) {
-                if (this.btnAppointmentList.get(this.btnAppointmentList.size() - 1).getY() <= 10) {
+                if (this.btnAppointmentList.get(this.btnAppointmentList.size() - 1).getY() <= 0) {
                     return;
                 }
             } else if (type == type.UP) {
-                if (this.btnAppointmentList.get(0).getY() >= this.getHeight() - 20) {
+                if (this.btnAppointmentList.get(0).getY() >= this.getHeight() - this.btnAppointmentList.get(0).getHeight()) {
                     return;
                 }
             }
