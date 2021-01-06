@@ -189,6 +189,7 @@ public class FrmRegistration extends javax.swing.JFrame {
         ptxtRepeatPassword.setBackground(new java.awt.Color(243, 242, 241));
         ptxtRepeatPassword.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         ptxtRepeatPassword.setForeground(new java.awt.Color(0, 0, 0));
+        ptxtRepeatPassword.setText("Fritzmeier123&");
         ptxtRepeatPassword.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 ptxtRepeatPasswordFocusGained(evt);

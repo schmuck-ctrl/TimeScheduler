@@ -5,7 +5,7 @@
  */
 package handlers;
 import classes.*;
-/*
+
 import java.util.ArrayList;
 import java.util.Properties;
 import javax.mail.Message;
@@ -20,8 +20,8 @@ import javax.mail.internet.MimeMessage;
  * @author Vadym
  */
 public class EmailHandler {
-    /*
-        public static void EmailInformation(_User orginater,ArrayList<_User> participants) {
+    
+        public static void EmailInformation(Operator orginater,ArrayList<Operator> participants) {
         //String to = ""; // to address. It can be any like gmail, yahoo etc.
         String from = "Javprojekt@gmail.com"; // from address. As this is using Gmail SMTP your from address should be gmail
         String password = "Javaprojekt123"; // password for from gmail address that you have used in above line. 
@@ -59,4 +59,4 @@ public class EmailHandler {
         }
 
     }
-*/}
+}
