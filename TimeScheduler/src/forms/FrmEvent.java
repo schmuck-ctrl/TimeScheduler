@@ -7,7 +7,6 @@ package forms;
 
 import EventUtilities.AttachmentListModel;
 import EventUtilities.ParticipantListModel;
-import classes.Admin;
 import classes.Event;
 import classes.Operator;
 import handlers.EventHandler;
@@ -16,19 +15,13 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import javax.swing.DefaultListModel;
-import javax.swing.JList;
 
 /**
  *
  * @author nilss
  */
 public class FrmEvent extends javax.swing.JPanel {
-
-    // <editor-fold defaultstate="collapsed" desc="Global Variables">
-    private Event event = null;
-
-    // </editor-fold>
+   
     // <editor-fold defaultstate="collapsed" desc="Constructors">
     /**
      * Creates new form FrmEvent
@@ -41,15 +34,13 @@ public class FrmEvent extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Methods">
     public void setEvent(Event event) {
         if (event != null) {
-            this.event = event;
+            txtEventName.setText(event.getName());
+            dtPicker.datePicker.setDate(LocalDate.of(event.getDate().getYear(), event.getDate().getMonth(), event.getDate().getDayOfMonth()));
+            dtPicker.timePicker.setTime(LocalTime.of(event.getDate().getHour(), event.getDate().getMinute()));
+            txtEventDuration.setText(String.valueOf(event.getDuration()));
+            txtEventLocation.setText(event.getLocation());
 
-            txtEventName.setText(this.event.getName());
-            dtPicker.datePicker.setDate(LocalDate.of(this.event.getDate().getYear(), this.event.getDate().getMonth(), this.event.getDate().getDayOfMonth()));
-            dtPicker.timePicker.setTime(LocalTime.of(this.event.getDate().getHour(), this.event.getDate().getMinute()));
-            txtEventDuration.setText(String.valueOf(this.event.getDuration()));
-            txtEventLocation.setText(this.event.getLocation());
-
-            switch (this.event.getPriority()) {
+            switch (event.getPriority()) {
                 case LOW:
                     cbEventNotification.getModel().setSelectedItem("low");
                     break;
@@ -61,7 +52,7 @@ public class FrmEvent extends javax.swing.JPanel {
                     break;
             }
 
-            switch (this.event.getNotification()) {
+            switch (event.getNotification()) {
                 case NONE:
                     cbEventNotification.getModel().setSelectedItem("none");
                     break;
@@ -79,21 +70,21 @@ public class FrmEvent extends javax.swing.JPanel {
                     break;
             }
 
-            if (this.event.getParticipants() != null) {
+            if (event.getParticipants() != null) {
 
                 ParticipantListModel liModelParticipants = new ParticipantListModel();
-                for (int i = 0; i < this.event.getParticipants().size(); i++) {
-                    liModelParticipants.add(i, this.event.getParticipants().get(i));
+                for (int i = 0; i < event.getParticipants().size(); i++) {
+                    liModelParticipants.add(i, event.getParticipants().get(i));
                 }
 
                 liEventParticipants.setModel(liModelParticipants);
 
             }
 
-            if (this.event.getAttachments() != null) {
+            if (event.getAttachments() != null) {
                 AttachmentListModel liModelAttachments = new AttachmentListModel();
-                for (int i = 0; i < this.event.getAttachments().size(); i++) {
-                    liModelAttachments.addElement(this.event.getAttachments().get(i));
+                for (int i = 0; i < event.getAttachments().size(); i++) {
+                    liModelAttachments.addElement(event.getAttachments().get(i));
                 }
 
                 liEventAttachments.setModel(liModelAttachments);
