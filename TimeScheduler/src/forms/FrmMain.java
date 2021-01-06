@@ -5,8 +5,11 @@
  */
 package forms;
 
+import classes.Event;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Month;
+import java.util.ArrayList;
 
 /**
  *
@@ -34,6 +37,7 @@ public class FrmMain extends javax.swing.JFrame {
 
     // <editor-fold defaultstate="collapsed" desc="Methods"> 
     
+    //FUNKTIONEN DIE VOM CALENDAR AUFGERUFEN WERDEN
     public void displayEventDetails(int eventID) {
         
     }
@@ -42,10 +46,14 @@ public class FrmMain extends javax.swing.JFrame {
         
     }
     
-    public void displayAllEventsOfDay(LocalDateTime today) {
+    public void displayAllEventsOfDay(LocalDate today) {
         
     }
     
+    public void createNewEvent(LocalDate date){
+        
+    }
+    //FUNKTIONEN DIE VOM CALENDAR AUFGERUFEN WERDEN
     // </editor-fold> 
     
     /**
@@ -153,7 +161,56 @@ public class FrmMain extends javax.swing.JFrame {
 
     private void btnTestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTestActionPerformed
 
-        this.frmCalendar1.setLocalDate(java.time.LocalDate.of(2020, java.time.Month.DECEMBER, 15));
+        this.frmCalendar1.setLocalDate(java.time.LocalDate.of(this.frmCalendar1.getLocalDate().getYear(), 1, 15));
+        
+        java.util.ArrayList<classes.Event> eventList = new ArrayList<>();
+        
+        classes.Event e1 = new classes.Event();
+        classes.Event e2 = new classes.Event();
+        classes.Event e3 = new classes.Event();
+        classes.Event e4 = new classes.Event();
+        classes.Event e5 = new classes.Event();
+        classes.Event e6 = new classes.Event();
+        classes.Event e7 = new classes.Event();
+        classes.Event e8 = new classes.Event();
+        
+        e1.setDate(LocalDateTime.of(2020, Month.DECEMBER, 30, 8, 30));
+        e2.setDate(LocalDateTime.of(2021, Month.JANUARY, 1, 8, 30));
+        e3.setDate(LocalDateTime.of(2021, Month.JANUARY, 1, 8, 50));
+        e4.setDate(LocalDateTime.of(2021, Month.JANUARY, 1, 13, 30));
+        e5.setDate(LocalDateTime.of(2021, Month.JANUARY, 1, 17, 10));
+        e6.setDate(LocalDateTime.of(2021, Month.JANUARY, 20, 13, 30));
+        e7.setDate(LocalDateTime.of(2021, Month.JANUARY, 25, 10, 30));
+        e8.setDate(LocalDateTime.of(2021, Month.JANUARY, 31, 8, 30));
+        
+        e1.setName("Business Meeting 0");
+        e2.setName("Business Meeting 1");
+        e3.setName("Business Meeting 2");
+        e4.setName("Business Meeting 3");
+        e5.setName("Business Meeting 4");
+        e6.setName("Business Meeting 5");
+        e7.setName("Business Meeting 6");
+        e8.setName("Business Meeting 7");
+        
+        e1.setPriority(Event.Priority.LOW);
+        e2.setPriority(Event.Priority.HIGH);
+        e3.setPriority(Event.Priority.MEDIUM);
+        e4.setPriority(Event.Priority.MEDIUM);
+        e5.setPriority(Event.Priority.HIGH);
+        e6.setPriority(Event.Priority.LOW);
+        e7.setPriority(Event.Priority.HIGH);
+        e8.setPriority(Event.Priority.LOW);
+        
+        eventList.add(e1);
+        eventList.add(e2);
+        eventList.add(e3);
+        eventList.add(e4);
+        eventList.add(e5);
+        eventList.add(e6);
+        eventList.add(e7);
+        eventList.add(e8);
+        
+        this.frmCalendar1.addEvents(eventList);
         
     }//GEN-LAST:event_btnTestActionPerformed
 

@@ -7,8 +7,6 @@ package forms;
 
 import CalendarUtilities.PnlDayPanel;
 import CalendarUtilities.PnlWeekdays;
-import java.awt.event.MouseEvent;
-import java.time.Month;
 
 /**
  *
@@ -18,10 +16,11 @@ public class FrmCalendar extends javax.swing.JPanel {
 
     private java.awt.Color gridColor;
     private CalendarUtilities.PnlDayPanel[][] panelArray;
-    private java.time.LocalDate currentDate;
+    private java.time.LocalDate localDate;
     private PnlWeekdays pnlWeekdays;
     private int pnlWeekdaysheight;
     private int padding;
+    private final int weekdaysheight = 30;
 
     /**
      * Creates new form FrmCalendar
@@ -34,10 +33,11 @@ public class FrmCalendar extends javax.swing.JPanel {
         this.setBackground(java.awt.Color.DARK_GRAY);
         this.pnlWeekdaysheight = 30;
         this.padding = 1;
-        this.currentDate = java.time.LocalDate.now();
-        this.pnlWeekdays = new PnlWeekdays(pnlWeekdaysheight);
+        this.localDate = java.time.LocalDate.now();
 
         this.createView();
+        this.setWeekdaysPanel();
+        this.getPnlDayPanelByDay(this.localDate).setSelected();
     }
 
     private void createView() {
@@ -45,15 +45,15 @@ public class FrmCalendar extends javax.swing.JPanel {
         this.removeAll();
         this.revalidate();
         this.repaint();
-        
+
         this.panelArray = null;
 
         int numberOfColumns = 7;
         int numberOfRows = (this.calculateOverflowDaysOfLastMonth()
-                + calculateDaysOfMonth(this.currentDate.getMonthValue(), this.currentDate.getYear())
+                + calculateDaysOfMonth(this.localDate.getMonthValue(), this.localDate.getYear())
                 + this.calculateOverflowDaysOfNextMonth()) / 7;
 
-        int lastMonthOverflow = this.calculateOverflowDaysOfLastMonth(), lastMonthStartDate = this.calculateDaysOfMonth(this.currentDate.getMonthValue() - 1, this.currentDate.getYear()) - this.calculateOverflowDaysOfLastMonth() + 1; // + 1 weil das datum sonst um 1 zu niedrig ist
+        int lastMonthOverflow = this.calculateOverflowDaysOfLastMonth(), lastMonthStartDate = this.calculateDaysOfMonth(this.localDate.getMonthValue() - 1, this.localDate.getYear()) - this.calculateOverflowDaysOfLastMonth() + 1; // + 1 weil das datum sonst um 1 zu niedrig ist
         int nextMonthOverflow = this.calculateOverflowDaysOfNextMonth(), nextMonthStartDate = 1;
         //counter for currentMonth so we get 1. 2. 3. and so on
         int currentMonthCounter = 1;
@@ -61,10 +61,12 @@ public class FrmCalendar extends javax.swing.JPanel {
         this.panelArray = new CalendarUtilities.PnlDayPanel[numberOfRows][numberOfColumns];
 
         //check if year is last or next year if month = 0 or month = 11
-        int lastMonthYear = this.currentDate.getYear(), currentMonthYear = this.currentDate.getYear(), nextMonthYear = this.currentDate.getYear();
-        if (this.currentDate.getMonthValue() >= 12) {
+        int lastMonthYear = this.localDate.getYear(), currentMonthYear = this.localDate.getYear(), nextMonthYear = this.localDate.getYear();
+        int lastMonth = this.localDate.getMonthValue() - 1 < 1 ? 12 : this.localDate.getMonthValue() - 1;
+        int nextMonth = this.localDate.getMonthValue() + 1 > 12 ? 1 : this.localDate.getMonthValue() + 1;
+        if (this.localDate.getMonthValue() >= 12) {
             nextMonthYear = nextMonthYear + 1;
-        } else if (this.currentDate.getMonthValue() <= 1) {
+        } else if (this.localDate.getMonthValue() <= 1) {
             lastMonthYear = lastMonthYear - 1;
         }
 
@@ -75,16 +77,16 @@ public class FrmCalendar extends javax.swing.JPanel {
                 //go in this if, if we need to add days from the last month
                 if (lastMonthOverflow > 0) {
                     this.panelArray[i][j] = new PnlDayPanel();
-                    // + 1 because of day offset somehow
-                    this.panelArray[i][j].setDay(java.time.LocalDate.of(lastMonthYear, this.currentDate.getMonthValue(), lastMonthStartDate));
+                    // -1 because we want the last month not current
+                    this.panelArray[i][j].setDay(java.time.LocalDate.of(lastMonthYear, lastMonth, lastMonthStartDate));
                     this.panelArray[i][j].setType(PnlDayPanel.TYPE.LAST_MONTH);
 
                     lastMonthOverflow--;
                     lastMonthStartDate++;
                     //go in this if, if we have days from next month
-                } else if (nextMonthOverflow > 0 && currentMonthCounter > this.calculateDaysOfMonth(this.currentDate.getMonthValue(), this.currentDate.getYear())) {
+                } else if (nextMonthOverflow > 0 && currentMonthCounter > this.calculateDaysOfMonth(this.localDate.getMonthValue(), this.localDate.getYear())) {
                     this.panelArray[i][j] = new PnlDayPanel();
-                    this.panelArray[i][j].setDay(java.time.LocalDate.of(nextMonthYear, this.currentDate.getMonthValue(), nextMonthStartDate));
+                    this.panelArray[i][j].setDay(java.time.LocalDate.of(nextMonthYear, nextMonth, nextMonthStartDate));
                     this.panelArray[i][j].setType(PnlDayPanel.TYPE.NEXT_MONTH);
 
                     nextMonthOverflow--;
@@ -92,10 +94,11 @@ public class FrmCalendar extends javax.swing.JPanel {
                     //go in if, if we are in current month
                 } else {
                     this.panelArray[i][j] = new PnlDayPanel();
-                    this.panelArray[i][j].setDay(java.time.LocalDate.of(currentMonthYear, this.currentDate.getMonthValue(), currentMonthCounter));
+                    this.panelArray[i][j].setDay(java.time.LocalDate.of(currentMonthYear, this.localDate.getMonthValue(), currentMonthCounter));
                     this.panelArray[i][j].setType(PnlDayPanel.TYPE.CURRENT_MONTH);
                     currentMonthCounter++;
                 }
+                this.createDayPanelListener(this.panelArray[i][j]);
                 this.add(this.panelArray[i][j]);
             }
         }
@@ -105,7 +108,7 @@ public class FrmCalendar extends javax.swing.JPanel {
     private void scaleView() {
 
         int numberOfRows = (this.calculateOverflowDaysOfLastMonth()
-                + calculateDaysOfMonth(this.currentDate.getMonthValue(), this.currentDate.getYear())
+                + calculateDaysOfMonth(this.localDate.getMonthValue(), this.localDate.getYear())
                 + this.calculateOverflowDaysOfNextMonth()) / 7;
         int numberOfColumns = 7;
 
@@ -146,8 +149,8 @@ public class FrmCalendar extends javax.swing.JPanel {
 
         java.util.Calendar cal = java.util.Calendar.getInstance();
         // this.currentDate.getMonthValue() - 1 because Calendar starts with January = 0 and LocalDateTime starts with January = 1
-        int x = this.currentDate.getYear(), y = this.currentDate.getMonthValue() - 1;
-        cal.set(this.currentDate.getYear(), this.currentDate.getMonthValue() - 1, 1);
+        int x = this.localDate.getYear(), y = this.localDate.getMonthValue() - 1;
+        cal.set(this.localDate.getYear(), this.localDate.getMonthValue() - 1, 1);
 
         int daysInLastMonth = 0;
         int firstDayInMonth = cal.get(java.util.Calendar.DAY_OF_WEEK);
@@ -163,8 +166,8 @@ public class FrmCalendar extends javax.swing.JPanel {
 
     private int calculateOverflowDaysOfNextMonth() {
 
-        int _month = this.currentDate.getMonthValue();
-        int _year = this.currentDate.getYear();
+        int _month = this.localDate.getMonthValue();
+        int _year = this.localDate.getYear();
 
         if (_month >= 12) {
             _month = 0;
@@ -176,22 +179,24 @@ public class FrmCalendar extends javax.swing.JPanel {
 
         int firstDayOfNextMonth = cal.get(java.util.Calendar.DAY_OF_WEEK);
 
-        if (firstDayOfNextMonth != 2) {
-            firstDayOfNextMonth = firstDayOfNextMonth - 2;
-        } else {
-            return 0;
+        switch (firstDayOfNextMonth) {
+            case 1:
+                return 1;
+            case 2:
+                return 0;
+            case 3:
+                return 6;
+            case 4:
+                return 5;
+            case 5:
+                return 4;
+            case 6:
+                return 3;
+            case 7:
+                return 2;
+            default:
+                return - 1;
         }
-        return 7 - firstDayOfNextMonth;
-    }
-
-    public void setLocalDate(java.time.LocalDate dt) {
-        this.currentDate = dt;
-
-        this.createView();
-        this.scaleView();
-        
-        this.revalidate();
-        this.repaint();
     }
 
     /**
@@ -221,13 +226,112 @@ public class FrmCalendar extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void clearDaySelection() {
+
+        int rowCount = (this.calculateDaysOfMonth(this.localDate.getMonthValue(), this.localDate.getYear()) + this.calculateOverflowDaysOfLastMonth() + this.calculateOverflowDaysOfNextMonth()) / 7;
+        int columnCount = 7;
+
+        for (int i = 0; i < rowCount; i++) {
+            for (int j = 0; j < columnCount; j++) {
+                this.panelArray[i][j].setUnselected();
+            }
+        }
+    }
+
     private void formComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentResized
         scaleView();
         this.revalidate();
         this.repaint();
     }//GEN-LAST:event_formComponentResized
 
+    private void createDayPanelListener(PnlDayPanel dayPanel) {
+        dayPanel.addMouseListener(new java.awt.event.MouseListener() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
 
+            }
+
+            @Override
+            public void mousePressed(java.awt.event.MouseEvent e) {
+                if (e.getButton() == java.awt.event.MouseEvent.BUTTON1) {
+                    clearDaySelection();
+                    dayPanel.setSelected();
+                    FrmMain.getInstance().displayAllEventsOfDay(dayPanel.getDay());
+                }
+                
+                if (e.getClickCount() == 2 && e.getButton() == java.awt.event.MouseEvent.BUTTON1){
+                    FrmMain.getInstance().createNewEvent(dayPanel.getDay());
+                }
+                
+                if (e.getButton() == java.awt.event.MouseEvent.BUTTON3){
+                    clearDaySelection();
+                }
+            }
+
+            @Override
+            public void mouseReleased(java.awt.event.MouseEvent e) {
+            }
+
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+            }
+
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent e) {
+            }
+        });
+    }
+
+    private PnlDayPanel getPnlDayPanelByDay(java.time.LocalDate ld){
+        
+        int rowCount = (this.calculateDaysOfMonth(this.localDate.getMonthValue(), this.localDate.getDayOfMonth()) + this.calculateOverflowDaysOfLastMonth() + this.calculateOverflowDaysOfNextMonth()) / 7;
+        int columnCount = 7;
+        
+        for (int i = 0; i < rowCount; i++){
+            for (int j = 0; j < columnCount; j++){
+                if (this.panelArray[i][j].getDay().isEqual(ld))
+                    return panelArray[i][j];
+            }
+        }
+        return null;
+    }
+    
+    public void setWeekdaysPanel(){
+        this.pnlWeekdays = new PnlWeekdays(this.weekdaysheight);
+        this.add(this.pnlWeekdays);
+        this.pnlWeekdays.resize();
+    }
+    
+    public void addEvents(java.util.ArrayList<classes.Event> eventList) {
+        
+        for (classes.Event event : eventList){
+            PnlDayPanel dayPanel = this.getPnlDayPanelByDay(java.time.LocalDate.of(event.getDate().getYear(), event.getDate().getMonthValue(), event.getDate().getDayOfMonth()));
+            
+            if (dayPanel != null){
+                dayPanel.addAppointment(event);
+            }
+        }  
+    }
+
+    public void setLocalDate(java.time.LocalDate dt) {
+        this.localDate = dt;
+
+        this.createView();
+        this.scaleView();
+        this.setWeekdaysPanel();
+        
+        PnlDayPanel pnl = this.getPnlDayPanelByDay(dt);
+        pnl.setSelected();
+        
+
+        this.revalidate();
+        this.repaint();
+    }
+    
+    public java.time.LocalDate getLocalDate() {
+        return localDate;
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
 }
