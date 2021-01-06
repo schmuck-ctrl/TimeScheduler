@@ -50,12 +50,12 @@ public class Event {
     public Event(int eventID, String eventName, Operator orginator, LocalDateTime event, int eventDuration, String eventLocation, ArrayList<Operator> participants, ArrayList<File> files, Priority Priority, Notification notification, LocalDateTime reminder) {
         this.setID(eventID);
         this.setName(eventName);
-        this.setOrganisator(organisator);
+        this.setOrganisator(orginator);
         this.setDate(event);
         this.setDuration(eventDuration);
         this.setLocation(eventLocation);
         this.setParticipants(participants);
-        this.setAttachments(attachments);
+        this.setAttachments(files);
         this.setPriority(Priority);
         this.setNotification(notification);
         this.setReminder(reminder);
@@ -63,12 +63,12 @@ public class Event {
     
     public Event(String eventName, Operator orginator, LocalDateTime event, int eventDuration, String eventLocation, ArrayList<Operator> participants, ArrayList<File> files, Priority Priority, Notification notification) {
         this.setName(eventName);
-        this.setOrganisator(organisator);
+        this.setOrganisator(orginator);
         this.setDate(event);
         this.setDuration(eventDuration);
         this.setLocation(eventLocation);
         this.setParticipants(participants);
-        this.setAttachments(attachments);
+        this.setAttachments(files);
         this.setPriority(Priority);
         this.setNotification(notification);
         this.setReminder(calculateReminder());
