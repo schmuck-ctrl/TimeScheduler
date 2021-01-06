@@ -17,8 +17,14 @@ import javax.swing.JOptionPane;
  */
 public class FrmEditUser extends javax.swing.JDialog {
 
+    // <editor-fold defaultstate="collapsed" desc="Global Variables">
+    
     private Operator user = null;
     private boolean isAdmin = false;
+    
+    // </editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="Constructors">
     
     /**
      * Creates new form FrmEditUser
@@ -29,6 +35,8 @@ public class FrmEditUser extends javax.swing.JDialog {
         setUser(user);
     }
 
+    // </editor-fold>
+    
     // <editor-fold defaultstate="collapsed" desc="Methods">
     
     public void setUser(Operator user) {

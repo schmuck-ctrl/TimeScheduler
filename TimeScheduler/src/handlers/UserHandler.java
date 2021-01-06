@@ -21,24 +21,24 @@ public class UserHandler {
     }
     
     public ArrayList<Operator> getAllUser(){
-        ArrayList<Operator> listOfUser = null;
+        ArrayList<Operator> listOfUser = dbHandler.getAllUser();
         return listOfUser;
     }
     
     public Operator getUser(String email){
-        Operator user = null;
+        Operator user = dbHandler.getUserByUsername(email);
         
         return user;
     }
     
-    public Operator getUser(int userID){
-        Operator user = null;
+    public Operator getUser(int userId){
+        Operator user = dbHandler.getUserByID(userId);
         
         return user;
     }
     
     public void addUser(User newUser, String password){
-        
+        //dbHandler.addEvent(0, Event);
     }
     
     public void editUser(Operator newUser){

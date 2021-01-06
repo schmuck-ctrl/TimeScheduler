@@ -83,6 +83,11 @@ public class FrmMain extends javax.swing.JFrame {
         mnuAdminInterface.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/user-settings-line.png"))); // NOI18N
         mnuAdminInterface.setText("Admin Interface");
         mnuAdminInterface.setToolTipText("");
+        mnuAdminInterface.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuAdminInterfaceActionPerformed(evt);
+            }
+        });
         pnlMenuBar.add(mnuAdminInterface, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 0, -1, -1));
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/calendar-2-line.png"))); // NOI18N
@@ -151,6 +156,11 @@ public class FrmMain extends javax.swing.JFrame {
         this.frmCalendar1.setLocalDate(java.time.LocalDate.of(2020, java.time.Month.DECEMBER, 15));
         
     }//GEN-LAST:event_btnTestActionPerformed
+
+    private void mnuAdminInterfaceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdminInterfaceActionPerformed
+        FrmAdminInterface frmAdminIterface = new FrmAdminInterface(this, true);
+        frmAdminIterface.setVisible(true);
+    }//GEN-LAST:event_mnuAdminInterfaceActionPerformed
 
     /**
      * @param args the command line arguments
