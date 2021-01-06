@@ -40,7 +40,7 @@ public class EventHandler {
         return eventList;
     }
     
-    public ArrayList<Event> getEventsOfToday() {
+    public ArrayList<Event> getEventsOfDay(java.time.LocalDate day) {
         ArrayList<Event> eventList = null;
 
         return eventList;

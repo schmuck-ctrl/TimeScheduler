@@ -65,7 +65,7 @@ public class FrmMain extends javax.swing.JFrame {
     
     public void displayAllEventsOfDay(LocalDate today) {
         EventHandler eHandler = new EventHandler();
-        eHandler.getEventsOfToday();
+        eHandler.getEventsOfDay(today);
     }
     
     public void createNewEvent(LocalDate date){
@@ -192,14 +192,14 @@ public class FrmMain extends javax.swing.JFrame {
         classes.Event e7 = new classes.Event();
         classes.Event e8 = new classes.Event();
         
-        e1.setDate(LocalDateTime.of(2020, Month.DECEMBER, 30, 8, 30));
-        e2.setDate(LocalDateTime.of(2021, Month.JANUARY, 1, 8, 30));
+        e1.setDate(LocalDateTime.of(2020, Month.JANUARY, 1, 8, 30));
+        e2.setDate(LocalDateTime.of(2021, Month.JANUARY, 1, 8, 35));
         e3.setDate(LocalDateTime.of(2021, Month.JANUARY, 1, 8, 50));
         e4.setDate(LocalDateTime.of(2021, Month.JANUARY, 1, 13, 30));
-        e5.setDate(LocalDateTime.of(2021, Month.JANUARY, 2, 17, 10));
-        e6.setDate(LocalDateTime.of(2021, Month.JANUARY, 20, 13, 30));
-        e7.setDate(LocalDateTime.of(2021, Month.JANUARY, 25, 10, 30));
-        e8.setDate(LocalDateTime.of(2021, Month.JANUARY, 31, 8, 30));
+        e5.setDate(LocalDateTime.of(2021, Month.JANUARY, 1, 17, 10));
+        e6.setDate(LocalDateTime.of(2021, Month.JANUARY, 1, 18, 0));
+        e7.setDate(LocalDateTime.of(2021, Month.JANUARY, 1, 20, 30));
+        e8.setDate(LocalDateTime.of(2021, Month.JANUARY, 1, 22, 30));
         
         e1.setName("Business Meeting 0");
         e2.setName("Business Meeting 1");
