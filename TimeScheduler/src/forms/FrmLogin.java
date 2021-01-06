@@ -5,14 +5,16 @@
  */
 package forms;
 
+import classes.*;
+import handlers.*;
 import java.awt.Color;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author Vadym
  */
 public class FrmLogin extends javax.swing.JFrame {
-
     /**
      * Creates new form FrmLogin
      */
@@ -130,7 +132,7 @@ public class FrmLogin extends javax.swing.JFrame {
 
         ptxtPassword.setBackground(new java.awt.Color(243, 242, 241));
         ptxtPassword.setForeground(new java.awt.Color(0, 0, 0));
-        ptxtPassword.setText("jPasswordField1");
+        ptxtPassword.setText("Lukasbauer123&");
         ptxtPassword.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 ptxtPasswordFocusGained(evt);
@@ -140,24 +142,24 @@ public class FrmLogin extends javax.swing.JFrame {
             }
         });
 
-        lblEmail.setText("E-mail");
+        lblEmail.setText("E-Mail:");
 
-        lblPassword.setText("Password");
+        lblPassword.setText("Password:");
 
         javax.swing.GroupLayout pnlContentLayout = new javax.swing.GroupLayout(pnlContent);
         pnlContent.setLayout(pnlContentLayout);
         pnlContentLayout.setHorizontalGroup(
             pnlContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlContentLayout.createSequentialGroup()
-                .addGap(37, 37, 37)
+                .addGap(25, 25, 25)
                 .addGroup(pnlContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblEmail)
                     .addComponent(lblPassword))
-                .addGap(18, 18, 18)
-                .addGroup(pnlContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtEmail, javax.swing.GroupLayout.DEFAULT_SIZE, 270, Short.MAX_VALUE)
-                    .addComponent(ptxtPassword))
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnlContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(ptxtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
         pnlContentLayout.setVerticalGroup(
             pnlContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -183,14 +185,14 @@ public class FrmLogin extends javax.swing.JFrame {
 /*
         LoginHandler lgHandler = new LoginHandler();
         DatabaseHandler dbHandler = new DatabaseHandler();
-        if (lgHandler.checkUserInput(txtEmail.getText().trim(), ptxtPasswort.getPassword()) == true) {
+        if (lgHandler.checkUserInput(txtEmail.getText().trim(), ptxtPassword.getPassword()) == true) {
             FrmMain frmMain = FrmMain.getInstance();
             frmMain.setUser(dbHandler.getUserByUsername(txtEmail.getText().trim()));
             frmMain.setVisible(true);
             this.dispose();
         } else {
             JOptionPane.showMessageDialog(null, "You did not sign in correctly.", "Login error", JOptionPane.INFORMATION_MESSAGE);
-            ptxtPasswort.setText("");
+            ptxtPassword.setText("");
         }*/
     }//GEN-LAST:event_btnLoginActionPerformed
 

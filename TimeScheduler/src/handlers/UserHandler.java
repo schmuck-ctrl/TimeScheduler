@@ -38,7 +38,7 @@ public class UserHandler {
     }
     
     public void addUser(User newUser, String password){
-        //dbHandler.
+        dbHandler.insertNewUser(newUser,password);
     }
     
     public void editUser(Operator newUser){

@@ -208,8 +208,7 @@ public class DatabaseHandler {
 
     public int insertNewUser(Operator user, String password) {
         int insertSuccessfull = -1;
-        String sql
-                = "INSERT INTO user (U_email, U_firstName, U_lastName, U_role, U_password) VALUES (?,?,?,?,?)";
+        String sql = "INSERT INTO user (U_email, U_firstName, U_lastName, U_role, U_password) VALUES (?,?,?,?,?)";
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setString(1, user.getEmail());
             stmt.setString(2, user.getFirstName());

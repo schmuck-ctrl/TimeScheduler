@@ -11,7 +11,7 @@ import java.security.NoSuchAlgorithmException;
  */
 public class LoginHandler {
         // Checks if the user is in the database by the users email and the Encrypted password.
-    /*
+    
     public boolean checkUserInput(String userEmail, char[] password) {
         DatabaseHandler dbHandler = new DatabaseHandler();
         try {
@@ -24,5 +24,5 @@ public class LoginHandler {
         }
      
         return false;
-    }*/
+    }
 }

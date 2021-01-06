@@ -11,4 +11,6 @@ package classes;
  */
 public class Login {
     
+    private String eMail;
+    private String password;
 }

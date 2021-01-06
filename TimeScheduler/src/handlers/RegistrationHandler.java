@@ -69,7 +69,7 @@ public class RegistrationHandler {
         }
         return false;
     }
-/*
+
     public static boolean checkIfNewUserExist(String email) {
         //check if email exists.
         
@@ -80,7 +80,7 @@ public class RegistrationHandler {
         }
         return true;
     }
-*/
+
     //Creates new user if every input was correct
     public static void createNewUser(User newUser, char[] password) {
         UserHandler uaHandler = new UserHandler();
