@@ -22,7 +22,7 @@ public class FrmLogin extends javax.swing.JFrame {
         initComponents();
         this.pnlHeader.setBackground(new Color(255, 255, 255));
         this.pnlContent.setBackground(new Color(255, 255, 255));
-        this.pnlFooter.setBackground(new Color(255, 255, 255));
+        this.pnlFooter.setBackground(new Color(255,255,255));
     }
 
     /**
