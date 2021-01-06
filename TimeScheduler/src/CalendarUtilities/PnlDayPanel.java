@@ -185,19 +185,19 @@ public class PnlDayPanel extends javax.swing.JPanel {
 
     private void scrollEventButtons(Scroll type) {
 
-//        try {
-//            if (type == type.DOWN) {
-//                if (this.btnAppointmentList.get(this.btnAppointmentList.size() - 1).getY() <= 0) {
-//                    return;
-//                }
-//            } else if (type == type.UP) {
-//                if (this.btnAppointmentList.get(0).getY() >= this.getHeight() - this.btnAppointmentList.get(0).getHeight()) {
-//                    return;
-//                }
-//            }
-//        } catch(java.lang.IndexOutOfBoundsException iooe){
-//            return;
-//        }
+        try {
+            if (type == type.DOWN) {
+                if (this.btnAppointmentList.get(this.btnAppointmentList.size() - 1).getY() <= 0) {
+                    return;
+                }
+            } else if (type == type.UP) {
+                if (this.btnAppointmentList.get(0).getY() >= this.getHeight() - this.btnAppointmentList.get(0).getHeight()) {
+                    return;
+                }
+            }
+        } catch(java.lang.IndexOutOfBoundsException iooe){
+            return;
+        }
 
         for (BtnAppointment btn : this.btnAppointmentList) {
             if (type == type.UP) {
