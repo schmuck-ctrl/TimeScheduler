@@ -8,6 +8,7 @@ package forms;
 import classes.Event;
 import classes.Operator;
 import handlers.DatabaseHandler;
+import handlers.EventHandler;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -52,16 +53,19 @@ public class FrmMain extends javax.swing.JFrame {
     
     //FUNKTIONEN DIE VOM CALENDAR AUFGERUFEN WERDEN
     public void displayEventDetails(int eventID) {
-        DatabaseHandler dbHandler = new DatabaseHandler();
-        frmEvent.setEvent(dbHandler.getEventById(eventID));
+        EventHandler eHandler = new EventHandler();
+        frmEvent.setEvent(eHandler.getEvent(user.getUserId(), eventID));
     }
     
     public void editEvent(int eventID) {
-        
+        EventHandler eHandler = new EventHandler();
+        frmEvent.setEvent(eHandler.getEvent(user.getUserId(), eventID));
+        lblHeadline.setText("Edit event");
     }
     
     public void displayAllEventsOfDay(LocalDate today) {
-        
+        EventHandler eHandler = new EventHandler();
+        eHandler.getEventsOfToday();
     }
     
     public void createNewEvent(LocalDate date){

@@ -39,6 +39,12 @@ public class EventHandler {
 
         return eventList;
     }
+    
+    public ArrayList<Event> getEventsOfToday() {
+        ArrayList<Event> eventList = null;
+
+        return eventList;
+    }
 
     public void addEvent(int userID, Event event) {
         dbHandler.addEvent(userID, event);
