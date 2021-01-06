@@ -8,8 +8,6 @@ package handlers;
 import classes.*;
 import classes.Operator;
 import java.io.File;
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -631,6 +629,17 @@ public class DatabaseHandler {
         return null;
     }
 
+    public Event getEventByUser(int userID, int eventID) {
+        ArrayList<Integer> EventIDs = getEventIDsOfUser(userID);
+
+        if (EventIDs.contains(eventID)) {
+            return getEventById(eventID);
+        } else {
+            System.out.println("User doesn't take part in this Event or the Event doesn't exist.");
+        }
+        return null;
+    }
+    
     public ArrayList<Event> getAllEventByUser(int userID) {
         ArrayList<Event> Events = new ArrayList<>();
         String sql = "SELECT * FROM eventDetails WHERE ED_userID = ? ";
@@ -688,4 +697,22 @@ public class DatabaseHandler {
         return EventIDs;
 
     }
+    
+    private ArrayList<Integer> getEventIDsOfUser(int userId) {
+        ArrayList<Integer> EventIDs = new ArrayList<>();
+        String sql = "SELECT EM_EventID FROM eventmembers WHERE EM_userID = ? AND EM_deleted = 0";
+        try (PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setInt(1, userId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    EventIDs.add(rs.getInt("EM_EventID"));
+                }
+            }
+        } catch (SQLException ex) {
+
+        }
+
+        return EventIDs;
+    }
+    
 }

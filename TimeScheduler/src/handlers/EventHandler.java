@@ -6,7 +6,6 @@
 package handlers;
 
 import classes.Event;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
@@ -23,33 +22,33 @@ public class EventHandler {
 
     public ArrayList<Event> getAllEvents(int userID) {
 
-        ArrayList<Event> eventList = null;
+        ArrayList<Event> eventList = dbHandler.getAllEvents();
 
         return eventList;
     }
 
-    public Event getEvent(int userID, int eventID) {
-        Event event = null;
+    public Event getEvent(int userId, int eventID) {
+        Event event = dbHandler.getEventByUser(userId, eventID);
 
         return event;
     }
 
-    public ArrayList<Event> getEventsOfWeek(int userID, LocalDate monday, LocalDate sunday) {
+    public ArrayList<Event> getEventsOfWeek(int userID, String eMial) {
 
-        ArrayList<Event> eventList = null;
+        ArrayList<Event> eventList = dbHandler.getThisWeeksEventsByUsername(eMial);
 
         return eventList;
     }
 
     public void addEvent(int userID, Event event) {
-
+        dbHandler.addEvent(userID, event);
     }
 
     public void editEvent(int eventID, Event event) {
-
+        //dbHandler.
     }
 
     public void deleteEvent(int eventID) {
-
+        dbHandler.deleteEvent(eventID);
     }
 }
