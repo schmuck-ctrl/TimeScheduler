@@ -33,7 +33,7 @@ public class Event {
 
     private int id = -1;
     private String name = null;
-    private Operator orginator = null;
+    private Operator organisator = null;
     private LocalDateTime date = null;
     private int duration = 0;
     private String location = null;
@@ -47,6 +47,20 @@ public class Event {
         
     }
     
+    public Event(int eventID, String eventName, Operator orginator, LocalDateTime event, int eventDuration, String eventLocation, ArrayList<Operator> participants, ArrayList<File> files, Priority Priority, Notification notification, LocalDateTime reminder) {
+        this.setID(eventID);
+        this.setName(eventName);
+        this.setOrganisator(organisator);
+        this.setDate(event);
+        this.setDuration(eventDuration);
+        this.setLocation(eventLocation);
+        this.setParticipants(participants);
+        this.setAttachments(attachments);
+        this.setPriority(Priority);
+        this.setNotification(notification);
+        this.setReminder(reminder);
+    }
+    
     private void setID(int eventID) {
         if(eventID >= 0)
             this.id = eventID;
@@ -56,8 +70,8 @@ public class Event {
         this.name = name;
     }
 
-    public void setOrginator(Operator orginator) {
-        this.orginator = orginator;
+    public void setOrganisator(Operator organisator) {
+        this.organisator = organisator;
     }
 
     public void setDate(LocalDateTime date) {
@@ -101,8 +115,8 @@ public class Event {
         return this.name;
     }
 
-    public Operator getOrginator() {
-        return this.orginator;
+    public Operator getOrganisator() {
+        return this.organisator;
     }
 
     public LocalDateTime getDate() {
