@@ -6,6 +6,7 @@
 package handlers;
 
 import classes.Event;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
@@ -40,8 +41,8 @@ public class EventHandler {
         return eventList;
     }
     
-    public ArrayList<Event> getEventsOfDay(java.time.LocalDate day) {
-        ArrayList<Event> eventList = null;
+    public ArrayList<Event> getEventsOfDay(LocalDate day) {
+        ArrayList<Event> eventList = dbHandler.getAllEvents();
 
         return eventList;
     }

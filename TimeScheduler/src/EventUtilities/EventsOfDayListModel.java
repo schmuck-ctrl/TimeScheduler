@@ -16,7 +16,7 @@ public class EventsOfDayListModel extends DefaultListModel{
     
     public Object getElementAt(int index) {
         Event event = (Event)super.getElementAt(index);
-        return event.getID();
+        return event.getName();
     }
     
     public void addElement(Object obj) {

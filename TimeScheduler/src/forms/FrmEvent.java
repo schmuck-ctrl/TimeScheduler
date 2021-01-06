@@ -21,13 +21,15 @@ import java.util.ArrayList;
  * @author nilss
  */
 public class FrmEvent extends javax.swing.JPanel {
-   
+
     // <editor-fold defaultstate="collapsed" desc="Constructors">
     /**
      * Creates new form FrmEvent
      */
-    public FrmEvent() {
+    public FrmEvent(Event event) {
         initComponents();
+
+        setEvent(event);
     }
 
     // </editor-fold>
@@ -172,7 +174,7 @@ public class FrmEvent extends javax.swing.JPanel {
         }
 
         Event newEvent = new Event(name, organisator, date, duration, location, participants, attachments, priority, notification);
-        
+
         return newEvent;
     }
 

@@ -8,6 +8,8 @@ package forms;
 import EventUtilities.EventsOfDayListModel;
 import classes.Event;
 import java.util.ArrayList;
+import javax.swing.JDialog;
+import javax.swing.ListSelectionModel;
 
 /**
  *
@@ -18,17 +20,33 @@ public class FrmEventsOfDay extends javax.swing.JPanel {
     /**
      * Creates new form FrmEventsOfDay
      */
-    public FrmEventsOfDay() {
+    public FrmEventsOfDay(ArrayList<Event> eventsOfDay) {
         initComponents();
+        
+        liEventsOfDay.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        setEventds(eventsOfDay);
     }
 
+    
+    
     public void setEventds(ArrayList<Event> eventsOfDay) {
-        EventUtilities.EventsOfDayListModel liModelEventsOfDay = new EventsOfDayListModel();
-        for(int i=0; i < eventsOfDay.size(); i++) {
-            liModelEventsOfDay.addElement(eventsOfDay.get(i));
+        if (eventsOfDay != null) {
+            EventUtilities.EventsOfDayListModel liModelEventsOfDay = new EventsOfDayListModel();
+            for (int i = 0; i < eventsOfDay.size(); i++) {
+                liModelEventsOfDay.add(i, eventsOfDay.get(i));
+            }
+
+            liEventsOfDay.setModel(liModelEventsOfDay);
         }
+    }
+
+    private void displayEventDetail() {
+        JDialog dialog = new JDialog();
         
-        liEventsOfDay.setModel(liModelEventsOfDay);
+        dialog.setSize(500, 700);
+        dialog.setModal(true);
+        dialog.add(new FrmEvent(null));
+        dialog.setVisible(true);
     }
     
     /**
@@ -41,6 +59,7 @@ public class FrmEventsOfDay extends javax.swing.JPanel {
     private void initComponents() {
 
         pnlHeader = new javax.swing.JPanel();
+        lblHeadline = new javax.swing.JLabel();
         pnlContent = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         liEventsOfDay = new javax.swing.JList<>();
@@ -49,16 +68,11 @@ public class FrmEventsOfDay extends javax.swing.JPanel {
 
         setLayout(new java.awt.BorderLayout());
 
-        javax.swing.GroupLayout pnlHeaderLayout = new javax.swing.GroupLayout(pnlHeader);
-        pnlHeader.setLayout(pnlHeaderLayout);
-        pnlHeaderLayout.setHorizontalGroup(
-            pnlHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 313, Short.MAX_VALUE)
-        );
-        pnlHeaderLayout.setVerticalGroup(
-            pnlHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
+        pnlHeader.setPreferredSize(new java.awt.Dimension(313, 45));
+        pnlHeader.setLayout(new java.awt.BorderLayout());
+
+        lblHeadline.setText("Your daily appointments:");
+        pnlHeader.add(lblHeadline, java.awt.BorderLayout.CENTER);
 
         add(pnlHeader, java.awt.BorderLayout.PAGE_START);
 
@@ -68,11 +82,6 @@ public class FrmEventsOfDay extends javax.swing.JPanel {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
-        });
-        liEventsOfDay.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                liEventsOfDayMouseClicked(evt);
-            }
         });
         liEventsOfDay.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
@@ -85,22 +94,31 @@ public class FrmEventsOfDay extends javax.swing.JPanel {
 
         add(pnlContent, java.awt.BorderLayout.CENTER);
 
+        pnlFooter.setPreferredSize(new java.awt.Dimension(313, 45));
+
+        btnOpen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/calendar-2-line.png"))); // NOI18N
         btnOpen.setText("Open");
+        btnOpen.setPreferredSize(new java.awt.Dimension(95, 35));
+        btnOpen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOpenActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlFooterLayout = new javax.swing.GroupLayout(pnlFooter);
         pnlFooter.setLayout(pnlFooterLayout);
         pnlFooterLayout.setHorizontalGroup(
             pnlFooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFooterLayout.createSequentialGroup()
-                .addContainerGap(235, Short.MAX_VALUE)
-                .addComponent(btnOpen)
+                .addContainerGap(212, Short.MAX_VALUE)
+                .addComponent(btnOpen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         pnlFooterLayout.setVerticalGroup(
             pnlFooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFooterLayout.createSequentialGroup()
-                .addContainerGap(72, Short.MAX_VALUE)
-                .addComponent(btnOpen)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnOpen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -108,17 +126,18 @@ public class FrmEventsOfDay extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void liEventsOfDayValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_liEventsOfDayValueChanged
-        System.out.println(liEventsOfDay.getSelectedValue().toString());
+        
     }//GEN-LAST:event_liEventsOfDayValueChanged
 
-    private void liEventsOfDayMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_liEventsOfDayMouseClicked
-        System.out.println(liEventsOfDay.getSelectedValue().toString());
-    }//GEN-LAST:event_liEventsOfDayMouseClicked
+    private void btnOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenActionPerformed
+        displayEventDetail();
+    }//GEN-LAST:event_btnOpenActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnOpen;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblHeadline;
     private javax.swing.JList<String> liEventsOfDay;
     private javax.swing.JPanel pnlContent;
     private javax.swing.JPanel pnlFooter;
