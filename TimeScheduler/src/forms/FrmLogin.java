@@ -182,18 +182,18 @@ public class FrmLogin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-/*
+
         LoginHandler lgHandler = new LoginHandler();
         DatabaseHandler dbHandler = new DatabaseHandler();
         if (lgHandler.checkUserInput(txtEmail.getText().trim(), ptxtPassword.getPassword()) == true) {
             FrmMain frmMain = FrmMain.getInstance();
-            frmMain.setUser(dbHandler.getUserByUsername(txtEmail.getText().trim()));
+            frmMain.setCurrentUser(dbHandler.getUserByUsername(txtEmail.getText().trim()));
             frmMain.setVisible(true);
             this.dispose();
         } else {
             JOptionPane.showMessageDialog(null, "You did not sign in correctly.", "Login error", JOptionPane.INFORMATION_MESSAGE);
             ptxtPassword.setText("");
-        }*/
+        }
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void lblRegisterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRegisterMouseClicked
