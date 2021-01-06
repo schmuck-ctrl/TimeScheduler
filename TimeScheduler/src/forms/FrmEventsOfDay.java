@@ -45,6 +45,7 @@ public class FrmEventsOfDay extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         liEventsOfDay = new javax.swing.JList<>();
         pnlFooter = new javax.swing.JPanel();
+        btnOpen = new javax.swing.JButton();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -52,7 +53,7 @@ public class FrmEventsOfDay extends javax.swing.JPanel {
         pnlHeader.setLayout(pnlHeaderLayout);
         pnlHeaderLayout.setHorizontalGroup(
             pnlHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 427, Short.MAX_VALUE)
+            .addGap(0, 313, Short.MAX_VALUE)
         );
         pnlHeaderLayout.setVerticalGroup(
             pnlHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -84,15 +85,23 @@ public class FrmEventsOfDay extends javax.swing.JPanel {
 
         add(pnlContent, java.awt.BorderLayout.CENTER);
 
+        btnOpen.setText("Open");
+
         javax.swing.GroupLayout pnlFooterLayout = new javax.swing.GroupLayout(pnlFooter);
         pnlFooter.setLayout(pnlFooterLayout);
         pnlFooterLayout.setHorizontalGroup(
             pnlFooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 427, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFooterLayout.createSequentialGroup()
+                .addContainerGap(235, Short.MAX_VALUE)
+                .addComponent(btnOpen)
+                .addContainerGap())
         );
         pnlFooterLayout.setVerticalGroup(
             pnlFooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFooterLayout.createSequentialGroup()
+                .addContainerGap(72, Short.MAX_VALUE)
+                .addComponent(btnOpen)
+                .addContainerGap())
         );
 
         add(pnlFooter, java.awt.BorderLayout.PAGE_END);
@@ -108,6 +117,7 @@ public class FrmEventsOfDay extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnOpen;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JList<String> liEventsOfDay;
     private javax.swing.JPanel pnlContent;

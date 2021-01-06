@@ -13,17 +13,18 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
+import javax.swing.BorderFactory;
 
 /**
  *
  * @author nilss
  */
 public class FrmMain extends javax.swing.JFrame {
-
+    
     private Operator user = null;
     
     private static FrmMain form = null;
-
+    
     public static FrmMain getInstance() {
         if (form != null) {
             return form;
@@ -32,7 +33,7 @@ public class FrmMain extends javax.swing.JFrame {
             return form;
         }
     }
-    
+
     /**
      * Creates new form FrmMain
      */
@@ -41,39 +42,51 @@ public class FrmMain extends javax.swing.JFrame {
     }
 
     // <editor-fold defaultstate="collapsed" desc="Methods"> 
-    
     public void setCurrentUser(Operator currentUser) {
-        if(currentUser != null)
+        if (currentUser != null) {
             this.user = currentUser;
+        }
     }
     
     public Operator getCurrentUser() {
         return this.user;
     }
-    
+
     //FUNKTIONEN DIE VOM CALENDAR AUFGERUFEN WERDEN
     public void displayEventDetails(int eventID) {
+        FrmEvent frmEvent = new FrmEvent();
+        pnlEventRoot.add(frmEvent);
+        frmEvent.setVisible(true);
+        
         EventHandler eHandler = new EventHandler();
         frmEvent.setEvent(eHandler.getEvent(user.getUserId(), eventID));
     }
     
     public void editEvent(int eventID) {
+        FrmEvent frmEvent = new FrmEvent();
+        pnlEventRoot.add(frmEvent);
+        frmEvent.setVisible(true);
+        
         EventHandler eHandler = new EventHandler();
         frmEvent.setEvent(eHandler.getEvent(user.getUserId(), eventID));
         lblHeadline.setText("Edit event");
     }
     
-    public void displayAllEventsOfDay(LocalDate today) {
+    public void displayAllEventsOfDay(LocalDate today) {        
+        FrmEventsOfDay frmEventsOfDay = new FrmEventsOfDay();
+        pnlEventRoot.add(frmEventsOfDay, java.awt.BorderLayout.CENTER);
+        frmEventsOfDay.setVisible(true);
+        
         EventHandler eHandler = new EventHandler();
         eHandler.getEventsOfDay(today);
     }
     
-    public void createNewEvent(LocalDate date){
+    public void createNewEvent(LocalDate date) {
         
     }
     //FUNKTIONEN DIE VOM CALENDAR AUFGERUFEN WERDEN
     // </editor-fold> 
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -91,11 +104,11 @@ public class FrmMain extends javax.swing.JFrame {
         lblHeadline = new javax.swing.JLabel();
         splitPnlContent = new javax.swing.JSplitPane();
         pnlEventRoot = new javax.swing.JPanel();
-        frmEvent = new forms.FrmEvent();
         pnlCalendarRoot = new javax.swing.JPanel();
         frmCalendar = new forms.FrmCalendar();
         pnlFooter = new javax.swing.JPanel();
         btnTest = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -136,8 +149,6 @@ public class FrmMain extends javax.swing.JFrame {
         pnlEventRoot.setMinimumSize(new java.awt.Dimension(300, 0));
         pnlEventRoot.setPreferredSize(new java.awt.Dimension(300, 264));
         pnlEventRoot.setLayout(new java.awt.BorderLayout());
-        pnlEventRoot.add(frmEvent, java.awt.BorderLayout.CENTER);
-
         splitPnlContent.setLeftComponent(pnlEventRoot);
 
         pnlCalendarRoot.setLayout(new java.awt.BorderLayout());
@@ -147,10 +158,17 @@ public class FrmMain extends javax.swing.JFrame {
 
         getContentPane().add(splitPnlContent, java.awt.BorderLayout.CENTER);
 
-        btnTest.setText("Test Button");
+        btnTest.setText("Event details");
         btnTest.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnTestActionPerformed(evt);
+            }
+        });
+
+        jButton1.setText("Event of Day");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
             }
         });
 
@@ -159,7 +177,9 @@ public class FrmMain extends javax.swing.JFrame {
         pnlFooterLayout.setHorizontalGroup(
             pnlFooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFooterLayout.createSequentialGroup()
-                .addContainerGap(739, Short.MAX_VALUE)
+                .addContainerGap(619, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addGap(18, 18, 18)
                 .addComponent(btnTest)
                 .addContainerGap())
         );
@@ -167,7 +187,9 @@ public class FrmMain extends javax.swing.JFrame {
             pnlFooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFooterLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnTest, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(pnlFooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnTest, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
                 .addContainerGap())
         );
 
@@ -178,7 +200,7 @@ public class FrmMain extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnTestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTestActionPerformed
-
+        
         this.frmCalendar.setLocalDate(java.time.LocalDate.of(2020, 12, 15));
         
         java.util.ArrayList<classes.Event> eventList = new ArrayList<>();
@@ -238,6 +260,10 @@ public class FrmMain extends javax.swing.JFrame {
         frmAdminIterface.setVisible(true);
     }//GEN-LAST:event_mnuAdminInterfaceActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        displayAllEventsOfDay(LocalDate.now());
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -276,7 +302,7 @@ public class FrmMain extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnTest;
     private forms.FrmCalendar frmCalendar;
-    private forms.FrmEvent frmEvent;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel lblHeadline;
     private javax.swing.JButton mnuAdminInterface;
