@@ -99,26 +99,34 @@ public class FrmEvent extends javax.swing.JPanel {
         pnlContent = new javax.swing.JPanel();
         lblEventName = new javax.swing.JLabel();
         txtEventName = new javax.swing.JTextField();
+        filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20), new java.awt.Dimension(32767, 20));
         lblDateTime = new javax.swing.JLabel();
         dtPicker = new com.github.lgooddatepicker.components.DateTimePicker();
+        filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20), new java.awt.Dimension(32767, 20));
         lblEventDuration = new javax.swing.JLabel();
         txtEventDuration = new javax.swing.JTextField();
+        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20), new java.awt.Dimension(32767, 20));
         lblEventLocation = new javax.swing.JLabel();
         txtEventLocation = new javax.swing.JTextField();
+        filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20), new java.awt.Dimension(32767, 20));
         lblEventPriority = new javax.swing.JLabel();
         cbEventPriority = new javax.swing.JComboBox<>();
+        filler5 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20), new java.awt.Dimension(32767, 20));
         lblEventNotification = new javax.swing.JLabel();
         cbEventNotification = new javax.swing.JComboBox<>();
+        filler6 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20), new java.awt.Dimension(32767, 20));
         lblEventPArticipants = new javax.swing.JLabel();
         pnlEventParticipants = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList<>();
         jButton1 = new javax.swing.JButton();
+        filler7 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20), new java.awt.Dimension(32767, 20));
         lblEventAttachments = new javax.swing.JLabel();
         pnlEventAttachments = new javax.swing.JPanel();
         jButton2 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jList2 = new javax.swing.JList<>();
+        filler8 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20), new java.awt.Dimension(32767, 20));
         pnlFooter = new javax.swing.JPanel();
         btnDelete = new javax.swing.JButton();
         btnOk = new javax.swing.JButton();
@@ -140,37 +148,43 @@ public class FrmEvent extends javax.swing.JPanel {
         lblEventName.setToolTipText("");
         pnlContent.add(lblEventName);
         pnlContent.add(txtEventName);
+        pnlContent.add(filler3);
 
         lblDateTime.setText("Date:");
         pnlContent.add(lblDateTime);
         pnlContent.add(dtPicker);
+        pnlContent.add(filler4);
 
         lblEventDuration.setText("Duration");
         pnlContent.add(lblEventDuration);
         pnlContent.add(txtEventDuration);
+        pnlContent.add(filler1);
 
         lblEventLocation.setText("Location");
         pnlContent.add(lblEventLocation);
         pnlContent.add(txtEventLocation);
+        pnlContent.add(filler2);
 
         lblEventPriority.setText("Priority");
         pnlContent.add(lblEventPriority);
 
         cbEventPriority.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "low", "medium", "high" }));
         pnlContent.add(cbEventPriority);
+        pnlContent.add(filler5);
 
         lblEventNotification.setText("Notification:");
         pnlContent.add(lblEventNotification);
 
         cbEventNotification.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "none", "10 minutes", "1 hour", "3 days", "1 week" }));
         pnlContent.add(cbEventNotification);
+        pnlContent.add(filler6);
 
         lblEventPArticipants.setText("Participants:");
         pnlContent.add(lblEventPArticipants);
 
         jScrollPane1.setViewportView(jList1);
 
-        jButton1.setText("jButton1");
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/add-circle-line.png"))); // NOI18N
 
         javax.swing.GroupLayout pnlEventParticipantsLayout = new javax.swing.GroupLayout(pnlEventParticipants);
         pnlEventParticipants.setLayout(pnlEventParticipantsLayout);
@@ -178,7 +192,7 @@ public class FrmEvent extends javax.swing.JPanel {
             pnlEventParticipantsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlEventParticipantsLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1)
                 .addContainerGap())
@@ -190,17 +204,18 @@ public class FrmEvent extends javax.swing.JPanel {
                 .addGroup(pnlEventParticipantsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlEventParticipantsLayout.createSequentialGroup()
                         .addComponent(jButton1)
-                        .addGap(0, 28, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
         pnlContent.add(pnlEventParticipants);
+        pnlContent.add(filler7);
 
         lblEventAttachments.setText("Attachments:");
         pnlContent.add(lblEventAttachments);
 
-        jButton2.setText("jButton2");
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/add-circle-line.png"))); // NOI18N
 
         jScrollPane2.setViewportView(jList2);
 
@@ -210,7 +225,7 @@ public class FrmEvent extends javax.swing.JPanel {
             pnlEventAttachmentsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlEventAttachmentsLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton2)
                 .addContainerGap())
@@ -226,10 +241,11 @@ public class FrmEvent extends javax.swing.JPanel {
         );
 
         pnlContent.add(pnlEventAttachments);
+        pnlContent.add(filler8);
 
         add(pnlContent, java.awt.BorderLayout.CENTER);
 
-        pnlFooter.setLayout(new java.awt.GridLayout());
+        pnlFooter.setLayout(new java.awt.GridLayout(1, 0));
 
         btnDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/delete-bin-line.png"))); // NOI18N
         btnDelete.setText("Delete");
@@ -249,6 +265,14 @@ public class FrmEvent extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> cbEventNotification;
     private javax.swing.JComboBox<String> cbEventPriority;
     private com.github.lgooddatepicker.components.DateTimePicker dtPicker;
+    private javax.swing.Box.Filler filler1;
+    private javax.swing.Box.Filler filler2;
+    private javax.swing.Box.Filler filler3;
+    private javax.swing.Box.Filler filler4;
+    private javax.swing.Box.Filler filler5;
+    private javax.swing.Box.Filler filler6;
+    private javax.swing.Box.Filler filler7;
+    private javax.swing.Box.Filler filler8;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JList<String> jList1;
