@@ -65,7 +65,7 @@ public class FrmMain extends javax.swing.JFrame {
     
     public void displayAllEventsOfDay(LocalDate today) {
         EventHandler eHandler = new EventHandler();
-        eHandler.getEventsOfToday();
+        eHandler.getEventsOfDay(today);
     }
     
     public void createNewEvent(LocalDate date){
