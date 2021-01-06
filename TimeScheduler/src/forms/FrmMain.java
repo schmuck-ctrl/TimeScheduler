@@ -161,7 +161,7 @@ public class FrmMain extends javax.swing.JFrame {
 
     private void btnTestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTestActionPerformed
 
-        this.frmCalendar1.setLocalDate(java.time.LocalDate.of(this.frmCalendar1.getLocalDate().getYear(), 1, 15));
+        this.frmCalendar1.setLocalDate(java.time.LocalDate.of(2020, 12, 15));
         
         java.util.ArrayList<classes.Event> eventList = new ArrayList<>();
         
@@ -178,7 +178,7 @@ public class FrmMain extends javax.swing.JFrame {
         e2.setDate(LocalDateTime.of(2021, Month.JANUARY, 1, 8, 30));
         e3.setDate(LocalDateTime.of(2021, Month.JANUARY, 1, 8, 50));
         e4.setDate(LocalDateTime.of(2021, Month.JANUARY, 1, 13, 30));
-        e5.setDate(LocalDateTime.of(2021, Month.JANUARY, 1, 17, 10));
+        e5.setDate(LocalDateTime.of(2021, Month.JANUARY, 2, 17, 10));
         e6.setDate(LocalDateTime.of(2021, Month.JANUARY, 20, 13, 30));
         e7.setDate(LocalDateTime.of(2021, Month.JANUARY, 25, 10, 30));
         e8.setDate(LocalDateTime.of(2021, Month.JANUARY, 31, 8, 30));
