@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import javax.swing.ListModel;
+import javax.swing.border.EmptyBorder;
 
 /**
  *
@@ -23,6 +24,9 @@ import javax.swing.ListModel;
  */
 public class FrmEvent extends javax.swing.JPanel {
 
+    private ParticipantListModel liModelParticipants = null;
+    private AttachmentListModel liModelAttachments = null;
+    
     // <editor-fold defaultstate="collapsed" desc="Constructors">
     /**
      * Creates new form FrmEvent
@@ -30,6 +34,12 @@ public class FrmEvent extends javax.swing.JPanel {
     public FrmEvent(Event event) {
         initComponents();
 
+        pnlHeader.setBorder(new EmptyBorder(10, 10, 10, 10));
+        pnlContent.setBorder(new EmptyBorder(10, 10, 10, 10));
+        
+        liModelParticipants = new ParticipantListModel();
+        liModelAttachments = new AttachmentListModel();
+        
         setEvent(event);
     }
 
@@ -74,13 +84,11 @@ public class FrmEvent extends javax.swing.JPanel {
             }
 
             if (event.getParticipants() != null) {
-                ParticipantListModel liModelParticipants = new ParticipantListModel();
                 liModelParticipants.addElement(event.getParticipants());
                 liEventParticipants.setModel((ListModel)liModelParticipants);
             }
 
             if (event.getAttachments() != null) {
-                AttachmentListModel liModelAttachments = new AttachmentListModel();
                 liModelAttachments.addElement(event.getAttachments());
                 liEventAttachments.setModel((ListModel)liModelAttachments);
             }
@@ -156,13 +164,14 @@ public class FrmEvent extends javax.swing.JPanel {
                 break;
         }
 
+        
         for (int i = 0; i < liEventParticipants.getModel().getSize(); i++) {
-            Operator participant = new handlers.UserHandler().getUser(liEventParticipants.getModel().getElementAt(i));
+            Operator participant = liModelParticipants.getElementAt(i);
             participants.add(participant);
         }
 
         for (int i = 0; i < liEventAttachments.getModel().getSize(); i++) {
-            File attachment = new File(liEventParticipants.getModel().getElementAt(i));
+            File attachment = liModelAttachments.getElementAt(i);
             attachments.add(attachment);
         }
 
@@ -183,6 +192,11 @@ public class FrmEvent extends javax.swing.JPanel {
             EventHandler eHandler = new EventHandler();
             eHandler.editEvent(event);
         }
+    }
+    
+    public void setTitle(String title) {
+        if(!title.isBlank())
+            this.lblHeadline.setText(title);
     }
 
 // </editor-fold>
@@ -365,7 +379,8 @@ public class FrmEvent extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOkActionPerformed
-        newEvent(getInput());
+        Event newEvent = getInput();
+        newEvent(newEvent);
     }//GEN-LAST:event_btnOkActionPerformed
 
 

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import javax.swing.JDialog;
 import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
+import javax.swing.border.EmptyBorder;
 
 /**
  *
@@ -18,36 +19,45 @@ import javax.swing.ListSelectionModel;
  */
 public class FrmEventsOfDay extends javax.swing.JPanel {
 
+    private EventsOfDayListModel liModelEventsOfDay;
+
     /**
      * Creates new form FrmEventsOfDay
+     * @param eventsOfDay
      */
     public FrmEventsOfDay(ArrayList<Event> eventsOfDay) {
         initComponents();
+
+        pnlHeader.setBorder(new EmptyBorder(10, 10, 10, 10));
+        pnlContent.setBorder(new EmptyBorder(10, 10, 10, 10));
         
+        liModelEventsOfDay = new EventsOfDayListModel();
+
         liEventsOfDay.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         setEventds(eventsOfDay);
     }
 
-    
-    
     public void setEventds(ArrayList<Event> eventsOfDay) {
         if (eventsOfDay != null) {
-            EventsOfDayListModel liModelEventsOfDay = new EventsOfDayListModel();
+
             liModelEventsOfDay.addElement(eventsOfDay);
 
-            liEventsOfDay.setModel((ListModel)liModelEventsOfDay);
+            liEventsOfDay.setModel((ListModel) liModelEventsOfDay);
         }
     }
 
-    private void displayEventDetail(Event selectedEvent) {
-        JDialog dialog = new JDialog();
-        
-        dialog.setSize(500, 700);
-        dialog.setModal(true);
-        dialog.add(new FrmEvent(null));
-        dialog.setVisible(true);
+    private void displayEventDetail(Event event) {
+        if (event != null) {
+            JDialog dialog = new JDialog();
+
+            dialog.setSize(500, 700);
+            dialog.setModal(true);
+            dialog.add(new FrmEvent(event));
+            dialog.setLocationRelativeTo(null);
+            dialog.setVisible(true);
+        }
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -82,11 +92,6 @@ public class FrmEventsOfDay extends javax.swing.JPanel {
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        liEventsOfDay.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
-            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
-                liEventsOfDayValueChanged(evt);
-            }
-        });
         jScrollPane1.setViewportView(liEventsOfDay);
 
         pnlContent.add(jScrollPane1, java.awt.BorderLayout.CENTER);
@@ -94,6 +99,7 @@ public class FrmEventsOfDay extends javax.swing.JPanel {
         add(pnlContent, java.awt.BorderLayout.CENTER);
 
         pnlFooter.setPreferredSize(new java.awt.Dimension(313, 45));
+        pnlFooter.setLayout(new java.awt.BorderLayout());
 
         btnOpen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/calendar-2-line.png"))); // NOI18N
         btnOpen.setText("Open");
@@ -103,34 +109,14 @@ public class FrmEventsOfDay extends javax.swing.JPanel {
                 btnOpenActionPerformed(evt);
             }
         });
-
-        javax.swing.GroupLayout pnlFooterLayout = new javax.swing.GroupLayout(pnlFooter);
-        pnlFooter.setLayout(pnlFooterLayout);
-        pnlFooterLayout.setHorizontalGroup(
-            pnlFooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFooterLayout.createSequentialGroup()
-                .addContainerGap(212, Short.MAX_VALUE)
-                .addComponent(btnOpen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-        pnlFooterLayout.setVerticalGroup(
-            pnlFooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFooterLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnOpen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
+        pnlFooter.add(btnOpen, java.awt.BorderLayout.CENTER);
 
         add(pnlFooter, java.awt.BorderLayout.PAGE_END);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void liEventsOfDayValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_liEventsOfDayValueChanged
-        
-    }//GEN-LAST:event_liEventsOfDayValueChanged
-
     private void btnOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenActionPerformed
-        //Event selectedEvent = liEventsOfDay.getModel().getElementAt(0);
-        //displayEventDetail();
+        Event selctedEvent = liModelEventsOfDay.getElementAt(liEventsOfDay.getSelectedIndex());
+        displayEventDetail(selctedEvent);
     }//GEN-LAST:event_btnOpenActionPerformed
 
 

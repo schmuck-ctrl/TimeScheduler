@@ -39,6 +39,8 @@ public class FrmMain extends javax.swing.JFrame {
      */
     private FrmMain() {
         initComponents();
+        
+        displayAllEventsOfDay(LocalDate.now());
     }
 
     // <editor-fold defaultstate="collapsed" desc="Methods"> 
@@ -62,8 +64,6 @@ public class FrmMain extends javax.swing.JFrame {
         FrmEvent frmEvent = new FrmEvent(eHandler.getEvent(eventID));
         pnlEventRoot.add(frmEvent);
         frmEvent.setVisible(true);
-
-        lblHeadline.setText("Edit event");
     }
 
     public void editEvent(int eventID) {
@@ -75,8 +75,6 @@ public class FrmMain extends javax.swing.JFrame {
         FrmEvent frmEvent = new FrmEvent(eHandler.getEvent(eventID));
         pnlEventRoot.add(frmEvent);
         frmEvent.setVisible(true);
-
-        lblHeadline.setText("Edit event");
     }
 
     public void displayAllEventsOfDay(LocalDate today) {
