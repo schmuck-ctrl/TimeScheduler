@@ -175,4 +175,9 @@ public class Event {
             default: return null;
         }
     }
+    
+    @Override
+    public String toString() {
+        return name;
+    }
 }

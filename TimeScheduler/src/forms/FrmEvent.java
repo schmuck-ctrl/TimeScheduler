@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import javax.swing.ListModel;
 
 /**
  *
@@ -73,23 +74,15 @@ public class FrmEvent extends javax.swing.JPanel {
             }
 
             if (event.getParticipants() != null) {
-
                 ParticipantListModel liModelParticipants = new ParticipantListModel();
-                for (int i = 0; i < event.getParticipants().size(); i++) {
-                    liModelParticipants.add(i, event.getParticipants().get(i));
-                }
-
-                liEventParticipants.setModel(liModelParticipants);
-
+                liModelParticipants.addElement(event.getParticipants());
+                liEventParticipants.setModel((ListModel)liModelParticipants);
             }
 
             if (event.getAttachments() != null) {
                 AttachmentListModel liModelAttachments = new AttachmentListModel();
-                for (int i = 0; i < event.getAttachments().size(); i++) {
-                    liModelAttachments.addElement(event.getAttachments().get(i));
-                }
-
-                liEventAttachments.setModel(liModelAttachments);
+                liModelAttachments.addElement(event.getAttachments());
+                liEventAttachments.setModel((ListModel)liModelAttachments);
             }
 
         }

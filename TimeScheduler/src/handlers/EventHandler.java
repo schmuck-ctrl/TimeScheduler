@@ -28,12 +28,18 @@ public class EventHandler {
         return eventList;
     }
 
-    public Event getEvent(int userId, int eventID) {
+    public Event getEventByUser(int userId, int eventID) {
         Event event = dbHandler.getEventByUser(userId, eventID);
 
         return event;
     }
 
+    public Event getEvent(int eventID) {
+        Event event = dbHandler.getEventById(eventID);
+        
+        return event;
+    }
+    
     public ArrayList<Event> getEventsOfWeek(int userID, String eMial) {
 
         ArrayList<Event> eventList = dbHandler.getThisWeeksEventsByUsername(eMial);

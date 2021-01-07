@@ -73,4 +73,9 @@ public abstract class Operator {
     }
 
     public abstract Role getRole();
+    
+    @Override
+    public String toString() {
+        return email;
+    }
 }

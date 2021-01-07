@@ -6,24 +6,46 @@
 package EventUtilities;
 
 import java.io.File;
-import javax.swing.DefaultListModel;
+import java.util.ArrayList;
+import javax.swing.AbstractListModel;
 
 /**
  *
  * @author nilss
  */
-public class AttachmentListModel extends DefaultListModel{
-    
-    public Object getElementAt(int index) {
-        File attachment = (File)super.getElementAt(index);
-        return attachment.getPath();
+public final class AttachmentListModel extends AbstractListModel<File> {
+
+    private ArrayList<File> listOfAttachments = null;
+
+    public AttachmentListModel() {
+        listOfAttachments = new ArrayList();
     }
-    
-    public void addElement(Object obj) {
-        if(!this.contains(obj))
-        {
-            this.addElement(obj);
+
+    public AttachmentListModel(ArrayList<File> attachments) {
+        listOfAttachments = new ArrayList();
+        addElement(attachments);
+    }
+
+    public void addElement(File attachment) {
+        if (attachment != null) {
+            this.listOfAttachments.add(attachment);
         }
     }
-    
+
+    public void addElement(ArrayList<File> attachments) {
+        if (attachments != null) {
+            this.listOfAttachments = attachments;
+        }
+    }
+
+    @Override
+    public int getSize() {
+        return this.listOfAttachments.size();
+    }
+
+    @Override
+    public File getElementAt(int index) {
+        return this.listOfAttachments.get(index);
+    }
+
 }

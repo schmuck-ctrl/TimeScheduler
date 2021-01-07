@@ -59,7 +59,7 @@ public class FrmMain extends javax.swing.JFrame {
         pnlEventRoot.repaint();
 
         EventHandler eHandler = new EventHandler();
-        FrmEvent frmEvent = new FrmEvent(eHandler.getEvent(user.getUserId(), eventID));
+        FrmEvent frmEvent = new FrmEvent(eHandler.getEvent(eventID));
         pnlEventRoot.add(frmEvent);
         frmEvent.setVisible(true);
 
@@ -72,7 +72,7 @@ public class FrmMain extends javax.swing.JFrame {
         pnlEventRoot.repaint();
 
         EventHandler eHandler = new EventHandler();
-        FrmEvent frmEvent = new FrmEvent(eHandler.getEvent(user.getUserId(), eventID));
+        FrmEvent frmEvent = new FrmEvent(eHandler.getEvent(eventID));
         pnlEventRoot.add(frmEvent);
         frmEvent.setVisible(true);
 

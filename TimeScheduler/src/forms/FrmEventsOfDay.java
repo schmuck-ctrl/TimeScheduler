@@ -9,6 +9,7 @@ import EventUtilities.EventsOfDayListModel;
 import classes.Event;
 import java.util.ArrayList;
 import javax.swing.JDialog;
+import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
 
 /**
@@ -31,16 +32,14 @@ public class FrmEventsOfDay extends javax.swing.JPanel {
     
     public void setEventds(ArrayList<Event> eventsOfDay) {
         if (eventsOfDay != null) {
-            EventUtilities.EventsOfDayListModel liModelEventsOfDay = new EventsOfDayListModel();
-            for (int i = 0; i < eventsOfDay.size(); i++) {
-                liModelEventsOfDay.add(i, eventsOfDay.get(i));
-            }
+            EventsOfDayListModel liModelEventsOfDay = new EventsOfDayListModel();
+            liModelEventsOfDay.addElement(eventsOfDay);
 
-            liEventsOfDay.setModel(liModelEventsOfDay);
+            liEventsOfDay.setModel((ListModel)liModelEventsOfDay);
         }
     }
 
-    private void displayEventDetail() {
+    private void displayEventDetail(Event selectedEvent) {
         JDialog dialog = new JDialog();
         
         dialog.setSize(500, 700);
@@ -130,7 +129,8 @@ public class FrmEventsOfDay extends javax.swing.JPanel {
     }//GEN-LAST:event_liEventsOfDayValueChanged
 
     private void btnOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenActionPerformed
-        displayEventDetail();
+        //Event selectedEvent = liEventsOfDay.getModel().getElementAt(0);
+        //displayEventDetail();
     }//GEN-LAST:event_btnOpenActionPerformed
 
 
