@@ -10,10 +10,13 @@ import classes.Operator;
 import classes.PDF;
 import handlers.DatabaseHandler;
 import handlers.EventHandler;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
@@ -280,9 +283,14 @@ public class FrmMain extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btnExportPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportPDFActionPerformed
-        PDF pdf = new PDF(this.user);
-        PDDocument myPDF = pdf.createPDF();
-        pdf.showDialogAndSavePDF(myPDF);
+        try {
+            PDF pdf = new PDF(this.user);
+            PDDocument myPDF = pdf.createPDF();
+            pdf.showDialogAndSavePDF(myPDF);
+            myPDF.close();
+        } catch (IOException ex) {
+            Logger.getLogger(FrmMain.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnExportPDFActionPerformed
 
     /**
