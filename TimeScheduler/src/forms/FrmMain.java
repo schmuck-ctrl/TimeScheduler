@@ -293,7 +293,7 @@ public class FrmMain extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btnExportPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportPDFActionPerformed
- 
+        handlers.ExportHandler exp = new handlers.ExportHandler();
     }//GEN-LAST:event_btnExportPDFActionPerformed
 
     /**
