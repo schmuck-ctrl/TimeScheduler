@@ -27,6 +27,7 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 public class FrmMain extends javax.swing.JFrame {
 
     private Operator user = null;
+    private EventHandler eventHandler = null;
 
     private static FrmMain form = null;
 
@@ -44,12 +45,15 @@ public class FrmMain extends javax.swing.JFrame {
      */
     private FrmMain() {
         initComponents();
+        eventHandler = new EventHandler();
     }
 
     // <editor-fold defaultstate="collapsed" desc="Methods"> 
     public void setCurrentUser(Operator currentUser) {
         if (currentUser != null) {
             this.user = currentUser;
+            this.frmCalendar.addEvents(eventHandler.getEventsOfCurrentMonth(this.user.getUserId()));
+            displayAllEventsOfDay(LocalDate.now());
         }
     }
 
@@ -75,7 +79,7 @@ public class FrmMain extends javax.swing.JFrame {
         pnlEventRoot.repaint();
 
         EventHandler eHandler = new EventHandler();
-        FrmEvent frmEvent = new FrmEvent(eHandler.getEvent(eventID));
+        FrmEvent frmEvent = new FrmEvent(eHandler.getEventByUser(this.user.getUserId(), eventID));
         pnlEventRoot.add(frmEvent);
         frmEvent.setVisible(true);
     }

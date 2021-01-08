@@ -46,6 +46,12 @@ public class EventHandler {
         return eventList;
     }
     
+    public ArrayList<Event> getEventsOfCurrentMonth(int userId) {
+        ArrayList<Event> eventList = dbHandler.getThisMonthsEventsByUserID(userId);
+        
+        return eventList;
+    }
+    
     public ArrayList<Event> getEventsOfWeek(int userId) {
 
         ArrayList<Event> eventList = dbHandler.getThisWeeksEventsByUserID(userId);
