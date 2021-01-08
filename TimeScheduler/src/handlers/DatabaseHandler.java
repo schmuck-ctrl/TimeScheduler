@@ -19,14 +19,16 @@ import java.util.ArrayList;
  */
 public class DatabaseHandler {
 
-    /*public static void main(String[] args) {
+    public static void main(String[] args) {
         DatabaseHandler db = new DatabaseHandler();
         Operator user = db.getUserByID(1);
         ArrayList<Operator> test = db.getParticipantsByID(1);
-        test.add(db.getUserByID(6));
-        db.steParticipantsOfEvent(test, 1);
+        //test.add(db.getUserByID(6));
+        ArrayList<File> testFile = null;
+        Event evt = new Event(5, "ewfw", user, LocalDateTime.now(), 30, "Loc", test, testFile , Event.Priority.LOW, Event.Notification.NONE, LocalDateTime.now());
+        db.addEvent(user.getUserId(), evt);
 
-    }*/
+    }
 
     private Connection con = null;
 
@@ -36,7 +38,7 @@ public class DatabaseHandler {
 
     //PRIVATE FUNCTION SECTION 
     private void addParticipant(ArrayList<Operator> toBeAdded, int eventID) {
-        String addParticipant = "INSERT INTO participant (P_userID,P_eventID) VALUES (?,?)";
+        String addParticipant = "INSERT INTO participant (P_userID,P_eventID) VALUES (?,?);";
 
         try ( PreparedStatement stmt = con.prepareStatement(addParticipant)) {
             for (Operator participant : toBeAdded) {
@@ -52,7 +54,7 @@ public class DatabaseHandler {
 
     private void deleteParticipants(ArrayList<Operator> toBeDeleted, int eventID) {
 
-        String deleteParticipant = "UPDATE participant SET P_deleted = 1 WHERE P_userID = ? AND P_eventID = ?";
+        String deleteParticipant = "UPDATE participant SET P_deleted = 1 WHERE P_userID = ? AND P_eventID = ?;";
         //int update_successfull = -1;
         try ( PreparedStatement stmt = con.prepareStatement(deleteParticipant)) {
             for (Operator participant : toBeDeleted) {
@@ -68,11 +70,11 @@ public class DatabaseHandler {
     }
 
     private void setOrganiserOfEvent(int userID, int eventID) {
-        String sql = "INSERT INTO organiser (O_userID,O_eventID)  VALUES (?,?)";
+        String sql = "INSERT INTO organiser (O_userID,O_eventID)  VALUES (?,?);";
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setInt(1, userID);
             stmt.setInt(2, eventID);
-            //System.out.println(stmt.toString());
+            System.out.println(stmt.toString());
             stmt.executeUpdate();
         } catch (SQLException ex) {
 
@@ -81,7 +83,7 @@ public class DatabaseHandler {
 
     private int getMaxEventID() {
         int max;
-        String sql = "select max(E_eventID) as max from event";
+        String sql = "select max(E_eventID) as max from event;";
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             try ( ResultSet rs = stmt.executeQuery()) {
                 rs.next();
@@ -96,12 +98,13 @@ public class DatabaseHandler {
     }
 
     private void setParticipantsOfEvent(ArrayList<Operator> participants, int eventID) {
-        String sql = "INSERT INTO participant (P_userID,P_eventID VALUES (?,?)";
+        String sql = "INSERT INTO participant (P_userID,P_eventID) VALUES (?,?);";
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             for (Operator participant : participants) {
                 stmt.setInt(1, participant.getUserId());
                 stmt.setInt(2, eventID);
                 stmt.addBatch();
+                System.out.println(stmt.toString());
             }
             stmt.executeBatch();
         } catch (SQLException ex) {
@@ -219,7 +222,7 @@ public class DatabaseHandler {
 
     //USER FUNCTIONS
     public boolean checkIfUserExists(String username, String password) {
-        String sql = "SELECT * FROM user WHERE U_email = ? AND U_password = ? AND U_deleted = 0";
+        String sql = "SELECT * FROM user WHERE U_email = ? AND U_password = ? AND U_deleted = 0;";
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setString(1, username);
             stmt.setString(2, password);
@@ -233,7 +236,7 @@ public class DatabaseHandler {
     }
 
     public boolean checkIfUserExists(String username) {
-        String sql = "SELECT * FROM user WHERE U_email = ? AND U_deleted = 0";
+        String sql = "SELECT * FROM user WHERE U_email = ? AND U_deleted = 0;";
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setString(1, username);
             try ( ResultSet rs = stmt.executeQuery()) {
@@ -247,7 +250,7 @@ public class DatabaseHandler {
 
     public int insertNewUser(Operator user, String password) {
         int insertSuccessfull = -1;
-        String sql = "INSERT INTO user (U_email, U_firstName, U_lastName, U_role, U_password) VALUES (?,?,?,?,?)";
+        String sql = "INSERT INTO user (U_email, U_firstName, U_lastName, U_role, U_password) VALUES (?,?,?,?,?);";
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setString(1, user.getEmail());
             stmt.setString(2, user.getFirstName());
@@ -264,7 +267,7 @@ public class DatabaseHandler {
 
     public Operator getUserByID(int userID) {
         String prefix = "U";
-        String sql = "SELECT * FROM user WHERE U_UserID = ?";
+        String sql = "SELECT * FROM user WHERE U_UserID = ?;";
 
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setInt(1, userID);
@@ -284,7 +287,7 @@ public class DatabaseHandler {
         ArrayList<Operator> allUser = new ArrayList<>();
         Operator toBeAdded;
 
-        String sql = "SELECT * FROM user WHERE U_lastName = ? AND U_deleted = 0";
+        String sql = "SELECT * FROM user WHERE U_lastName = ? AND U_deleted = 0;";
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setString(1, usersLastName);
             try ( ResultSet rs = stmt.executeQuery()) {
@@ -303,7 +306,7 @@ public class DatabaseHandler {
         String prefix = "U";
         ArrayList<Operator> allUser = new ArrayList<>();
         Operator toBeReturned;
-        String sql = "SELECT * FROM user WHERE U_firstName = ? AND U_deleted = 0";
+        String sql = "SELECT * FROM user WHERE U_firstName = ? AND U_deleted = 0;";
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setString(1, usersFirstName);
             try ( ResultSet rs = stmt.executeQuery()) {
@@ -321,7 +324,7 @@ public class DatabaseHandler {
 
     public Operator getUserByUsername(String username) {
         String prefix = "U";
-        String sql = "SELECT * FROM user WHERE U_email = ? AND U_deleted = 0";
+        String sql = "SELECT * FROM user WHERE U_email = ? AND U_deleted = 0;";
         Operator user = null;
         int userID = -1;
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
@@ -343,7 +346,7 @@ public class DatabaseHandler {
         String prefix = "U";
         ArrayList<Operator> allUser = new ArrayList<>();
         User user = null;
-        String sql = "SELECT * FROM user WHERE U_deleted = 0";
+        String sql = "SELECT * FROM user WHERE U_deleted = 0;";
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
 
             try ( ResultSet rs = stmt.executeQuery()) {
@@ -360,7 +363,7 @@ public class DatabaseHandler {
 
     public Operator getOrganiserByEventName(String eventName) {
         String prefix = "OE";
-        String sql = "SELECT * FROM organiserevent WHERE OE_EventID = ? AND OE_deleted = 0";
+        String sql = "SELECT * FROM organiserevent WHERE OE_EventID = ? AND OE_deleted = 0;";
         int userID;
         Operator organiser = null;
         String role, firstName, lastName, email;
@@ -380,7 +383,7 @@ public class DatabaseHandler {
 
     public Operator getOrganiserByID(int EventID) {
         String prefix = "OE";
-        String sql = "SELECT * FROM organiserevent WHERE OE_eventID = ?  AND OE_deleted = 0";
+        String sql = "SELECT * FROM organiserevent WHERE OE_eventID = ?  AND OE_deleted = 0;";
         Operator organiser = null;
         int userID;
         String role, firstName, lastName, email;
@@ -405,7 +408,7 @@ public class DatabaseHandler {
         Operator participant;
         int userID;
         String role, firstName, lastName, email;
-        String sql = "SELECT * from eventmembers WHERE EM_eventID = ?";
+        String sql = "SELECT * from eventmembers WHERE EM_eventID = ?;";
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setInt(1, EventID);
             try ( ResultSet rs = stmt.executeQuery()) {
@@ -423,7 +426,7 @@ public class DatabaseHandler {
     public ArrayList<Operator> getParticipantsByEventName(String eventName) {
         String prefix = "EM";
         ArrayList<Operator> participants = new ArrayList<>();
-        String sql = "SELECT * from eventmembers WHERE EM_eventName = ?";
+        String sql = "SELECT * from eventmembers WHERE EM_eventName = ?;";
 
         try ( PreparedStatement stmt = con.prepareCall(sql)) {
             stmt.setString(1, eventName);
@@ -441,7 +444,7 @@ public class DatabaseHandler {
     public ArrayList<Operator> getAllAdmins() {
         String prefix = "U";
         ArrayList<Operator> allAdmins = new ArrayList<>();
-        String sql = "SELECT * FROM user where U_role = 'Admin' AND U_deleted = 0";
+        String sql = "SELECT * FROM user where U_role = 'Admin' AND U_deleted = 0;";
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             try ( ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
@@ -458,7 +461,7 @@ public class DatabaseHandler {
     public ArrayList<Operator> getAllOperators() {
         String prefix = "U";
         ArrayList<Operator> userAndAdmins = new ArrayList<>();
-        String sql = "SELECT * FROM USER WHERE U_deleted = 0";
+        String sql = "SELECT * FROM USER WHERE U_deleted = 0;";
 
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             try ( ResultSet rs = stmt.executeQuery()) {
@@ -475,7 +478,7 @@ public class DatabaseHandler {
     public int editUser(Operator toBeEdited) {
         int editSuccessfull = -1;
         String sqlUpdate
-                = "UPDATE user SET U_email = ?,U_firstName =?, U_lastName = ?,U_role = ? WHERE U_userID = ?";
+                = "UPDATE user SET U_email = ?,U_firstName =?, U_lastName = ?,U_role = ? WHERE U_userID = ?;";
         try ( PreparedStatement stmt = con.prepareStatement(sqlUpdate)) {
             stmt.setString(1, toBeEdited.getEmail());
             stmt.setString(2, toBeEdited.getFirstName());
@@ -493,8 +496,8 @@ public class DatabaseHandler {
 
     public void deleteUser(Operator toBeDeleted) {
         String eventIDs = listToString(getOrganiserEventIDs(toBeDeleted.getUserId()));
-        String deleteUser = "UPDATE user SET U_deleted = 1 WHERE U_userID = ?";
-        String deleteUsersEvents = "UPDATE Event SET E_deleted = 1 WHERE E_EventID IN (" + eventIDs + ")";
+        String deleteUser = "UPDATE user SET U_deleted = 1 WHERE U_userID = ?;";
+        String deleteUsersEvents = "UPDATE Event SET E_deleted = 1 WHERE E_EventID IN (" + eventIDs + ");";
         int deleteSuccessfull = -1;
 
         try ( PreparedStatement stmt = con.prepareStatement(deleteUser)) {
@@ -519,7 +522,7 @@ public class DatabaseHandler {
 
     public ArrayList<Operator> getAllUsersLike(String toBeLookedFor) {
         ArrayList<Operator> users = new ArrayList<>();
-        String sql = "SELECT * FROM USER WHERE U_firstName LIKE ? OR U_lastName LIKE ? OR U_email LIKE ? AND U_deleted = 0";
+        String sql = "SELECT * FROM USER WHERE U_firstName LIKE ? OR U_lastName LIKE ? OR U_email LIKE ? AND U_deleted = 0;";
         char prefix = '%';
         char suffix = '%';
         Operator user = null;
@@ -560,8 +563,8 @@ public class DatabaseHandler {
                 = "UPDATE event SET E_eventName = ?, E_eventDuration = ?, E_eventDate = ?, E_priority = ?,"
                 + "E_eventLocation = ?, E_reminder = ?, E_notification = ? "
                 + "WHERE E_eventID = ?;";
-        String addParticipant = "INSERT INTO participant (P_userID,P_eventID) VALUES (?,?)";
-        String deleteParticipant = "UPDATE participant SET P_deleted = 1 WHERE P_userID = ? AND P_eventID = ?";
+        String addParticipant = "INSERT INTO participant (P_userID,P_eventID) VALUES (?,?);";
+        String deleteParticipant = "UPDATE participant SET P_deleted = 1 WHERE P_userID = ? AND P_eventID = ?;";
 
         ArrayList<Operator> oldList, newList, toBeAdded, toBeDeleted;
         oldList = toBeDeleted = getParticipantsByID(toBeEdited.getID());
@@ -596,7 +599,7 @@ public class DatabaseHandler {
 
     public ArrayList<Event> getAllEvents() {
         ArrayList<Event> Events = new ArrayList<>();
-        String sql = "SELECT * FROM eventDetails";
+        String sql = "SELECT * FROM eventDetails;";
 
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             try ( ResultSet rs = stmt.executeQuery()) {
@@ -615,29 +618,28 @@ public class DatabaseHandler {
     }
 
     public void addEvent(int userID, Event Event) {
-
-        String sqlEvent
-                = "INSERT INTO Event (E_eventName, E_eventDuration, E_eventDate, E_priority, E_eventLocation, E_eventStartTime, E_reminder, E_reminderTime, E_notification) "
-                + "VALUES(?,?,?,?,?,?,?,?,?)";
-        try ( PreparedStatement stmt = con.prepareStatement(sqlEvent)) {
+        
+        String sqlEvent = "INSERT INTO event (E_eventName, E_eventDuration, E_eventDate, E_priority, E_eventLocation, E_reminder, E_notification) VALUES (?, ?, ?, ?, ?, ?, ?);";
+        
+        try (PreparedStatement stmt = con.prepareStatement(sqlEvent)) {
             stmt.setString(1, Event.getName());
             stmt.setInt(2, Event.getDuration());
             stmt.setTimestamp(3, java.sql.Timestamp.valueOf(Event.getDate()));
             stmt.setString(4, Event.getPriority().toString());
             stmt.setString(5, Event.getLocation());
-            stmt.setTimestamp(7, java.sql.Timestamp.valueOf(Event.getReminder()));
-            stmt.setString(9, Event.getNotification().toString());
-            //System.out.println(stmt.toString());
+            stmt.setTimestamp(6, java.sql.Timestamp.valueOf(Event.getReminder()));
+            stmt.setString(7, Event.getNotification().toString());
+            System.out.println(stmt.toString());
             stmt.executeUpdate();
         } catch (SQLException ex) {
-
+            System.out.println(ex.getMessage());
         }
         setOrganiserOfEvent(Event.getOrganisator().getUserId(), getMaxEventID());
         setParticipantsOfEvent(Event.getParticipants(), getMaxEventID());
     }
 
     public void deleteEvent(int EventID) {
-        String sql = "UPDATE Event SET E_deleted = 1 WHERE E_EventID = ?";
+        String sql = "UPDATE Event SET E_deleted = 1 WHERE E_EventID = ?;";
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setInt(1, EventID);
             //System.out.println(stmt.toString());
@@ -650,7 +652,7 @@ public class DatabaseHandler {
     public ArrayList<Event> getEventsByUsername(String username) {
         ArrayList<Event> usersEvents = new ArrayList<>();
         String usersEventIDs = listToString(getEventIDsOfUser(username));
-        String sql = "SELECT * FROM eventDetails WHERE ED_EventID IN (" + usersEventIDs + ") AND ED_deleted = 0";
+        String sql = "SELECT * FROM eventDetails WHERE ED_EventID IN (" + usersEventIDs + ") AND ED_deleted = 0;";
 
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             try ( ResultSet rs = stmt.executeQuery()) {
@@ -723,7 +725,7 @@ public class DatabaseHandler {
 
     public ArrayList<Event> getAllEventByUser(int userID) {
         ArrayList<Event> Events = new ArrayList<>();
-        String sql = "SELECT * FROM eventDetails WHERE ED_userID = ? ";
+        String sql = "SELECT * FROM eventDetails WHERE ED_userID = ?;";
 
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setInt(1, userID);
@@ -745,7 +747,7 @@ public class DatabaseHandler {
     public Event getEventById(int EventID) {
         Event toBeReturned = null;
 
-        String sql = "SELECT * FROM eventDetails WHERE ED_EventID = ? AND ED_deleted = 0";
+        String sql = "SELECT * FROM eventDetails WHERE ED_EventID = ? AND ED_deleted = 0;";
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setInt(1, EventID);
             try ( ResultSet rs = stmt.executeQuery()) {
@@ -763,7 +765,7 @@ public class DatabaseHandler {
 
     private ArrayList<Integer> getEventIDsOfUser(String username) {
         ArrayList<Integer> EventIDs = new ArrayList<>();
-        String sql = "SELECT EM_EventID FROM eventmembers WHERE EM_email = ? AND EM_deleted = 0";
+        String sql = "SELECT EM_EventID FROM eventmembers WHERE EM_email = ? AND EM_deleted = 0;";
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setString(1, username);
             try ( ResultSet rs = stmt.executeQuery()) {
@@ -781,7 +783,7 @@ public class DatabaseHandler {
 
     private ArrayList<Integer> getEventIDsOfUser(int userId) {
         ArrayList<Integer> EventIDs = new ArrayList<>();
-        String sql = "SELECT EM_EventID FROM eventmembers WHERE EM_userID = ? AND EM_deleted = 0";
+        String sql = "SELECT EM_EventID FROM eventmembers WHERE EM_userID = ? AND EM_deleted = 0;";
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setInt(1, userId);
             try ( ResultSet rs = stmt.executeQuery()) {
@@ -798,7 +800,7 @@ public class DatabaseHandler {
 
     public ArrayList<Event> getUsersEventsOfCertainDay(int userId, LocalDate eventDate) {
         ArrayList<Event> Events = new ArrayList<>();
-        String sql = "SELECT * FROM eventDetails WHERE ED_userID = ? AND ED_eventDate LIKE ?";
+        String sql = "SELECT * FROM eventDetails WHERE ED_userID = ? AND ED_eventDate LIKE ?;";
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setInt(1, userId);
             stmt.setString(2, eventDate.toString() + "%");
