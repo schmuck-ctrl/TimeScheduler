@@ -21,7 +21,10 @@ public class DatabaseHandler {
     
     /*public static void main(String[] args){
         DatabaseHandler db = new DatabaseHandler();
-        ArrayList<Event> evt = db.getUsersEventsOfCertainDay(1, LocalDate.now());
+        ArrayList<Event> evt = db.getUsersEventsInACertainTime(1, LocalDate.now(), LocalDate.now());
+        for(Event e : evt){
+            System.out.println(e.getID()+": "+e.getParticipants());
+        }
     }*/
     
     private Connection con = null;
@@ -91,7 +94,7 @@ public class DatabaseHandler {
         return 0;
     }
 
-    private void setParticipantsOfEvent(ArrayList<Operator> participants, int eventID) {
+    private void insertParticipantsOfEvent(ArrayList<Operator> participants, int eventID) {
         String sql = "INSERT INTO participant (P_userID,P_eventID) VALUES (?,?);";
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             for (Operator participant : participants) {
@@ -103,7 +106,14 @@ public class DatabaseHandler {
         } catch (SQLException ex) {
         }
     }
-
+    
+    private void setParticipantsOfEvents(ArrayList<Event> events){
+        if(!events.isEmpty()){
+        events.forEach(temp -> {
+            temp.setParticipants(getParticipantsByID(temp.getID()));
+        });
+        }
+    }
     private static String listToString(ArrayList<Integer> numbers) {
         StringBuilder buffer = new StringBuilder();
         if (!numbers.isEmpty()) {
@@ -600,9 +610,7 @@ public class DatabaseHandler {
 
         }
 
-        for (Event a : Events) {
-            a.setParticipants(getParticipantsByID(a.getID()));
-        }
+        setParticipantsOfEvents(Events);
         return Events;
     }
 
@@ -625,7 +633,7 @@ public class DatabaseHandler {
         }
         
         setOrganiserOfEvent(Event.getOrganisator().getUserId(), getMaxEventID());
-        setParticipantsOfEvent(temp, getMaxEventID());
+        insertParticipantsOfEvent(temp, getMaxEventID());
     }
 
     public void deleteEvent(int EventID) {
@@ -653,9 +661,7 @@ public class DatabaseHandler {
 
         }
 
-        for (Event a : usersEvents) {
-            a.setParticipants(getParticipantsByID(a.getID()));
-        }
+        setParticipantsOfEvents(usersEvents);
 
         return usersEvents;
     }
@@ -681,10 +687,7 @@ public class DatabaseHandler {
         }
         System.out.println(usersEvents);
         if (!usersEvents.isEmpty()) {
-            for (Event a : usersEvents) {
-                
-                a.setParticipants(getParticipantsByID(a.getID()));
-            }
+            setParticipantsOfEvents(usersEvents);
             return usersEvents;
         } else {
             System.out.println("User doesn't have any Events this week");
@@ -714,10 +717,7 @@ public class DatabaseHandler {
         }
         System.out.println(usersEvents);
         if (!usersEvents.isEmpty()) {
-            for (Event a : usersEvents) {
-                
-                a.setParticipants(getParticipantsByID(a.getID()));
-            }
+            setParticipantsOfEvents(usersEvents);
             return usersEvents;
         } else {
             System.out.println("User doesn't have any Events this week");
@@ -762,9 +762,7 @@ public class DatabaseHandler {
 
         }
 
-        for (Event a : Events) {
-            a.setParticipants(getParticipantsByID(a.getID()));
-        }
+        setParticipantsOfEvents(Events);
         return Events;
     }
 
@@ -839,15 +837,34 @@ public class DatabaseHandler {
         }
         
         if (!usersEvents.isEmpty()) {
-            for (Event a : usersEvents) {
-                
-                a.setParticipants(getParticipantsByID(a.getID()));
-            }
+            setParticipantsOfEvents(usersEvents);
             return usersEvents;
         } else {
             System.out.println("User doesn't have any Events this week");
         }
         return usersEvents;
     }
-
+    
+    public ArrayList<Event> getUsersEventsInACertainTime(int userID, LocalDate from, LocalDate to){
+        ArrayList<Integer> EventIDs = getEventIDsOfUser(userID);
+        ArrayList<Event> usersEvents = new ArrayList<>();
+        String sql = "SELECT * FROM eventDetails WHERE ED_userID = ? AND ED_eventDate >= ? AND ED_eventDate <= ?;";
+        //SELECT * FROM eventDetails WHERE ED_userID = 1 AND ED_eventDate >= '2021-01-08 00:00:00' AND ED_eventDate <= '2021-01-08 23:59:59';
+        try (PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setInt(1, userID);
+            stmt.setTimestamp(2, Timestamp.valueOf(from.atStartOfDay()));
+            stmt.setTimestamp(3, Timestamp.valueOf(to.atTime(23, 59, 59, 59)));
+            System.out.println(stmt.toString());
+            try ( ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    usersEvents.add(getEvent(rs));
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        } 
+        
+        setParticipantsOfEvents(usersEvents);
+        return usersEvents;
+    }
 }
