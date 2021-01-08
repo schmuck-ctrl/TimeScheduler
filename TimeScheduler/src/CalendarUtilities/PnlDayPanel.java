@@ -273,4 +273,9 @@ public class PnlDayPanel extends javax.swing.JPanel {
             }
         }
     }
+
+    public void removeAllAppointments() {
+        this.btnAppointmentList.clear();
+        this.removeAll();
+    }
 }

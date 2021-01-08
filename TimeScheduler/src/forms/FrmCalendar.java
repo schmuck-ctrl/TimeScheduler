@@ -304,6 +304,12 @@ public class FrmCalendar extends javax.swing.JPanel {
     
     public void addEvents(java.util.ArrayList<classes.Event> eventList) {
         
+        for (java.awt.Component c : this.getComponents()){
+            if (c instanceof PnlDayPanel){
+                ((PnlDayPanel) c).removeAllAppointments();
+            }
+        }
+        
         for (classes.Event event : eventList){
             PnlDayPanel dayPanel = this.getPnlDayPanelByDay(java.time.LocalDate.of(event.getDate().getYear(), event.getDate().getMonthValue(), event.getDate().getDayOfMonth()));
             
