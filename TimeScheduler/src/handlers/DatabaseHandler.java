@@ -74,7 +74,6 @@ public class DatabaseHandler {
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setInt(1, userID);
             stmt.setInt(2, eventID);
-            System.out.println(stmt.toString());
             stmt.executeUpdate();
         } catch (SQLException ex) {
 
@@ -104,7 +103,6 @@ public class DatabaseHandler {
                 stmt.setInt(1, participant.getUserId());
                 stmt.setInt(2, eventID);
                 stmt.addBatch();
-                System.out.println(stmt.toString());
             }
             stmt.executeBatch();
         } catch (SQLException ex) {
@@ -501,17 +499,14 @@ public class DatabaseHandler {
         int deleteSuccessfull = -1;
 
         try ( PreparedStatement stmt = con.prepareStatement(deleteUser)) {
-            stmt.setInt(1, toBeDeleted.getUserId());
-            System.out.println(stmt.toString());
+            stmt.setInt(1, toBeDeleted.getUserId());            
             stmt.executeUpdate();
         } catch (SQLException ex) {
             //Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         try ( PreparedStatement stmt = con.prepareStatement(deleteUsersEvents)) {
-            System.out.println(stmt.toString());
             stmt.executeUpdate();
-
         } catch (SQLException ex) {
 
         }
@@ -629,7 +624,6 @@ public class DatabaseHandler {
             stmt.setString(5, Event.getLocation());
             stmt.setTimestamp(6, java.sql.Timestamp.valueOf(Event.getReminder()));
             stmt.setString(7, Event.getNotification().toString());
-            System.out.println(stmt.toString());
             stmt.executeUpdate();
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
@@ -642,7 +636,6 @@ public class DatabaseHandler {
         String sql = "UPDATE Event SET E_deleted = 1 WHERE E_EventID = ?;";
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setInt(1, EventID);
-            //System.out.println(stmt.toString());
             stmt.executeUpdate();
         } catch (SQLException ex) {
 
@@ -804,7 +797,6 @@ public class DatabaseHandler {
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setInt(1, userId);
             stmt.setString(2, eventDate.toString() + "%");
-            System.out.println(stmt.toString());
             try ( ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     Events.add(setEvent(rs));
