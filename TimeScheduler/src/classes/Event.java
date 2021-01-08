@@ -6,9 +6,7 @@
 package classes;
 
 import java.io.File;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.util.ArrayList;
 
 /**
@@ -168,10 +166,10 @@ public class Event {
         
         switch(this.notification){
             case NONE: return this.date; 
-            case ONE_HOUR: return LocalDateTime.of(this.date.getYear(), this.date.getMonth(), this.date.getDayOfMonth(), this.date.getHour() - 1, this.date.getMinute());
-            case TEN_MINUTES: return LocalDateTime.of(this.date.getYear(), this.date.getMonth(), this.date.getDayOfMonth(), this.date.getHour(), this.date.getMinute() - 10);
-            case ONE_WEEK: return LocalDateTime.of(this.date.getYear(), this.date.getMonth(), this.date.getDayOfMonth() - 7, this.date.getHour(), this.date.getMinute());
-            case THREE_DAYS: return LocalDateTime.of(this.date.getYear(), this.date.getMonth(), this.date.getDayOfMonth() - 3, this.date.getHour(), this.date.getMinute());
+            case ONE_HOUR: return this.date.minus(Duration.ofHours(1));
+            case TEN_MINUTES: return this.date.minus(Duration.ofMinutes(10));
+            case ONE_WEEK: return this.date.minus(Period.ofWeeks(1));
+            case THREE_DAYS: return this.date.minus(Period.ofDays(3));
             default: return null;
         }
     }
