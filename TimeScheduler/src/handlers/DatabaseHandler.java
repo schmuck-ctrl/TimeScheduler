@@ -18,7 +18,12 @@ import java.util.ArrayList;
  * @author joshua
  */
 public class DatabaseHandler {
-
+    
+    /*public static void main(String[] args){
+        DatabaseHandler db = new DatabaseHandler();
+        ArrayList<Event> evt = db.getUsersEventsOfCertainDay(1, LocalDate.now());
+    }*/
+    
     private Connection con = null;
 
     public DatabaseHandler() {
@@ -818,9 +823,10 @@ public class DatabaseHandler {
     }
 
     public ArrayList<Event> getUsersEventsOfCertainDay(int userId, LocalDate eventDate) {
+        ArrayList<Integer> EventIDs = getEventIDsOfUser(userId);
         ArrayList<Event> Events = new ArrayList<>();
-        String sql = "SELECT * FROM eventmembers WHERE EM_userID = ? AND EM_eventDate LIKE ?;";
-        try ( PreparedStatement stmt = con.prepareStatement(sql)) {
+        String sql = "SELECT * FROM eventDetails WHERE ED_userID = ? AND ED_eventDate LIKE ?;";
+        try (PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setInt(1, userId);
             stmt.setString(2, eventDate.toString() + "%");
             try ( ResultSet rs = stmt.executeQuery()) {
@@ -829,7 +835,7 @@ public class DatabaseHandler {
                 }
             }
         } catch (SQLException ex) {
-
+            System.out.println(ex.getMessage());
         }
 
         return Events;
