@@ -338,6 +338,20 @@ public class FrmCalendar extends javax.swing.JPanel {
         return localDate;
     }
     
+    public java.time.LocalDate getFirstDayOfView(){
+        if (this.panelArray[0][0] != null){
+            return this.panelArray[0][0].getDay();
+        }
+        return null;
+    }
+    
+    public java.time.LocalDate getLastDayOfView(){
+        if (this.panelArray[0][0] != null){
+            return this.panelArray[this.panelArray.length - 1][7].getDay();
+        }
+        return null;
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
 }
