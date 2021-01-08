@@ -119,7 +119,7 @@ public class FrmEvent extends javax.swing.JPanel {
         }
 
         if (!txtEventLocation.getText().isBlank()) {
-            location = txtEventDuration.getText();
+            location = txtEventLocation.getText();
         }
 
         int year = dtPicker.datePicker.getDate().getYear();

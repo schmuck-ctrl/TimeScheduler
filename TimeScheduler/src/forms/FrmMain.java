@@ -285,7 +285,7 @@ public class FrmMain extends javax.swing.JFrame {
     private void btnExportPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportPDFActionPerformed
         try {
             PDF pdf = new PDF(this.user);
-            PDDocument myPDF = pdf.createPDF();
+            PDDocument myPDF = pdf.createWeeklySchedule();
             pdf.showDialogAndSavePDF(myPDF);
             myPDF.close();
         } catch (IOException ex) {

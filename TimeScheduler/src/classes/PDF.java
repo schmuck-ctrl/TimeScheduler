@@ -14,6 +14,9 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDDocumentInformation;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
 /**
  *
@@ -26,15 +29,16 @@ public class PDF {
 
     public PDF(Operator author) {
         this.saveDialog = new JFileChooser();
-        
+
         setAuthor(author);
     }
 
     public void setAuthor(Operator user) {
-        if(user != null)
+        if (user != null) {
             this.author = user;
+        }
     }
-    
+
     public void showDialogAndSavePDF(PDDocument pdf) {
         FileFilter filter = new FileNameExtensionFilter("PDF", "pdf");
 
@@ -59,33 +63,64 @@ public class PDF {
             this.saveDialog.setVisible(false);
         }
     }
-    
-    public PDDocument createPDF() {
 
-        //Creating PDF document object
-        PDDocument document = new PDDocument();
+    public PDDocument createWeeklySchedule() {
 
-        //Creating the PDDocumentInformation object 
-        PDDocumentInformation pdd = document.getDocumentInformation();
+        try {
+            //Creating PDF document object
+            PDDocument document = new PDDocument();
 
-        //Setting the author of the document
-        pdd.setAuthor("Tutorialspoint");
+            //Creating the PDDocumentInformation object
+            PDDocumentInformation pdd = document.getDocumentInformation();
 
-        // Setting the title of the document
-        pdd.setTitle("Sample document");
+            //Setting the author of the document
+            pdd.setAuthor("Tutorialspoint");
 
-        //Setting the creator of the document 
-        pdd.setCreator("PDF Examples");
+            // Setting the title of the document
+            pdd.setTitle("Sample document");
 
-        //Setting the subject of the document 
-        pdd.setSubject("Example document");
+            //Setting the creator of the document
+            pdd.setCreator("PDF Examples");
 
-        //Setting the created date of the document 
-        pdd.setCreationDate(java.util.Calendar.getInstance());
+            //Setting the subject of the document
+            pdd.setSubject("Example document");
 
-        System.out.println("PDF created");
+            //Setting the created date of the document
+            pdd.setCreationDate(java.util.Calendar.getInstance());
+                      
+            //Creating a blank page
+            PDPage page = new PDPage();
 
-        return document;
+            //Adding the blank page to the document
+            document.addPage(page);
+
+            PDPageContentStream contentStream = new PDPageContentStream(document, page);
+
+            //Begin the Content stream
+            contentStream.beginText();
+
+            //Setting the font to the Content stream
+            contentStream.setFont(PDType1Font.TIMES_ROMAN, 12);
+
+            //Setting the position for the line
+            contentStream.newLineAtOffset(25, 750);
+
+            //Adding text in the form of string 
+            contentStream.showText("text");
+
+            //Ending the content stream
+            contentStream.endText();
+
+            //Closing the content stream
+            contentStream.close();
+
+            return document;
+
+        } catch (IOException ex) {
+            Logger.getLogger(PDF.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return null;
     }
-    
+
 }
