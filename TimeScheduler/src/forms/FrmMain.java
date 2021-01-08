@@ -7,6 +7,7 @@ package forms;
 
 import classes.Event;
 import classes.Operator;
+import classes.PDF;
 import handlers.DatabaseHandler;
 import handlers.EventHandler;
 import java.time.LocalDate;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
+import org.apache.pdfbox.pdmodel.PDDocument;
 
 /**
  *
@@ -136,6 +138,11 @@ public class FrmMain extends javax.swing.JFrame {
 
         btnExportPDF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/file-line.png"))); // NOI18N
         btnExportPDF.setText("Export to PDF");
+        btnExportPDF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExportPDFActionPerformed(evt);
+            }
+        });
         pnlMenuBar.add(btnExportPDF, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 0, -1, -1));
 
         pnlHeader.add(pnlMenuBar);
@@ -271,6 +278,12 @@ public class FrmMain extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         displayAllEventsOfDay(LocalDate.now());
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void btnExportPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportPDFActionPerformed
+        PDF pdf = new PDF(this.user);
+        PDDocument myPDF = pdf.createPDF();
+        pdf.showDialogAndSavePDF(myPDF);
+    }//GEN-LAST:event_btnExportPDFActionPerformed
 
     /**
      * @param args the command line arguments
