@@ -46,9 +46,11 @@ public class FrmEventsOfDay extends javax.swing.JPanel {
             
             lblHeadline.setText("Your daily appointments:");
             this.liEventsOfDay.setVisible(true);
+            btnOpen.setVisible(true);
         } else {
             lblHeadline.setText("No events for today!");
             this.liEventsOfDay.setVisible(false);
+            btnOpen.setVisible(false);
         }
     }
 

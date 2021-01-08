@@ -27,6 +27,7 @@ public class FrmEvent extends javax.swing.JPanel {
 
     private ParticipantListModel liModelParticipants = null;
     private AttachmentListModel liModelAttachments = null;
+    private int eventID = -1;
 
     // <editor-fold defaultstate="collapsed" desc="Constructors">
     /**
@@ -44,10 +45,22 @@ public class FrmEvent extends javax.swing.JPanel {
         setEvent(event);
     }
 
+    public FrmEvent() {
+        initComponents();
+
+        pnlHeader.setBorder(new EmptyBorder(10, 10, 10, 10));
+        pnlContent.setBorder(new EmptyBorder(10, 10, 10, 10));
+
+        liModelParticipants = new ParticipantListModel();
+        liModelAttachments = new AttachmentListModel();
+    }
+    
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Methods">
     public void setEvent(Event event) {
         if (event != null) {
+            this.eventID = event.getID();
+            
             txtEventName.setText(event.getName());
             dtPicker.datePicker.setDate(LocalDate.of(event.getDate().getYear(), event.getDate().getMonth(), event.getDate().getDayOfMonth()));
             dtPicker.timePicker.setTime(LocalTime.of(event.getDate().getHour(), event.getDate().getMinute()));
@@ -397,9 +410,9 @@ public class FrmEvent extends javax.swing.JPanel {
     }//GEN-LAST:event_btnOkActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        int retVal = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete the user?", "Delete user", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+        int retVal = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete the event?", "Delete user", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
         if (retVal == JOptionPane.YES_OPTION) {
-            //deleteEvent(this.e);
+            deleteEvent(this.eventID);
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
