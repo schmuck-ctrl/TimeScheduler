@@ -112,6 +112,8 @@ public class PDF {
             ArrayList<Event> eventsOfWeek = eHandler.getEventsOfWeek(author.getUserId());
             //Adding text in the form of string 
             contentStream.showText("text");
+            contentStream.newLine();
+            contentStream.showText("HelloWorld");
 
             //Ending the content stream
             contentStream.endText();

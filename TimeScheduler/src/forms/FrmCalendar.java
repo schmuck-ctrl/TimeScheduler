@@ -347,7 +347,7 @@ public class FrmCalendar extends javax.swing.JPanel {
     
     public java.time.LocalDate getLastDayOfView(){
         if (this.panelArray[0][0] != null){
-            return this.panelArray[this.panelArray.length - 1][7].getDay();
+            return this.panelArray[this.panelArray.length - 1][6].getDay();
         }
         return null;
     }

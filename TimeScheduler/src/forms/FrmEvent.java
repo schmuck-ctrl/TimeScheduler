@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.ListModel;
 import javax.swing.border.EmptyBorder;
 
@@ -26,7 +27,7 @@ public class FrmEvent extends javax.swing.JPanel {
 
     private ParticipantListModel liModelParticipants = null;
     private AttachmentListModel liModelAttachments = null;
-    
+
     // <editor-fold defaultstate="collapsed" desc="Constructors">
     /**
      * Creates new form FrmEvent
@@ -36,10 +37,10 @@ public class FrmEvent extends javax.swing.JPanel {
 
         pnlHeader.setBorder(new EmptyBorder(10, 10, 10, 10));
         pnlContent.setBorder(new EmptyBorder(10, 10, 10, 10));
-        
+
         liModelParticipants = new ParticipantListModel();
         liModelAttachments = new AttachmentListModel();
-        
+
         setEvent(event);
     }
 
@@ -85,12 +86,12 @@ public class FrmEvent extends javax.swing.JPanel {
 
             if (event.getParticipants() != null) {
                 liModelParticipants.addElement(event.getParticipants());
-                liEventParticipants.setModel((ListModel)liModelParticipants);
+                liEventParticipants.setModel((ListModel) liModelParticipants);
             }
 
             if (event.getAttachments() != null) {
                 liModelAttachments.addElement(event.getAttachments());
-                liEventAttachments.setModel((ListModel)liModelAttachments);
+                liEventAttachments.setModel((ListModel) liModelAttachments);
             }
 
         }
@@ -164,7 +165,6 @@ public class FrmEvent extends javax.swing.JPanel {
                 break;
         }
 
-        
         for (int i = 0; i < liEventParticipants.getModel().getSize(); i++) {
             Operator participant = liModelParticipants.getElementAt(i);
             participants.add(participant);
@@ -193,10 +193,18 @@ public class FrmEvent extends javax.swing.JPanel {
             eHandler.editEvent(event);
         }
     }
-    
+
+    private void deleteEvent(int eventID) {
+        if (eventID >= 0) {
+            EventHandler eHandler = new EventHandler();
+            eHandler.deleteEvent(eventID);
+        }
+    }
+
     public void setTitle(String title) {
-        if(!title.isBlank())
+        if (!title.isBlank()) {
             this.lblHeadline.setText(title);
+        }
     }
 
 // </editor-fold>
@@ -364,6 +372,11 @@ public class FrmEvent extends javax.swing.JPanel {
 
         btnDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/delete-bin-line.png"))); // NOI18N
         btnDelete.setText("Delete");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
         pnlFooter.add(btnDelete);
 
         btnOk.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/save-line.png"))); // NOI18N
@@ -382,6 +395,13 @@ public class FrmEvent extends javax.swing.JPanel {
         Event newEvent = getInput();
         newEvent(newEvent);
     }//GEN-LAST:event_btnOkActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        int retVal = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete the user?", "Delete user", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+        if (retVal == JOptionPane.YES_OPTION) {
+            //deleteEvent(this.e);
+        }
+    }//GEN-LAST:event_btnDeleteActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -283,6 +283,8 @@ public class FrmMain extends javax.swing.JFrame {
     }//GEN-LAST:event_mnuAdminInterfaceActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        System.out.println(this.frmCalendar.getFirstDayOfView().toString() + "\t" + this.frmCalendar.getLastDayOfView().toString());
+        
         EventHandler e = new EventHandler();
         this.frmCalendar.addEvents(e.getEventsOfMonth(7, 0));
         displayAllEventsOfDay(LocalDate.now());
