@@ -35,8 +35,8 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace pref="212" max="32767" attributes="0"/>
-                  <Component id="btnRegistration" min="-2" pref="230" max="-2" attributes="0"/>
+                  <EmptySpace pref="181" max="32767" attributes="0"/>
+                  <Component id="btnRegistration" min="-2" pref="261" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="198" max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -116,22 +116,24 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="lblRepeatPassword" alignment="0" max="32767" attributes="0"/>
-                      <Component id="lblPassword" alignment="0" max="32767" attributes="0"/>
-                      <Component id="lblFirstName" min="-2" pref="161" max="-2" attributes="0"/>
-                      <Component id="lblLastName" alignment="0" max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="1" attributes="0">
                       <Component id="lblEmail" alignment="0" max="32767" attributes="0"/>
+                      <Component id="lblLastName" alignment="0" max="32767" attributes="0"/>
+                      <Component id="lblFirstName" alignment="0" max="32767" attributes="0"/>
+                      <Component id="lblRepeatPassword" pref="130" max="32767" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="lblPassword" max="32767" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="lblPasswordToolTip" min="-2" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="1" attributes="0">
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="txtFirstName" alignment="1" max="32767" attributes="0"/>
-                          <Component id="txtLastName" max="32767" attributes="0"/>
-                          <Component id="txtEmail" max="32767" attributes="0"/>
-                          <Component id="ptxtPassword" alignment="1" min="-2" pref="230" max="-2" attributes="0"/>
-                      </Group>
-                      <Component id="ptxtRepeatPassword" min="-2" pref="230" max="-2" attributes="0"/>
+                      <Component id="txtLastName" alignment="0" max="32767" attributes="0"/>
+                      <Component id="txtEmail" alignment="0" pref="261" max="32767" attributes="0"/>
+                      <Component id="txtFirstName" alignment="1" max="32767" attributes="0"/>
+                      <Component id="ptxtPassword" max="32767" attributes="0"/>
+                      <Component id="ptxtRepeatPassword" alignment="1" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -173,6 +175,7 @@
                       <Component id="lblPassword" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="ptxtPassword" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="lblPasswordError" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblPasswordToolTip" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -180,7 +183,7 @@
                       <Component id="ptxtRepeatPassword" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="lblRepeatPasswordError" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="19" max="32767" attributes="0"/>
+                  <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -194,7 +197,6 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="0" green="0" red="0" type="rgb"/>
             </Property>
-            <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="text" type="java.lang.String" value="First Name:"/>
           </Properties>
         </Component>
@@ -206,7 +208,6 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="0" green="0" red="0" type="rgb"/>
             </Property>
-            <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="text" type="java.lang.String" value="Last Name:"/>
           </Properties>
         </Component>
@@ -218,7 +219,6 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="0" green="0" red="0" type="rgb"/>
             </Property>
-            <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="text" type="java.lang.String" value="E-Mail:"/>
           </Properties>
         </Component>
@@ -230,7 +230,6 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="0" green="0" red="0" type="rgb"/>
             </Property>
-            <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="text" type="java.lang.String" value="Password:"/>
           </Properties>
         </Component>
@@ -242,7 +241,6 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="0" green="0" red="0" type="rgb"/>
             </Property>
-            <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="text" type="java.lang.String" value="Repeat Password:"/>
           </Properties>
         </Component>
@@ -393,6 +391,17 @@
             </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblPasswordToolTip">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/icons/question-line.png"/>
+            </Property>
+            <Property name="toolTipText" type="java.lang.String" value=""/>
+          </Properties>
+          <Events>
+            <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblPasswordToolTipMouseEntered"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

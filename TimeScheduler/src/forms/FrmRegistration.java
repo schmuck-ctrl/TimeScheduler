@@ -8,6 +8,7 @@ package forms;
 import classes.*;
 import handlers.*;
 import java.awt.Color;
+import javax.swing.ToolTipManager;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 
@@ -26,6 +27,9 @@ public class FrmRegistration extends javax.swing.JFrame {
         this.pnlHeader.setBackground(new Color(255, 255, 255));
         this.pnlContent.setBackground(new Color(255, 255, 255));
         this.pnlFooter.setBackground(new Color(255, 255, 255));
+        int dismissDelay = ToolTipManager.sharedInstance().getDismissDelay();
+        dismissDelay = Integer.MAX_VALUE;
+        ToolTipManager.sharedInstance().setDismissDelay(dismissDelay);
     }
 
     /**
@@ -57,6 +61,7 @@ public class FrmRegistration extends javax.swing.JFrame {
         lblEmailError = new javax.swing.JLabel();
         lblPasswordError = new javax.swing.JLabel();
         lblRepeatPasswordError = new javax.swing.JLabel();
+        lblPasswordToolTip = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -74,8 +79,8 @@ public class FrmRegistration extends javax.swing.JFrame {
         pnlFooterLayout.setHorizontalGroup(
             pnlFooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFooterLayout.createSequentialGroup()
-                .addContainerGap(212, Short.MAX_VALUE)
-                .addComponent(btnRegistration, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(181, Short.MAX_VALUE)
+                .addComponent(btnRegistration, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(198, 198, 198))
         );
         pnlFooterLayout.setVerticalGroup(
@@ -113,27 +118,22 @@ public class FrmRegistration extends javax.swing.JFrame {
 
         lblFirstName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblFirstName.setForeground(new java.awt.Color(0, 0, 0));
-        lblFirstName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblFirstName.setText("First Name:");
 
         lblLastName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblLastName.setForeground(new java.awt.Color(0, 0, 0));
-        lblLastName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblLastName.setText("Last Name:");
 
         lblEmail.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblEmail.setForeground(new java.awt.Color(0, 0, 0));
-        lblEmail.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblEmail.setText("E-Mail:");
 
         lblPassword.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblPassword.setForeground(new java.awt.Color(0, 0, 0));
-        lblPassword.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblPassword.setText("Password:");
 
         lblRepeatPassword.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblRepeatPassword.setForeground(new java.awt.Color(0, 0, 0));
-        lblRepeatPassword.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblRepeatPassword.setText("Repeat Password:");
 
         txtFirstName.setBackground(new java.awt.Color(243, 242, 241));
@@ -224,26 +224,36 @@ public class FrmRegistration extends javax.swing.JFrame {
         lblRepeatPasswordError.setForeground(new java.awt.Color(204, 0, 51));
         lblRepeatPasswordError.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
+        lblPasswordToolTip.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/question-line.png"))); // NOI18N
+        lblPasswordToolTip.setToolTipText("");
+        lblPasswordToolTip.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                lblPasswordToolTipMouseEntered(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlContentLayout = new javax.swing.GroupLayout(pnlContent);
         pnlContent.setLayout(pnlContentLayout);
         pnlContentLayout.setHorizontalGroup(
             pnlContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlContentLayout.createSequentialGroup()
                 .addGap(33, 33, 33)
-                .addGroup(pnlContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblRepeatPassword, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblPassword, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblLastName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblEmail, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(pnlContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblEmail, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblLastName, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblFirstName, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblRepeatPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlContentLayout.createSequentialGroup()
+                        .addComponent(lblPassword, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblPasswordToolTip)))
                 .addGap(18, 18, 18)
                 .addGroup(pnlContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(pnlContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(txtFirstName, javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(txtLastName)
-                        .addComponent(txtEmail)
-                        .addComponent(ptxtPassword, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(ptxtRepeatPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtLastName, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtEmail, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE)
+                    .addComponent(txtFirstName)
+                    .addComponent(ptxtPassword)
+                    .addComponent(ptxtRepeatPassword))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(lblFirstNameError, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
@@ -276,13 +286,14 @@ public class FrmRegistration extends javax.swing.JFrame {
                 .addGroup(pnlContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblPassword)
                     .addComponent(ptxtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblPasswordError))
+                    .addComponent(lblPasswordError)
+                    .addComponent(lblPasswordToolTip, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(pnlContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblRepeatPassword)
                     .addComponent(ptxtRepeatPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblRepeatPasswordError))
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addGap(19, 19, 19))
         );
 
         getContentPane().add(pnlContent, java.awt.BorderLayout.CENTER);
@@ -347,25 +358,31 @@ public class FrmRegistration extends javax.swing.JFrame {
         RegistrationHandler reHandler = new RegistrationHandler();
         boolean inputError = true;
         if (!reHandler.checkInputUserName(txtFirstName.getText())) {
+            lblFirstNameError.setText("");
             lblFirstNameError.setText("Firstname is not correct");
             inputError = false;
         }
         if (!reHandler.checkInputUserName(txtLastName.getText())) {
+            lblLastNameError.setText("");
             lblLastNameError.setText("Lastname is not correct");
             inputError = false;
         }
         if (!reHandler.checkInputUserEmail(txtEmail.getText())) {
+            lblEmailError.setText("");
             lblEmailError.setText("Email is not correct");
             inputError = false;
         }
         if (!reHandler.checkIfNewUserExist(txtEmail.getText())) {
+            lblEmailError.setText("");
             lblEmailError.setText("User already exists");
             inputError = false;
         }
         if (!reHandler.checkInputUserPassword(ptxtPassword.getPassword())) {
+            lblPasswordError.setText("");
             lblPasswordError.setText("Password is not correct");
             inputError = false;
         } else if (!reHandler.checkIfPasswordTheSame(ptxtPassword.getPassword(), ptxtRepeatPassword.getPassword())) {
+            lblRepeatPasswordError.setText("");
             lblRepeatPasswordError.setText("Password is not the same");
             inputError = false;
         }
@@ -383,6 +400,11 @@ public class FrmRegistration extends javax.swing.JFrame {
         ptxtRepeatPassword.setText("");
 
     }//GEN-LAST:event_btnRegistrationActionPerformed
+
+    private void lblPasswordToolTipMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblPasswordToolTipMouseEntered
+
+        lblPasswordToolTip.setToolTipText("<html>Your password should contain at least 8 characters <br> at least one upper caser and lower case letter one digit <br> one of those special symbols (&....) </html>");
+    }//GEN-LAST:event_lblPasswordToolTipMouseEntered
 
     /**
      * @param args the command line arguments
@@ -412,6 +434,7 @@ public class FrmRegistration extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
+        
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new FrmRegistration().setVisible(true);
@@ -429,6 +452,7 @@ public class FrmRegistration extends javax.swing.JFrame {
     private javax.swing.JLabel lblLastNameError;
     private javax.swing.JLabel lblPassword;
     private javax.swing.JLabel lblPasswordError;
+    private javax.swing.JLabel lblPasswordToolTip;
     private javax.swing.JLabel lblRegistration;
     private javax.swing.JLabel lblRepeatPassword;
     private javax.swing.JLabel lblRepeatPasswordError;
