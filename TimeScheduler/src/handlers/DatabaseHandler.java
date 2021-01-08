@@ -677,7 +677,7 @@ public class DatabaseHandler {
                 }
             }
         } catch (SQLException ex) {
-
+             System.out.println(ex.getMessage());
         }
         System.out.println(usersEvents);
         if (!usersEvents.isEmpty()) {
@@ -824,21 +824,30 @@ public class DatabaseHandler {
 
     public ArrayList<Event> getUsersEventsOfCertainDay(int userId, LocalDate eventDate) {
         ArrayList<Integer> EventIDs = getEventIDsOfUser(userId);
-        ArrayList<Event> Events = new ArrayList<>();
+        ArrayList<Event> usersEvents = new ArrayList<>();
         String sql = "SELECT * FROM eventDetails WHERE ED_userID = ? AND ED_eventDate LIKE ?;";
         try (PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setInt(1, userId);
             stmt.setString(2, eventDate.toString() + "%");
             try ( ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    Events.add(getEvent(rs));
+                    usersEvents.add(getEvent(rs));
                 }
             }
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
-
-        return Events;
+        
+        if (!usersEvents.isEmpty()) {
+            for (Event a : usersEvents) {
+                
+                a.setParticipants(getParticipantsByID(a.getID()));
+            }
+            return usersEvents;
+        } else {
+            System.out.println("User doesn't have any Events this week");
+        }
+        return usersEvents;
     }
 
 }
