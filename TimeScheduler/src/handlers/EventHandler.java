@@ -47,8 +47,8 @@ public class EventHandler {
         return eventList;
     }
     
-    public ArrayList<Event> getEventsOfDay(LocalDate day) {
-        ArrayList<Event> eventList = dbHandler.getAllEvents();
+    public ArrayList<Event> getEventsOfDay(int userId, LocalDate day) {
+        ArrayList<Event> eventList = dbHandler.getUsersEventsOfCertainDay(userId, day);
 
         return eventList;
     }

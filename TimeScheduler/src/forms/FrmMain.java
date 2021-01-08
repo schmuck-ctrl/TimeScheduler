@@ -39,8 +39,6 @@ public class FrmMain extends javax.swing.JFrame {
      */
     private FrmMain() {
         initComponents();
-        
-        displayAllEventsOfDay(LocalDate.now());
     }
 
     // <editor-fold defaultstate="collapsed" desc="Methods"> 
@@ -83,7 +81,7 @@ public class FrmMain extends javax.swing.JFrame {
         pnlEventRoot.repaint();
 
         EventHandler eHandler = new EventHandler();
-        FrmEventsOfDay frmEventsOfDay = new FrmEventsOfDay(eHandler.getEventsOfDay(today));
+        FrmEventsOfDay frmEventsOfDay = new FrmEventsOfDay(eHandler.getEventsOfDay(11, today));
         pnlEventRoot.add(frmEventsOfDay);
         frmEventsOfDay.setVisible(true);
     }
@@ -106,7 +104,7 @@ public class FrmMain extends javax.swing.JFrame {
         pnlHeader = new javax.swing.JPanel();
         pnlMenuBar = new javax.swing.JPanel();
         mnuAdminInterface = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnExportPDF = new javax.swing.JButton();
         pnlHeadline = new javax.swing.JPanel();
         lblHeadline = new javax.swing.JLabel();
         splitPnlContent = new javax.swing.JSplitPane();
@@ -134,10 +132,11 @@ public class FrmMain extends javax.swing.JFrame {
                 mnuAdminInterfaceActionPerformed(evt);
             }
         });
-        pnlMenuBar.add(mnuAdminInterface, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 0, -1, -1));
+        pnlMenuBar.add(mnuAdminInterface, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/calendar-2-line.png"))); // NOI18N
-        pnlMenuBar.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+        btnExportPDF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/file-line.png"))); // NOI18N
+        btnExportPDF.setText("Export to PDF");
+        pnlMenuBar.add(btnExportPDF, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 0, -1, -1));
 
         pnlHeader.add(pnlMenuBar);
 
@@ -309,10 +308,10 @@ public class FrmMain extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnExportPDF;
     private javax.swing.JButton btnTest;
     private forms.FrmCalendar frmCalendar;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel lblHeadline;
     private javax.swing.JButton mnuAdminInterface;
     private javax.swing.JPanel pnlCalendarRoot;
