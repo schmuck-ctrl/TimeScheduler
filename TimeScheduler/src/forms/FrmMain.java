@@ -7,18 +7,11 @@ package forms;
 
 import classes.Event;
 import classes.Operator;
-import classes.PDF;
-import handlers.DatabaseHandler;
 import handlers.EventHandler;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.BorderFactory;
-import org.apache.pdfbox.pdmodel.PDDocument;
 
 /**
  *
@@ -68,9 +61,13 @@ public class FrmMain extends javax.swing.JFrame {
         pnlEventRoot.repaint();
 
         EventHandler eHandler = new EventHandler();
-        FrmEvent frmEvent = new FrmEvent(eHandler.getEvent(eventID));
+        Event event = eHandler.getEvent(eventID);
+        FrmEvent frmEvent = new FrmEvent(event);
+        
         pnlEventRoot.add(frmEvent);
+        frmEvent.setTitle("Details of " + event.toString() + ":");
         frmEvent.setVisible(true);
+        
     }
 
     public void editEvent(int eventID) {
@@ -79,9 +76,13 @@ public class FrmMain extends javax.swing.JFrame {
         pnlEventRoot.repaint();
 
         EventHandler eHandler = new EventHandler();
-        FrmEvent frmEvent = new FrmEvent(eHandler.getEventByUser(this.user.getUserId(), eventID));
+        Event event = eHandler.getEventByUser(this.user.getUserId(), eventID);
+        
+        FrmEvent frmEvent = new FrmEvent(event);
         pnlEventRoot.add(frmEvent);
+        frmEvent.setTitle("Edit event " + event.toString() + ":");
         frmEvent.setVisible(true);
+        
     }
 
     public void displayAllEventsOfDay(LocalDate today) {
@@ -90,7 +91,8 @@ public class FrmMain extends javax.swing.JFrame {
         pnlEventRoot.repaint();
 
         EventHandler eHandler = new EventHandler();
-        FrmEventsOfDay frmEventsOfDay = new FrmEventsOfDay(eHandler.getEventsOfDay(user.getUserId(), today));
+        ArrayList<Event> events = eHandler.getEventsOfDay(user.getUserId(), today);
+        FrmEventsOfDay frmEventsOfDay = new FrmEventsOfDay(events);
         pnlEventRoot.add(frmEventsOfDay);
         frmEventsOfDay.setVisible(true);
     }
@@ -199,7 +201,7 @@ public class FrmMain extends javax.swing.JFrame {
         pnlFooterLayout.setHorizontalGroup(
             pnlFooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFooterLayout.createSequentialGroup()
-                .addContainerGap(619, Short.MAX_VALUE)
+                .addContainerGap(783, Short.MAX_VALUE)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnTest, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -291,14 +293,7 @@ public class FrmMain extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btnExportPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportPDFActionPerformed
-        try {
-            PDF pdf = new PDF(this.user);
-            PDDocument myPDF = pdf.createWeeklySchedule();
-            pdf.showDialogAndSavePDF(myPDF);
-            myPDF.close();
-        } catch (IOException ex) {
-            Logger.getLogger(FrmMain.class.getName()).log(Level.SEVERE, null, ex);
-        }
+ 
     }//GEN-LAST:event_btnExportPDFActionPerformed
 
     /**

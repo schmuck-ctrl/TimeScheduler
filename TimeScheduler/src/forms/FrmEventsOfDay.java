@@ -38,11 +38,17 @@ public class FrmEventsOfDay extends javax.swing.JPanel {
     }
 
     public void setEventds(ArrayList<Event> eventsOfDay) {
-        if (eventsOfDay != null) {
+        if (eventsOfDay.size() > 0) {
 
             liModelEventsOfDay.addElement(eventsOfDay);
 
             liEventsOfDay.setModel((ListModel) liModelEventsOfDay);
+            
+            lblHeadline.setText("Your daily appointments:");
+            this.liEventsOfDay.setVisible(true);
+        } else {
+            lblHeadline.setText("No events for today!");
+            this.liEventsOfDay.setVisible(false);
         }
     }
 
@@ -79,19 +85,12 @@ public class FrmEventsOfDay extends javax.swing.JPanel {
 
         pnlHeader.setPreferredSize(new java.awt.Dimension(313, 45));
         pnlHeader.setLayout(new java.awt.BorderLayout());
-
-        lblHeadline.setText("Your daily appointments:");
         pnlHeader.add(lblHeadline, java.awt.BorderLayout.CENTER);
 
         add(pnlHeader, java.awt.BorderLayout.PAGE_START);
 
         pnlContent.setLayout(new java.awt.BorderLayout());
 
-        liEventsOfDay.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         jScrollPane1.setViewportView(liEventsOfDay);
 
         pnlContent.add(jScrollPane1, java.awt.BorderLayout.CENTER);
