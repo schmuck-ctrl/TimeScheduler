@@ -81,7 +81,7 @@ public class FrmMain extends javax.swing.JFrame {
         pnlEventRoot.repaint();
 
         EventHandler eHandler = new EventHandler();
-        FrmEventsOfDay frmEventsOfDay = new FrmEventsOfDay(eHandler.getEventsOfDay(11, today));
+        FrmEventsOfDay frmEventsOfDay = new FrmEventsOfDay(eHandler.getEventsOfDay(user.getUserId(), today));
         pnlEventRoot.add(frmEventsOfDay);
         frmEventsOfDay.setVisible(true);
     }
