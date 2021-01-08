@@ -5,8 +5,11 @@
  */
 package classes;
 
+import handlers.DatabaseHandler;
+import handlers.EventHandler;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
@@ -105,6 +108,8 @@ public class PDF {
             //Setting the position for the line
             contentStream.newLineAtOffset(25, 750);
 
+            EventHandler eHandler = new EventHandler();
+            ArrayList<Event> eventsOfWeek = eHandler.getEventsOfWeek(author.getUserId());
             //Adding text in the form of string 
             contentStream.showText("text");
 

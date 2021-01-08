@@ -279,6 +279,8 @@ public class FrmMain extends javax.swing.JFrame {
     }//GEN-LAST:event_mnuAdminInterfaceActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        EventHandler e = new EventHandler();
+        this.frmCalendar.addEvents(e.getEventsOfMonth(7, 0));
         displayAllEventsOfDay(LocalDate.now());
     }//GEN-LAST:event_jButton1ActionPerformed
 

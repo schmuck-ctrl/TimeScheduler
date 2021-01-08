@@ -41,12 +41,14 @@ public class EventHandler {
     }
     
     public ArrayList<Event> getEventsOfMonth(int userId, int monthValue) {
-        return null;
+        ArrayList<Event> eventList = dbHandler.getThisMonthsEventsByUserID(userId);
+        
+        return eventList;
     }
     
-    public ArrayList<Event> getEventsOfWeek(int userId, String eMial) {
+    public ArrayList<Event> getEventsOfWeek(int userId) {
 
-        ArrayList<Event> eventList = dbHandler.getThisWeeksEventsByUsername(eMial);
+        ArrayList<Event> eventList = dbHandler.getThisWeeksEventsByUserID(userId);
 
         return eventList;
     }
