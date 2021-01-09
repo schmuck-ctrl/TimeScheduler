@@ -27,10 +27,7 @@ public class FrmEventsOfDay extends javax.swing.JPanel {
      */
     public FrmEventsOfDay(ArrayList<Event> eventsOfDay) {
         initComponents();
-
-        pnlHeader.setBorder(new EmptyBorder(10, 10, 10, 10));
-        pnlContent.setBorder(new EmptyBorder(10, 10, 10, 10));
-        
+     
         liModelEventsOfDay = new EventsOfDayListModel();
 
         liEventsOfDay.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -47,6 +44,8 @@ public class FrmEventsOfDay extends javax.swing.JPanel {
             lblHeadline.setText("Your daily appointments:");
             this.liEventsOfDay.setVisible(true);
             btnOpen.setVisible(true);
+            pnlHeader.setBorder(new EmptyBorder(10, 10, 10, 10));
+            pnlContent.setBorder(new EmptyBorder(10, 10, 10, 10));
         } else {
             lblHeadline.setText("No events for today!");
             this.liEventsOfDay.setVisible(false);
@@ -60,7 +59,7 @@ public class FrmEventsOfDay extends javax.swing.JPanel {
 
             dialog.setSize(500, 700);
             dialog.setModal(true);
-            dialog.add(new FrmEvent(event));
+            dialog.add(new FrmEvent(event, FrmEvent.View.READ));
             dialog.setLocationRelativeTo(null);
             dialog.setVisible(true);
         }

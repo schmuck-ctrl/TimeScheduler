@@ -614,7 +614,7 @@ public class DatabaseHandler {
         return Events;
     }
 
-    public void addEvent(int userID, Event Event) {
+    public void addEvent(Event Event) {
         
         String sqlEvent = "INSERT INTO event (E_eventName, E_eventDuration, E_eventDate, E_priority, E_eventLocation, E_reminder, E_notification) VALUES (?, ?, ?, ?, ?, ?, ?);";
         ArrayList<Operator> temp = Event.getParticipants();

@@ -10,11 +10,13 @@ import EventUtilities.ParticipantListModel;
 import classes.Event;
 import classes.Operator;
 import handlers.EventHandler;
+import java.awt.event.ActionEvent;
 import java.io.File;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.ListModel;
 import javax.swing.border.EmptyBorder;
@@ -25,6 +27,12 @@ import javax.swing.border.EmptyBorder;
  */
 public class FrmEvent extends javax.swing.JPanel {
 
+    public enum View {
+        READ,
+        EDIT,
+        NEW
+    }
+
     private ParticipantListModel liModelParticipants = null;
     private AttachmentListModel liModelAttachments = null;
     private int eventID = -1;
@@ -33,7 +41,7 @@ public class FrmEvent extends javax.swing.JPanel {
     /**
      * Creates new form FrmEvent
      */
-    public FrmEvent(Event event) {
+    public FrmEvent(Event event, View view) {
         initComponents();
 
         pnlHeader.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -42,10 +50,11 @@ public class FrmEvent extends javax.swing.JPanel {
         liModelParticipants = new ParticipantListModel();
         liModelAttachments = new AttachmentListModel();
 
+        handleView(view);
         setEvent(event);
     }
 
-    public FrmEvent() {
+    public FrmEvent(View view) {
         initComponents();
 
         pnlHeader.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -53,14 +62,16 @@ public class FrmEvent extends javax.swing.JPanel {
 
         liModelParticipants = new ParticipantListModel();
         liModelAttachments = new AttachmentListModel();
+
+        handleView(view);
     }
-    
+
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Methods">
     public void setEvent(Event event) {
         if (event != null) {
             this.eventID = event.getID();
-            
+
             txtEventName.setText(event.getName());
             dtPicker.datePicker.setDate(LocalDate.of(event.getDate().getYear(), event.getDate().getMonth(), event.getDate().getDayOfMonth()));
             dtPicker.timePicker.setTime(LocalTime.of(event.getDate().getHour(), event.getDate().getMinute()));
@@ -193,10 +204,90 @@ public class FrmEvent extends javax.swing.JPanel {
         return newEvent;
     }
 
+    private void clearInput() {
+
+    }
+
+    private void clearFooter() {
+        pnlFooter.removeAll();
+        pnlFooter.revalidate();
+        pnlFooter.repaint();
+    }
+
+    private void enableControls(boolean isEnabled) {
+        java.awt.Component[] com = pnlContent.getComponents();
+        for (int i = 0; i < com.length; i++) {
+            com[i].setEnabled(isEnabled);
+        }
+    }
+
+    private void handleView(View view) {
+        clearFooter();
+
+        if (view == View.NEW) {
+            clearInput();
+            enableControls(true);
+
+            JButton btnNew = new JButton("Create new event", new javax.swing.ImageIcon(getClass().getResource("/icons/save-line.png")));
+
+            btnNew.addActionListener(new java.awt.event.ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    btnNewActionPerformed(e);
+                }
+            });
+            pnlFooter.add(btnNew);
+        } else if (view == View.READ) {
+            enableControls(false);
+
+            JButton btnDisplayEditView = new JButton("Edit", new javax.swing.ImageIcon(getClass().getResource("/icons/pencil-line.png")));
+
+            btnDisplayEditView.addActionListener(new java.awt.event.ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    btnDisplayEditViewActoinPerformed(e);
+                }
+            });
+
+            pnlFooter.add(btnDisplayEditView);
+        } else if (view == View.EDIT) {
+            enableControls(true);
+
+            JButton btnDelete = new JButton("Delete", new javax.swing.ImageIcon(getClass().getResource("/icons/delete-bin-line.png")));
+
+            btnDelete.addActionListener(new java.awt.event.ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    btnDeleteActionPerformed(e);
+                }
+
+            });
+
+            JButton btnEdit = new JButton("Speichern", new javax.swing.ImageIcon(getClass().getResource("/icons/save-line.png")));
+
+            btnEdit.addActionListener(new java.awt.event.ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    btnEditActoinPerformed(e);
+                }
+
+            });
+
+            pnlFooter.add(btnDelete);
+            pnlFooter.add(btnEdit);
+        }
+    }
+
+    public void setTitle(String title) {
+        if (!title.isBlank()) {
+            this.lblHeadline.setText(title);
+        }
+    }
+
     private void newEvent(Event newEvent) {
         if (newEvent != null) {
             EventHandler eHandler = new EventHandler();
-            eHandler.addEvent(1, newEvent);
+            eHandler.addEvent(newEvent);
         }
     }
 
@@ -214,10 +305,22 @@ public class FrmEvent extends javax.swing.JPanel {
         }
     }
 
-    public void setTitle(String title) {
-        if (!title.isBlank()) {
-            this.lblHeadline.setText(title);
-        }
+    private void btnDisplayEditViewActoinPerformed(ActionEvent e) {
+        handleView(View.EDIT);
+    }
+
+    private void btnNewActionPerformed(ActionEvent e) {
+        Event event = getInput();
+        newEvent(event);
+    }
+
+    private void btnEditActoinPerformed(ActionEvent e) {
+        Event event = getInput();
+        editEvent(event);
+    }
+
+    private void btnDeleteActionPerformed(ActionEvent e) {
+        deleteEvent(this.eventID);
     }
 
 // </editor-fold>
@@ -229,6 +332,7 @@ public class FrmEvent extends javax.swing.JPanel {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
         pnlHeader = new javax.swing.JPanel();
         lblHeadline = new javax.swing.JLabel();
@@ -264,8 +368,6 @@ public class FrmEvent extends javax.swing.JPanel {
         liEventAttachments = new javax.swing.JList<>();
         filler8 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20), new java.awt.Dimension(32767, 20));
         pnlFooter = new javax.swing.JPanel();
-        btnDelete = new javax.swing.JButton();
-        btnOk = new javax.swing.JButton();
 
         setMinimumSize(new java.awt.Dimension(200, 300));
         setPreferredSize(new java.awt.Dimension(200, 300));
@@ -318,32 +420,29 @@ public class FrmEvent extends javax.swing.JPanel {
         lblEventParticipants.setText("Participants:");
         pnlContent.add(lblEventParticipants);
 
+        pnlEventParticipants.setLayout(new java.awt.GridBagLayout());
+
         jScrollPane1.setViewportView(liEventParticipants);
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/add-circle-line.png"))); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.ipadx = 285;
+        gridBagConstraints.ipady = 14;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 0);
+        pnlEventParticipants.add(jScrollPane1, gridBagConstraints);
 
-        javax.swing.GroupLayout pnlEventParticipantsLayout = new javax.swing.GroupLayout(pnlEventParticipants);
-        pnlEventParticipants.setLayout(pnlEventParticipantsLayout);
-        pnlEventParticipantsLayout.setHorizontalGroup(
-            pnlEventParticipantsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlEventParticipantsLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
-                .addContainerGap())
-        );
-        pnlEventParticipantsLayout.setVerticalGroup(
-            pnlEventParticipantsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlEventParticipantsLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(pnlEventParticipantsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlEventParticipantsLayout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addContainerGap())
-        );
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/add-circle-line.png"))); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 6);
+        pnlEventParticipants.add(jButton1, gridBagConstraints);
 
         pnlContent.add(pnlEventParticipants);
         pnlContent.add(filler7);
@@ -351,30 +450,30 @@ public class FrmEvent extends javax.swing.JPanel {
         lblEventAttachments.setText("Attachments:");
         pnlContent.add(lblEventAttachments);
 
+        pnlEventAttachments.setLayout(new java.awt.GridBagLayout());
+
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/add-circle-line.png"))); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(6, 6, 0, 6);
+        pnlEventAttachments.add(jButton2, gridBagConstraints);
 
         jScrollPane2.setViewportView(liEventAttachments);
 
-        javax.swing.GroupLayout pnlEventAttachmentsLayout = new javax.swing.GroupLayout(pnlEventAttachments);
-        pnlEventAttachments.setLayout(pnlEventAttachmentsLayout);
-        pnlEventAttachmentsLayout.setHorizontalGroup(
-            pnlEventAttachmentsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlEventAttachmentsLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2)
-                .addContainerGap())
-        );
-        pnlEventAttachmentsLayout.setVerticalGroup(
-            pnlEventAttachmentsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlEventAttachmentsLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(pnlEventAttachmentsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton2)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.ipadx = 285;
+        gridBagConstraints.ipady = 34;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 0);
+        pnlEventAttachments.add(jScrollPane2, gridBagConstraints);
 
         pnlContent.add(pnlEventAttachments);
         pnlContent.add(filler8);
@@ -382,44 +481,10 @@ public class FrmEvent extends javax.swing.JPanel {
         add(pnlContent, java.awt.BorderLayout.CENTER);
 
         pnlFooter.setLayout(new java.awt.GridLayout(1, 0));
-
-        btnDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/delete-bin-line.png"))); // NOI18N
-        btnDelete.setText("Delete");
-        btnDelete.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDeleteActionPerformed(evt);
-            }
-        });
-        pnlFooter.add(btnDelete);
-
-        btnOk.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/save-line.png"))); // NOI18N
-        btnOk.setText("Ok");
-        btnOk.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnOkActionPerformed(evt);
-            }
-        });
-        pnlFooter.add(btnOk);
-
         add(pnlFooter, java.awt.BorderLayout.PAGE_END);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOkActionPerformed
-        Event newEvent = getInput();
-        newEvent(newEvent);
-    }//GEN-LAST:event_btnOkActionPerformed
-
-    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        int retVal = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete the event?", "Delete user", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-        if (retVal == JOptionPane.YES_OPTION) {
-            deleteEvent(this.eventID);
-        }
-    }//GEN-LAST:event_btnDeleteActionPerformed
-
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnDelete;
-    private javax.swing.JButton btnOk;
     private javax.swing.JComboBox<String> cbEventNotification;
     private javax.swing.JComboBox<String> cbEventPriority;
     private com.github.lgooddatepicker.components.DateTimePicker dtPicker;

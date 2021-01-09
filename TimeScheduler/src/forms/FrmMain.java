@@ -62,7 +62,7 @@ public class FrmMain extends javax.swing.JFrame {
 
         EventHandler eHandler = new EventHandler();
         Event event = eHandler.getEvent(eventID);
-        FrmEvent frmEvent = new FrmEvent(event);
+        FrmEvent frmEvent = new FrmEvent(event, FrmEvent.View.READ);
         
         pnlEventRoot.add(frmEvent);
         frmEvent.setTitle("Details of " + event.toString() + ":");
@@ -78,7 +78,7 @@ public class FrmMain extends javax.swing.JFrame {
         EventHandler eHandler = new EventHandler();
         Event event = eHandler.getEventByUser(this.user.getUserId(), eventID);
         
-        FrmEvent frmEvent = new FrmEvent(event);
+        FrmEvent frmEvent = new FrmEvent(event, FrmEvent.View.EDIT);
         pnlEventRoot.add(frmEvent);
         frmEvent.setTitle("Edit event " + event.toString() + ":");
         frmEvent.setVisible(true);
@@ -98,7 +98,13 @@ public class FrmMain extends javax.swing.JFrame {
     }
 
     public void createNewEvent(LocalDate date) {
-
+        pnlEventRoot.removeAll();
+        pnlEventRoot.revalidate();
+        pnlEventRoot.repaint();
+        
+        FrmEvent frmEvent = new FrmEvent(FrmEvent.View.NEW);
+        frmEvent.setVisible(true);
+        pnlEventRoot.add(frmEvent);
     }
     //FUNKTIONEN DIE VOM CALENDAR AUFGERUFEN WERDEN
     // </editor-fold> 
