@@ -12,6 +12,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import javax.swing.JFileChooser;
 
 /**
  *
@@ -19,6 +20,24 @@ import java.time.LocalDateTime;
  */
 public class ExportHandler {
 
+    public String openSaveDialog() {
+        JFileChooser saveDialog = new JFileChooser();
+        String directory = null;
+        
+        saveDialog.setDialogType(JFileChooser.SAVE_DIALOG);
+        saveDialog.setDialogTitle("Save weekly schedule");
+        saveDialog.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        
+        
+        int state = saveDialog.showSaveDialog(forms.FrmMain.getInstance());
+        
+        if(state == JFileChooser.APPROVE_OPTION){
+            directory = saveDialog.getSelectedFile().toString();
+        }
+        
+        return directory;
+    }
+    
     public void writeWeeklySchedule(java.util.ArrayList<classes.Event> eList, java.time.LocalDate start, java.time.LocalDate end, String path) {
 
         if (!this.checkIfPathIsValid(path)) {

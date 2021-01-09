@@ -101,7 +101,7 @@ public class FrmEventsOfDay extends javax.swing.JPanel {
         pnlFooter.setPreferredSize(new java.awt.Dimension(313, 45));
         pnlFooter.setLayout(new java.awt.BorderLayout());
 
-        btnOpen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/calendar-2-line.png"))); // NOI18N
+        btnOpen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/calendar-event-line.png"))); // NOI18N
         btnOpen.setText("Open");
         btnOpen.setPreferredSize(new java.awt.Dimension(95, 35));
         btnOpen.addActionListener(new java.awt.event.ActionListener() {

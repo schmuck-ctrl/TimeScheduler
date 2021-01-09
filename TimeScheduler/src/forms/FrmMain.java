@@ -9,7 +9,6 @@ import classes.Event;
 import classes.Operator;
 import handlers.EventHandler;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
 
@@ -46,6 +45,7 @@ public class FrmMain extends javax.swing.JFrame {
         if (currentUser != null) {
             this.user = currentUser;
             this.frmCalendar.addEvents(eventHandler.getEventsOfCurrentMonth(this.user.getUserId()));
+            lblHeadline.setText("Welcome " + this.user.getFirstName() + " " + this.user.getLastName());
             displayAllEventsOfDay(LocalDate.now());
         }
     }
@@ -63,11 +63,11 @@ public class FrmMain extends javax.swing.JFrame {
         EventHandler eHandler = new EventHandler();
         Event event = eHandler.getEvent(eventID);
         FrmEvent frmEvent = new FrmEvent(event, FrmEvent.View.READ);
-        
+
         pnlEventRoot.add(frmEvent);
         frmEvent.setTitle("Details of " + event.toString() + ":");
         frmEvent.setVisible(true);
-        
+
     }
 
     public void editEvent(int eventID) {
@@ -77,12 +77,12 @@ public class FrmMain extends javax.swing.JFrame {
 
         EventHandler eHandler = new EventHandler();
         Event event = eHandler.getEventByUser(this.user.getUserId(), eventID);
-        
+
         FrmEvent frmEvent = new FrmEvent(event, FrmEvent.View.EDIT);
         pnlEventRoot.add(frmEvent);
         frmEvent.setTitle("Edit event " + event.toString() + ":");
         frmEvent.setVisible(true);
-        
+
     }
 
     public void displayAllEventsOfDay(LocalDate today) {
@@ -101,7 +101,7 @@ public class FrmMain extends javax.swing.JFrame {
         pnlEventRoot.removeAll();
         pnlEventRoot.revalidate();
         pnlEventRoot.repaint();
-        
+
         FrmEvent frmEvent = new FrmEvent(FrmEvent.View.NEW);
         frmEvent.setVisible(true);
         pnlEventRoot.add(frmEvent);
@@ -121,7 +121,7 @@ public class FrmMain extends javax.swing.JFrame {
         pnlHeader = new javax.swing.JPanel();
         pnlMenuBar = new javax.swing.JPanel();
         mnuAdminInterface = new javax.swing.JButton();
-        btnExportPDF = new javax.swing.JButton();
+        btnExport = new javax.swing.JButton();
         pnlHeadline = new javax.swing.JPanel();
         lblHeadline = new javax.swing.JLabel();
         splitPnlContent = new javax.swing.JSplitPane();
@@ -129,8 +129,7 @@ public class FrmMain extends javax.swing.JFrame {
         pnlCalendarRoot = new javax.swing.JPanel();
         frmCalendar = new forms.FrmCalendar();
         pnlFooter = new javax.swing.JPanel();
-        btnTest = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        btnNewEvent = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -138,27 +137,47 @@ public class FrmMain extends javax.swing.JFrame {
         pnlHeader.setPreferredSize(new java.awt.Dimension(736, 88));
         pnlHeader.setLayout(new java.awt.GridLayout(2, 1));
 
-        pnlMenuBar.setPreferredSize(new java.awt.Dimension(736, 33));
-        pnlMenuBar.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        pnlMenuBar.setPreferredSize(new java.awt.Dimension(736, 45));
 
         mnuAdminInterface.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/user-settings-line.png"))); // NOI18N
         mnuAdminInterface.setText("Admin Interface");
         mnuAdminInterface.setToolTipText("");
+        mnuAdminInterface.setPreferredSize(new java.awt.Dimension(145, 35));
         mnuAdminInterface.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mnuAdminInterfaceActionPerformed(evt);
             }
         });
-        pnlMenuBar.add(mnuAdminInterface, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
-        btnExportPDF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/file-line.png"))); // NOI18N
-        btnExportPDF.setText("Export to PDF");
-        btnExportPDF.addActionListener(new java.awt.event.ActionListener() {
+        btnExport.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/share-line.png"))); // NOI18N
+        btnExport.setText("Export to PDF");
+        btnExport.setPreferredSize(new java.awt.Dimension(130, 35));
+        btnExport.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnExportPDFActionPerformed(evt);
+                btnExportActionPerformed(evt);
             }
         });
-        pnlMenuBar.add(btnExportPDF, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 0, -1, -1));
+
+        javax.swing.GroupLayout pnlMenuBarLayout = new javax.swing.GroupLayout(pnlMenuBar);
+        pnlMenuBar.setLayout(pnlMenuBarLayout);
+        pnlMenuBarLayout.setHorizontalGroup(
+            pnlMenuBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlMenuBarLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(mnuAdminInterface, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnExport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        pnlMenuBarLayout.setVerticalGroup(
+            pnlMenuBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlMenuBarLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlMenuBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnExport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(mnuAdminInterface, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(8, 8, 8))
+        );
 
         pnlHeader.add(pnlMenuBar);
 
@@ -186,19 +205,14 @@ public class FrmMain extends javax.swing.JFrame {
 
         getContentPane().add(splitPnlContent, java.awt.BorderLayout.CENTER);
 
-        btnTest.setText("Event details");
-        btnTest.setPreferredSize(new java.awt.Dimension(96, 35));
-        btnTest.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnTestActionPerformed(evt);
-            }
-        });
+        pnlFooter.setPreferredSize(new java.awt.Dimension(999, 45));
 
-        jButton1.setText("Event of Day");
-        jButton1.setPreferredSize(new java.awt.Dimension(96, 35));
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnNewEvent.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/add-circle-line.png"))); // NOI18N
+        btnNewEvent.setText("Create new event");
+        btnNewEvent.setPreferredSize(new java.awt.Dimension(150, 35));
+        btnNewEvent.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnNewEventActionPerformed(evt);
             }
         });
 
@@ -207,19 +221,15 @@ public class FrmMain extends javax.swing.JFrame {
         pnlFooterLayout.setHorizontalGroup(
             pnlFooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFooterLayout.createSequentialGroup()
-                .addContainerGap(783, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnTest, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(843, Short.MAX_VALUE)
+                .addComponent(btnNewEvent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         pnlFooterLayout.setVerticalGroup(
             pnlFooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFooterLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(pnlFooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnTest, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(btnNewEvent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -229,78 +239,22 @@ public class FrmMain extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnTestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTestActionPerformed
-
-        this.frmCalendar.setLocalDate(java.time.LocalDate.of(2020, 12, 15));
-
-        java.util.ArrayList<classes.Event> eventList = new ArrayList<>();
-
-        classes.Event e1 = new classes.Event();
-        classes.Event e2 = new classes.Event();
-        classes.Event e3 = new classes.Event();
-        classes.Event e4 = new classes.Event();
-        classes.Event e5 = new classes.Event();
-        classes.Event e6 = new classes.Event();
-        classes.Event e7 = new classes.Event();
-        classes.Event e8 = new classes.Event();
-
-        e1.setDate(LocalDateTime.of(2020, Month.JANUARY, 1, 8, 30));
-        e2.setDate(LocalDateTime.of(2021, Month.JANUARY, 1, 8, 35));
-        e3.setDate(LocalDateTime.of(2021, Month.JANUARY, 1, 8, 50));
-        e4.setDate(LocalDateTime.of(2021, Month.JANUARY, 1, 13, 30));
-        e5.setDate(LocalDateTime.of(2021, Month.JANUARY, 1, 17, 10));
-        e6.setDate(LocalDateTime.of(2021, Month.JANUARY, 1, 18, 0));
-        e7.setDate(LocalDateTime.of(2021, Month.JANUARY, 1, 20, 30));
-        e8.setDate(LocalDateTime.of(2021, Month.JANUARY, 1, 22, 30));
-
-        e1.setName("Business Meeting 0");
-        e2.setName("Business Meeting 1");
-        e3.setName("Business Meeting 2");
-        e4.setName("Business Meeting 3");
-        e5.setName("Business Meeting 4");
-        e6.setName("Business Meeting 5");
-        e7.setName("Business Meeting 6");
-        e8.setName("Business Meeting 7");
-
-        e1.setPriority(Event.Priority.LOW);
-        e2.setPriority(Event.Priority.HIGH);
-        e3.setPriority(Event.Priority.MEDIUM);
-        e4.setPriority(Event.Priority.MEDIUM);
-        e5.setPriority(Event.Priority.HIGH);
-        e6.setPriority(Event.Priority.LOW);
-        e7.setPriority(Event.Priority.HIGH);
-        e8.setPriority(Event.Priority.LOW);
-
-        eventList.add(e1);
-        eventList.add(e2);
-        eventList.add(e3);
-        eventList.add(e4);
-        eventList.add(e5);
-        eventList.add(e6);
-        eventList.add(e7);
-        eventList.add(e8);
-
-        this.frmCalendar.addEvents(eventList);
-
-        displayEventDetails(1);
-    }//GEN-LAST:event_btnTestActionPerformed
-
     private void mnuAdminInterfaceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdminInterfaceActionPerformed
         FrmAdminInterface frmAdminIterface = new FrmAdminInterface(this, true);
         frmAdminIterface.setVisible(true);
     }//GEN-LAST:event_mnuAdminInterfaceActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        System.out.println(this.frmCalendar.getFirstDayOfView().toString() + "\t" + this.frmCalendar.getLastDayOfView().toString());
-        
-        EventHandler e = new EventHandler();
-        this.frmCalendar.addEvents(e.getEventsOfMonth(7, 0));
-        displayAllEventsOfDay(LocalDate.now());
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void btnExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportActionPerformed
+        handlers.ExportHandler expHandler = new handlers.ExportHandler();
+        String path = expHandler.openSaveDialog();
+        if (path != null) {
+            expHandler.writeWeeklySchedule(this.eventHandler.getEventsOfWeek(this.user.getUserId()), LocalDate.of(2021, Month.JANUARY, 4), LocalDate.of(2021, Month.JANUARY, 10), path);
+        }
+    }//GEN-LAST:event_btnExportActionPerformed
 
-    private void btnExportPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportPDFActionPerformed
-        handlers.ExportHandler exp = new handlers.ExportHandler();
-    }//GEN-LAST:event_btnExportPDFActionPerformed
+    private void btnNewEventActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewEventActionPerformed
+        createNewEvent(LocalDate.now());
+    }//GEN-LAST:event_btnNewEventActionPerformed
 
     /**
      * @param args the command line arguments
@@ -338,10 +292,9 @@ public class FrmMain extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnExportPDF;
-    private javax.swing.JButton btnTest;
+    private javax.swing.JButton btnExport;
+    private javax.swing.JButton btnNewEvent;
     private forms.FrmCalendar frmCalendar;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel lblHeadline;
     private javax.swing.JButton mnuAdminInterface;
     private javax.swing.JPanel pnlCalendarRoot;

@@ -315,8 +315,11 @@ public class FrmEvent extends javax.swing.JPanel {
     }
 
     private void btnEditActoinPerformed(ActionEvent e) {
-        Event event = getInput();
-        editEvent(event);
+        int retVal = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete the event?", "Delete user", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+        if (retVal == JOptionPane.YES_OPTION) {
+            Event event = getInput();
+            editEvent(event);
+        }
     }
 
     private void btnDeleteActionPerformed(ActionEvent e) {

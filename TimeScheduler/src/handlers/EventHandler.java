@@ -70,7 +70,7 @@ public class EventHandler {
     }
 
     public void editEvent(Event event) {
-        //dbHandler.
+        dbHandler.editEvent(event);
     }
 
     public void deleteEvent(int eventID) {
