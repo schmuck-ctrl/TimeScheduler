@@ -215,10 +215,18 @@ public class FrmEvent extends javax.swing.JPanel {
     }
 
     private void enableControls(boolean isEnabled) {
-        java.awt.Component[] com = pnlContent.getComponents();
-        for (int i = 0; i < com.length; i++) {
-            com[i].setEnabled(isEnabled);
-        }
+        txtEventName.setEditable(isEnabled);
+        txtEventLocation.setEditable(isEnabled);
+        txtEventDuration.setEditable(isEnabled);
+
+        dtPicker.setEnabled(isEnabled);
+
+        cbEventPriority.setEditable(isEnabled);
+        cbEventNotification.setEditable(isEnabled);
+
+        liEventAttachments.setEnabled(isEnabled);
+        liEventParticipants.setEnabled(isEnabled);
+        
     }
 
     private void handleView(View view) {
@@ -315,15 +323,16 @@ public class FrmEvent extends javax.swing.JPanel {
     }
 
     private void btnEditActoinPerformed(ActionEvent e) {
-        int retVal = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete the event?", "Delete user", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-        if (retVal == JOptionPane.YES_OPTION) {
-            Event event = getInput();
-            editEvent(event);
-        }
+        Event event = getInput();
+        editEvent(event);
+
     }
 
     private void btnDeleteActionPerformed(ActionEvent e) {
-        deleteEvent(this.eventID);
+        int retVal = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete the event?", "Delete user", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+        if (retVal == JOptionPane.YES_OPTION) {
+            deleteEvent(this.eventID);
+        }
     }
 
 // </editor-fold>
