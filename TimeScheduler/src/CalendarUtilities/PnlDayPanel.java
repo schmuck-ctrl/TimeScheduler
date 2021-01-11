@@ -33,6 +33,7 @@ public class PnlDayPanel extends javax.swing.JPanel {
     private java.time.LocalDate day;
     private java.awt.Color selectionColor;
     private TYPE type;
+    private boolean isSelected;
 
     public PnlDayPanel() {
         this.selectionColor = Color.decode("0x0088FF");
@@ -43,26 +44,8 @@ public class PnlDayPanel extends javax.swing.JPanel {
         this.add(this.lblDayNumber);
         this.btnAppointmentList = new ArrayList<>();
         this.setVisible(true);
-
-        //add listener
-        this.addComponentListener(new java.awt.event.ComponentAdapter() {
-
-            public void componentResized(java.awt.event.ComponentEvent evt) {
-                scaleButtons();
-            }
-
-        });
-
-        this.addMouseWheelListener(new java.awt.event.MouseWheelListener() {
-            @Override
-            public void mouseWheelMoved(MouseWheelEvent e) {
-                if (e.getWheelRotation() < 0) {
-                    scrollEventButtons(Scroll.UP);
-                } else {
-                    scrollEventButtons(Scroll.DOWN);
-                }
-            }
-        });
+        this.isSelected = false;
+        this.addPanelListener();
     }
 
     public JLabel getLblDayNumber() {
@@ -177,6 +160,33 @@ public class PnlDayPanel extends javax.swing.JPanel {
         });
     }
 
+    private void addPanelListener(){
+        //add listener
+        this.addComponentListener(new java.awt.event.ComponentAdapter() {
+
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                scaleButtons();
+            }
+
+        });
+
+        this.addMouseWheelListener(new java.awt.event.MouseWheelListener() {
+            @Override
+            public void mouseWheelMoved(MouseWheelEvent e) {
+                
+                if (!isSelected){
+                    return;
+                }
+                
+                if (e.getWheelRotation() < 0) {
+                    scrollEventButtons(Scroll.UP);
+                } else {
+                    scrollEventButtons(Scroll.DOWN);
+                }
+            }
+        });
+    }
+    
     private void clearButton() {
         for (BtnAppointment btn : this.btnAppointmentList) {
             btn.setPriority(btn.getEvent().getPriority());
@@ -223,10 +233,12 @@ public class PnlDayPanel extends javax.swing.JPanel {
 
     public void setSelected() {
         this.setBackground(this.selectionColor);
+        this.isSelected = true;
     }
 
     public void setUnselected() {
         this.setType(this.type);
+        this.isSelected = false;
     }
 
     public void addAppointment(classes.Event event) {

@@ -25,7 +25,8 @@ public class BtnAppointment extends javax.swing.JButton implements Comparable<Bt
         this.setLayout(null);
         this.setVisible(true);
         this.setName("btnAppointment");
-        this.setText(event.getDate().getHour() + ":" + event.getDate().getMinute() + " : " + event.getName());
+        this.setText((event.getDate().getHour() < 10 ? "0" + event.getDate().getHour() : event.getDate().getHour()) + 
+                ":" + (event.getDate().getMinute() < 10 ? "0" + event.getDate().getMinute() : event.getDate().getMinute()) + " : " + event.getName());
         this.setLayout(null);
         this.setFocusPainted(false);
         this.setFocusable(false);
