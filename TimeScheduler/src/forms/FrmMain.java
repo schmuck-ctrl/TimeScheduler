@@ -7,7 +7,7 @@ package forms;
 
 import classes.Event;
 import classes.Operator;
-import handlers.EventHandler;
+import handlers.*;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
@@ -20,6 +20,7 @@ public class FrmMain extends javax.swing.JFrame {
 
     private Operator user = null;
     private EventHandler eventHandler = null;
+    private ReminderHandler reminderHandler = null;
 
     private static FrmMain form = null;
 
@@ -47,6 +48,11 @@ public class FrmMain extends javax.swing.JFrame {
             this.frmCalendar.addEvents(eventHandler.getEventsOfCurrentMonth(this.user.getUserId()));
             lblHeadline.setText("Welcome " + this.user.getFirstName() + " " + this.user.getLastName());
             displayAllEventsOfDay(LocalDate.now());
+            
+            //ReminderHandler
+            this.reminderHandler = new ReminderHandler(eventHandler.getEventsOfCurrentMonth(this.user.getUserId()));
+            reminderHandler.start();
+            
         }
     }
 

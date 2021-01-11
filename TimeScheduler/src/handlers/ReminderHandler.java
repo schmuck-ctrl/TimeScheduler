@@ -31,9 +31,13 @@ public class ReminderHandler extends Thread {
 
                     if (e.getDate().isAfter(java.time.LocalDateTime.now())) {
 
+                        java.time.LocalDateTime ld = e.getReminder();
+                        
                         if (e.getReminder().isBefore(java.time.LocalDateTime.now()) || e.getReminder().isEqual(java.time.LocalDateTime.now())) {
 
                             reminderList.add(e);
+                            
+                            System.out.println("REMINDER: " + e.getName());
                             
                         }
 
