@@ -119,18 +119,17 @@ public class PnlDayPanel extends javax.swing.JPanel {
         }
     }
 
-    private void addButtonListenr(BtnAppointment btn) {
+    private void addButtonListener(BtnAppointment btn) {
         btn.addMouseListener(new java.awt.event.MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() >= 2) {
+                    forms.FrmMain.getInstance().editEvent(btn.getEvent().getID());
+                }
             }
 
             @Override
             public void mousePressed(MouseEvent e) {
-
-                if (e.getClickCount() >= 2) {
-                    forms.FrmMain.getInstance().editEvent(btn.getEvent().getID());
-                }
 
                 clearButtonSelection();
                 btn.setBackground(java.awt.Color.DARK_GRAY);
@@ -244,7 +243,7 @@ public class PnlDayPanel extends javax.swing.JPanel {
     public void addAppointment(classes.Event event) {
         BtnAppointment btn = new BtnAppointment(event);
 
-        this.addButtonListenr(btn);
+        this.addButtonListener(btn);
 
         this.btnAppointmentList.add(btn);
         this.add(btn);
