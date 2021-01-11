@@ -40,6 +40,7 @@ public class EventHandler {
         return event;
     }
     
+    //KANN DAS MAL JEMAND MACHEN?????
     public ArrayList<Event> getEventsOfMonth(int userId, int monthValue) {
         ArrayList<Event> eventList = dbHandler.getThisMonthsEventsByUserID(userId);
         

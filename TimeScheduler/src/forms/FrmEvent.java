@@ -320,6 +320,9 @@ public class FrmEvent extends javax.swing.JPanel {
     private void btnNewActionPerformed(ActionEvent e) {
         Event event = getInput();
         newEvent(event);
+        
+        FrmMain.getInstance().getCalendar().addEvents((new EventHandler()).getEventsOfMonth(FrmMain.getInstance().getCurrentUser().getUserId(), 
+                FrmMain.getInstance().getCalendar().getLocalDate().getMonthValue()));
     }
 
     private void btnEditActoinPerformed(ActionEvent e) {
