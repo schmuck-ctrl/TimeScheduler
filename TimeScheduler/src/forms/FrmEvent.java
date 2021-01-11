@@ -343,6 +343,7 @@ public class FrmEvent extends javax.swing.JPanel {
         int retVal = JOptionPane.showConfirmDialog(FrmMain.getInstance(), "Are you sure you want to delete the event?", "Delete user", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
         if (retVal == JOptionPane.YES_OPTION) {
             deleteEvent(this.eventID);
+            
         }
     }
 

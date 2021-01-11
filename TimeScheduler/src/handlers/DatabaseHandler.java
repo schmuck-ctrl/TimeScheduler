@@ -757,17 +757,6 @@ public class DatabaseHandler {
         return usersEvents;
     }
 
-    public Event getEventByUser(String userID, int EventID) {
-        ArrayList<Integer> EventIDs = getEventIDsOfUser(userID);
-
-        if (EventIDs.contains(EventID)) {
-            return getEventById(EventID);
-        } else {
-            System.out.println("User doesn't take part in this Event or the Event doesn't exist.");
-        }
-        return null;
-    }
-
     public Event getEventByUser(int userID, int eventID) {
         ArrayList<Integer> EventIDs = getEventIDsOfUser(userID);
 

@@ -52,11 +52,11 @@ public class FrmMain extends javax.swing.JFrame {
             lblHeadline.setText("Welcome " + this.user.getFirstName() + " " + this.user.getLastName());
             lblCurrentMonth.setText(this.frmCalendar.getLocalDate().getMonth().toString() + " " + Integer.toString(this.frmCalendar.getLocalDate().getYear()));
             displayAllEventsOfDay(LocalDate.now());
-            
+
             //ReminderHandler
             this.reminderHandler = new ReminderHandler(eventHandler.getEventsOfCurrentMonth(this.user.getUserId()));
             reminderHandler.start();
-            
+
         }
     }
 
@@ -117,7 +117,7 @@ public class FrmMain extends javax.swing.JFrame {
         pnlEventRoot.add(frmEvent);
     }
 
-    public FrmCalendar getCalendar(){
+    public FrmCalendar getCalendar() {
         return this.frmCalendar;
     }
 //FUNKTIONEN DIE VOM CALENDAR AUFGERUFEN WERDEN
@@ -224,6 +224,11 @@ public class FrmMain extends javax.swing.JFrame {
         pnlCalendarControl.setPreferredSize(new java.awt.Dimension(694, 50));
 
         lblCurrentMonth.setText("jLabel1");
+        lblCurrentMonth.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblCurrentMonthMouseClicked(evt);
+            }
+        });
 
         btnNextMonth.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/arrow-right-s-fill.png"))); // NOI18N
         btnNextMonth.addActionListener(new java.awt.event.ActionListener() {
@@ -322,16 +327,47 @@ public class FrmMain extends javax.swing.JFrame {
     }//GEN-LAST:event_btnNewEventActionPerformed
 
     private void btnNextMonthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextMonthActionPerformed
-        this.frmCalendar.setLocalDate(this.frmCalendar.getLocalDate().plusMonths(1));
+        int year = this.frmCalendar.getLocalDate().getYear();
+        int month = this.frmCalendar.getLocalDate().getMonthValue();
+        int day = 1;
+
+        LocalDate nextMonth = LocalDate.of(year, month, day).plusMonths(1);
+
+        if (nextMonth.getYear() == LocalDate.now().getYear() && nextMonth.getMonthValue() == LocalDate.now().getMonthValue()) {
+            this.frmCalendar.setLocalDate(LocalDate.now());
+        } else {
+            this.frmCalendar.setLocalDate(nextMonth);
+        }
+
         lblCurrentMonth.setText(this.frmCalendar.getLocalDate().getMonth().toString() + " " + Integer.toString(this.frmCalendar.getLocalDate().getYear()));
         this.frmCalendar.addEvents(eventHandler.getEventsOfPeriod(this.user.getUserId(), this.frmCalendar.getFirstDayOfView(), this.frmCalendar.getLastDayOfView()));
     }//GEN-LAST:event_btnNextMonthActionPerformed
 
     private void btnPreviousMonthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPreviousMonthActionPerformed
-        this.frmCalendar.setLocalDate(this.frmCalendar.getLocalDate().minusMonths(1));
+        int year = this.frmCalendar.getLocalDate().getYear();
+        int month = this.frmCalendar.getLocalDate().getMonthValue();
+        int day = 1;
+
+        LocalDate previousMonth = LocalDate.of(year, month, day).minusMonths(1);
+
+        if (previousMonth.getYear() == LocalDate.now().getYear() && previousMonth.getMonthValue() == LocalDate.now().getMonthValue()) {
+            this.frmCalendar.setLocalDate(LocalDate.now());
+        } else {
+            this.frmCalendar.setLocalDate(previousMonth);
+        }
+
         lblCurrentMonth.setText(this.frmCalendar.getLocalDate().getMonth().toString() + " " + Integer.toString(this.frmCalendar.getLocalDate().getYear()));
         this.frmCalendar.addEvents(eventHandler.getEventsOfPeriod(this.user.getUserId(), this.frmCalendar.getFirstDayOfView(), this.frmCalendar.getLastDayOfView()));
+
     }//GEN-LAST:event_btnPreviousMonthActionPerformed
+
+    private void lblCurrentMonthMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCurrentMonthMouseClicked
+        if (evt.getClickCount() == 2) {
+            this.frmCalendar.setLocalDate(LocalDate.now());
+            lblCurrentMonth.setText(this.frmCalendar.getLocalDate().getMonth().toString() + " " + Integer.toString(this.frmCalendar.getLocalDate().getYear()));
+            this.frmCalendar.addEvents(eventHandler.getEventsOfPeriod(this.user.getUserId(), this.frmCalendar.getFirstDayOfView(), this.frmCalendar.getLastDayOfView()));
+        }
+    }//GEN-LAST:event_lblCurrentMonthMouseClicked
 
     /**
      * @param args the command line arguments
