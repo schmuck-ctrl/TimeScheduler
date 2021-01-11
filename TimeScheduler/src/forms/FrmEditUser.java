@@ -271,6 +271,8 @@ public class FrmEditUser extends javax.swing.JDialog {
                 uHandler.editUser(new User(user.getUserId(), user.getFirstName(), user.getLastName(), user.getEmail()));
             }
         }
+        
+        this.dispose();
     }//GEN-LAST:event_btnOkActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
