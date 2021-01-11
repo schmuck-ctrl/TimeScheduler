@@ -50,6 +50,7 @@ public class FrmMain extends javax.swing.JFrame {
             this.user = currentUser;
             this.frmCalendar.addEvents(eventHandler.getEventsOfPeriod(this.user.getUserId(), this.frmCalendar.getFirstDayOfView(), this.frmCalendar.getLastDayOfView()));
             lblHeadline.setText("Welcome " + this.user.getFirstName() + " " + this.user.getLastName());
+            lblCurrentMonth.setText(this.frmCalendar.getLocalDate().getMonth().toString() + " " + Integer.toString(this.frmCalendar.getLocalDate().getYear()));
             displayAllEventsOfDay(LocalDate.now());
             
             //ReminderHandler
@@ -141,6 +142,10 @@ public class FrmMain extends javax.swing.JFrame {
         pnlEventRoot = new javax.swing.JPanel();
         pnlCalendarRoot = new javax.swing.JPanel();
         frmCalendar = new forms.FrmCalendar();
+        pnlCalendarControl = new javax.swing.JPanel();
+        lblCurrentMonth = new javax.swing.JLabel();
+        btnNextMonth = new javax.swing.JButton();
+        btnPreviousMonth = new javax.swing.JButton();
         pnlFooter = new javax.swing.JPanel();
         btnNewEvent = new javax.swing.JButton();
 
@@ -215,6 +220,52 @@ public class FrmMain extends javax.swing.JFrame {
         pnlCalendarRoot.setLayout(new java.awt.BorderLayout());
         pnlCalendarRoot.add(frmCalendar, java.awt.BorderLayout.CENTER);
 
+        pnlCalendarControl.setBackground(new java.awt.Color(255, 51, 51));
+        pnlCalendarControl.setPreferredSize(new java.awt.Dimension(694, 50));
+
+        lblCurrentMonth.setText("jLabel1");
+
+        btnNextMonth.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/arrow-right-s-fill.png"))); // NOI18N
+        btnNextMonth.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNextMonthActionPerformed(evt);
+            }
+        });
+
+        btnPreviousMonth.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/arrow-left-s-fill.png"))); // NOI18N
+        btnPreviousMonth.setToolTipText("");
+        btnPreviousMonth.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPreviousMonthActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pnlCalendarControlLayout = new javax.swing.GroupLayout(pnlCalendarControl);
+        pnlCalendarControl.setLayout(pnlCalendarControlLayout);
+        pnlCalendarControlLayout.setHorizontalGroup(
+            pnlCalendarControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlCalendarControlLayout.createSequentialGroup()
+                .addContainerGap(218, Short.MAX_VALUE)
+                .addComponent(btnPreviousMonth)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblCurrentMonth, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnNextMonth)
+                .addGap(123, 123, 123))
+        );
+        pnlCalendarControlLayout.setVerticalGroup(
+            pnlCalendarControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlCalendarControlLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(pnlCalendarControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblCurrentMonth)
+                    .addComponent(btnNextMonth)
+                    .addComponent(btnPreviousMonth))
+                .addGap(36, 36, 36))
+        );
+
+        pnlCalendarRoot.add(pnlCalendarControl, java.awt.BorderLayout.PAGE_START);
+
         splitPnlContent.setRightComponent(pnlCalendarRoot);
 
         getContentPane().add(splitPnlContent, java.awt.BorderLayout.CENTER);
@@ -270,6 +321,16 @@ public class FrmMain extends javax.swing.JFrame {
         createNewEvent(LocalDate.now());
     }//GEN-LAST:event_btnNewEventActionPerformed
 
+    private void btnNextMonthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextMonthActionPerformed
+        this.frmCalendar.setLocalDate(this.frmCalendar.getLocalDate().plusMonths(1));
+        lblCurrentMonth.setText(this.frmCalendar.getLocalDate().getMonth().toString() + " " + Integer.toString(this.frmCalendar.getLocalDate().getYear()));
+    }//GEN-LAST:event_btnNextMonthActionPerformed
+
+    private void btnPreviousMonthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPreviousMonthActionPerformed
+        this.frmCalendar.setLocalDate(this.frmCalendar.getLocalDate().minusMonths(1));
+        lblCurrentMonth.setText(this.frmCalendar.getLocalDate().getMonth().toString() + " " + Integer.toString(this.frmCalendar.getLocalDate().getYear()));
+    }//GEN-LAST:event_btnPreviousMonthActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -308,9 +369,13 @@ public class FrmMain extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnExport;
     private javax.swing.JButton btnNewEvent;
+    private javax.swing.JButton btnNextMonth;
+    private javax.swing.JButton btnPreviousMonth;
     private forms.FrmCalendar frmCalendar;
+    private javax.swing.JLabel lblCurrentMonth;
     private javax.swing.JLabel lblHeadline;
     private javax.swing.JButton mnuAdminInterface;
+    private javax.swing.JPanel pnlCalendarControl;
     private javax.swing.JPanel pnlCalendarRoot;
     private javax.swing.JPanel pnlEventRoot;
     private javax.swing.JPanel pnlFooter;

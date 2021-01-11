@@ -121,7 +121,7 @@ public class FrmEventsOfDay extends javax.swing.JPanel {
             Event selctedEvent = liModelEventsOfDay.getElementAt(liEventsOfDay.getSelectedIndex());
             displayEventDetail(selctedEvent);
         }else {
-            JOptionPane.showMessageDialog(this, "You have to select a event first in order to see the details..", "No event selected", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(FrmMain.getInstance(), "You have to select a event first in order to see the details.", "No event selected", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_btnOpenActionPerformed
 
