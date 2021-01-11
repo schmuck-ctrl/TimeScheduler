@@ -65,9 +65,9 @@ public class ExportHandler {
                 myWriter.write("\n");
                 myWriter.write("Duration:\t\t" + e.getDuration() + " Minutes");
                 myWriter.write("\n");
-                myWriter.write("Organisator:\t\t" + e.getOrganisator().getFirstName() + " " + e.getOrganisator().getLastName());
+                myWriter.write("Organisator:\t\t" + e.getHost().getFirstName() + " " + e.getHost().getLastName());
                 myWriter.write("\n");
-                myWriter.write("Organisator email:\t" + e.getOrganisator().getEmail());
+                myWriter.write("Organisator email:\t" + e.getHost().getEmail());
                 myWriter.write("\n");
                 myWriter.write("Participants:\t\t" + e.getParticipants().size());
                 myWriter.write("\n");

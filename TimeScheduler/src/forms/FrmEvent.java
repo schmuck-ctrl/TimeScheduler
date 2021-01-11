@@ -75,6 +75,7 @@ public class FrmEvent extends javax.swing.JPanel {
             txtEventName.setText(event.getName());
             dtPicker.datePicker.setDate(LocalDate.of(event.getDate().getYear(), event.getDate().getMonth(), event.getDate().getDayOfMonth()));
             dtPicker.timePicker.setTime(LocalTime.of(event.getDate().getHour(), event.getDate().getMinute()));
+            txtEventHost.setText(event.getHost().getFirstName() + " " + event.getHost().getLastName());
             txtEventDuration.setText(String.valueOf(event.getDuration()));
             txtEventLocation.setText(event.getLocation());
 
@@ -124,7 +125,7 @@ public class FrmEvent extends javax.swing.JPanel {
     private Event getInput() {
 
         String name = null;
-        Operator organisator = forms.FrmMain.getInstance().getCurrentUser();
+        Operator host = forms.FrmMain.getInstance().getCurrentUser();
         LocalDateTime date = null;
         int duration = 0;
         String location = null;
@@ -145,7 +146,7 @@ public class FrmEvent extends javax.swing.JPanel {
         if (!txtEventLocation.getText().isBlank()) {
             location = txtEventLocation.getText();
         }
-
+        
         int year = dtPicker.datePicker.getDate().getYear();
         int month = dtPicker.datePicker.getDate().getMonthValue();
         int dayOfMonth = dtPicker.datePicker.getDate().getDayOfMonth();
@@ -200,9 +201,9 @@ public class FrmEvent extends javax.swing.JPanel {
 
         Event newEvent = null;
         if(eventID == -1)
-            newEvent = new Event(name, organisator, date, duration, location, participants, attachments, priority, notification);
+            newEvent = new Event(name, host, date, duration, location, participants, attachments, priority, notification);
         else
-            newEvent = new Event(eventID, name, organisator, date, duration, location, participants, attachments, priority, notification);
+            newEvent = new Event(eventID, name, host, date, duration, location, participants, attachments, priority, notification);
         
         return newEvent;
     }
@@ -361,6 +362,9 @@ public class FrmEvent extends javax.swing.JPanel {
         lblDateTime = new javax.swing.JLabel();
         dtPicker = new com.github.lgooddatepicker.components.DateTimePicker();
         filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20), new java.awt.Dimension(32767, 20));
+        lblEventHost = new javax.swing.JLabel();
+        txtEventHost = new javax.swing.JTextField();
+        filler9 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20), new java.awt.Dimension(32767, 20));
         lblEventDuration = new javax.swing.JLabel();
         txtEventDuration = new javax.swing.JTextField();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20), new java.awt.Dimension(32767, 20));
@@ -410,6 +414,12 @@ public class FrmEvent extends javax.swing.JPanel {
         pnlContent.add(lblDateTime);
         pnlContent.add(dtPicker);
         pnlContent.add(filler4);
+
+        lblEventHost.setText("Host:");
+        lblEventHost.setToolTipText("");
+        pnlContent.add(lblEventHost);
+        pnlContent.add(txtEventHost);
+        pnlContent.add(filler9);
 
         lblEventDuration.setText("Duration");
         pnlContent.add(lblEventDuration);
@@ -514,6 +524,7 @@ public class FrmEvent extends javax.swing.JPanel {
     private javax.swing.Box.Filler filler6;
     private javax.swing.Box.Filler filler7;
     private javax.swing.Box.Filler filler8;
+    private javax.swing.Box.Filler filler9;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JScrollPane jScrollPane1;
@@ -521,6 +532,7 @@ public class FrmEvent extends javax.swing.JPanel {
     private javax.swing.JLabel lblDateTime;
     private javax.swing.JLabel lblEventAttachments;
     private javax.swing.JLabel lblEventDuration;
+    private javax.swing.JLabel lblEventHost;
     private javax.swing.JLabel lblEventLocation;
     private javax.swing.JLabel lblEventName;
     private javax.swing.JLabel lblEventNotification;
@@ -535,6 +547,7 @@ public class FrmEvent extends javax.swing.JPanel {
     private javax.swing.JPanel pnlFooter;
     private javax.swing.JPanel pnlHeader;
     private javax.swing.JTextField txtEventDuration;
+    private javax.swing.JTextField txtEventHost;
     private javax.swing.JTextField txtEventLocation;
     private javax.swing.JTextField txtEventName;
     // End of variables declaration//GEN-END:variables
