@@ -75,12 +75,12 @@ public class EventHandler {
 
     public void addEvent(Event event) {
         dbHandler.addEvent(event);
-        // eHandler.emailSenderAddEvent(dbHandler.getOrganiserByEventName(event.getName()),dbHandler.getParticipantsByEventName(event.getName()));
+        //eHandler.emailSenderAddEvent(dbHandler.getOrganiserByID(event.getID()),dbHandler.getParticipantsByID(event.getID()));
     }
 
     public void editEvent(Event event) {
         dbHandler.editEvent(event);
-        // eHandler.emailSenderEditEvent(dbHandler.getOrganiserByEventName(event.getName()),dbHandler.getParticipantsByEventName(event.getName()));
+        //eHandler.emailSenderEditEvent(dbHandler.getOrganiserByID(event.getID()),dbHandler.getParticipantsByID(event.getID()));
     }
 
     public void deleteEvent(int eventID) {
