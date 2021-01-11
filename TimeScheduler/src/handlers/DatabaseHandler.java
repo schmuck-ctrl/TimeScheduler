@@ -632,7 +632,7 @@ public class DatabaseHandler {
         
         String sqlEvent = "INSERT INTO event (E_eventName, E_eventDuration, E_eventDate, E_priority, E_eventLocation, E_reminder, E_notification) VALUES (?, ?, ?, ?, ?, ?, ?);";
         ArrayList<Operator> temp = Event.getParticipants();
-        temp.add(Event.getOrganisator());
+        temp.add(Event.getHost());
         try (PreparedStatement stmt = con.prepareStatement(sqlEvent)) {
             stmt.setString(1, Event.getName());
             stmt.setInt(2, Event.getDuration());
@@ -646,7 +646,7 @@ public class DatabaseHandler {
             System.out.println(ex.getMessage());
         }
         
-        setOrganiserOfEvent(Event.getOrganisator().getUserId(), getMaxEventID());
+        setOrganiserOfEvent(Event.getHost().getUserId(), getMaxEventID());
         insertParticipantsOfEvent(temp, getMaxEventID());
     }
 
