@@ -260,8 +260,8 @@ public class PnlDayPanel extends javax.swing.JPanel {
             this.remove(btn);
         }
 
-        this.revalidate();
-        this.repaint();
+//        this.revalidate();
+//        this.repaint();
 
         int count = 0;
         int buttonPadding = (int) Math.ceil((float) this.getHeight() / 40);

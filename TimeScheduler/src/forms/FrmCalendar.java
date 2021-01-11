@@ -42,7 +42,14 @@ public class FrmCalendar extends javax.swing.JPanel {
 
     private void createView() {
 
-        this.removeAll();
+        //remove everything except PnlWeekdays
+        for (java.awt.Component c : this.getComponents()){
+            if (c instanceof PnlWeekdays)
+                continue;
+            this.remove(c);
+        }
+        
+        
         this.revalidate();
         this.repaint();
 
@@ -240,8 +247,8 @@ public class FrmCalendar extends javax.swing.JPanel {
 
     private void formComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentResized
         scaleView();
-        this.revalidate();
-        this.repaint();
+//        this.revalidate();
+//        this.repaint();
     }//GEN-LAST:event_formComponentResized
 
     private void createDayPanelListener(PnlDayPanel dayPanel) {
@@ -297,6 +304,7 @@ public class FrmCalendar extends javax.swing.JPanel {
     }
     
     public void setWeekdaysPanel(){
+        
         this.pnlWeekdays = new PnlWeekdays(this.weekdaysheight);
         this.add(this.pnlWeekdays);
         this.pnlWeekdays.resize();
@@ -330,8 +338,8 @@ public class FrmCalendar extends javax.swing.JPanel {
         pnl.setSelected();
         
 
-        this.revalidate();
-        this.repaint();
+//        this.revalidate();
+//        this.repaint();
     }
     
     public java.time.LocalDate getLocalDate() {
