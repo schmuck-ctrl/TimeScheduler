@@ -94,6 +94,11 @@ public class FrmEventsOfDay extends javax.swing.JPanel {
 
         pnlContent.setLayout(new java.awt.BorderLayout());
 
+        liEventsOfDay.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                liEventsOfDayMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(liEventsOfDay);
 
         pnlContent.add(jScrollPane1, java.awt.BorderLayout.CENTER);
@@ -124,6 +129,17 @@ public class FrmEventsOfDay extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(FrmMain.getInstance(), "You have to select a event first in order to see the details.", "No event selected", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_btnOpenActionPerformed
+
+    private void liEventsOfDayMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_liEventsOfDayMouseClicked
+        if(evt.getClickCount() == 2) {
+            if (liEventsOfDay.getSelectedIndex() >= 0) {
+            Event selctedEvent = liModelEventsOfDay.getElementAt(liEventsOfDay.getSelectedIndex());
+            displayEventDetail(selctedEvent);
+        }else {
+            JOptionPane.showMessageDialog(FrmMain.getInstance(), "You have to select a event first in order to see the details.", "No event selected", JOptionPane.INFORMATION_MESSAGE);
+        }
+        }
+    }//GEN-LAST:event_liEventsOfDayMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
