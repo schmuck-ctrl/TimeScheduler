@@ -159,7 +159,6 @@ public class Event {
     }
 
     public LocalDateTime getReminder() {
-        this.reminder = this.calculateReminder();
         return this.reminder;
     }
     
