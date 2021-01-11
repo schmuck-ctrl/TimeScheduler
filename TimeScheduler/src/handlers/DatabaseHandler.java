@@ -41,24 +41,23 @@ public class DatabaseHandler {
             for (Operator participant : toBeAdded) {
                 stmt.setInt(1, participant.getUserId());
                 stmt.setInt(2, eventID);
-                //stmt.addBatch();
-                System.out.println(stmt.toString());
+                stmt.addBatch();
             }
-            //stmt.executeBatch();
+            stmt.executeBatch();
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println("add parti: "+ex.getMessage());
         }
     }
     
     private void deleteParticipants(int eventID) {
         
-        String deleteParticipant = "DELETE FROM participants WHERE P_eventID = ?;";
+        String deleteParticipant = "DELETE FROM participant WHERE P_eventID = ?;";
         //int update_successfull = -1;
         try ( PreparedStatement stmt = con.prepareStatement(deleteParticipant)) {
-            System.out.println(stmt.toString());
-            //stmt.executeQuery();
+            stmt.setInt(1, eventID); 
+            stmt.executeUpdate();
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println("delete parti: "+ex.getMessage());
         }
         //return update_successfull;
     }
@@ -585,11 +584,11 @@ public class DatabaseHandler {
             stmt.setTimestamp(6, Timestamp.valueOf(toBeEdited.getReminder()));
             stmt.setString(7, toBeEdited.getNotification().toString());
             stmt.setInt(8, toBeEdited.getID());
-            System.out.println(stmt.toString());
-            //stmt.executeUpdate();
+            
+            stmt.executeUpdate();
 
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println("editEvent: "+ ex.getMessage());
         }
         
         System.out.println("Event erfolgreich bearbeitet");
@@ -642,7 +641,7 @@ public class DatabaseHandler {
             stmt.setInt(1, EventID);
             stmt.executeUpdate();
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println("delete event:"+ex.getMessage());
         }
     }
 
@@ -848,7 +847,7 @@ public class DatabaseHandler {
     }
     
     
-    public ArrayList<Event> getUsersEventsInACertainTime(int userID, LocalDate from, LocalDate to){
+    public ArrayList<Event> getEventsOfPeriod(int userID, LocalDate from, LocalDate to){
         ArrayList<Integer> EventIDs = getEventIDsOfUser(userID);
         ArrayList<Event> usersEvents = new ArrayList<>();
         String sql = "SELECT * FROM eventDetails WHERE ED_userID = ? AND ED_eventDate >= ? AND ED_eventDate <= ? AND ED_deleted = 0;";
