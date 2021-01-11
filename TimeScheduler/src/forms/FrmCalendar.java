@@ -247,8 +247,8 @@ public class FrmCalendar extends javax.swing.JPanel {
 
     private void formComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentResized
         scaleView();
-//        this.revalidate();
-//        this.repaint();
+        this.revalidate();
+        this.repaint();
     }//GEN-LAST:event_formComponentResized
 
     private void createDayPanelListener(PnlDayPanel dayPanel) {
@@ -338,8 +338,8 @@ public class FrmCalendar extends javax.swing.JPanel {
         pnl.setSelected();
         
 
-//        this.revalidate();
-//        this.repaint();
+        this.revalidate();
+        this.repaint();
     }
     
     public java.time.LocalDate getLocalDate() {
