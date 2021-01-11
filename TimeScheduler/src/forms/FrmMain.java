@@ -106,7 +106,11 @@ public class FrmMain extends javax.swing.JFrame {
         frmEvent.setVisible(true);
         pnlEventRoot.add(frmEvent);
     }
-    //FUNKTIONEN DIE VOM CALENDAR AUFGERUFEN WERDEN
+
+    public FrmCalendar getCalendar(){
+        return this.frmCalendar;
+    }
+//FUNKTIONEN DIE VOM CALENDAR AUFGERUFEN WERDEN
     // </editor-fold> 
 
     /**
