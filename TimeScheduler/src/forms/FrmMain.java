@@ -324,11 +324,13 @@ public class FrmMain extends javax.swing.JFrame {
     private void btnNextMonthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextMonthActionPerformed
         this.frmCalendar.setLocalDate(this.frmCalendar.getLocalDate().plusMonths(1));
         lblCurrentMonth.setText(this.frmCalendar.getLocalDate().getMonth().toString() + " " + Integer.toString(this.frmCalendar.getLocalDate().getYear()));
+        this.frmCalendar.addEvents(eventHandler.getEventsOfPeriod(this.user.getUserId(), this.frmCalendar.getFirstDayOfView(), this.frmCalendar.getLastDayOfView()));
     }//GEN-LAST:event_btnNextMonthActionPerformed
 
     private void btnPreviousMonthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPreviousMonthActionPerformed
         this.frmCalendar.setLocalDate(this.frmCalendar.getLocalDate().minusMonths(1));
         lblCurrentMonth.setText(this.frmCalendar.getLocalDate().getMonth().toString() + " " + Integer.toString(this.frmCalendar.getLocalDate().getYear()));
+        this.frmCalendar.addEvents(eventHandler.getEventsOfPeriod(this.user.getUserId(), this.frmCalendar.getFirstDayOfView(), this.frmCalendar.getLastDayOfView()));
     }//GEN-LAST:event_btnPreviousMonthActionPerformed
 
     /**
