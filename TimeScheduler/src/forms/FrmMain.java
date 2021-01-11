@@ -143,9 +143,9 @@ public class FrmMain extends javax.swing.JFrame {
         pnlCalendarRoot = new javax.swing.JPanel();
         frmCalendar = new forms.FrmCalendar();
         pnlCalendarControl = new javax.swing.JPanel();
+        btnPreviousMonth = new javax.swing.JButton();
         lblCurrentMonth = new javax.swing.JLabel();
         btnNextMonth = new javax.swing.JButton();
-        btnPreviousMonth = new javax.swing.JButton();
         pnlFooter = new javax.swing.JPanel();
         btnNewEvent = new javax.swing.JButton();
 
@@ -220,22 +220,7 @@ public class FrmMain extends javax.swing.JFrame {
         pnlCalendarRoot.setLayout(new java.awt.BorderLayout());
         pnlCalendarRoot.add(frmCalendar, java.awt.BorderLayout.CENTER);
 
-        pnlCalendarControl.setBackground(new java.awt.Color(255, 51, 51));
         pnlCalendarControl.setPreferredSize(new java.awt.Dimension(694, 50));
-
-        lblCurrentMonth.setText("jLabel1");
-        lblCurrentMonth.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lblCurrentMonthMouseClicked(evt);
-            }
-        });
-
-        btnNextMonth.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/arrow-right-s-fill.png"))); // NOI18N
-        btnNextMonth.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnNextMonthActionPerformed(evt);
-            }
-        });
 
         btnPreviousMonth.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/arrow-left-s-fill.png"))); // NOI18N
         btnPreviousMonth.setToolTipText("");
@@ -244,30 +229,26 @@ public class FrmMain extends javax.swing.JFrame {
                 btnPreviousMonthActionPerformed(evt);
             }
         });
+        pnlCalendarControl.add(btnPreviousMonth);
 
-        javax.swing.GroupLayout pnlCalendarControlLayout = new javax.swing.GroupLayout(pnlCalendarControl);
-        pnlCalendarControl.setLayout(pnlCalendarControlLayout);
-        pnlCalendarControlLayout.setHorizontalGroup(
-            pnlCalendarControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlCalendarControlLayout.createSequentialGroup()
-                .addContainerGap(218, Short.MAX_VALUE)
-                .addComponent(btnPreviousMonth)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblCurrentMonth, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnNextMonth)
-                .addGap(123, 123, 123))
-        );
-        pnlCalendarControlLayout.setVerticalGroup(
-            pnlCalendarControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlCalendarControlLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(pnlCalendarControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblCurrentMonth)
-                    .addComponent(btnNextMonth)
-                    .addComponent(btnPreviousMonth))
-                .addGap(36, 36, 36))
-        );
+        lblCurrentMonth.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lblCurrentMonth.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblCurrentMonth.setToolTipText("");
+        lblCurrentMonth.setPreferredSize(new java.awt.Dimension(150, 30));
+        lblCurrentMonth.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblCurrentMonthMouseClicked(evt);
+            }
+        });
+        pnlCalendarControl.add(lblCurrentMonth);
+
+        btnNextMonth.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/arrow-right-s-fill.png"))); // NOI18N
+        btnNextMonth.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNextMonthActionPerformed(evt);
+            }
+        });
+        pnlCalendarControl.add(btnNextMonth);
 
         pnlCalendarRoot.add(pnlCalendarControl, java.awt.BorderLayout.PAGE_START);
 
