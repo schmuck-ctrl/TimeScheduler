@@ -123,7 +123,6 @@ public class FrmEvent extends javax.swing.JPanel {
 
     private Event getInput() {
 
-        int id = -1;
         String name = null;
         Operator organisator = forms.FrmMain.getInstance().getCurrentUser();
         LocalDateTime date = null;
@@ -199,8 +198,12 @@ public class FrmEvent extends javax.swing.JPanel {
             attachments.add(attachment);
         }
 
-        Event newEvent = new Event(name, organisator, date, duration, location, participants, attachments, priority, notification);
-
+        Event newEvent = null;
+        if(eventID == -1)
+            newEvent = new Event(name, organisator, date, duration, location, participants, attachments, priority, notification);
+        else
+            newEvent = new Event(eventID, name, organisator, date, duration, location, participants, attachments, priority, notification);
+        
         return newEvent;
     }
 

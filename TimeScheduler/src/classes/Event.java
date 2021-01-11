@@ -72,6 +72,20 @@ public class Event {
         this.setReminder(calculateReminder());
     }
     
+    public Event(int eventID, String eventName, Operator orginator, LocalDateTime event, int eventDuration, String eventLocation, ArrayList<Operator> participants, ArrayList<File> files, Priority Priority, Notification notification) {
+        this.setID(eventID);
+        this.setName(eventName);
+        this.setOrganisator(orginator);
+        this.setDate(event);
+        this.setDuration(eventDuration);
+        this.setLocation(eventLocation);
+        this.setParticipants(participants);
+        this.setAttachments(files);
+        this.setPriority(Priority);
+        this.setNotification(notification);
+        this.setReminder(calculateReminder());
+    }
+    
     private void setID(int eventID) {
         if(eventID >= 0)
             this.id = eventID;
