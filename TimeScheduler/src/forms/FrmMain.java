@@ -8,6 +8,8 @@ package forms;
 import classes.Event;
 import classes.Operator;
 import handlers.*;
+import java.awt.Frame;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
@@ -38,6 +40,7 @@ public class FrmMain extends javax.swing.JFrame {
      */
     private FrmMain() {
         initComponents();
+        this.setExtendedState(Frame.MAXIMIZED_BOTH);
         eventHandler = new EventHandler();
     }
 
@@ -45,7 +48,7 @@ public class FrmMain extends javax.swing.JFrame {
     public void setCurrentUser(Operator currentUser) {
         if (currentUser != null) {
             this.user = currentUser;
-            this.frmCalendar.addEvents(eventHandler.getEventsOfCurrentMonth(this.user.getUserId()));
+            this.frmCalendar.addEvents(eventHandler.getEventsOfPeriod(this.user.getUserId(), this.frmCalendar.getFirstDayOfView(), this.frmCalendar.getLastDayOfView()));
             lblHeadline.setText("Welcome " + this.user.getFirstName() + " " + this.user.getLastName());
             displayAllEventsOfDay(LocalDate.now());
             
@@ -142,6 +145,7 @@ public class FrmMain extends javax.swing.JFrame {
         btnNewEvent = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setFocusCycleRoot(false);
 
         pnlHeader.setMinimumSize(new java.awt.Dimension(145, 88));
         pnlHeader.setPreferredSize(new java.awt.Dimension(736, 88));
@@ -258,7 +262,7 @@ public class FrmMain extends javax.swing.JFrame {
         handlers.ExportHandler expHandler = new handlers.ExportHandler();
         String path = expHandler.openSaveDialog();
         if (path != null) {
-            expHandler.writeWeeklySchedule(this.eventHandler.getEventsOfWeek(this.user.getUserId()), LocalDate.of(2021, Month.JANUARY, 4), LocalDate.of(2021, Month.JANUARY, 10), path);
+            expHandler.writeWeeklySchedule(this.eventHandler.getEventsOfWeek(this.user.getUserId()), LocalDate.now().with(DayOfWeek.MONDAY), LocalDate.now().with(DayOfWeek.SUNDAY), path);
         }
     }//GEN-LAST:event_btnExportActionPerformed
 

@@ -9,6 +9,7 @@ import EventUtilities.EventsOfDayListModel;
 import classes.Event;
 import java.util.ArrayList;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
@@ -23,11 +24,12 @@ public class FrmEventsOfDay extends javax.swing.JPanel {
 
     /**
      * Creates new form FrmEventsOfDay
+     *
      * @param eventsOfDay
      */
     public FrmEventsOfDay(ArrayList<Event> eventsOfDay) {
         initComponents();
-     
+
         liModelEventsOfDay = new EventsOfDayListModel();
 
         liEventsOfDay.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -40,7 +42,7 @@ public class FrmEventsOfDay extends javax.swing.JPanel {
             liModelEventsOfDay.addElement(eventsOfDay);
 
             liEventsOfDay.setModel((ListModel) liModelEventsOfDay);
-            
+
             lblHeadline.setText("Your daily appointments:");
             this.liEventsOfDay.setVisible(true);
             btnOpen.setVisible(true);
@@ -115,8 +117,12 @@ public class FrmEventsOfDay extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenActionPerformed
-        Event selctedEvent = liModelEventsOfDay.getElementAt(liEventsOfDay.getSelectedIndex());
-        displayEventDetail(selctedEvent);
+        if (liEventsOfDay.getSelectedIndex() >= 0) {
+            Event selctedEvent = liModelEventsOfDay.getElementAt(liEventsOfDay.getSelectedIndex());
+            displayEventDetail(selctedEvent);
+        }else {
+            JOptionPane.showMessageDialog(this, "You have to select a event first in order to see the details..", "No event selected", JOptionPane.INFORMATION_MESSAGE);
+        }
     }//GEN-LAST:event_btnOpenActionPerformed
 
 

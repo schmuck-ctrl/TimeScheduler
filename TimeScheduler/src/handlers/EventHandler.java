@@ -43,7 +43,7 @@ public class EventHandler {
     }
     
     public ArrayList<Event> getEventsOfMonth(int userId, int monthValue) {
-        ArrayList<Event> eventList = null;
+        ArrayList<Event> eventList = dbHandler.getUsersEventsOfACertainMonth(userId, monthValue);
         
         return eventList;
     }
@@ -55,7 +55,7 @@ public class EventHandler {
     }
     
     public ArrayList<Event> getEventsOfPeriod(int userId, LocalDate start, LocalDate end) {
-        ArrayList<Event> eventList = null;
+        ArrayList<Event> eventList = dbHandler.getEventsOfPeriod(userId, start, end);
         
         return eventList;
     }

@@ -222,11 +222,12 @@ public class FrmEvent extends javax.swing.JPanel {
         txtEventName.setEditable(isEnabled);
         txtEventLocation.setEditable(isEnabled);
         txtEventDuration.setEditable(isEnabled);
-
+        txtEventHost.setEditable(isEnabled);
+        
         dtPicker.setEnabled(isEnabled);
 
-        cbEventPriority.setEditable(isEnabled);
-        cbEventNotification.setEditable(isEnabled);
+        cbEventPriority.setEnabled(isEnabled);
+        cbEventNotification.setEnabled(isEnabled);
 
         liEventAttachments.setEnabled(isEnabled);
         liEventParticipants.setEnabled(isEnabled);
@@ -332,6 +333,9 @@ public class FrmEvent extends javax.swing.JPanel {
     private void btnEditActoinPerformed(ActionEvent e) {
         Event event = getInput();
         editEvent(event);
+        
+        FrmMain.getInstance().getCalendar().addEvents((new EventHandler()).getEventsOfMonth(FrmMain.getInstance().getCurrentUser().getUserId(), 
+                FrmMain.getInstance().getCalendar().getLocalDate().getMonthValue()));
 
     }
 
