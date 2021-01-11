@@ -596,7 +596,7 @@ public class DatabaseHandler {
 
     public ArrayList<Event> getAllEvents() {
         ArrayList<Event> Events = new ArrayList<>();
-        String sql = "SELECT * FROM eventDetails WHERE ED_deleted = 0;";
+        String sql = "SELECT * FROM eventDetails WHERE ED_deleted = 0 ORDER BY ED_eventDate;";
 
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             try ( ResultSet rs = stmt.executeQuery()) {
@@ -617,7 +617,7 @@ public class DatabaseHandler {
         String sqlEvent = "INSERT INTO event (E_eventName, E_eventDuration, E_eventDate, E_priority, E_eventLocation, E_reminder, E_notification) VALUES (?, ?, ?, ?, ?, ?, ?);";
         ArrayList<Operator> temp = Event.getParticipants();
         temp.add(Event.getHost());
-        try (PreparedStatement stmt = con.prepareStatement(sqlEvent)) {
+        try ( PreparedStatement stmt = con.prepareStatement(sqlEvent)) {
             stmt.setString(1, Event.getName());
             stmt.setInt(2, Event.getDuration());
             stmt.setTimestamp(3, java.sql.Timestamp.valueOf(Event.getDate()));
@@ -629,7 +629,7 @@ public class DatabaseHandler {
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
-        
+
         setOrganiserOfEvent(Event.getHost().getUserId(), getMaxEventID());
         insertParticipantsOfEvent(temp, getMaxEventID());
     }
@@ -647,7 +647,7 @@ public class DatabaseHandler {
     public ArrayList<Event> getEventsByUsername(String username) {
         ArrayList<Event> usersEvents = new ArrayList<>();
         String usersEventIDs = listToString(getEventIDsOfUser(username));
-        String sql = "SELECT * FROM eventDetails WHERE ED_EventID IN (" + usersEventIDs + ") AND ED_deleted = 0;";
+        String sql = "SELECT * FROM eventDetails WHERE ED_EventID IN (" + usersEventIDs + ") AND ED_deleted = 0 ORDER BY ED_eventDate;";
 
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             try ( ResultSet rs = stmt.executeQuery()) {
@@ -672,7 +672,7 @@ public class DatabaseHandler {
                 = "SELECT * FROM eventdetails WHERE ed_eventdate >= "
                 + "(SELECT MAKEDATE(YEAR(CURDATE()),1) + INTERVAL ? MONTH) "
                 + "AND ed_eventdate <= (SELECT MAKEDATE(YEAR(CURDATE()),1) + INTERVAL ? MONTH) "
-                + "AND ed_userID = ? AND ed_deleted = 0;";
+                + "AND ed_userID = ? AND ed_deleted = 0 ORDER BY ed_eventDate;";
 
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setInt(1, month - 1);
@@ -703,7 +703,12 @@ public class DatabaseHandler {
         ArrayList<Integer> usersEventIDs = getEventIDsOfUser(userID);
 
         String sql
-                = "SELECT * FROM eventdetails WHERE ed_eventdate >= (SELECT MAKEDATE(YEAR(CURDATE()),1)) AND ed_eventdate <= (SELECT MAKEDATE(YEAR(CURDATE()),1) + INTERVAL 1 MONTH) AND ed_userID = ? AND ed_deleted = 0;";
+                = "SELECT * FROM eventdetails\n"
+                + " WHERE ed_eventdate >= (SELECT MAKEDATE(YEAR(CURDATE()),1)) \n"
+                + " AND ed_eventdate <= (SELECT MAKEDATE(YEAR(CURDATE()),1) + INTERVAL 1 MONTH) "
+                + " AND ed_userID = ?"
+                + " AND ed_deleted = 0"
+                + " ORDER BY ed_eventDate;";
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setInt(1, userID);
 
@@ -732,11 +737,14 @@ public class DatabaseHandler {
         ArrayList<Integer> usersEventIDs = getEventIDsOfUser(userID);
 
         String sql
-                = "SELECT * FROM eventdetails WHERE ED_eventDate >= (SELECT DATE_ADD(CURDATE(), INTERVAL - WEEKDAY(CURDATE()) DAY)) AND ED_eventDate <= (SELECT date(now() + INTERVAL 6 - weekday(now()) DAY)) AND ED_userID = ? AND ED_deleted = 0;";
-
+                = "SELECT * FROM eventdetails " +
+"                WHERE ED_eventDate >= (SELECT DATE_ADD(CURDATE(), INTERVAL - WEEKDAY(CURDATE()) DAY)) " +
+"                AND ED_eventDate <= (SELECT date(now() + INTERVAL 6 - weekday(now()) DAY)) " +
+"                AND ED_userID = ? " +
+"                AND ED_deleted = 0 " +
+"                ORDER BY ED_eventDate;";
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setInt(1, userID);
-
             try ( ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     Event temp = getEvent(rs);
@@ -745,7 +753,7 @@ public class DatabaseHandler {
                 }
             }
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println("This Weeks: "+ex.getMessage());
         }
         System.out.println(usersEvents);
         if (!usersEvents.isEmpty()) {
@@ -770,7 +778,7 @@ public class DatabaseHandler {
 
     public ArrayList<Event> getAllEventByUser(int userID) {
         ArrayList<Event> Events = new ArrayList<>();
-        String sql = "SELECT * FROM eventDetails WHERE ED_userID = ? AND ED_deleted = 0;";
+        String sql = "SELECT * FROM eventDetails WHERE ED_userID = ? AND ED_deleted = 0 ORDER BY ed_eventDate;";
 
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setInt(1, userID);
@@ -844,7 +852,7 @@ public class DatabaseHandler {
     public ArrayList<Event> getUsersEventsOfCertainDay(int userId, LocalDate eventDate) {
         ArrayList<Integer> EventIDs = getEventIDsOfUser(userId);
         ArrayList<Event> usersEvents = new ArrayList<>();
-        String sql = "SELECT * FROM eventDetails WHERE ED_userID = ? AND ED_eventDate LIKE ? AND ED_deleted = 0;";
+        String sql = "SELECT * FROM eventDetails WHERE ED_userID = ? AND ED_eventDate LIKE ? AND ED_deleted = 0 ORDER BY ed_eventDate;";
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setInt(1, userId);
             stmt.setString(2, eventDate.toString() + "%");
@@ -869,7 +877,7 @@ public class DatabaseHandler {
     public ArrayList<Event> getEventsOfPeriod(int userID, LocalDate from, LocalDate to) {
         ArrayList<Integer> EventIDs = getEventIDsOfUser(userID);
         ArrayList<Event> usersEvents = new ArrayList<>();
-        String sql = "SELECT * FROM eventDetails WHERE ED_userID = ? AND ED_eventDate >= ? AND ED_eventDate <= ? AND ED_deleted = 0;";
+        String sql = "SELECT * FROM eventDetails WHERE ED_userID = ? AND ED_eventDate >= ? AND ED_eventDate <= ? AND ED_deleted = 0 ORDER BY ED_eventDate;";
         //SELECT * FROM eventDetails WHERE ED_userID = 1 AND ED_eventDate >= '2021-01-08 00:00:00' AND ED_eventDate <= '2021-01-08 23:59:59';
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setInt(1, userID);
