@@ -39,6 +39,9 @@
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
       <SubComponents>
         <Component class="javax.swing.JLabel" name="lblHeadline">
+          <Properties>
+            <Property name="horizontalAlignment" type="int" value="2"/>
+          </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
               <BorderConstraints direction="Center"/>
@@ -62,6 +65,7 @@
           <Properties>
             <Property name="horizontalAlignment" type="int" value="2"/>
             <Property name="text" type="java.lang.String" value="Name:"/>
+            <Property name="horizontalTextPosition" type="int" value="2"/>
             <Property name="toolTipText" type="java.lang.String" value=""/>
           </Properties>
           <AuxValues>
@@ -69,6 +73,9 @@
           </AuxValues>
         </Component>
         <Component class="javax.swing.JTextField" name="txtEventName">
+          <Properties>
+            <Property name="horizontalAlignment" type="int" value="2"/>
+          </Properties>
         </Component>
         <Component class="javax.swing.Box$Filler" name="filler3">
           <Properties>
@@ -88,7 +95,9 @@
         </Component>
         <Component class="javax.swing.JLabel" name="lblDateTime">
           <Properties>
+            <Property name="horizontalAlignment" type="int" value="2"/>
             <Property name="text" type="java.lang.String" value="Date:"/>
+            <Property name="horizontalTextPosition" type="int" value="2"/>
           </Properties>
         </Component>
         <Component class="com.github.lgooddatepicker.components.DateTimePicker" name="dtPicker">
@@ -111,6 +120,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="lblEventHost">
           <Properties>
+            <Property name="horizontalAlignment" type="int" value="2"/>
             <Property name="text" type="java.lang.String" value="Host:"/>
             <Property name="toolTipText" type="java.lang.String" value=""/>
           </Properties>
@@ -135,6 +145,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="lblEventDuration">
           <Properties>
+            <Property name="horizontalAlignment" type="int" value="2"/>
             <Property name="text" type="java.lang.String" value="Duration"/>
           </Properties>
         </Component>
@@ -158,6 +169,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="lblEventLocation">
           <Properties>
+            <Property name="horizontalAlignment" type="int" value="2"/>
             <Property name="text" type="java.lang.String" value="Location"/>
           </Properties>
         </Component>
@@ -181,6 +193,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="lblEventPriority">
           <Properties>
+            <Property name="horizontalAlignment" type="int" value="2"/>
             <Property name="text" type="java.lang.String" value="Priority"/>
           </Properties>
         </Component>
@@ -216,6 +229,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="lblEventNotification">
           <Properties>
+            <Property name="horizontalAlignment" type="int" value="2"/>
             <Property name="text" type="java.lang.String" value="Notification:"/>
           </Properties>
         </Component>
@@ -253,6 +267,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="lblEventParticipants">
           <Properties>
+            <Property name="horizontalAlignment" type="int" value="2"/>
             <Property name="text" type="java.lang.String" value="Participants:"/>
           </Properties>
         </Component>
@@ -316,6 +331,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="lblEventAttachments">
           <Properties>
+            <Property name="horizontalAlignment" type="int" value="2"/>
             <Property name="text" type="java.lang.String" value="Attachments:"/>
           </Properties>
         </Component>

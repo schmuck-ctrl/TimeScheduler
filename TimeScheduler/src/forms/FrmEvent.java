@@ -82,13 +82,13 @@ public class FrmEvent extends javax.swing.JPanel {
 
             switch (event.getPriority()) {
                 case LOW:
-                    cbEventNotification.getModel().setSelectedItem("low");
+                    cbEventPriority.getModel().setSelectedItem("low");
                     break;
                 case MEDIUM:
-                    cbEventNotification.getModel().setSelectedItem("medium");
+                    cbEventPriority.getModel().setSelectedItem("medium");
                     break;
                 case HIGH:
-                    cbEventNotification.getModel().setSelectedItem("high");
+                    cbEventPriority.getModel().setSelectedItem("high");
                     break;
             }
 
@@ -126,7 +126,7 @@ public class FrmEvent extends javax.swing.JPanel {
     private Event getInput() {
 
         String name = null;
-        Operator host = forms.FrmMain.getInstance().getCurrentUser();
+        Operator host = FrmMain.getInstance().getCurrentUser();
         LocalDateTime date = null;
         int duration = 0;
         String location = null;
@@ -214,14 +214,28 @@ public class FrmEvent extends javax.swing.JPanel {
         String name = FrmMain.getInstance().getCurrentUser().getFirstName() + " " + FrmMain.getInstance().getCurrentUser().getLastName();
         this.txtEventHost.setText(name);
 
-        dtPicker.datePicker.setDate(date);
-        dtPicker.timePicker.setTimeToNow();
+        this.dtPicker.datePicker.setDate(date);
+        this.dtPicker.timePicker.setTimeToNow();
+        
+        this.txtEventName.setText("");
+        this.txtEventDuration.setText("");
+        this.txtEventLocation.setText("");
+        
+        cbEventPriority.setSelectedIndex(0);
+        cbEventNotification.setSelectedIndex(0);
+        
+        if(liModelAttachments.getSize() > 0)
+            liModelAttachments.removeAll();
+        if(liModelParticipants.getSize() > 0)
+            liModelParticipants.removeAll();
+        
+        clearFooter();
     }
 
     private void clearFooter() {
-        pnlFooter.removeAll();
-        pnlFooter.revalidate();
-        pnlFooter.repaint();
+        this.pnlFooter.removeAll();
+        this.pnlFooter.revalidate();
+        this.pnlFooter.repaint();
     }
 
     private void enableControls(boolean isEnabled) {
@@ -426,6 +440,8 @@ public class FrmEvent extends javax.swing.JPanel {
 
         pnlHeader.setPreferredSize(new java.awt.Dimension(400, 30));
         pnlHeader.setLayout(new java.awt.BorderLayout());
+
+        lblHeadline.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         pnlHeader.add(lblHeadline, java.awt.BorderLayout.CENTER);
 
         add(pnlHeader, java.awt.BorderLayout.PAGE_START);
@@ -434,32 +450,41 @@ public class FrmEvent extends javax.swing.JPanel {
 
         lblEventName.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblEventName.setText("Name:");
+        lblEventName.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         lblEventName.setToolTipText("");
         pnlContent.add(lblEventName);
+
+        txtEventName.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         pnlContent.add(txtEventName);
         pnlContent.add(filler3);
 
+        lblDateTime.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblDateTime.setText("Date:");
+        lblDateTime.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         pnlContent.add(lblDateTime);
         pnlContent.add(dtPicker);
         pnlContent.add(filler4);
 
+        lblEventHost.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblEventHost.setText("Host:");
         lblEventHost.setToolTipText("");
         pnlContent.add(lblEventHost);
         pnlContent.add(txtEventHost);
         pnlContent.add(filler9);
 
+        lblEventDuration.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblEventDuration.setText("Duration");
         pnlContent.add(lblEventDuration);
         pnlContent.add(txtEventDuration);
         pnlContent.add(filler1);
 
+        lblEventLocation.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblEventLocation.setText("Location");
         pnlContent.add(lblEventLocation);
         pnlContent.add(txtEventLocation);
         pnlContent.add(filler2);
 
+        lblEventPriority.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblEventPriority.setText("Priority");
         pnlContent.add(lblEventPriority);
 
@@ -467,6 +492,7 @@ public class FrmEvent extends javax.swing.JPanel {
         pnlContent.add(cbEventPriority);
         pnlContent.add(filler5);
 
+        lblEventNotification.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblEventNotification.setText("Notification:");
         pnlContent.add(lblEventNotification);
 
@@ -474,6 +500,7 @@ public class FrmEvent extends javax.swing.JPanel {
         pnlContent.add(cbEventNotification);
         pnlContent.add(filler6);
 
+        lblEventParticipants.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblEventParticipants.setText("Participants:");
         pnlContent.add(lblEventParticipants);
 
@@ -504,6 +531,7 @@ public class FrmEvent extends javax.swing.JPanel {
         pnlContent.add(pnlEventParticipants);
         pnlContent.add(filler7);
 
+        lblEventAttachments.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblEventAttachments.setText("Attachments:");
         pnlContent.add(lblEventAttachments);
 

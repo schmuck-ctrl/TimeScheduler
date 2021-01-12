@@ -33,10 +33,10 @@ public class FrmEventsOfDay extends javax.swing.JPanel {
         liModelEventsOfDay = new EventsOfDayListModel();
 
         liEventsOfDay.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        setEventds(eventsOfDay);
+        setEvents(eventsOfDay);
     }
 
-    public void setEventds(ArrayList<Event> eventsOfDay) {
+    public void setEvents(ArrayList<Event> eventsOfDay) {
         if (eventsOfDay.size() > 0) {
 
             liModelEventsOfDay.addElement(eventsOfDay);
@@ -63,6 +63,7 @@ public class FrmEventsOfDay extends javax.swing.JPanel {
 
             dialog.setSize(500, 700);
             dialog.setModal(true);
+            dialog.setTitle("Event details");
             dialog.add(new FrmEvent(event, FrmEvent.View.READ));
             dialog.setLocationRelativeTo(null);
             dialog.setVisible(true);

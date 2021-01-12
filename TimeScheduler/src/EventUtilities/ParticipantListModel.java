@@ -38,6 +38,10 @@ public final class ParticipantListModel extends AbstractListModel<Operator>{
         }
     }
     
+    public void removeAll() {
+        this.removeAll();
+    }
+    
     @Override
     public int getSize() {
         return this.listOfParticipants.size();
