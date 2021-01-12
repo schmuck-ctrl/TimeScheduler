@@ -7,6 +7,8 @@ package forms;
 
 import classes.Event;
 import classes.Operator;
+import com.github.lgooddatepicker.optionalusertools.DateChangeListener;
+import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
 import handlers.*;
 import java.awt.Frame;
 import java.time.DayOfWeek;
@@ -44,25 +46,16 @@ public class FrmMain extends javax.swing.JFrame {
         initComponents();
         this.setExtendedState(Frame.MAXIMIZED_BOTH);
         eventHandler = new EventHandler();
-        btnChangeDate.setVisible(false);
-        changeDatePickerProperties();
+        this.datePicker.getComponentDateTextField().setEditable(false);
+        addDatePickerDateChangedEvent();
     }
 
-    private void changeDatePickerProperties() {
-        this.datePicker.getComponentDateTextField().setEditable(false);
-        this.datePicker.getComponentDateTextField().getDocument().addDocumentListener(new DocumentListener() {
+    private void addDatePickerDateChangedEvent() {
+        datePicker.addDateChangeListener(new DateChangeListener() {
             @Override
-            public void insertUpdate(DocumentEvent e) {
-                //btnChangeDate.setVisible(true);
-            }
-
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                btnChangeDate.setVisible(true);
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
+            public void dateChanged(DateChangeEvent dce) {
+                frmCalendar.setLocalDate(datePicker.getDate());
+                frmCalendar.addEvents(eventHandler.getEventsOfPeriod(user.getUserId(), frmCalendar.getFirstDayOfView(), frmCalendar.getLastDayOfView()));
             }
         });
     }
@@ -85,10 +78,6 @@ public class FrmMain extends javax.swing.JFrame {
         }
     }
 
-    public void loadCalendarView() {
-        this.frmCalendar.addEvents(eventHandler.getEventsOfPeriod(this.user.getUserId(), this.frmCalendar.getFirstDayOfView(), this.frmCalendar.getLastDayOfView()));
-    }
-
     public Operator getCurrentUser() {
         return this.user;
     }
@@ -98,6 +87,8 @@ public class FrmMain extends javax.swing.JFrame {
         pnlEventRoot.removeAll();
         pnlEventRoot.revalidate();
         pnlEventRoot.repaint();
+
+        this.datePicker.setDate(this.frmCalendar.getSelectedLocalDate());
 
         EventHandler eHandler = new EventHandler();
         Event event = eHandler.getEvent(eventID);
@@ -114,6 +105,8 @@ public class FrmMain extends javax.swing.JFrame {
         pnlEventRoot.revalidate();
         pnlEventRoot.repaint();
 
+        this.datePicker.setDate(this.frmCalendar.getSelectedLocalDate());
+
         EventHandler eHandler = new EventHandler();
         Event event = eHandler.getEventByUser(this.user.getUserId(), eventID);
 
@@ -129,6 +122,8 @@ public class FrmMain extends javax.swing.JFrame {
         pnlEventRoot.revalidate();
         pnlEventRoot.repaint();
 
+        this.datePicker.setDate(this.frmCalendar.getSelectedLocalDate());
+
         EventHandler eHandler = new EventHandler();
         ArrayList<Event> events = eHandler.getEventsOfDay(user.getUserId(), today);
 
@@ -142,10 +137,12 @@ public class FrmMain extends javax.swing.JFrame {
         pnlEventRoot.revalidate();
         pnlEventRoot.repaint();
 
+        this.datePicker.setDate(this.frmCalendar.getSelectedLocalDate());
+
         FrmEvent frmEvent = new FrmEvent(FrmEvent.View.NEW, date);
         pnlEventRoot.add(frmEvent);
         frmEvent.setTitle("Create new Event: ");
-        frmEvent.setVisible(true);   
+        frmEvent.setVisible(true);
     }
 
     public FrmCalendar getCalendar() {
@@ -176,7 +173,6 @@ public class FrmMain extends javax.swing.JFrame {
         pnlCalendarControl = new javax.swing.JPanel();
         btnPreviousMonth = new javax.swing.JButton();
         datePicker = new com.github.lgooddatepicker.components.DatePicker();
-        btnChangeDate = new javax.swing.JButton();
         btnNextMonth = new javax.swing.JButton();
         pnlFooter = new javax.swing.JPanel();
         btnNewEvent = new javax.swing.JButton();
@@ -267,16 +263,6 @@ public class FrmMain extends javax.swing.JFrame {
 
         datePicker.setPreferredSize(new java.awt.Dimension(143, 30));
         pnlCalendarControl.add(datePicker);
-
-        btnChangeDate.setText("Display");
-        btnChangeDate.setName(""); // NOI18N
-        btnChangeDate.setPreferredSize(new java.awt.Dimension(72, 30));
-        btnChangeDate.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnChangeDateActionPerformed(evt);
-            }
-        });
-        pnlCalendarControl.add(btnChangeDate);
 
         btnNextMonth.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/arrow-right-s-fill.png"))); // NOI18N
         btnNextMonth.addActionListener(new java.awt.event.ActionListener() {
@@ -370,12 +356,6 @@ public class FrmMain extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnPreviousMonthActionPerformed
 
-    private void btnChangeDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangeDateActionPerformed
-        this.btnChangeDate.setVisible(false);
-        this.frmCalendar.setLocalDate(datePicker.getDate());
-        this.frmCalendar.addEvents(eventHandler.getEventsOfPeriod(this.user.getUserId(), this.frmCalendar.getFirstDayOfView(), this.frmCalendar.getLastDayOfView()));
-    }//GEN-LAST:event_btnChangeDateActionPerformed
-
     /**
      * @param args the command line arguments
      */
@@ -412,7 +392,6 @@ public class FrmMain extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnChangeDate;
     private javax.swing.JButton btnExport;
     private javax.swing.JButton btnNewEvent;
     private javax.swing.JButton btnNextMonth;
