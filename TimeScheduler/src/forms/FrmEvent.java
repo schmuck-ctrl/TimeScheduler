@@ -140,7 +140,8 @@ public class FrmEvent extends javax.swing.JPanel {
             name = txtEventName.getText();
         }
 
-        if (!txtEventDuration.getText().isBlank()) {
+        if (!txtEventDuration.getText().isBlank() && txtEventDuration.getText().matches("[0-9]+")) {
+            
             duration = Integer.parseInt(txtEventDuration.getText());
         }
 
