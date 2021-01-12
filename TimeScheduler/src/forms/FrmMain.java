@@ -53,11 +53,12 @@ public class FrmMain extends javax.swing.JFrame {
         this.datePicker.getComponentDateTextField().getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
-                btnChangeDate.setVisible(true);
+                //btnChangeDate.setVisible(true);
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
+                btnChangeDate.setVisible(true);
             }
 
             @Override
@@ -268,6 +269,13 @@ public class FrmMain extends javax.swing.JFrame {
         pnlCalendarControl.add(datePicker);
 
         btnChangeDate.setText("Display");
+        btnChangeDate.setName(""); // NOI18N
+        btnChangeDate.setPreferredSize(new java.awt.Dimension(72, 30));
+        btnChangeDate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnChangeDateActionPerformed(evt);
+            }
+        });
         pnlCalendarControl.add(btnChangeDate);
 
         btnNextMonth.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/arrow-right-s-fill.png"))); // NOI18N
@@ -332,7 +340,7 @@ public class FrmMain extends javax.swing.JFrame {
     }//GEN-LAST:event_btnExportActionPerformed
 
     private void btnNewEventActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewEventActionPerformed
-        createNewEvent(LocalDate.now());
+        createNewEvent(this.frmCalendar.getSelectedLocalDate());
     }//GEN-LAST:event_btnNewEventActionPerformed
 
     private void btnNextMonthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextMonthActionPerformed
@@ -361,6 +369,12 @@ public class FrmMain extends javax.swing.JFrame {
         this.frmCalendar.addEvents(eventHandler.getEventsOfPeriod(this.user.getUserId(), this.frmCalendar.getFirstDayOfView(), this.frmCalendar.getLastDayOfView()));
 
     }//GEN-LAST:event_btnPreviousMonthActionPerformed
+
+    private void btnChangeDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangeDateActionPerformed
+        this.btnChangeDate.setVisible(false);
+        this.frmCalendar.setLocalDate(datePicker.getDate());
+        this.frmCalendar.addEvents(eventHandler.getEventsOfPeriod(this.user.getUserId(), this.frmCalendar.getFirstDayOfView(), this.frmCalendar.getLastDayOfView()));
+    }//GEN-LAST:event_btnChangeDateActionPerformed
 
     /**
      * @param args the command line arguments

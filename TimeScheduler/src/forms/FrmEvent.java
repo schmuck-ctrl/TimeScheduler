@@ -334,6 +334,8 @@ public class FrmEvent extends javax.swing.JPanel {
         newEvent(event);
 
         refreshCalendar(dtPicker.datePicker.getDate());
+        
+        this.setVisible(false);
     }
 
     private void btnEditActoinPerformed(ActionEvent e) {
@@ -341,6 +343,8 @@ public class FrmEvent extends javax.swing.JPanel {
         editEvent(event);
 
         refreshCalendar(dtPicker.datePicker.getDate());
+        
+        this.setVisible(false);
     }
 
     private void btnDeleteActionPerformed(ActionEvent e) {
@@ -349,6 +353,8 @@ public class FrmEvent extends javax.swing.JPanel {
             deleteEvent(this.eventID);
 
             refreshCalendar(dtPicker.datePicker.getDate());
+            
+            this.setVisible(false);
         }
     }
 
