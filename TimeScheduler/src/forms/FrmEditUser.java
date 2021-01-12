@@ -124,6 +124,7 @@ public class FrmEditUser extends javax.swing.JDialog {
         btnCancel = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Edit user");
         setPreferredSize(new java.awt.Dimension(400, 250));
 
         pnlHeader.setPreferredSize(new java.awt.Dimension(471, 45));

@@ -103,6 +103,7 @@ public class FrmAdminInterface extends javax.swing.JDialog {
         btnCancel = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Admin interface");
         setPreferredSize(new java.awt.Dimension(650, 350));
 
         pnlHeader.setPreferredSize(new java.awt.Dimension(690, 45));
