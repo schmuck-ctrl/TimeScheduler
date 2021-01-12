@@ -293,4 +293,8 @@ public class PnlDayPanel extends javax.swing.JPanel {
             }
         }
     }
+
+    public boolean isSelected(){
+        return this.isSelected;
+    }
 }

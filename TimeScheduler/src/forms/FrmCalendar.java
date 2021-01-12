@@ -360,6 +360,18 @@ public class FrmCalendar extends javax.swing.JPanel {
         return null;
     }
     
+    public java.time.LocalDate getSelectedLocalDate(){
+        int columnLength = 7;
+        for (int i = 0; i < this.panelArray.length; i++){
+            for (int j = 0; j < columnLength; j++){
+                if (panelArray[i][j].isSelected()){
+                    return panelArray[i][j].getDay();
+                }
+            }
+        }
+        return null;
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
 }
