@@ -233,7 +233,7 @@ public class FrmCalendar extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void clearDaySelection() {
+    public void clearDaySelection() {
 
         int rowCount = (this.calculateDaysOfMonth(this.localDate.getMonthValue(), this.localDate.getYear()) + this.calculateOverflowDaysOfLastMonth() + this.calculateOverflowDaysOfNextMonth()) / 7;
         int columnCount = 7;
@@ -260,8 +260,9 @@ public class FrmCalendar extends javax.swing.JPanel {
 
             @Override
             public void mousePressed(java.awt.event.MouseEvent e) {
-                if (e.getButton() == java.awt.event.MouseEvent.BUTTON1) {
+                if (e.getClickCount() == 1 && e.getButton() == java.awt.event.MouseEvent.BUTTON1) {
                     clearDaySelection();
+                    clearButtonSelection();
                     dayPanel.setSelected();
                     FrmMain.getInstance().displayAllEventsOfDay(dayPanel.getDay());
                 }
@@ -370,6 +371,15 @@ public class FrmCalendar extends javax.swing.JPanel {
             }
         }
         return null;
+    }
+    
+    private void clearButtonSelection(){
+        int columnCount = 7;
+        for (int i = 0; i < this.panelArray.length; i++){
+            for (int j = 0; j < columnCount; j++){
+                panelArray[i][j].clearButtonSelection();
+            }
+        }
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

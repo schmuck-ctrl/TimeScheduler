@@ -150,11 +150,34 @@ public class PnlDayPanel extends javax.swing.JPanel {
 
             }
         });
-
-        btn.addActionListener(new java.awt.event.ActionListener() {
+        
+        btn.addMouseListener(new java.awt.event.MouseListener() {
             @Override
-            public void actionPerformed(java.awt.event.ActionEvent e) {
+            public void mouseClicked(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (getParent() instanceof forms.FrmCalendar){
+                    ((forms.FrmCalendar)getParent()).clearDaySelection();
+                }
+                setSelected();
                 forms.FrmMain.getInstance().displayEventDetails(btn.getEvent().getID());
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
             }
         });
     }
