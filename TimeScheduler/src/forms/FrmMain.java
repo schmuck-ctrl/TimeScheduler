@@ -54,8 +54,14 @@ public class FrmMain extends javax.swing.JFrame {
         datePicker.addDateChangeListener(new DateChangeListener() {
             @Override
             public void dateChanged(DateChangeEvent dce) {
-                frmCalendar.setLocalDate(datePicker.getDate());
-                frmCalendar.addEvents(eventHandler.getEventsOfPeriod(user.getUserId(), frmCalendar.getFirstDayOfView(), frmCalendar.getLastDayOfView()));
+
+                LocalDate startPanelMonth = frmCalendar.getFirstDayOfView();
+                LocalDate lastPanelMonth = frmCalendar.getLastDayOfView();
+
+                if ((dce.getOldDate() != null) && ((dce.getNewDate().isBefore(startPanelMonth) || (dce.getNewDate().isAfter(lastPanelMonth))))) {
+                    frmCalendar.setLocalDate(datePicker.getDate());
+                    frmCalendar.addEvents(eventHandler.getEventsOfPeriod(user.getUserId(), frmCalendar.getFirstDayOfView(), frmCalendar.getLastDayOfView()));
+                }
             }
         });
     }
@@ -64,6 +70,12 @@ public class FrmMain extends javax.swing.JFrame {
     public void setCurrentUser(Operator currentUser) {
         if (currentUser != null) {
             this.user = currentUser;
+
+            if (this.user.getRole().equals(Operator.Role.USER)) {
+                mnuAdminInterface.setVisible(false);
+                mnuAdminInterface.setEnabled(false);
+            }
+
             lblHeadline.setText("Welcome " + this.user.getFirstName() + " " + this.user.getLastName());
 
             this.frmCalendar.addEvents(eventHandler.getEventsOfPeriod(this.user.getUserId(), this.frmCalendar.getFirstDayOfView(), this.frmCalendar.getLastDayOfView()));
@@ -330,7 +342,7 @@ public class FrmMain extends javax.swing.JFrame {
     }//GEN-LAST:event_btnNewEventActionPerformed
 
     private void btnNextMonthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextMonthActionPerformed
-        LocalDate nextMonth = datePicker.getDate().plusMonths(1);
+        LocalDate nextMonth = frmCalendar.getLocalDate().plusMonths(1);
 
         if (nextMonth.getYear() == LocalDate.now().getYear() && nextMonth.getMonthValue() == LocalDate.now().getMonthValue()) {
             datePicker.setDate(LocalDate.now());
@@ -343,7 +355,7 @@ public class FrmMain extends javax.swing.JFrame {
     }//GEN-LAST:event_btnNextMonthActionPerformed
 
     private void btnPreviousMonthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPreviousMonthActionPerformed
-        LocalDate previousMonth = datePicker.getDate().minusMonths(1);
+        LocalDate previousMonth = frmCalendar.getLocalDate().minusMonths(1);
 
         if (previousMonth.getYear() == LocalDate.now().getYear() && previousMonth.getMonthValue() == LocalDate.now().getMonthValue()) {
             datePicker.setDate(LocalDate.now());
