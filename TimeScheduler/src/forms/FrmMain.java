@@ -13,6 +13,8 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 /**
  *
@@ -42,15 +44,37 @@ public class FrmMain extends javax.swing.JFrame {
         initComponents();
         this.setExtendedState(Frame.MAXIMIZED_BOTH);
         eventHandler = new EventHandler();
+        btnChangeDate.setVisible(false);
+        changeDatePickerProperties();
+    }
+
+    private void changeDatePickerProperties() {
+        this.datePicker.getComponentDateTextField().setEditable(false);
+        this.datePicker.getComponentDateTextField().getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                btnChangeDate.setVisible(true);
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+            }
+        });
     }
 
     // <editor-fold defaultstate="collapsed" desc="Methods"> 
     public void setCurrentUser(Operator currentUser) {
         if (currentUser != null) {
             this.user = currentUser;
-            this.frmCalendar.addEvents(eventHandler.getEventsOfPeriod(this.user.getUserId(), this.frmCalendar.getFirstDayOfView(), this.frmCalendar.getLastDayOfView()));
             lblHeadline.setText("Welcome " + this.user.getFirstName() + " " + this.user.getLastName());
-            lblCurrentMonth.setText(this.frmCalendar.getLocalDate().getMonth().toString() + " " + Integer.toString(this.frmCalendar.getLocalDate().getYear()));
+
+            this.frmCalendar.addEvents(eventHandler.getEventsOfPeriod(this.user.getUserId(), this.frmCalendar.getFirstDayOfView(), this.frmCalendar.getLastDayOfView()));
+
+            datePicker.setDate(LocalDate.now());
             displayAllEventsOfDay(LocalDate.now());
 
             //ReminderHandler
@@ -58,6 +82,10 @@ public class FrmMain extends javax.swing.JFrame {
             reminderHandler.start();
 
         }
+    }
+
+    public void loadCalendarView() {
+        this.frmCalendar.addEvents(eventHandler.getEventsOfPeriod(this.user.getUserId(), this.frmCalendar.getFirstDayOfView(), this.frmCalendar.getLastDayOfView()));
     }
 
     public Operator getCurrentUser() {
@@ -102,6 +130,7 @@ public class FrmMain extends javax.swing.JFrame {
 
         EventHandler eHandler = new EventHandler();
         ArrayList<Event> events = eHandler.getEventsOfDay(user.getUserId(), today);
+
         FrmEventsOfDay frmEventsOfDay = new FrmEventsOfDay(events);
         pnlEventRoot.add(frmEventsOfDay);
         frmEventsOfDay.setVisible(true);
@@ -112,9 +141,10 @@ public class FrmMain extends javax.swing.JFrame {
         pnlEventRoot.revalidate();
         pnlEventRoot.repaint();
 
-        FrmEvent frmEvent = new FrmEvent(FrmEvent.View.NEW);
-        frmEvent.setVisible(true);
+        FrmEvent frmEvent = new FrmEvent(FrmEvent.View.NEW, date);
         pnlEventRoot.add(frmEvent);
+        frmEvent.setTitle("Create new Event: ");
+        frmEvent.setVisible(true);   
     }
 
     public FrmCalendar getCalendar() {
@@ -144,7 +174,8 @@ public class FrmMain extends javax.swing.JFrame {
         frmCalendar = new forms.FrmCalendar();
         pnlCalendarControl = new javax.swing.JPanel();
         btnPreviousMonth = new javax.swing.JButton();
-        lblCurrentMonth = new javax.swing.JLabel();
+        datePicker = new com.github.lgooddatepicker.components.DatePicker();
+        btnChangeDate = new javax.swing.JButton();
         btnNextMonth = new javax.swing.JButton();
         pnlFooter = new javax.swing.JPanel();
         btnNewEvent = new javax.swing.JButton();
@@ -160,8 +191,8 @@ public class FrmMain extends javax.swing.JFrame {
 
         mnuAdminInterface.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/user-settings-line.png"))); // NOI18N
         mnuAdminInterface.setText("Admin Interface");
-        mnuAdminInterface.setToolTipText("");
         mnuAdminInterface.setPreferredSize(new java.awt.Dimension(145, 35));
+        mnuAdminInterface.setToolTipText("");
         mnuAdminInterface.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mnuAdminInterfaceActionPerformed(evt);
@@ -218,6 +249,8 @@ public class FrmMain extends javax.swing.JFrame {
         splitPnlContent.setLeftComponent(pnlEventRoot);
 
         pnlCalendarRoot.setLayout(new java.awt.BorderLayout());
+
+        frmCalendar.setMinimumSize(new java.awt.Dimension(1000, 0));
         pnlCalendarRoot.add(frmCalendar, java.awt.BorderLayout.CENTER);
 
         pnlCalendarControl.setPreferredSize(new java.awt.Dimension(694, 50));
@@ -231,16 +264,11 @@ public class FrmMain extends javax.swing.JFrame {
         });
         pnlCalendarControl.add(btnPreviousMonth);
 
-        lblCurrentMonth.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        lblCurrentMonth.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblCurrentMonth.setToolTipText("");
-        lblCurrentMonth.setPreferredSize(new java.awt.Dimension(150, 30));
-        lblCurrentMonth.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lblCurrentMonthMouseClicked(evt);
-            }
-        });
-        pnlCalendarControl.add(lblCurrentMonth);
+        datePicker.setPreferredSize(new java.awt.Dimension(143, 30));
+        pnlCalendarControl.add(datePicker);
+
+        btnChangeDate.setText("Display");
+        pnlCalendarControl.add(btnChangeDate);
 
         btnNextMonth.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/arrow-right-s-fill.png"))); // NOI18N
         btnNextMonth.addActionListener(new java.awt.event.ActionListener() {
@@ -272,7 +300,7 @@ public class FrmMain extends javax.swing.JFrame {
         pnlFooterLayout.setHorizontalGroup(
             pnlFooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFooterLayout.createSequentialGroup()
-                .addContainerGap(843, Short.MAX_VALUE)
+                .addContainerGap(1149, Short.MAX_VALUE)
                 .addComponent(btnNewEvent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -308,47 +336,31 @@ public class FrmMain extends javax.swing.JFrame {
     }//GEN-LAST:event_btnNewEventActionPerformed
 
     private void btnNextMonthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextMonthActionPerformed
-        int year = this.frmCalendar.getLocalDate().getYear();
-        int month = this.frmCalendar.getLocalDate().getMonthValue();
-        int day = 1;
-
-        LocalDate nextMonth = LocalDate.of(year, month, day).plusMonths(1);
+        LocalDate nextMonth = datePicker.getDate().plusMonths(1);
 
         if (nextMonth.getYear() == LocalDate.now().getYear() && nextMonth.getMonthValue() == LocalDate.now().getMonthValue()) {
-            this.frmCalendar.setLocalDate(LocalDate.now());
+            datePicker.setDate(LocalDate.now());
         } else {
-            this.frmCalendar.setLocalDate(nextMonth);
+            datePicker.setDate(nextMonth.withDayOfMonth(1));
         }
 
-        lblCurrentMonth.setText(this.frmCalendar.getLocalDate().getMonth().toString() + " " + Integer.toString(this.frmCalendar.getLocalDate().getYear()));
+        this.frmCalendar.setLocalDate(datePicker.getDate());
         this.frmCalendar.addEvents(eventHandler.getEventsOfPeriod(this.user.getUserId(), this.frmCalendar.getFirstDayOfView(), this.frmCalendar.getLastDayOfView()));
     }//GEN-LAST:event_btnNextMonthActionPerformed
 
     private void btnPreviousMonthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPreviousMonthActionPerformed
-        int year = this.frmCalendar.getLocalDate().getYear();
-        int month = this.frmCalendar.getLocalDate().getMonthValue();
-        int day = 1;
-
-        LocalDate previousMonth = LocalDate.of(year, month, day).minusMonths(1);
+        LocalDate previousMonth = datePicker.getDate().minusMonths(1);
 
         if (previousMonth.getYear() == LocalDate.now().getYear() && previousMonth.getMonthValue() == LocalDate.now().getMonthValue()) {
-            this.frmCalendar.setLocalDate(LocalDate.now());
+            datePicker.setDate(LocalDate.now());
         } else {
-            this.frmCalendar.setLocalDate(previousMonth);
+            datePicker.setDate(previousMonth.withDayOfMonth(1));
         }
 
-        lblCurrentMonth.setText(this.frmCalendar.getLocalDate().getMonth().toString() + " " + Integer.toString(this.frmCalendar.getLocalDate().getYear()));
+        this.frmCalendar.setLocalDate(datePicker.getDate());
         this.frmCalendar.addEvents(eventHandler.getEventsOfPeriod(this.user.getUserId(), this.frmCalendar.getFirstDayOfView(), this.frmCalendar.getLastDayOfView()));
 
     }//GEN-LAST:event_btnPreviousMonthActionPerformed
-
-    private void lblCurrentMonthMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCurrentMonthMouseClicked
-        if (evt.getClickCount() == 2) {
-            this.frmCalendar.setLocalDate(LocalDate.now());
-            lblCurrentMonth.setText(this.frmCalendar.getLocalDate().getMonth().toString() + " " + Integer.toString(this.frmCalendar.getLocalDate().getYear()));
-            this.frmCalendar.addEvents(eventHandler.getEventsOfPeriod(this.user.getUserId(), this.frmCalendar.getFirstDayOfView(), this.frmCalendar.getLastDayOfView()));
-        }
-    }//GEN-LAST:event_lblCurrentMonthMouseClicked
 
     /**
      * @param args the command line arguments
@@ -386,12 +398,13 @@ public class FrmMain extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnChangeDate;
     private javax.swing.JButton btnExport;
     private javax.swing.JButton btnNewEvent;
     private javax.swing.JButton btnNextMonth;
     private javax.swing.JButton btnPreviousMonth;
+    private com.github.lgooddatepicker.components.DatePicker datePicker;
     private forms.FrmCalendar frmCalendar;
-    private javax.swing.JLabel lblCurrentMonth;
     private javax.swing.JLabel lblHeadline;
     private javax.swing.JButton mnuAdminInterface;
     private javax.swing.JPanel pnlCalendarControl;

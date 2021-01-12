@@ -54,7 +54,7 @@ public class FrmEvent extends javax.swing.JPanel {
         setEvent(event);
     }
 
-    public FrmEvent(View view) {
+    public FrmEvent(View view, LocalDate date) {
         initComponents();
 
         pnlHeader.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -63,6 +63,7 @@ public class FrmEvent extends javax.swing.JPanel {
         liModelParticipants = new ParticipantListModel();
         liModelAttachments = new AttachmentListModel();
 
+        clearInput(date);
         handleView(view);
     }
 
@@ -146,7 +147,7 @@ public class FrmEvent extends javax.swing.JPanel {
         if (!txtEventLocation.getText().isBlank()) {
             location = txtEventLocation.getText();
         }
-        
+
         int year = dtPicker.datePicker.getDate().getYear();
         int month = dtPicker.datePicker.getDate().getMonthValue();
         int dayOfMonth = dtPicker.datePicker.getDate().getDayOfMonth();
@@ -200,16 +201,21 @@ public class FrmEvent extends javax.swing.JPanel {
         }
 
         Event newEvent = null;
-        if(eventID == -1)
+        if (this.eventID == -1) {
             newEvent = new Event(name, host, date, duration, location, participants, attachments, priority, notification);
-        else
+        } else {
             newEvent = new Event(eventID, name, host, date, duration, location, participants, attachments, priority, notification);
-        
+        }
+
         return newEvent;
     }
 
-    private void clearInput() {
+    private void clearInput(LocalDate date) {
+        String name = FrmMain.getInstance().getCurrentUser().getFirstName() + " " + FrmMain.getInstance().getCurrentUser().getLastName();
+        this.txtEventHost.setText(name);
 
+        dtPicker.datePicker.setDate(date);
+        dtPicker.timePicker.setTimeToNow();
     }
 
     private void clearFooter() {
@@ -222,23 +228,24 @@ public class FrmEvent extends javax.swing.JPanel {
         txtEventName.setEditable(isEnabled);
         txtEventLocation.setEditable(isEnabled);
         txtEventDuration.setEditable(isEnabled);
-        txtEventHost.setEditable(isEnabled);
-        
+        txtEventHost.setEditable(false);
+
         dtPicker.setEnabled(isEnabled);
+        dtPicker.datePicker.getComponentDateTextField().setEditable(false);
+        dtPicker.timePicker.getComponentTimeTextField().setEditable(false);
 
         cbEventPriority.setEnabled(isEnabled);
         cbEventNotification.setEnabled(isEnabled);
 
         liEventAttachments.setEnabled(isEnabled);
         liEventParticipants.setEnabled(isEnabled);
-        
+
     }
 
     private void handleView(View view) {
         clearFooter();
 
         if (view == View.NEW) {
-            clearInput();
             enableControls(true);
 
             JButton btnNew = new JButton("Create new event", new javax.swing.ImageIcon(getClass().getResource("/icons/save-line.png")));
@@ -325,26 +332,37 @@ public class FrmEvent extends javax.swing.JPanel {
     private void btnNewActionPerformed(ActionEvent e) {
         Event event = getInput();
         newEvent(event);
-        
-        FrmMain.getInstance().getCalendar().addEvents((new EventHandler()).getEventsOfMonth(FrmMain.getInstance().getCurrentUser().getUserId(), 
-                FrmMain.getInstance().getCalendar().getLocalDate().getMonthValue()));
+
+        refreshCalendar(dtPicker.datePicker.getDate());
     }
 
     private void btnEditActoinPerformed(ActionEvent e) {
         Event event = getInput();
         editEvent(event);
-        
-        FrmMain.getInstance().getCalendar().addEvents((new EventHandler()).getEventsOfMonth(FrmMain.getInstance().getCurrentUser().getUserId(), 
-                FrmMain.getInstance().getCalendar().getLocalDate().getMonthValue()));
 
+        refreshCalendar(dtPicker.datePicker.getDate());
     }
 
     private void btnDeleteActionPerformed(ActionEvent e) {
         int retVal = JOptionPane.showConfirmDialog(FrmMain.getInstance(), "Are you sure you want to delete the event?", "Delete user", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
         if (retVal == JOptionPane.YES_OPTION) {
             deleteEvent(this.eventID);
-            
+
+            refreshCalendar(dtPicker.datePicker.getDate());
         }
+    }
+
+    private void refreshCalendar(LocalDate date) {
+        EventHandler eHandler = new EventHandler();
+
+        int userId = FrmMain.getInstance().getCurrentUser().getUserId();
+
+        FrmMain.getInstance().getCalendar().setLocalDate(date);
+
+        LocalDate start = FrmMain.getInstance().getCalendar().getFirstDayOfView();
+        LocalDate end = FrmMain.getInstance().getCalendar().getLastDayOfView();
+
+        FrmMain.getInstance().getCalendar().addEvents(eHandler.getEventsOfPeriod(userId, start, end));
     }
 
 // </editor-fold>

@@ -44,15 +44,17 @@ public class FrmEventsOfDay extends javax.swing.JPanel {
             liEventsOfDay.setModel((ListModel) liModelEventsOfDay);
 
             lblHeadline.setText("Your daily appointments:");
-            this.liEventsOfDay.setVisible(true);
+            this.liEventsOfDay.setSelectedIndex(0);
+            this.liEventsOfDay.setVisible(true);        
             btnOpen.setVisible(true);
-            pnlHeader.setBorder(new EmptyBorder(10, 10, 10, 10));
-            pnlContent.setBorder(new EmptyBorder(10, 10, 10, 10));
         } else {
             lblHeadline.setText("No events for today!");
             this.liEventsOfDay.setVisible(false);
             btnOpen.setVisible(false);
         }
+
+        pnlHeader.setBorder(new EmptyBorder(10, 10, 10, 10));
+        pnlContent.setBorder(new EmptyBorder(10, 10, 10, 10));
     }
 
     private void displayEventDetail(Event event) {
@@ -125,19 +127,19 @@ public class FrmEventsOfDay extends javax.swing.JPanel {
         if (liEventsOfDay.getSelectedIndex() >= 0) {
             Event selctedEvent = liModelEventsOfDay.getElementAt(liEventsOfDay.getSelectedIndex());
             displayEventDetail(selctedEvent);
-        }else {
+        } else {
             JOptionPane.showMessageDialog(FrmMain.getInstance(), "You have to select a event first in order to see the details.", "No event selected", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_btnOpenActionPerformed
 
     private void liEventsOfDayMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_liEventsOfDayMouseClicked
-        if(evt.getClickCount() == 2) {
+        if (evt.getClickCount() == 2) {
             if (liEventsOfDay.getSelectedIndex() >= 0) {
-            Event selctedEvent = liModelEventsOfDay.getElementAt(liEventsOfDay.getSelectedIndex());
-            displayEventDetail(selctedEvent);
-        }else {
-            JOptionPane.showMessageDialog(FrmMain.getInstance(), "You have to select a event first in order to see the details.", "No event selected", JOptionPane.INFORMATION_MESSAGE);
-        }
+                Event selctedEvent = liModelEventsOfDay.getElementAt(liEventsOfDay.getSelectedIndex());
+                displayEventDetail(selctedEvent);
+            } else {
+                JOptionPane.showMessageDialog(FrmMain.getInstance(), "You have to select a event first in order to see the details.", "No event selected", JOptionPane.INFORMATION_MESSAGE);
+            }
         }
     }//GEN-LAST:event_liEventsOfDayMouseClicked
 
