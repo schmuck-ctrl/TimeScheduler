@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.ListModel;
 import javax.swing.border.EmptyBorder;
@@ -69,6 +70,18 @@ public class FrmEvent extends javax.swing.JPanel {
 
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Methods">
+    public void setParticipants(ArrayList<Operator> participants) {
+
+        if (participants != null) {
+            if (this.liModelParticipants.getSize() > 0) {
+                this.liModelParticipants.removeAll();
+            }
+
+            this.liModelParticipants.addElement(participants);
+            this.liEventParticipants.setModel((ListModel) liModelParticipants);
+        }
+    }
+
     public void setEvent(Event event) {
         if (event != null) {
             this.eventID = event.getID();
@@ -141,7 +154,7 @@ public class FrmEvent extends javax.swing.JPanel {
         }
 
         if (!txtEventDuration.getText().isBlank() && txtEventDuration.getText().matches("[0-9]+")) {
-            
+
             duration = Integer.parseInt(txtEventDuration.getText());
         }
 
@@ -217,19 +230,21 @@ public class FrmEvent extends javax.swing.JPanel {
 
         this.dtPicker.datePicker.setDate(date);
         this.dtPicker.timePicker.setTimeToNow();
-        
+
         this.txtEventName.setText("");
         this.txtEventDuration.setText("");
         this.txtEventLocation.setText("");
-        
+
         cbEventPriority.setSelectedIndex(0);
         cbEventNotification.setSelectedIndex(0);
-        
-        if(liModelAttachments.getSize() > 0)
+
+        if (liModelAttachments.getSize() > 0) {
             liModelAttachments.removeAll();
-        if(liModelParticipants.getSize() > 0)
+        }
+        if (liModelParticipants.getSize() > 0) {
             liModelParticipants.removeAll();
-        
+        }
+
         clearFooter();
     }
 
@@ -349,7 +364,7 @@ public class FrmEvent extends javax.swing.JPanel {
         newEvent(event);
 
         refreshCalendar(dtPicker.datePicker.getDate());
-        
+
         this.setVisible(false);
     }
 
@@ -358,7 +373,7 @@ public class FrmEvent extends javax.swing.JPanel {
         editEvent(event);
 
         refreshCalendar(dtPicker.datePicker.getDate());
-        
+
         this.setVisible(false);
     }
 
@@ -368,7 +383,7 @@ public class FrmEvent extends javax.swing.JPanel {
             deleteEvent(this.eventID);
 
             refreshCalendar(dtPicker.datePicker.getDate());
-            
+
             this.setVisible(false);
         }
     }
@@ -524,6 +539,11 @@ public class FrmEvent extends javax.swing.JPanel {
         pnlEventParticipants.add(jScrollPane1, gridBagConstraints);
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/add-circle-line.png"))); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -572,6 +592,24 @@ public class FrmEvent extends javax.swing.JPanel {
         add(pnlFooter, java.awt.BorderLayout.PAGE_END);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        ArrayList<Operator> all = new ArrayList();
+        if (liModelParticipants.getElementAt(0) != null) {
+            for (int i = 0; i < liModelParticipants.getSize(); i++) {
+                Operator participant = liModelParticipants.getElementAt(i);
+                all.add(participant);
+            }
+            FrmAddUserToAppointment frmAddUserToAppointment = new FrmAddUserToAppointment(FrmMain.getInstance(), true, all, this);
+            frmAddUserToAppointment.setVisible(true);
+
+    }//GEN-LAST:event_jButton1ActionPerformed
+        else {
+            FrmAddUserToAppointment frmAddUserToAppointment = new FrmAddUserToAppointment(FrmMain.getInstance(), true, this);
+            frmAddUserToAppointment.setVisible(true);
+        }
+
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> cbEventNotification;
     private javax.swing.JComboBox<String> cbEventPriority;

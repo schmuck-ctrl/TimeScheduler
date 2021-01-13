@@ -17,7 +17,7 @@ import handlers.UserHandler;
  */
 public class RegistrationHandler {
 
-    //checks if first/lastname input from user is longer than 2 and has no nmbers and is not null.
+    //checks if first/lastname input from user is longer than 2 and has no numbers and is not null. []+ one or more
     public static boolean checkInputUserName(String name) {
         if (name.matches("[a-zA-Z]+") && name != null && !name.isEmpty() && name.length() > 1f) {
 
