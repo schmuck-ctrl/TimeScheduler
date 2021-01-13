@@ -567,6 +567,7 @@ public class FrmEvent extends javax.swing.JPanel {
 
         pnlEventParticipants.setLayout(new java.awt.GridBagLayout());
 
+        liEventParticipants.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         jScrollPane1.setViewportView(liEventParticipants);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -616,6 +617,7 @@ public class FrmEvent extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(6, 6, 0, 6);
         pnlEventAttachments.add(btnAddAttachments, gridBagConstraints);
 
+        liEventAttachments.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         jScrollPane2.setViewportView(liEventAttachments);
 
         gridBagConstraints = new java.awt.GridBagConstraints();

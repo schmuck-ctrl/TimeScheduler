@@ -98,6 +98,7 @@ public class FrmEventsOfDay extends javax.swing.JPanel {
 
         pnlContent.setLayout(new java.awt.BorderLayout());
 
+        liEventsOfDay.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         liEventsOfDay.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 liEventsOfDayMouseClicked(evt);

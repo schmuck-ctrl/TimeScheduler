@@ -27,20 +27,15 @@ public class EventsOfDayListCellRenderer extends DefaultListCellRenderer {
         Event event = (Event) value;
 
         //Create formatter
-        DateTimeFormatter FOMATTER = DateTimeFormatter.ofPattern("hh:mm");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm");
 
         //Local time instance
-        LocalTime localTime = LocalTime.of(TOP, index);
+        LocalTime localTime = LocalTime.of(event.getDate().getHour(), event.getDate().getMinute());
 
         //Get formatted String
-        String localTimeString = FOMATTER.format(localTime);
+        String timeString = formatter.format(localTime);
 
-        System.out.println(localTimeString);
-
-        String hour = String.valueOf(event.getDate().getHour());
-        String min = String.valueOf(event.getDate().getMinute());
-
-        setText(hour + ":" + min + " - " + getName());
+        setText(timeString + " - " + event.getName());
 
         return this;
     }
