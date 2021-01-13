@@ -447,6 +447,8 @@ public class FrmEvent extends javax.swing.JPanel {
 
         add(pnlHeader, java.awt.BorderLayout.PAGE_START);
 
+        pnlContent.setAlignmentX(0.0F);
+        pnlContent.setAlignmentY(0.0F);
         pnlContent.setLayout(new javax.swing.BoxLayout(pnlContent, javax.swing.BoxLayout.Y_AXIS));
 
         lblEventName.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
