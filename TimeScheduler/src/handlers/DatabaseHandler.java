@@ -39,7 +39,6 @@ public class DatabaseHandler {
         String notNotifiedIds = "SELECT P_eventID FROM participant WHERE P_userID = ? AND P_notified = 0;";
         try(PreparedStatement stmt = con.prepareStatement(notNotifiedIds)){
             stmt.setInt(1, userID);
-            System.out.println(stmt.toString());
             try(ResultSet rs = stmt.executeQuery()){
                 while(rs.next()){
                     eventIDs.add(rs.getInt(1));
@@ -294,7 +293,7 @@ public class DatabaseHandler {
         String notNotified = "SELECT * FROM eventdetails WHERE ED_eventID IN("+listToString(eventIDs)+");";
         ArrayList <Event> events = new ArrayList<>();
         try(PreparedStatement stmt = con.prepareStatement(notNotified)){
-            System.out.println(stmt.toString());
+            
             try(ResultSet rs = stmt.executeQuery()){
                 while(rs.next())
                     events.add(getEvent(rs));
