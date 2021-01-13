@@ -7,7 +7,6 @@ package CalendarUtilities;
 
 import java.awt.event.ComponentAdapter;
 import java.util.ArrayList;
-import javax.swing.event.AncestorEvent;
 
 /**
  *
@@ -18,9 +17,15 @@ public class PnlWeekdays extends javax.swing.JPanel {
     //Weekdays
     private final String[] weekdays = {"Monday", "Tuesday", "Wednsday", "Thursday", "Friday", "Saturday", "Sunday"};
     private final java.util.ArrayList<javax.swing.JLabel> lblList;
+    //height of this class
     private final int height;
+    //padding is used to shorten width and height to show the grid lines
     private int padding;
 
+    /**
+     * Constructor
+     * @param height Integer, used to display the height.
+     */
     public PnlWeekdays(int height) {
         super();
 
@@ -37,7 +42,7 @@ public class PnlWeekdays extends javax.swing.JPanel {
         //init labels
         this.createWeekdayLabels();
 
-        //add listener
+        //add ComponentListener with resize, so labels will be resized if calendar gets resized
         this.addComponentListener(new ComponentAdapter() {
 
             public void componentResized(java.awt.event.ComponentEvent evt) {
@@ -46,6 +51,7 @@ public class PnlWeekdays extends javax.swing.JPanel {
 
         });
 
+        //add HierarchyBoundsListener to resize this component if parent panel gets resized
         this.addHierarchyBoundsListener(new java.awt.event.HierarchyBoundsListener() {
             public void ancestorMoved(java.awt.event.HierarchyEvent evt) {
             }
@@ -56,6 +62,9 @@ public class PnlWeekdays extends javax.swing.JPanel {
         });
     }
 
+    /**
+     * Creates Labels for the number of the weekdays panels.
+     */
     private void createWeekdayLabels() {
 
         for (int i = 0; i < this.weekdays.length; i++) {
@@ -72,6 +81,9 @@ public class PnlWeekdays extends javax.swing.JPanel {
         this.setLabelPositions();
     }
 
+    /**
+     * Sets the label positions in the WeekdaysPanel
+     */
     private void setLabelPositions() {
 
         for (int i = 0; i < this.lblList.size(); i++) {
@@ -82,6 +94,9 @@ public class PnlWeekdays extends javax.swing.JPanel {
         }
     }
 
+    /**
+     * resizes itself used to its parent
+     */
     public void resize() {
         if (this.getParent() != null) {
             this.setBounds(0, 0, this.getParent().getWidth(), this.height);
