@@ -360,26 +360,7 @@ public class FrmCalendar extends javax.swing.JPanel {
 
             @Override
             public void mousePressed(java.awt.event.MouseEvent e) {
-                //if clicked once and button is left click on mouse
-                if (e.getClickCount() == 1 && e.getButton() == java.awt.event.MouseEvent.BUTTON1) {
-                    //clear every day selection
-                    clearDaySelection();
-                    //clear also every button
-                    clearButtonSelection();
-                    //set this dayPanel to selected
-                    dayPanel.setSelected();
-                    //Call FrmMain to do some important stuff
-                    FrmMain.getInstance().displayAllEventsOfDay(dayPanel.getDay());
-                } //if clickCount == 2 and the button was the left button
-                else if (e.getClickCount() == 2 && e.getButton() == java.awt.event.MouseEvent.BUTTON1) {
-                    //create new Appointment
-                    FrmMain.getInstance().createNewEvent(dayPanel.getDay());
-                } //if rightclick
-                else if (e.getButton() == java.awt.event.MouseEvent.BUTTON3) {
-                    //clear focus
-                    clearDaySelection();
-                    clearButtonSelection();
-                }
+                pnlDayPanelMousePressed(e, dayPanel);
             }
 
             @Override
@@ -431,8 +412,8 @@ public class FrmCalendar extends javax.swing.JPanel {
     }
 
     /**
-     * Add classes.Event List to the Calendar. If this function is called, the Calender Removes all
-     * Appointment Buttons to add them new
+     * Add classes.Event List to the Calendar. If this function is called, the
+     * Calender Removes all Appointment Buttons to add them new
      *
      * @param eventList Receives a classes.Event List with events.
      */
@@ -524,6 +505,7 @@ public class FrmCalendar extends javax.swing.JPanel {
 
     /**
      * Returns the selected java.time.LocalDate based on the selected day.
+     *
      * @return Returns a java.time.LocalDate from selectedDay, otherwise null
      */
     public java.time.LocalDate getSelectedLocalDate() {
@@ -553,18 +535,65 @@ public class FrmCalendar extends javax.swing.JPanel {
     /**
      * This function takes a LocalDate as Argument and sets the Day as focused.
      * The Calender is not going to be reloaded.
-     * 
+     *
      * @param ld java.time.LocalDate
      */
-    public void focusDayByLocalDate(java.time.LocalDate ld){
-        
-        if (this.getPnlDayPanelByDay(ld) != null){
+    public void focusDayByLocalDate(java.time.LocalDate ld) {
+
+        if (this.getPnlDayPanelByDay(ld) != null) {
             this.clearDaySelection();
             this.clearButtonSelection();
             this.getPnlDayPanelByDay(ld).setSelected();
+            this.focusDayPanel(this.getPnlDayPanelByDay(ld));
+            this.localDate = ld;
         }
     }
     
+    /**
+     * Executes the procedures which are meant to be executed in the MouseClickListener
+     * @param e MouseEvent e
+     * @param dayPanel CalendarUtilities.PnlDayPanel
+     */
+    private void pnlDayPanelMousePressed(java.awt.event.MouseEvent e, PnlDayPanel dayPanel) {
+        //if clicked once and button is left click on mouse
+        if (e.getClickCount() == 1 && e.getButton() == java.awt.event.MouseEvent.BUTTON1) {
+            //clear every day selection
+            clearDaySelection();
+            //clear also every button
+            clearButtonSelection();
+            //set this dayPanel to selected
+            dayPanel.setSelected();
+            //Call FrmMain to do some important stuff
+            FrmMain.getInstance().displayAllEventsOfDay(dayPanel.getDay());
+        } //if clickCount == 2 and the button was the left button
+        else if (e.getClickCount() == 2 && e.getButton() == java.awt.event.MouseEvent.BUTTON1) {
+            //create new Appointment
+            FrmMain.getInstance().createNewEvent(dayPanel.getDay());
+        } //if rightclick
+        else if (e.getButton() == java.awt.event.MouseEvent.BUTTON3) {
+            //clear focus
+            clearDaySelection();
+            clearButtonSelection();
+        }
+    }
+
+    /**
+     * This function is called by focusDayByLocalDate so the Appointments of day are also shown.
+     * @param dayPanel CalendarUtilities.PnlDayPanel
+     */
+    private void focusDayPanel(PnlDayPanel dayPanel) {
+        if (dayPanel == null)
+            return;
+        //clear every day selection
+        clearDaySelection();
+        //clear also every button
+        clearButtonSelection();
+        //set this dayPanel to selected
+        dayPanel.setSelected();
+        //Call FrmMain to do some important stuff
+        FrmMain.getInstance().displayAllEventsOfDay(dayPanel.getDay());
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
 }

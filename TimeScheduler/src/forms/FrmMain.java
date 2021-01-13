@@ -55,15 +55,11 @@ public class FrmMain extends javax.swing.JFrame {
                 LocalDate startPanelMonth = frmCalendar.getFirstDayOfView();
                 LocalDate lastPanelMonth = frmCalendar.getLastDayOfView();
 
-                System.out.println("old: " + dce.getOldDate());
-                System.out.println("new: " + dce.getNewDate());
-
                 if ((dce.getOldDate() != null) && (dce.getNewDate() != null) && ((dce.getNewDate().isBefore(startPanelMonth) || (dce.getNewDate().isAfter(lastPanelMonth))))) {
                     frmCalendar.setLocalDate(datePicker.getDate());
                     frmCalendar.addEvents(eventHandler.getEventsOfPeriod(user.getUserId(), frmCalendar.getFirstDayOfView(), frmCalendar.getLastDayOfView()));
                 } else if ((dce.getOldDate() != null) && (dce.getNewDate() != null) && ((dce.getNewDate().isAfter(startPanelMonth) || (dce.getNewDate().isBefore(lastPanelMonth))))) {
                     frmCalendar.focusDayByLocalDate(datePicker.getDate());
-                    System.out.println(frmCalendar.getLocalDate());
                 }
             }
         });
