@@ -16,6 +16,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -169,9 +171,10 @@ public class FrmEvent extends javax.swing.JPanel {
             name = txtEventName.getText();
         }
 
-        if (!txtEventDuration.getText().isBlank() && txtEventDuration.getText().matches("[0-9]+")) {
-
-            duration = Integer.parseInt(txtEventDuration.getText());
+        if (!txtEventDuration.getText().trim().isBlank()) {
+            if (txtEventDuration.getText().trim().matches("[0-9]+")) {
+                duration = Integer.parseInt(txtEventDuration.getText());
+            }
         }
 
         if (!txtEventLocation.getText().isBlank()) {
@@ -426,13 +429,13 @@ public class FrmEvent extends javax.swing.JPanel {
 
         LocalDate startPanelMonth = FrmMain.getInstance().getCalendar().getFirstDayOfView();
         LocalDate lastPanelMonth = FrmMain.getInstance().getCalendar().getLastDayOfView();
-        
+
         if (date.isBefore(startPanelMonth) || (date.isAfter(lastPanelMonth))) {
             FrmMain.getInstance().getCalendar().setLocalDate(date);
         }
 
         FrmMain.getInstance().getCalendar().addEvents(eHandler.getEventsOfDay(userId, date));
- 
+
     }
 
 // </editor-fold>
