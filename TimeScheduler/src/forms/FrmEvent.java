@@ -434,9 +434,13 @@ public class FrmEvent extends javax.swing.JPanel {
 
         if (date.isBefore(startPanelMonth) || (date.isAfter(lastPanelMonth))) {
             FrmMain.getInstance().getCalendar().setLocalDate(date);
+
+            startPanelMonth = FrmMain.getInstance().getCalendar().getFirstDayOfView();
+            lastPanelMonth = FrmMain.getInstance().getCalendar().getLastDayOfView();
         }
 
-        FrmMain.getInstance().getCalendar().addEvents(eHandler.getEventsOfDay(userId, date));
+        FrmMain.getInstance().getCalendar().addEvents(eHandler.getEventsOfPeriod(userId, startPanelMonth, lastPanelMonth));
+        FrmMain.getInstance().getCalendar().focusDayByLocalDate(date);
 
     }
 
@@ -656,23 +660,21 @@ public class FrmEvent extends javax.swing.JPanel {
     private void btnAddAttachmentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddAttachmentsActionPerformed
         JFileChooser openFileDialog = new JFileChooser();
         File file = null;
-        
+
         openFileDialog.setDialogType(JFileChooser.SAVE_DIALOG);
         openFileDialog.setDialogTitle("Choose attachments");
         openFileDialog.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        
-        
+
         int state = openFileDialog.showSaveDialog(forms.FrmMain.getInstance());
-        
-        if(state == JFileChooser.APPROVE_OPTION){
+
+        if (state == JFileChooser.APPROVE_OPTION) {
             file = openFileDialog.getSelectedFile();
-            
+
             liModelAttachments.addElement(file);
-            
-            
+
             liEventAttachments.setCellRenderer(new EventUtilities.AttachmentListCellRenderer());
             liEventAttachments.setModel((ListModel) liModelAttachments);
-            
+
         }
     }//GEN-LAST:event_btnAddAttachmentsActionPerformed
 
