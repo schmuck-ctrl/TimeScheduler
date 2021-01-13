@@ -64,9 +64,9 @@ public class FrmEventsOfDay extends javax.swing.JPanel {
             dialog.setSize(500, 700);
             dialog.setModal(true);
             dialog.setTitle("Event details");
-            dialog.add(new FrmEvent(event, FrmEvent.View.READ));
+            dialog.add(new FrmEvent(FrmEvent.View.READ, event, dialog));
             dialog.setLocationRelativeTo(null);
-            dialog.setVisible(true);
+            dialog.setVisible(true);        
         }
     }
 

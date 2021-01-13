@@ -57,7 +57,7 @@ public class FrmMain extends javax.swing.JFrame {
 
                 LocalDate startPanelMonth = frmCalendar.getFirstDayOfView();
                 LocalDate lastPanelMonth = frmCalendar.getLastDayOfView();
-
+                
                 if ((dce.getOldDate() != null) && ((dce.getNewDate().isBefore(startPanelMonth) || (dce.getNewDate().isAfter(lastPanelMonth))))) {
                     frmCalendar.setLocalDate(datePicker.getDate());
                     frmCalendar.addEvents(eventHandler.getEventsOfPeriod(user.getUserId(), frmCalendar.getFirstDayOfView(), frmCalendar.getLastDayOfView()));
@@ -104,7 +104,7 @@ public class FrmMain extends javax.swing.JFrame {
 
         EventHandler eHandler = new EventHandler();
         Event event = eHandler.getEvent(eventID);
-        FrmEvent frmEvent = new FrmEvent(event, FrmEvent.View.READ);
+        FrmEvent frmEvent = new FrmEvent(FrmEvent.View.READ, event);
 
         pnlEventRoot.add(frmEvent);
         frmEvent.setTitle("Details of " + event.toString() + ":");
@@ -122,7 +122,7 @@ public class FrmMain extends javax.swing.JFrame {
         EventHandler eHandler = new EventHandler();
         Event event = eHandler.getEventByUser(this.user.getUserId(), eventID);
 
-        FrmEvent frmEvent = new FrmEvent(event, FrmEvent.View.EDIT);
+        FrmEvent frmEvent = new FrmEvent(FrmEvent.View.EDIT, event);
         pnlEventRoot.add(frmEvent);
         frmEvent.setTitle("Edit event " + event.toString() + ":");
         frmEvent.setVisible(true);

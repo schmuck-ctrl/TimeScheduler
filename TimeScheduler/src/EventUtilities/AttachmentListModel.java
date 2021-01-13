@@ -39,7 +39,9 @@ public final class AttachmentListModel extends AbstractListModel<File> {
     }
 
     public void removeAll(){
-        this.removeAll();
+        for(int i = 0; i < this.listOfAttachments.size(); i++) {
+            this.listOfAttachments.remove(i);
+        }
     }
     
     @Override

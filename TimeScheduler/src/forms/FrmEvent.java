@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import javax.swing.JButton;
-import javax.swing.JFrame;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.ListModel;
 import javax.swing.border.EmptyBorder;
@@ -37,12 +37,13 @@ public class FrmEvent extends javax.swing.JPanel {
     private ParticipantListModel liModelParticipants = null;
     private AttachmentListModel liModelAttachments = null;
     private int eventID = -1;
+    private JDialog isDialog = null;
 
     // <editor-fold defaultstate="collapsed" desc="Constructors">
     /**
      * Creates new form FrmEvent
      */
-    public FrmEvent(Event event, View view) {
+    public FrmEvent(View view, Event event) {
         initComponents();
 
         pnlHeader.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -66,6 +67,21 @@ public class FrmEvent extends javax.swing.JPanel {
 
         clearInput(date);
         handleView(view);
+    }
+
+    public FrmEvent(View view, Event event, JDialog parent) {
+        initComponents();
+
+        this.isDialog = parent;
+
+        pnlHeader.setBorder(new EmptyBorder(10, 10, 10, 10));
+        pnlContent.setBorder(new EmptyBorder(10, 10, 10, 10));
+
+        liModelParticipants = new ParticipantListModel();
+        liModelAttachments = new AttachmentListModel();
+
+        handleView(view);
+        setEvent(event);
     }
 
     // </editor-fold>
@@ -270,6 +286,9 @@ public class FrmEvent extends javax.swing.JPanel {
         liEventAttachments.setEnabled(isEnabled);
         liEventParticipants.setEnabled(isEnabled);
 
+        btnAddParticipants.setEnabled(isEnabled);
+        btnAddAttachments.setEnabled(isEnabled);
+
     }
 
     private void handleView(View view) {
@@ -366,6 +385,10 @@ public class FrmEvent extends javax.swing.JPanel {
         refreshCalendar(dtPicker.datePicker.getDate());
 
         this.setVisible(false);
+
+        if (this.isDialog != null) {
+            this.isDialog.dispose();;
+        }
     }
 
     private void btnEditActoinPerformed(ActionEvent e) {
@@ -375,6 +398,10 @@ public class FrmEvent extends javax.swing.JPanel {
         refreshCalendar(dtPicker.datePicker.getDate());
 
         this.setVisible(false);
+
+        if (this.isDialog != null) {
+            this.isDialog.dispose();;
+        }
     }
 
     private void btnDeleteActionPerformed(ActionEvent e) {
@@ -385,6 +412,10 @@ public class FrmEvent extends javax.swing.JPanel {
             refreshCalendar(dtPicker.datePicker.getDate());
 
             this.setVisible(false);
+
+            if (this.isDialog != null) {
+                this.isDialog.dispose();
+            }
         }
     }
 
@@ -393,12 +424,15 @@ public class FrmEvent extends javax.swing.JPanel {
 
         int userId = FrmMain.getInstance().getCurrentUser().getUserId();
 
-        FrmMain.getInstance().getCalendar().setLocalDate(date);
+        LocalDate startPanelMonth = FrmMain.getInstance().getCalendar().getFirstDayOfView();
+        LocalDate lastPanelMonth = FrmMain.getInstance().getCalendar().getLastDayOfView();
+        
+        if (date.isBefore(startPanelMonth) || (date.isAfter(lastPanelMonth))) {
+            FrmMain.getInstance().getCalendar().setLocalDate(date);
+        }
 
-        LocalDate start = FrmMain.getInstance().getCalendar().getFirstDayOfView();
-        LocalDate end = FrmMain.getInstance().getCalendar().getLastDayOfView();
-
-        FrmMain.getInstance().getCalendar().addEvents(eHandler.getEventsOfPeriod(userId, start, end));
+        FrmMain.getInstance().getCalendar().addEvents(eHandler.getEventsOfDay(userId, date));
+ 
     }
 
 // </editor-fold>
@@ -440,11 +474,11 @@ public class FrmEvent extends javax.swing.JPanel {
         pnlEventParticipants = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         liEventParticipants = new javax.swing.JList<>();
-        jButton1 = new javax.swing.JButton();
+        btnAddParticipants = new javax.swing.JButton();
         filler7 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20), new java.awt.Dimension(32767, 20));
         lblEventAttachments = new javax.swing.JLabel();
         pnlEventAttachments = new javax.swing.JPanel();
-        jButton2 = new javax.swing.JButton();
+        btnAddAttachments = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         liEventAttachments = new javax.swing.JList<>();
         filler8 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20), new java.awt.Dimension(32767, 20));
@@ -538,10 +572,10 @@ public class FrmEvent extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 0);
         pnlEventParticipants.add(jScrollPane1, gridBagConstraints);
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/add-circle-line.png"))); // NOI18N
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnAddParticipants.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/add-circle-line.png"))); // NOI18N
+        btnAddParticipants.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnAddParticipantsActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -549,7 +583,7 @@ public class FrmEvent extends javax.swing.JPanel {
         gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 6);
-        pnlEventParticipants.add(jButton1, gridBagConstraints);
+        pnlEventParticipants.add(btnAddParticipants, gridBagConstraints);
 
         pnlContent.add(pnlEventParticipants);
         pnlContent.add(filler7);
@@ -560,13 +594,13 @@ public class FrmEvent extends javax.swing.JPanel {
 
         pnlEventAttachments.setLayout(new java.awt.GridBagLayout());
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/add-circle-line.png"))); // NOI18N
+        btnAddAttachments.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/add-circle-line.png"))); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(6, 6, 0, 6);
-        pnlEventAttachments.add(jButton2, gridBagConstraints);
+        pnlEventAttachments.add(btnAddAttachments, gridBagConstraints);
 
         jScrollPane2.setViewportView(liEventAttachments);
 
@@ -592,10 +626,10 @@ public class FrmEvent extends javax.swing.JPanel {
         add(pnlFooter, java.awt.BorderLayout.PAGE_END);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnAddParticipantsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddParticipantsActionPerformed
         // TODO add your handling code here:
         ArrayList<Operator> all = new ArrayList();
-        if (liModelParticipants.getElementAt(0) != null) {
+        if (liModelParticipants.getSize() > 0) {
             for (int i = 0; i < liModelParticipants.getSize(); i++) {
                 Operator participant = liModelParticipants.getElementAt(i);
                 all.add(participant);
@@ -603,7 +637,7 @@ public class FrmEvent extends javax.swing.JPanel {
             FrmAddUserToAppointment frmAddUserToAppointment = new FrmAddUserToAppointment(FrmMain.getInstance(), true, all, this);
             frmAddUserToAppointment.setVisible(true);
 
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnAddParticipantsActionPerformed
         else {
             FrmAddUserToAppointment frmAddUserToAppointment = new FrmAddUserToAppointment(FrmMain.getInstance(), true, this);
             frmAddUserToAppointment.setVisible(true);
@@ -611,6 +645,8 @@ public class FrmEvent extends javax.swing.JPanel {
 
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAddAttachments;
+    private javax.swing.JButton btnAddParticipants;
     private javax.swing.JComboBox<String> cbEventNotification;
     private javax.swing.JComboBox<String> cbEventPriority;
     private com.github.lgooddatepicker.components.DateTimePicker dtPicker;
@@ -623,8 +659,6 @@ public class FrmEvent extends javax.swing.JPanel {
     private javax.swing.Box.Filler filler7;
     private javax.swing.Box.Filler filler8;
     private javax.swing.Box.Filler filler9;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblDateTime;
