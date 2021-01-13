@@ -74,7 +74,7 @@ public class EventHandler {
     }
 
     public void addEvent(Event event) {
-        dbHandler.addEvent(event);
+        dbHandler.createNewEvent(event);
         //eHandler.emailSenderAddEvent(dbHandler.getOrganiserByID(event.getID()),dbHandler.getParticipantsByID(event.getID()));
     }
 

@@ -8,6 +8,7 @@ package handlers;
 import classes.*;
 import classes.Operator;
 import java.io.File;
+import java.io.FileInputStream;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -22,7 +23,7 @@ public class DatabaseHandler {
     public static void main(String[] args) {
         DatabaseHandler db = new DatabaseHandler();
         //Event evt = db.getEventById(5)
-        ArrayList<Operator> part = db.getParticipantsByID(5);
+        ArrayList<Operator> part = db.selectParticipantsByID(5);
         db.addParticipants(part, 5);
     }
     private Connection con = null;
@@ -32,6 +33,21 @@ public class DatabaseHandler {
     }
 
     //PRIVATE FUNCTION SECTION 
+    private void addFiles(ArrayList<File> toBeAdded, int eventID){
+        String addFile = "INSERT INTO file (F_file,F_eventID) VALUES(?,?)";
+
+        try ( PreparedStatement stmt = con.prepareStatement(addFile)) { 
+            for (File f : toBeAdded) {
+                FileInputStream file = new FileInputStream(f);
+                stmt.setBinaryStream(1, file);
+                stmt.setInt(2, eventID);
+                stmt.addBatch();
+            }
+            stmt.executeBatch();
+        } catch (Exception ex) {
+            System.out.println("add parti: " + ex.getMessage());
+        }
+    }
     private void addParticipants(ArrayList<Operator> toBeAdded, int eventID) {
         String addParticipant = "INSERT INTO participant (P_userID,P_eventID) VALUES(?,?)";
 
@@ -43,7 +59,7 @@ public class DatabaseHandler {
             }
             stmt.executeBatch();
         } catch (SQLException ex) {
-            System.out.println("add parti: " + ex.getMessage());
+            System.out.println("add participants: " + ex.getMessage());
         }
     }
 
@@ -52,6 +68,19 @@ public class DatabaseHandler {
         String deleteParticipant = "DELETE FROM participant WHERE P_eventID = ?;";
         //int update_successfull = -1;
         try ( PreparedStatement stmt = con.prepareStatement(deleteParticipant)) {
+            stmt.setInt(1, eventID);
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            System.out.println("delete parti: " + ex.getMessage());
+        }
+        //return update_successfull;
+    }
+    
+    private void deleteFiles(int eventID) {
+
+        String deleteFiles = "DELETE FROM file WHERE P_eventID = ?;";
+        //int update_successfull = -1;
+        try ( PreparedStatement stmt = con.prepareStatement(deleteFiles)) {
             stmt.setInt(1, eventID);
             stmt.executeUpdate();
         } catch (SQLException ex) {
@@ -101,14 +130,14 @@ public class DatabaseHandler {
         }
     }
 
-    private void setParticipantsOfEvents(ArrayList<Event> events) {
+    private void fillEventsWithParticipants(ArrayList<Event> events) {
         if (!events.isEmpty()) {
             events.forEach(temp -> {
-                temp.setParticipants(getParticipantsByID(temp.getID()));
+                temp.setParticipants(selectParticipantsByID(temp.getID()));
             });
         }
     }
-
+    
     private static String getParticipantsID(ArrayList<Operator> participants) {
         StringBuilder buffer = new StringBuilder();
         if (!participants.isEmpty()) {
@@ -227,8 +256,36 @@ public class DatabaseHandler {
         }
         return null;
     }
-
+    
     //USER FUNCTIONS
+    
+    public void setUserNotified(int eventID, int userID){
+        String notify = "UPDATE participant SET P_notified = 1 WHERE P_userID = ? AND P_eventID = ?;";
+  
+        try(PreparedStatement stmt = con.prepareStatement(notify)){
+            stmt.setInt(1, userID);
+            stmt.setInt(2, eventID);
+            stmt.executeUpdate();
+        }catch(SQLException ex){
+            System.out.println("setUserNotified"+ex.getMessage());
+        }
+        
+    }
+    
+    public ArrayList<Event> getNotNotified(int userID){
+        String notNotified = "SELECT eventID FROM participant WHERE P_userID = ? AND P_notified = 0;";
+        ArrayList <Event> events = new ArrayList<>();
+        try(PreparedStatement stmt = con.prepareStatement(notNotified)){
+            try(ResultSet rs = stmt.executeQuery()){
+                while(rs.next())
+                    events.add(getEvent(rs));
+            }
+        }catch(SQLException ex){
+            System.out.println("getEventsNotNotified"+ex.getMessage());
+        }
+        return events;
+    }
+    
     public boolean checkIfUserExists(String username, String password) {
         String sql = "SELECT * FROM user WHERE U_email = ? AND U_password = ? AND U_deleted = 0;";
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
@@ -409,7 +466,7 @@ public class DatabaseHandler {
         return null;
     }
 
-    public ArrayList<Operator> getParticipantsByID(int EventID) {
+    public ArrayList<Operator> selectParticipantsByID(int EventID) {
         String prefix = "EM";
         ArrayList<Operator> participants = new ArrayList<>();
         Operator participant;
@@ -428,41 +485,6 @@ public class DatabaseHandler {
 
         }
         return participants;
-    }
-
-    public ArrayList<Operator> getParticipantsByEventName(String eventName) {
-        String prefix = "EM";
-        ArrayList<Operator> participants = new ArrayList<>();
-        String sql = "SELECT * from eventmembers WHERE EM_eventName = ?;";
-
-        try ( PreparedStatement stmt = con.prepareCall(sql)) {
-            stmt.setString(1, eventName);
-            try ( ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    participants.add(returnUser(rs, prefix));
-                }
-            }
-        } catch (Exception ex) {
-
-        }
-        return participants;
-    }
-
-    public ArrayList<Operator> getAllAdmins() {
-        String prefix = "U";
-        ArrayList<Operator> allAdmins = new ArrayList<>();
-        String sql = "SELECT * FROM user where U_role = 'Admin' AND U_deleted = 0;";
-        try ( PreparedStatement stmt = con.prepareStatement(sql)) {
-            try ( ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    allAdmins.add(returnUser(rs, prefix));
-                }
-            }
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        }
-
-        return allAdmins;
     }
 
     public ArrayList<Operator> getAllOperators() {
@@ -562,16 +584,25 @@ public class DatabaseHandler {
     }
 
     //Event Methods
+    
+    public void setParticipantsOfEvent(ArrayList<Operator> participants, int eventID){
+        deleteParticipants(eventID);
+        addParticipants(participants, eventID);
+    }
+    
     public int editEvent(Event toBeEdited) {
         int editSuccessfull = -1;
+        ArrayList<Operator> new_participants = toBeEdited.getParticipants();
+        new_participants.add(toBeEdited.getHost());
         String editEvent
                 = "UPDATE event SET E_eventName = ?, E_eventDuration = ?, E_eventDate = ?, E_priority = ?,"
                 + "E_eventLocation = ?, E_reminder = ?, E_notification = ? "
                 + "WHERE E_eventID = ?;";
-
-        deleteParticipants(toBeEdited.getID());
-        addParticipants(toBeEdited.getParticipants(), toBeEdited.getID());
-
+        
+        setParticipantsOfEvent(new_participants, toBeEdited.getID());
+  
+        //setFilesOfEvent(toBeEdited.getAttachments(), toBeEdited.getID());
+        
         try ( PreparedStatement stmt = con.prepareStatement(editEvent)) {
             stmt.setString(1, toBeEdited.getName());
             stmt.setInt(2, toBeEdited.getDuration());
@@ -605,30 +636,32 @@ public class DatabaseHandler {
             System.out.println(ex.getMessage());
         }
 
-        setParticipantsOfEvents(Events);
+        fillEventsWithParticipants(Events);
         return Events;
     }
 
-    public void addEvent(Event Event) {
+    public void createNewEvent(Event new_event) {
 
         String sqlEvent = "INSERT INTO event (E_eventName, E_eventDuration, E_eventDate, E_priority, E_eventLocation, E_reminder, E_notification) VALUES (?, ?, ?, ?, ?, ?, ?);";
-        ArrayList<Operator> temp = Event.getParticipants();
-        temp.add(Event.getHost());
+        ArrayList<Operator> temp = new_event.getParticipants();
+        temp.add(new_event.getHost());
+        
         try ( PreparedStatement stmt = con.prepareStatement(sqlEvent)) {
-            stmt.setString(1, Event.getName());
-            stmt.setInt(2, Event.getDuration());
-            stmt.setTimestamp(3, java.sql.Timestamp.valueOf(Event.getDate()));
-            stmt.setString(4, Event.getPriority().toString());
-            stmt.setString(5, Event.getLocation());
-            stmt.setTimestamp(6, java.sql.Timestamp.valueOf(Event.getReminder()));
-            stmt.setString(7, Event.getNotification().toString());
+            stmt.setString(1, new_event.getName());
+            stmt.setInt(2, new_event.getDuration());
+            stmt.setTimestamp(3, java.sql.Timestamp.valueOf(new_event.getDate()));
+            stmt.setString(4, new_event.getPriority().toString());
+            stmt.setString(5, new_event.getLocation());
+            stmt.setTimestamp(6, java.sql.Timestamp.valueOf(new_event.getReminder()));
+            stmt.setString(7, new_event.getNotification().toString());
             stmt.executeUpdate();
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
-
-        setOrganiserOfEvent(Event.getHost().getUserId(), getMaxEventID());
-        insertParticipantsOfEvent(temp, getMaxEventID());
+        
+        setOrganiserOfEvent(new_event.getHost().getUserId(), getMaxEventID());
+        setParticipantsOfEvent(temp, getMaxEventID());
+        //setFilesOfEvent(new_event.getAttachments(), getMaxEventID());
     }
 
     public void deleteEvent(int EventID) {
@@ -656,7 +689,7 @@ public class DatabaseHandler {
             System.out.println(ex.getMessage());
         }
 
-        setParticipantsOfEvents(usersEvents);
+        fillEventsWithParticipants(usersEvents);
 
         return usersEvents;
     }
@@ -687,14 +720,19 @@ public class DatabaseHandler {
         }
         System.out.println(usersEvents);
         if (!usersEvents.isEmpty()) {
-            setParticipantsOfEvents(usersEvents);
+            fillEventsWithParticipants(usersEvents);
             return usersEvents;
         } else {
             System.out.println("User doesn't have any Events this week");
         }
         return usersEvents;
     }
-
+    
+    public void setFilesOfEvent(ArrayList<File> eventFiles, int eventID){
+        deleteFiles(eventID);
+        addFiles(eventFiles, eventID);
+    }
+    
     public ArrayList<Event> getThisMonthsEventsByUserID(int userID) {
         ArrayList<Event> usersEvents = new ArrayList<>();
         ArrayList<Integer> usersEventIDs = getEventIDsOfUser(userID);
@@ -721,7 +759,7 @@ public class DatabaseHandler {
         }
         System.out.println(usersEvents);
         if (!usersEvents.isEmpty()) {
-            setParticipantsOfEvents(usersEvents);
+            fillEventsWithParticipants(usersEvents);
             return usersEvents;
         } else {
             System.out.println("User doesn't have any Events this week");
@@ -753,7 +791,7 @@ public class DatabaseHandler {
             System.out.println("This Weeks: " + ex.getMessage());
         }
         if (!usersEvents.isEmpty()) {
-            setParticipantsOfEvents(usersEvents);
+            fillEventsWithParticipants(usersEvents);
             return usersEvents;
         } else {
             System.out.println("User doesn't have any Events this week");
@@ -787,7 +825,7 @@ public class DatabaseHandler {
             System.out.println(ex.getMessage());
         }
 
-        setParticipantsOfEvents(Events);
+        fillEventsWithParticipants(Events);
         return Events;
     }
 
@@ -806,7 +844,7 @@ public class DatabaseHandler {
             System.out.println(ex.getMessage());
         }
 
-        toBeReturned.setParticipants(getParticipantsByID(toBeReturned.getID()));
+        toBeReturned.setParticipants(selectParticipantsByID(toBeReturned.getID()));
         return toBeReturned;
     }
 
@@ -862,7 +900,7 @@ public class DatabaseHandler {
         }
 
         if (!usersEvents.isEmpty()) {
-            setParticipantsOfEvents(usersEvents);
+            fillEventsWithParticipants(usersEvents);
             return usersEvents;
         } else {
             System.out.println("User doesn't have any Events this week");
@@ -888,7 +926,7 @@ public class DatabaseHandler {
             System.out.println(ex.getMessage());
         }
 
-        setParticipantsOfEvents(usersEvents);
+        fillEventsWithParticipants(usersEvents);
         return usersEvents;
     }
 
