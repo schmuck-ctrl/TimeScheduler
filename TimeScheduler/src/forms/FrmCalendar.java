@@ -431,7 +431,8 @@ public class FrmCalendar extends javax.swing.JPanel {
     }
 
     /**
-     * Add classes.Event to the Calendar.
+     * Add classes.Event List to the Calendar. If this function is called, the Calender Removes all
+     * Appointment Buttons to add them new
      *
      * @param eventList Receives a classes.Event List with events.
      */
@@ -547,6 +548,19 @@ public class FrmCalendar extends javax.swing.JPanel {
         }
     }
 
+    /**
+     * This function takes a LocalDate as Argument and sets the Day as focused.
+     * @param ld java.time.LocalDate
+     */
+    public void focusDayByLocalDate(java.time.LocalDate ld){
+        
+        if (this.getPnlDayPanelByDay(ld) != null){
+            this.clearDaySelection();
+            this.clearButtonSelection();
+            this.getPnlDayPanelByDay(ld).setSelected();
+        }
+        
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
 }
