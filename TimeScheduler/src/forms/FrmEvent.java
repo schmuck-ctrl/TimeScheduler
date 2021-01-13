@@ -20,7 +20,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
 import javax.swing.border.EmptyBorder;
 
@@ -598,6 +600,11 @@ public class FrmEvent extends javax.swing.JPanel {
         pnlEventAttachments.setLayout(new java.awt.GridBagLayout());
 
         btnAddAttachments.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/add-circle-line.png"))); // NOI18N
+        btnAddAttachments.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddAttachmentsActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -640,13 +647,35 @@ public class FrmEvent extends javax.swing.JPanel {
             FrmAddUserToAppointment frmAddUserToAppointment = new FrmAddUserToAppointment(FrmMain.getInstance(), true, all, this);
             frmAddUserToAppointment.setVisible(true);
 
-    }//GEN-LAST:event_btnAddParticipantsActionPerformed
-        else {
+        } else {
             FrmAddUserToAppointment frmAddUserToAppointment = new FrmAddUserToAppointment(FrmMain.getInstance(), true, this);
             frmAddUserToAppointment.setVisible(true);
         }
+    }//GEN-LAST:event_btnAddParticipantsActionPerformed
 
-    }
+    private void btnAddAttachmentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddAttachmentsActionPerformed
+        JFileChooser openFileDialog = new JFileChooser();
+        File file = null;
+        
+        openFileDialog.setDialogType(JFileChooser.SAVE_DIALOG);
+        openFileDialog.setDialogTitle("Choose attachments");
+        openFileDialog.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        
+        
+        int state = openFileDialog.showSaveDialog(forms.FrmMain.getInstance());
+        
+        if(state == JFileChooser.APPROVE_OPTION){
+            file = openFileDialog.getSelectedFile();
+            
+            liModelAttachments.addElement(file);
+            
+            
+            liEventAttachments.setCellRenderer(new EventUtilities.AttachmentListCellRenderer());
+            liEventAttachments.setModel((ListModel) liModelAttachments);
+            
+        }
+    }//GEN-LAST:event_btnAddAttachmentsActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddAttachments;
     private javax.swing.JButton btnAddParticipants;
