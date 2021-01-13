@@ -78,4 +78,15 @@ public abstract class Operator {
     public String toString() {
         return email;
     }
+    
+    
+    @Override
+    public boolean equals(Object anObject) {
+        if (!(anObject instanceof Operator)) {
+            return false;
+        }
+        Operator otherMember = (Operator)anObject;        
+        return otherMember.getUserId() == (getUserId());
+    }
+    
 }

@@ -34,26 +34,26 @@ public class DatabaseHandler {
     }
 
     //PRIVATE FUNCTION SECTION 
-    private ArrayList<Integer> getEventIDsNotNotified(int userID){
+    private ArrayList<Integer> getEventIDsNotNotified(int userID) {
         ArrayList<Integer> eventIDs = new ArrayList<>();
         String notNotifiedIds = "SELECT P_eventID FROM participant WHERE P_userID = ? AND P_notified = 0;";
-        try(PreparedStatement stmt = con.prepareStatement(notNotifiedIds)){
+        try ( PreparedStatement stmt = con.prepareStatement(notNotifiedIds)) {
             stmt.setInt(1, userID);
-            try(ResultSet rs = stmt.executeQuery()){
-                while(rs.next()){
+            try ( ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
                     eventIDs.add(rs.getInt(1));
                 }
             }
-        }catch(SQLException ex){
-            System.out.println("not Notified:"+ex.getMessage());
+        } catch (SQLException ex) {
+            System.out.println("not Notified:" + ex.getMessage());
         }
         return eventIDs;
     }
-    
-    private void addFiles(ArrayList<File> toBeAdded, int eventID){
+
+    private void addFiles(ArrayList<File> toBeAdded, int eventID) {
         String addFile = "INSERT INTO file (F_file,F_eventID) VALUES(?,?)";
 
-        try ( PreparedStatement stmt = con.prepareStatement(addFile)) { 
+        try ( PreparedStatement stmt = con.prepareStatement(addFile)) {
             for (File f : toBeAdded) {
                 FileInputStream file = new FileInputStream(f);
                 stmt.setBinaryStream(1, file);
@@ -62,9 +62,10 @@ public class DatabaseHandler {
             }
             stmt.executeBatch();
         } catch (Exception ex) {
-            System.out.println("add parti: " + ex.getMessage());
+            System.out.println("add Files: " + ex.getMessage());
         }
     }
+
     private void addParticipants(ArrayList<Operator> toBeAdded, int eventID) {
         String addParticipant = "INSERT INTO participant (P_userID,P_eventID) VALUES(?,?)";
 
@@ -92,7 +93,7 @@ public class DatabaseHandler {
         }
         //return update_successfull;
     }
-    
+
     private void deleteFiles(int eventID) {
 
         String deleteFiles = "DELETE FROM file WHERE P_eventID = ?;";
@@ -130,7 +131,7 @@ public class DatabaseHandler {
             System.out.println(ex.getMessage());
         }
 
-        return 0;
+        return -1;
     }
 
     private void insertParticipantsOfEvent(ArrayList<Operator> participants, int eventID) {
@@ -154,7 +155,7 @@ public class DatabaseHandler {
             });
         }
     }
-    
+
     private static String getParticipantsID(ArrayList<Operator> participants) {
         StringBuilder buffer = new StringBuilder();
         if (!participants.isEmpty()) {
@@ -245,6 +246,7 @@ public class DatabaseHandler {
         }
         return null;
     }
+
     private Operator AdminOrUser(String role, int userId, String firstName, String lastName, String email) {
         Operator toBeSpecified = null;
 
@@ -272,38 +274,38 @@ public class DatabaseHandler {
         }
         return null;
     }
-    
+
     //USER FUNCTIONS
-    
-    public void setUserNotified(int eventID, int userID){
+    public void setUserNotified(int eventID, int userID) {
         String notify = "UPDATE participant SET P_notified = 1 WHERE P_userID = ? AND P_eventID = ?;";
-  
-        try(PreparedStatement stmt = con.prepareStatement(notify)){
+
+        try ( PreparedStatement stmt = con.prepareStatement(notify)) {
             stmt.setInt(1, userID);
             stmt.setInt(2, eventID);
             stmt.executeUpdate();
-        }catch(SQLException ex){
-            System.out.println("setUserNotified"+ex.getMessage());
+        } catch (SQLException ex) {
+            System.out.println("setUserNotified" + ex.getMessage());
         }
-        
+
     }
-    
-    public ArrayList<Event> getNotNotifiedEventsFromUser(int userID){
+
+    public ArrayList<Event> getNotNotifiedEventsFromUser(int userID) {
         ArrayList<Integer> eventIDs = getEventIDsNotNotified(userID);
-        String notNotified = "SELECT * FROM eventdetails WHERE ED_eventID IN("+listToString(eventIDs)+");";
-        ArrayList <Event> events = new ArrayList<>();
-        try(PreparedStatement stmt = con.prepareStatement(notNotified)){
-            
-            try(ResultSet rs = stmt.executeQuery()){
-                while(rs.next())
+        String notNotified = "SELECT * FROM eventdetails WHERE ED_eventID IN(" + listToString(eventIDs) + ");";
+        ArrayList<Event> events = new ArrayList<>();
+        try ( PreparedStatement stmt = con.prepareStatement(notNotified)) {
+
+            try ( ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
                     events.add(getEvent(rs));
+                }
             }
-        }catch(SQLException ex){
-            System.out.println("getEventsNotNotified"+ex.getMessage());
+        } catch (SQLException ex) {
+            System.out.println("getEventsNotNotified" + ex.getMessage());
         }
         return events;
     }
-    
+
     public boolean checkIfUserExists(String username, String password) {
         String sql = "SELECT * FROM user WHERE U_email = ? AND U_password = ? AND U_deleted = 0;";
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
@@ -532,7 +534,7 @@ public class DatabaseHandler {
             stmt.setString(3, toBeEdited.getLastName());
             stmt.setString(4, toBeEdited.getRole().toString());
             stmt.setInt(5, toBeEdited.getUserId());
-            
+
             editSuccessfull = stmt.executeUpdate();
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
@@ -594,20 +596,59 @@ public class DatabaseHandler {
 
         if (users.isEmpty()) {
             System.out.println("No User with such criteria does exist");
-            
+
         }
-            return users;
-        
+        return users;
 
     }
 
     //Event Methods
-    
-    public void setParticipantsOfEvent(ArrayList<Operator> participants, int eventID){
-        deleteParticipants(eventID);
-        addParticipants(participants, eventID);
+    public void setParticipantsOfEvent(ArrayList<Operator> participants, int eventID) {
+        ArrayList<Operator> event_old = selectParticipantsByID(eventID); //old
+        ArrayList<Operator> event_new = (ArrayList<Operator>)participants.clone(); //new
+        ArrayList<Operator> toBeAdded = (ArrayList<Operator>)event_new.clone();
+        ArrayList<Operator> toBeDeleted = (ArrayList<Operator>)event_old.clone();
+        
+        toBeAdded.removeAll(event_old);
+        toBeDeleted.removeAll(event_new);
+        
+        
+        deleteParticipants(toBeDeleted, eventID);
+        insertParticipants(toBeAdded, eventID);
     }
-    
+
+    public void insertParticipants(ArrayList<Operator> toBeAdded, int eventID) {
+        String sql = "INSERT INTO participant (P_userID,P_eventID) VALUES (?,?);";
+
+        try ( PreparedStatement stmt = con.prepareStatement(sql)) {
+            for (Operator o : toBeAdded) {
+                stmt.setInt(1, o.getUserId());
+                stmt.setInt(2, eventID);
+                stmt.addBatch();
+                
+            }
+            stmt.executeBatch();
+        } catch (SQLException ex) {
+            System.out.println("insertPart: " + ex.getMessage());
+        }
+    }
+
+    public void deleteParticipants(ArrayList<Operator> toBeDeleted, int eventID) {
+        String sql = "DELETE FROM participant WHERE P_userID = ? AND P_eventID = ?;";
+
+        try ( PreparedStatement stmt = con.prepareStatement(sql)) {
+            for (Operator o : toBeDeleted) {
+                stmt.setInt(1, o.getUserId());
+                stmt.setInt(2, eventID);
+                stmt.addBatch();
+                
+            }
+            stmt.executeBatch();
+        } catch (SQLException ex) {
+            System.out.println("deletePart: " + ex.getMessage());
+        }
+    }
+
     public int editEvent(Event toBeEdited) {
         int editSuccessfull = -1;
         ArrayList<Operator> new_participants = toBeEdited.getParticipants();
@@ -616,11 +657,10 @@ public class DatabaseHandler {
                 = "UPDATE event SET E_eventName = ?, E_eventDuration = ?, E_eventDate = ?, E_priority = ?,"
                 + "E_eventLocation = ?, E_reminder = ?, E_notification = ? "
                 + "WHERE E_eventID = ?;";
-        
+
         setParticipantsOfEvent(new_participants, toBeEdited.getID());
-  
+
         //setFilesOfEvent(toBeEdited.getAttachments(), toBeEdited.getID());
-        
         try ( PreparedStatement stmt = con.prepareStatement(editEvent)) {
             stmt.setString(1, toBeEdited.getName());
             stmt.setInt(2, toBeEdited.getDuration());
@@ -663,7 +703,7 @@ public class DatabaseHandler {
         String sqlEvent = "INSERT INTO event (E_eventName, E_eventDuration, E_eventDate, E_priority, E_eventLocation, E_reminder, E_notification) VALUES (?, ?, ?, ?, ?, ?, ?);";
         ArrayList<Operator> temp = new_event.getParticipants();
         temp.add(new_event.getHost());
-        
+
         try ( PreparedStatement stmt = con.prepareStatement(sqlEvent)) {
             stmt.setString(1, new_event.getName());
             stmt.setInt(2, new_event.getDuration());
@@ -676,7 +716,7 @@ public class DatabaseHandler {
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
-        
+
         setOrganiserOfEvent(new_event.getHost().getUserId(), getMaxEventID());
         setParticipantsOfEvent(temp, getMaxEventID());
         //setFilesOfEvent(new_event.getAttachments(), getMaxEventID());
@@ -744,12 +784,12 @@ public class DatabaseHandler {
         }
         return usersEvents;
     }
-    
-    public void setFilesOfEvent(ArrayList<File> eventFiles, int eventID){
+
+    public void setFilesOfEvent(ArrayList<File> eventFiles, int eventID) {
         deleteFiles(eventID);
         addFiles(eventFiles, eventID);
     }
-    
+
     public ArrayList<Event> getThisMonthsEventsByUserID(int userID) {
         ArrayList<Event> usersEvents = new ArrayList<>();
         ArrayList<Integer> usersEventIDs = getEventIDsOfUser(userID);
@@ -932,7 +972,7 @@ public class DatabaseHandler {
             stmt.setInt(1, userID);
             stmt.setTimestamp(2, Timestamp.valueOf(from.atStartOfDay()));
             stmt.setTimestamp(3, Timestamp.valueOf(to.atTime(23, 59, 59, 59)));
-            
+
             try ( ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     usersEvents.add(getEvent(rs));
