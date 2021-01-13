@@ -81,7 +81,12 @@ public class FrmMain extends javax.swing.JFrame {
             displayAllEventsOfDay(LocalDate.now());
 
             //ReminderHandler
-            this.reminderHandler = new ReminderHandler(eventHandler.getEventsOfCurrentMonth(this.user.getUserId()));
+            try{
+                this.reminderHandler = new ReminderHandler(this.user);
+            } catch(Exception e){
+                System.out.println(e.getMessage());
+            }
+            
             reminderHandler.start();
 
         }

@@ -11,39 +11,27 @@ package handlers;
  */
 public class ReminderHandler extends Thread {
 
-    java.util.ArrayList<classes.Event> evtList;
+    classes.Operator op;
 
-    public ReminderHandler(java.util.ArrayList<classes.Event> evtList) {
-        if (evtList != null && evtList.size() > 0) {
-            this.evtList = evtList;
+    public ReminderHandler(classes.Operator op) throws Exception {
+        if (op != null){
+            this.op = op;
+        } else{
+            throw new Exception("Operator can't be null.");
         }
     }
 
     public void run() {
         
-        java.util.ArrayList<classes.Event> reminderList = new java.util.ArrayList<>();
+        DatabaseHandler db = new DatabaseHandler();
+        
+        //java.util.ArrayList<classes.Event> reminderList = db.
         
         while (true) {
             try {
                 Thread.sleep(5000);
 
-                for (classes.Event e : evtList) {
-
-                    if (e.getDate().isAfter(java.time.LocalDateTime.now())) {
-
-                        java.time.LocalDateTime ld = e.getReminder();
-                        
-                        if (e.getReminder().isBefore(java.time.LocalDateTime.now()) || e.getReminder().isEqual(java.time.LocalDateTime.now())) {
-
-                            reminderList.add(e);
-                            
-                            System.out.println("REMINDER: " + e.getName());
-                            
-                        }
-
-                    }
-
-                }
+                
                 
                 //call FrmMain function for reminding
 
