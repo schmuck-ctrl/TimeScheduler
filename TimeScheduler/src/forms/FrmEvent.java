@@ -278,14 +278,14 @@ public class FrmEvent extends javax.swing.JPanel {
         this.txtEventDuration.setText("");
         this.txtEventLocation.setText("");
 
-        cbEventPriority.setSelectedIndex(0);
-        cbEventNotification.setSelectedIndex(0);
+        this.cbEventPriority.setSelectedIndex(0);
+        this.cbEventNotification.setSelectedIndex(0);
 
-        if (liModelAttachments.getSize() > 0) {
-            liModelAttachments.removeAll();
+        if (this.liModelAttachments.getSize() > 0) {
+            this.liModelAttachments.removeAll();
         }
-        if (liModelParticipants.getSize() > 0) {
-            liModelParticipants.removeAll();
+        if (this.liModelParticipants.getSize() > 0) {
+            this.liModelParticipants.removeAll();
         }
 
         clearFooter();
@@ -305,7 +305,7 @@ public class FrmEvent extends javax.swing.JPanel {
 
         dtPicker.setEnabled(isEnabled);
         dtPicker.datePicker.getComponentDateTextField().setEditable(false);
-        dtPicker.timePicker.getComponentTimeTextField().setEditable(false);
+        dtPicker.timePicker.getComponentTimeTextField().setEditable(isEnabled);
 
         cbEventPriority.setEnabled(isEnabled);
         cbEventNotification.setEnabled(isEnabled);
