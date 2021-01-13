@@ -23,8 +23,9 @@ public class DatabaseHandler {
     /*public static void main(String[] args) {
         DatabaseHandler db = new DatabaseHandler();
         //Event evt = db.getEventById(5)
-        ArrayList<Operator> part = db.selectParticipantsByID(5);
-        db.addParticipants(part, 5);
+        ArrayList<Event> evt = db.getNotNotified(1);
+        for(Event ev : evt)
+        System.out.println(ev.getID());
     }*/
     private Connection con = null;
 
@@ -33,6 +34,23 @@ public class DatabaseHandler {
     }
 
     //PRIVATE FUNCTION SECTION 
+    private ArrayList<Integer> getEventIDsNotNotified(int userID){
+        ArrayList<Integer> eventIDs = new ArrayList<>();
+        String notNotifiedIds = "SELECT P_eventID FROM participant WHERE P_userID = ? AND P_notified = 0;";
+        try(PreparedStatement stmt = con.prepareStatement(notNotifiedIds)){
+            stmt.setInt(1, userID);
+            System.out.println(stmt.toString());
+            try(ResultSet rs = stmt.executeQuery()){
+                while(rs.next()){
+                    eventIDs.add(rs.getInt(1));
+                }
+            }
+        }catch(SQLException ex){
+            System.out.println("not Notified:"+ex.getMessage());
+        }
+        return eventIDs;
+    }
+    
     private void addFiles(ArrayList<File> toBeAdded, int eventID){
         String addFile = "INSERT INTO file (F_file,F_eventID) VALUES(?,?)";
 
@@ -228,7 +246,6 @@ public class DatabaseHandler {
         }
         return null;
     }
-
     private Operator AdminOrUser(String role, int userId, String firstName, String lastName, String email) {
         Operator toBeSpecified = null;
 
@@ -272,10 +289,12 @@ public class DatabaseHandler {
         
     }
     
-    public ArrayList<Event> getNotNotified(int userID){
-        String notNotified = "SELECT eventID FROM participant WHERE P_userID = ? AND P_notified = 0;";
+    public ArrayList<Event> getNotNotifiedEventsFromUser(int userID){
+        ArrayList<Integer> eventIDs = getEventIDsNotNotified(userID);
+        String notNotified = "SELECT * FROM eventdetails WHERE ED_eventID IN("+listToString(eventIDs)+");";
         ArrayList <Event> events = new ArrayList<>();
         try(PreparedStatement stmt = con.prepareStatement(notNotified)){
+            System.out.println(stmt.toString());
             try(ResultSet rs = stmt.executeQuery()){
                 while(rs.next())
                     events.add(getEvent(rs));
