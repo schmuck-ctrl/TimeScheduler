@@ -442,6 +442,8 @@ public class FrmCalendar extends javax.swing.JPanel {
         for (java.awt.Component c : this.getComponents()) {
             if (c instanceof PnlDayPanel) {
                 ((PnlDayPanel) c).removeAllAppointments();
+                ((PnlDayPanel) c).revalidate();
+                ((PnlDayPanel) c).repaint();
             }
         }
 
@@ -550,6 +552,8 @@ public class FrmCalendar extends javax.swing.JPanel {
 
     /**
      * This function takes a LocalDate as Argument and sets the Day as focused.
+     * The Calender is not going to be reloaded.
+     * 
      * @param ld java.time.LocalDate
      */
     public void focusDayByLocalDate(java.time.LocalDate ld){
@@ -559,8 +563,8 @@ public class FrmCalendar extends javax.swing.JPanel {
             this.clearButtonSelection();
             this.getPnlDayPanelByDay(ld).setSelected();
         }
-        
     }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
 }
