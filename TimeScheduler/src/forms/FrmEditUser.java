@@ -33,13 +33,13 @@ public class FrmEditUser extends javax.swing.JDialog {
     public FrmEditUser(java.awt.Frame parent, boolean modal, Operator user) {
         super(parent, modal);
         initComponents();
-        
-        if(user.getUserId() == FrmMain.getInstance().getCurrentUser().getUserId()) {
+
+        if (user.getUserId() == FrmMain.getInstance().getCurrentUser().getUserId()) {
             btnDelete.setEnabled(false);
             btnDelete.setVisible(false);
             chkAdminPrivileges.setEnabled(false);
         }
-        
+
         setUser(user);
     }
 
@@ -64,9 +64,16 @@ public class FrmEditUser extends javax.swing.JDialog {
             Matcher matcher = pattern.matcher(firstName);
             boolean matchFound = matcher.find();
 
+            if (matchFound) {
+                txtFirstName.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+            } else {
+                txtFirstName.setBorder(BorderFactory.createLineBorder(Color.RED));
+            }
+            
             return matchFound;
         }
-
+        txtFirstName.setBorder(BorderFactory.createLineBorder(Color.RED));
+        
         return false;
     }
 
@@ -77,9 +84,16 @@ public class FrmEditUser extends javax.swing.JDialog {
             Matcher matcher = pattern.matcher(lastName);
             boolean matchFound = matcher.find();
 
+            if (matchFound) {
+                txtLastName.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+            } else {
+                txtLastName.setBorder(BorderFactory.createLineBorder(Color.RED));
+            }
+            
             return matchFound;
         }
-
+        txtLastName.setBorder(BorderFactory.createLineBorder(Color.RED));
+        
         return false;
     }
 
@@ -90,19 +104,25 @@ public class FrmEditUser extends javax.swing.JDialog {
             Matcher matcher = pattern.matcher(email);
             boolean matchFound = matcher.find();
 
+            if (matchFound) {
+                txtEmail.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+            } else {
+                txtEmail.setBorder(BorderFactory.createLineBorder(Color.RED));
+            }
+            
             return matchFound;
         }
-
+        txtEmail.setBorder(BorderFactory.createLineBorder(Color.RED));
+        
         return false;
     }
 
     /**
-     * Validate the user input if the input changed.
-     * If input changed, the gloabel User will changed.
-     * @return  
-     *          -1 User input not correct.
-     *          0  Input not changed.
-     *          1  Global user updated.
+     * Validate the user input if the input changed. If input changed, the
+     * gloabel User will changed.
+     *
+     * @return -1 User input not correct. 0 Input not changed. 1 Global user
+     * updated.
      */
     private int getInput() {
         if (checkIfDataChanged()) {
@@ -119,7 +139,7 @@ public class FrmEditUser extends javax.swing.JDialog {
                 if (this.isAdmin) {
                     this.user = new Admin(id, firstName, lastNString, email);
                 } else {
-                    this.user  = new User(id, firstName, lastNString, email);
+                    this.user = new User(id, firstName, lastNString, email);
                 }
 
                 return 1;
@@ -127,10 +147,10 @@ public class FrmEditUser extends javax.swing.JDialog {
                 return -1;
             }
 
-        }else {
+        } else {
             return 0;
         }
-        
+
     }
 
     private boolean validateInput() {
@@ -145,14 +165,6 @@ public class FrmEditUser extends javax.swing.JDialog {
         if (checkFirstName && checkLastName && checkEmail) {
             return true;
         }
-        else if(!checkFirstName) {
-           txtFirstName.setBorder(BorderFactory.createLineBorder(Color.red) );
-        }
-        else if(!checkLastName) {
-            txtLastName.setBorder(BorderFactory.createLineBorder(Color.red) );
-        }else if(!checkEmail) {
-            txtEmail.setBorder(BorderFactory.createLineBorder(Color.red) );         
-        }
 
         return false;
 
@@ -163,10 +175,9 @@ public class FrmEditUser extends javax.swing.JDialog {
 
         try {
 
-            if (!txtFirstName.getText().trim().equals(this.user.getFirstName()) ||
-                    !txtLastName.getText().trim().equals(this.user.getLastName()) ||
-                    !txtEmail.getText().trim().equals(this.user.getEmail())) 
-            {
+            if (!txtFirstName.getText().trim().equals(this.user.getFirstName())
+                    || !txtLastName.getText().trim().equals(this.user.getLastName())
+                    || !txtEmail.getText().trim().equals(this.user.getEmail())) {
                 dataChanged = true;
             }
 
@@ -330,15 +341,14 @@ public class FrmEditUser extends javax.swing.JDialog {
 
     private void btnOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOkActionPerformed
         int retVal = getInput();
-        
-        if(retVal == 1) {
+
+        if (retVal == 1) {
             UserHandler uHandler = new UserHandler();
             uHandler.editUser(this.user);
             this.dispose();
-        }
-        else if(retVal == -1){
+        } else if (retVal == -1) {
             JOptionPane.showMessageDialog(this, "Please check your input.", "Invalid input", JOptionPane.WARNING_MESSAGE);
-        } else if(retVal == 0) {
+        } else if (retVal == 0) {
             this.dispose();
         }
     }//GEN-LAST:event_btnOkActionPerformed

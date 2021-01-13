@@ -57,7 +57,7 @@ public class FrmEvent extends javax.swing.JPanel {
 
         liModelParticipants = new ParticipantListModel();
         liModelAttachments = new AttachmentListModel();
-        
+
         handleView(view);
         setEvent(event);
     }
@@ -175,6 +175,7 @@ public class FrmEvent extends javax.swing.JPanel {
 
         if (!txtEventName.getText().isBlank()) {
             name = txtEventName.getText();
+            txtEventName.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
         } else {
             txtEventName.setBorder(BorderFactory.createLineBorder(Color.RED));
             checkInput = false;
@@ -183,6 +184,7 @@ public class FrmEvent extends javax.swing.JPanel {
         if (!txtEventDuration.getText().trim().isBlank()) {
             if (txtEventDuration.getText().trim().matches("[0-9]+")) {
                 duration = Integer.parseInt(txtEventDuration.getText());
+                txtEventDuration.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
             } else {
                 txtEventDuration.setBorder(BorderFactory.createLineBorder(Color.RED));
                 checkInput = false;
@@ -204,6 +206,7 @@ public class FrmEvent extends javax.swing.JPanel {
             int minute = dtPicker.timePicker.getTime().getMinute();
 
             date = LocalDateTime.of(year, month, dayOfMonth, hour, minute);
+            dtPicker.setBorder(BorderFactory.createEmptyBorder());
         } else {
             dtPicker.setBorder(BorderFactory.createLineBorder(Color.RED));
             checkInput = false;
