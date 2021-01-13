@@ -32,6 +32,7 @@ public class FrmEventsOfDay extends javax.swing.JPanel {
 
         liModelEventsOfDay = new EventsOfDayListModel();
 
+        liEventsOfDay.setCellRenderer(new EventUtilities.EventsOfDayListCellRenderer());
         liEventsOfDay.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         setEvents(eventsOfDay);
     }
