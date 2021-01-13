@@ -68,7 +68,7 @@
         <Component class="javax.swing.JLabel" name="lblEventName">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="2"/>
-            <Property name="text" type="java.lang.String" value="Name:"/>
+            <Property name="text" type="java.lang.String" value="Name: *"/>
             <Property name="horizontalTextPosition" type="int" value="2"/>
             <Property name="toolTipText" type="java.lang.String" value=""/>
           </Properties>
@@ -100,7 +100,7 @@
         <Component class="javax.swing.JLabel" name="lblDateTime">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="2"/>
-            <Property name="text" type="java.lang.String" value="Date:"/>
+            <Property name="text" type="java.lang.String" value="Date: *"/>
             <Property name="horizontalTextPosition" type="int" value="2"/>
           </Properties>
         </Component>
@@ -125,7 +125,7 @@
         <Component class="javax.swing.JLabel" name="lblEventHost">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="2"/>
-            <Property name="text" type="java.lang.String" value="Host:"/>
+            <Property name="text" type="java.lang.String" value="Host: *"/>
             <Property name="toolTipText" type="java.lang.String" value=""/>
           </Properties>
         </Component>
@@ -150,7 +150,7 @@
         <Component class="javax.swing.JLabel" name="lblEventDuration">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="2"/>
-            <Property name="text" type="java.lang.String" value="Duration"/>
+            <Property name="text" type="java.lang.String" value="Duration (min): *"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtEventDuration">
@@ -174,7 +174,7 @@
         <Component class="javax.swing.JLabel" name="lblEventLocation">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="2"/>
-            <Property name="text" type="java.lang.String" value="Location"/>
+            <Property name="text" type="java.lang.String" value="Location:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtEventLocation">
@@ -198,7 +198,7 @@
         <Component class="javax.swing.JLabel" name="lblEventPriority">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="2"/>
-            <Property name="text" type="java.lang.String" value="Priority"/>
+            <Property name="text" type="java.lang.String" value="Priority: *"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="cbEventPriority">
@@ -234,7 +234,7 @@
         <Component class="javax.swing.JLabel" name="lblEventNotification">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="2"/>
-            <Property name="text" type="java.lang.String" value="Notification:"/>
+            <Property name="text" type="java.lang.String" value="Notification: *"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="cbEventNotification">
@@ -412,6 +412,11 @@
           <AuxValues>
             <AuxValue name="classDetails" type="java.lang.String" value="Box.Filler.VerticalStrut"/>
           </AuxValues>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblInformation">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="* mandatory fields"/>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>

@@ -9,8 +9,10 @@ import classes.Admin;
 import classes.Operator;
 import classes.User;
 import handlers.UserHandler;
+import java.awt.Color;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 
 /**
@@ -143,6 +145,14 @@ public class FrmEditUser extends javax.swing.JDialog {
         if (checkFirstName && checkLastName && checkEmail) {
             return true;
         }
+        else if(!checkFirstName) {
+           txtFirstName.setBorder(BorderFactory.createLineBorder(Color.red) );
+        }
+        else if(!checkLastName) {
+            txtLastName.setBorder(BorderFactory.createLineBorder(Color.red) );
+        }else if(!checkEmail) {
+            txtEmail.setBorder(BorderFactory.createLineBorder(Color.red) );         
+        }
 
         return false;
 
@@ -193,6 +203,7 @@ public class FrmEditUser extends javax.swing.JDialog {
         txtLastName = new javax.swing.JTextField();
         txtEmail = new javax.swing.JTextField();
         chkAdminPrivileges = new javax.swing.JCheckBox();
+        lblInformation = new javax.swing.JLabel();
         pnlFooter = new javax.swing.JPanel();
         btnCancel = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
@@ -205,11 +216,11 @@ public class FrmEditUser extends javax.swing.JDialog {
 
         pnlContent.setPreferredSize(new java.awt.Dimension(470, 200));
 
-        lblFirstName.setText("First name:");
+        lblFirstName.setText("First name: *");
 
-        lblLastName.setText("Last name:");
+        lblLastName.setText("Last name: *");
 
-        lblEmail.setText("Email:");
+        lblEmail.setText("Email: *");
 
         txtFirstName.setToolTipText("At least 2 characters. only letters.");
 
@@ -219,6 +230,8 @@ public class FrmEditUser extends javax.swing.JDialog {
 
         chkAdminPrivileges.setText("Admin privileges");
 
+        lblInformation.setText("* mandatory fields");
+
         javax.swing.GroupLayout pnlContentLayout = new javax.swing.GroupLayout(pnlContent);
         pnlContent.setLayout(pnlContentLayout);
         pnlContentLayout.setHorizontalGroup(
@@ -227,20 +240,22 @@ public class FrmEditUser extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(pnlContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlContentLayout.createSequentialGroup()
-                        .addComponent(lblFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtFirstName))
-                    .addGroup(pnlContentLayout.createSequentialGroup()
                         .addGroup(pnlContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
+                            .addGroup(pnlContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(lblLastName, javax.swing.GroupLayout.DEFAULT_SIZE, 68, Short.MAX_VALUE)
+                                .addComponent(lblEmail, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(lblFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(12, 12, 12)
                         .addGroup(pnlContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtFirstName)
                             .addComponent(txtLastName)
                             .addComponent(txtEmail)
                             .addGroup(pnlContentLayout.createSequentialGroup()
                                 .addComponent(chkAdminPrivileges)
-                                .addGap(0, 266, Short.MAX_VALUE)))))
+                                .addGap(0, 266, Short.MAX_VALUE))))
+                    .addGroup(pnlContentLayout.createSequentialGroup()
+                        .addComponent(lblInformation)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         pnlContentLayout.setVerticalGroup(
@@ -260,7 +275,9 @@ public class FrmEditUser extends javax.swing.JDialog {
                     .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(chkAdminPrivileges)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addComponent(lblInformation)
+                .addContainerGap())
         );
 
         getContentPane().add(pnlContent, java.awt.BorderLayout.CENTER);
@@ -348,6 +365,7 @@ public class FrmEditUser extends javax.swing.JDialog {
     private javax.swing.JCheckBox chkAdminPrivileges;
     private javax.swing.JLabel lblEmail;
     private javax.swing.JLabel lblFirstName;
+    private javax.swing.JLabel lblInformation;
     private javax.swing.JLabel lblLastName;
     private javax.swing.JPanel pnlContent;
     private javax.swing.JPanel pnlFooter;

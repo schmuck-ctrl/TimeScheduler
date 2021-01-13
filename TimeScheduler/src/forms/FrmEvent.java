@@ -10,6 +10,7 @@ import EventUtilities.ParticipantListModel;
 import classes.Event;
 import classes.Operator;
 import handlers.EventHandler;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.time.LocalDate;
@@ -18,6 +19,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
@@ -158,6 +160,8 @@ public class FrmEvent extends javax.swing.JPanel {
 
     private Event getInput() {
 
+        boolean checkInput = true;
+
         String name = null;
         Operator host = FrmMain.getInstance().getCurrentUser();
         LocalDateTime date = null;
@@ -171,25 +175,42 @@ public class FrmEvent extends javax.swing.JPanel {
 
         if (!txtEventName.getText().isBlank()) {
             name = txtEventName.getText();
+        } else {
+            txtEventName.setBorder(BorderFactory.createLineBorder(Color.RED));
+            checkInput = false;
         }
 
         if (!txtEventDuration.getText().trim().isBlank()) {
             if (txtEventDuration.getText().trim().matches("[0-9]+")) {
                 duration = Integer.parseInt(txtEventDuration.getText());
+            } else {
+                txtEventDuration.setBorder(BorderFactory.createLineBorder(Color.RED));
+                checkInput = false;
             }
+        } else {
+            txtEventDuration.setBorder(BorderFactory.createLineBorder(Color.RED));
+            checkInput = false;
         }
 
         if (!txtEventLocation.getText().isBlank()) {
             location = txtEventLocation.getText();
+        } else {
+            txtEventLocation.setBorder(BorderFactory.createLineBorder(Color.RED));
+            checkInput = false;
         }
 
-        int year = dtPicker.datePicker.getDate().getYear();
-        int month = dtPicker.datePicker.getDate().getMonthValue();
-        int dayOfMonth = dtPicker.datePicker.getDate().getDayOfMonth();
-        int hour = dtPicker.timePicker.getTime().getHour();
-        int minute = dtPicker.timePicker.getTime().getMinute();
+        if (dtPicker.datePicker.getDate() != null && dtPicker.timePicker.getTime() != null) {
+            int year = dtPicker.datePicker.getDate().getYear();
+            int month = dtPicker.datePicker.getDate().getMonthValue();
+            int dayOfMonth = dtPicker.datePicker.getDate().getDayOfMonth();
+            int hour = dtPicker.timePicker.getTime().getHour();
+            int minute = dtPicker.timePicker.getTime().getMinute();
 
-        date = LocalDateTime.of(year, month, dayOfMonth, hour, minute);
+            date = LocalDateTime.of(year, month, dayOfMonth, hour, minute);
+        } else {
+            dtPicker.setBorder(BorderFactory.createLineBorder(Color.RED));
+            checkInput = false;
+        }
 
         switch (cbEventNotification.getSelectedItem().toString()) {
             case "none":
@@ -236,10 +257,14 @@ public class FrmEvent extends javax.swing.JPanel {
         }
 
         Event newEvent = null;
-        if (this.eventID == -1) {
-            newEvent = new Event(name, host, date, duration, location, participants, attachments, priority, notification);
+        if (checkInput) {
+            if (this.eventID == -1) {
+                newEvent = new Event(name, host, date, duration, location, participants, attachments, priority, notification);
+            } else {
+                newEvent = new Event(eventID, name, host, date, duration, location, participants, attachments, priority, notification);
+            }
         } else {
-            newEvent = new Event(eventID, name, host, date, duration, location, participants, attachments, priority, notification);
+
         }
 
         return newEvent;
@@ -385,27 +410,35 @@ public class FrmEvent extends javax.swing.JPanel {
 
     private void btnNewActionPerformed(ActionEvent e) {
         Event event = getInput();
-        newEvent(event);
+        if (event != null) {
+            newEvent(event);
 
-        refreshCalendar(dtPicker.datePicker.getDate());
+            refreshCalendar(dtPicker.datePicker.getDate());
 
-        this.setVisible(false);
+            this.setVisible(false);
 
-        if (this.isDialog != null) {
-            this.isDialog.dispose();;
+            if (this.isDialog != null) {
+                this.isDialog.dispose();;
+            }
+        } else {
+            JOptionPane.showMessageDialog(FrmMain.getInstance(), "Please check your input.", "Invalid input", JOptionPane.WARNING_MESSAGE);
         }
     }
 
     private void btnEditActoinPerformed(ActionEvent e) {
         Event event = getInput();
-        editEvent(event);
+        if (event != null) {
+            editEvent(event);
 
-        refreshCalendar(dtPicker.datePicker.getDate());
+            refreshCalendar(dtPicker.datePicker.getDate());
 
-        this.setVisible(false);
+            this.setVisible(false);
 
-        if (this.isDialog != null) {
-            this.isDialog.dispose();;
+            if (this.isDialog != null) {
+                this.isDialog.dispose();;
+            }
+        } else {
+            JOptionPane.showMessageDialog(FrmMain.getInstance(), "Please check your input.", "Invalid input", JOptionPane.WARNING_MESSAGE);
         }
     }
 
@@ -491,6 +524,7 @@ public class FrmEvent extends javax.swing.JPanel {
         jScrollPane2 = new javax.swing.JScrollPane();
         liEventAttachments = new javax.swing.JList<>();
         filler8 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20), new java.awt.Dimension(32767, 20));
+        lblInformation = new javax.swing.JLabel();
         pnlFooter = new javax.swing.JPanel();
 
         setMinimumSize(new java.awt.Dimension(200, 300));
@@ -510,7 +544,7 @@ public class FrmEvent extends javax.swing.JPanel {
         pnlContent.setLayout(new javax.swing.BoxLayout(pnlContent, javax.swing.BoxLayout.Y_AXIS));
 
         lblEventName.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lblEventName.setText("Name:");
+        lblEventName.setText("Name: *");
         lblEventName.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         lblEventName.setToolTipText("");
         pnlContent.add(lblEventName);
@@ -520,33 +554,33 @@ public class FrmEvent extends javax.swing.JPanel {
         pnlContent.add(filler3);
 
         lblDateTime.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lblDateTime.setText("Date:");
+        lblDateTime.setText("Date: *");
         lblDateTime.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         pnlContent.add(lblDateTime);
         pnlContent.add(dtPicker);
         pnlContent.add(filler4);
 
         lblEventHost.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lblEventHost.setText("Host:");
+        lblEventHost.setText("Host: *");
         lblEventHost.setToolTipText("");
         pnlContent.add(lblEventHost);
         pnlContent.add(txtEventHost);
         pnlContent.add(filler9);
 
         lblEventDuration.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lblEventDuration.setText("Duration");
+        lblEventDuration.setText("Duration (min): *");
         pnlContent.add(lblEventDuration);
         pnlContent.add(txtEventDuration);
         pnlContent.add(filler1);
 
         lblEventLocation.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lblEventLocation.setText("Location");
+        lblEventLocation.setText("Location:");
         pnlContent.add(lblEventLocation);
         pnlContent.add(txtEventLocation);
         pnlContent.add(filler2);
 
         lblEventPriority.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lblEventPriority.setText("Priority");
+        lblEventPriority.setText("Priority: *");
         pnlContent.add(lblEventPriority);
 
         cbEventPriority.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "low", "medium", "high" }));
@@ -554,7 +588,7 @@ public class FrmEvent extends javax.swing.JPanel {
         pnlContent.add(filler5);
 
         lblEventNotification.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lblEventNotification.setText("Notification:");
+        lblEventNotification.setText("Notification: *");
         pnlContent.add(lblEventNotification);
 
         cbEventNotification.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "none", "10 minutes", "1 hour", "3 days", "1 week" }));
@@ -636,6 +670,9 @@ public class FrmEvent extends javax.swing.JPanel {
         pnlContent.add(pnlEventAttachments);
         pnlContent.add(filler8);
 
+        lblInformation.setText("* mandatory fields");
+        pnlContent.add(lblInformation);
+
         add(pnlContent, java.awt.BorderLayout.CENTER);
 
         pnlFooter.setLayout(new java.awt.GridLayout(1, 0));
@@ -664,7 +701,7 @@ public class FrmEvent extends javax.swing.JPanel {
         File file = null;
 
         openFileDialog.setDialogType(JFileChooser.SAVE_DIALOG);
-        openFileDialog.setDialogTitle("Choose attachments");
+        openFileDialog.setDialogTitle("Choose attachment");
         openFileDialog.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
         int state = openFileDialog.showSaveDialog(forms.FrmMain.getInstance());
@@ -707,6 +744,7 @@ public class FrmEvent extends javax.swing.JPanel {
     private javax.swing.JLabel lblEventParticipants;
     private javax.swing.JLabel lblEventPriority;
     private javax.swing.JLabel lblHeadline;
+    private javax.swing.JLabel lblInformation;
     private javax.swing.JList<String> liEventAttachments;
     private javax.swing.JList<String> liEventParticipants;
     private javax.swing.JPanel pnlContent;
