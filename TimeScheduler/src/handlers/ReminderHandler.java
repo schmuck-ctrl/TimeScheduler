@@ -33,7 +33,7 @@ public class ReminderHandler extends Thread {
             toBeRemindedList.clear();
 
             try {
-                Thread.sleep(5000);
+                Thread.sleep(1000);
 
                 for (classes.Event evt : reminderList) {
 
@@ -50,7 +50,9 @@ public class ReminderHandler extends Thread {
 
                 String message = "";
                 for (classes.Event evt : toBeRemindedList) {
-                    message += evt.getName() + " " + evt.getDate().toString();
+                    message += evt.getName() + ": " + evt.getDate().getDayOfMonth() + "/" + evt.getDate().getMonthValue() + 
+                            "/" + evt.getDate().getYear() + " | " + (evt.getDate().getHour() > 10 ? evt.getDate().getHour() : ("0" + evt.getDate().getHour())) +
+                            ":" + (evt.getDate().getMinute() > 10 ? evt.getDate().getMinute() : ("0" + evt.getDate().getMinute()));
                     message += "\n";
                 }
 
