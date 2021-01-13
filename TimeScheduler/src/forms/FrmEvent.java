@@ -57,7 +57,7 @@ public class FrmEvent extends javax.swing.JPanel {
 
         liModelParticipants = new ParticipantListModel();
         liModelAttachments = new AttachmentListModel();
-
+        
         handleView(view);
         setEvent(event);
     }
@@ -194,9 +194,6 @@ public class FrmEvent extends javax.swing.JPanel {
 
         if (!txtEventLocation.getText().isBlank()) {
             location = txtEventLocation.getText();
-        } else {
-            txtEventLocation.setBorder(BorderFactory.createLineBorder(Color.RED));
-            checkInput = false;
         }
 
         if (dtPicker.datePicker.getDate() != null && dtPicker.timePicker.getTime() != null) {
