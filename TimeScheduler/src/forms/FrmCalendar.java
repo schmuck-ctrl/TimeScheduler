@@ -462,6 +462,8 @@ public class FrmCalendar extends javax.swing.JPanel {
         //repaint again
         this.revalidate();
         this.repaint();
+        
+        this.focusDayPanel(this.getPnlDayPanelByDay(dt));
     }
 
     /**
@@ -578,7 +580,7 @@ public class FrmCalendar extends javax.swing.JPanel {
     }
 
     /**
-     * This function is called by focusDayByLocalDate so the Appointments of day are also shown.
+     * This function is called by focusDayByLocalDate and setLocalDate so the Appointments of day are also shown.
      * @param dayPanel CalendarUtilities.PnlDayPanel
      */
     private void focusDayPanel(PnlDayPanel dayPanel) {
