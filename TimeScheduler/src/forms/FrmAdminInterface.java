@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
@@ -34,6 +35,12 @@ public class FrmAdminInterface extends javax.swing.JDialog {
         tabUserModel = (DefaultTableModel) tabUser.getModel();
 
         bindDataToTable(getUsers());
+
+        TableColumn col = tabUser.getColumn("UserID");
+        col.setMaxWidth(0);
+        col.setMinWidth(0);
+        col.setPreferredWidth(0);
+
     }
 
     // </editor-fold>
@@ -92,9 +99,9 @@ public class FrmAdminInterface extends javax.swing.JDialog {
         jScrollPane1 = new javax.swing.JScrollPane();
         tabUser = new javax.swing.JTable();
         pnlFooter = new javax.swing.JPanel();
-        btnEdit = new javax.swing.JButton();
-        btnDelete = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
+        btnDelete = new javax.swing.JButton();
+        btnEdit = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Admin interface");
@@ -141,40 +148,25 @@ public class FrmAdminInterface extends javax.swing.JDialog {
             }
         });
         tabUser.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tabUser.getTableHeader().setReorderingAllowed(false);
         tabUser.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tabUserMouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(tabUser);
+        if (tabUser.getColumnModel().getColumnCount() > 0) {
+            tabUser.getColumnModel().getColumn(0).setResizable(false);
+            tabUser.getColumnModel().getColumn(1).setResizable(false);
+            tabUser.getColumnModel().getColumn(2).setResizable(false);
+            tabUser.getColumnModel().getColumn(3).setResizable(false);
+        }
 
         pnlContent.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
         getContentPane().add(pnlContent, java.awt.BorderLayout.CENTER);
 
         pnlFooter.setPreferredSize(new java.awt.Dimension(690, 45));
-
-        btnEdit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/pencil-line.png"))); // NOI18N
-        btnEdit.setText("Edit");
-        btnEdit.setMaximumSize(new java.awt.Dimension(95, 35));
-        btnEdit.setMinimumSize(new java.awt.Dimension(95, 35));
-        btnEdit.setPreferredSize(new java.awt.Dimension(95, 35));
-        btnEdit.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEditActionPerformed(evt);
-            }
-        });
-
-        btnDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/delete-bin-line.png"))); // NOI18N
-        btnDelete.setText("Delete");
-        btnDelete.setMaximumSize(new java.awt.Dimension(95, 35));
-        btnDelete.setMinimumSize(new java.awt.Dimension(95, 35));
-        btnDelete.setPreferredSize(new java.awt.Dimension(95, 35));
-        btnDelete.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDeleteActionPerformed(evt);
-            }
-        });
 
         btnCancel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/close-line.png"))); // NOI18N
         btnCancel.setText("Cancel");
@@ -186,30 +178,31 @@ public class FrmAdminInterface extends javax.swing.JDialog {
                 btnCancelActionPerformed(evt);
             }
         });
+        pnlFooter.add(btnCancel);
 
-        javax.swing.GroupLayout pnlFooterLayout = new javax.swing.GroupLayout(pnlFooter);
-        pnlFooter.setLayout(pnlFooterLayout);
-        pnlFooterLayout.setHorizontalGroup(
-            pnlFooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFooterLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-        pnlFooterLayout.setVerticalGroup(
-            pnlFooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFooterLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(pnlFooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
-        );
+        btnDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/delete-bin-line.png"))); // NOI18N
+        btnDelete.setText("Delete");
+        btnDelete.setMaximumSize(new java.awt.Dimension(95, 35));
+        btnDelete.setMinimumSize(new java.awt.Dimension(95, 35));
+        btnDelete.setPreferredSize(new java.awt.Dimension(95, 35));
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
+        pnlFooter.add(btnDelete);
+
+        btnEdit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/pencil-line.png"))); // NOI18N
+        btnEdit.setText("Edit");
+        btnEdit.setMaximumSize(new java.awt.Dimension(95, 35));
+        btnEdit.setMinimumSize(new java.awt.Dimension(95, 35));
+        btnEdit.setPreferredSize(new java.awt.Dimension(95, 35));
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditActionPerformed(evt);
+            }
+        });
+        pnlFooter.add(btnEdit);
 
         getContentPane().add(pnlFooter, java.awt.BorderLayout.PAGE_END);
 
@@ -224,6 +217,7 @@ public class FrmAdminInterface extends javax.swing.JDialog {
             FrmEditUser frmEditUserForm = new FrmEditUser((JFrame) this.getParent(), true, this.selectedUser);
             frmEditUserForm.setVisible(true);
             this.refreshTable();
+            this.selectedUser = null;
         } else {
             JOptionPane.showMessageDialog(this, "You have to select a user first in order to edit the user.", "No user selected", JOptionPane.INFORMATION_MESSAGE);
         }
@@ -238,7 +232,7 @@ public class FrmAdminInterface extends javax.swing.JDialog {
                 this.refreshTable();
             }
         } else {
-             JOptionPane.showMessageDialog(this, "You have to select a user first in order to delete the user.", "No user selected", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "You have to select a user first in order to delete the user.", "No user selected", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
