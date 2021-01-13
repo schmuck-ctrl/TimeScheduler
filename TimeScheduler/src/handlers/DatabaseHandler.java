@@ -20,12 +20,12 @@ import java.util.ArrayList;
  */
 public class DatabaseHandler {
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         DatabaseHandler db = new DatabaseHandler();
         //Event evt = db.getEventById(5)
         ArrayList<Operator> part = db.selectParticipantsByID(5);
         db.addParticipants(part, 5);
-    }
+    }*/
     private Connection con = null;
 
     public DatabaseHandler() {
@@ -576,10 +576,10 @@ public class DatabaseHandler {
 
         if (users.isEmpty()) {
             System.out.println("No User with such criteria does exist");
-            return null;
-        } else {
-            return users;
+            
         }
+            return users;
+        
 
     }
 
@@ -718,7 +718,6 @@ public class DatabaseHandler {
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
-        System.out.println(usersEvents);
         if (!usersEvents.isEmpty()) {
             fillEventsWithParticipants(usersEvents);
             return usersEvents;
@@ -757,7 +756,6 @@ public class DatabaseHandler {
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
-        System.out.println(usersEvents);
         if (!usersEvents.isEmpty()) {
             fillEventsWithParticipants(usersEvents);
             return usersEvents;
