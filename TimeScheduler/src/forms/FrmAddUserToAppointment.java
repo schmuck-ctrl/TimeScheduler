@@ -25,6 +25,7 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
     private DefaultTableModel tabSearchForUserModel = null;
     private DefaultTableModel tabAddedUserModel = null;
     private Operator selectedUser = null;
+    private String userEmail = null;
     private FrmEvent frmEvent = null;
 
     /**
@@ -37,7 +38,7 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
         tabSearchForUserModel = (DefaultTableModel) tabSearchUser.getModel();
         tabAddedUserModel = (DefaultTableModel) tabAddedUser.getModel();
 
-        bindDataToTableSearchUser(getUsers());
+        bindDataToTableSearchUsers(getUsers());
 
     }
 
@@ -48,12 +49,12 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
         tabSearchForUserModel = (DefaultTableModel) tabSearchUser.getModel();
         tabAddedUserModel = (DefaultTableModel) tabAddedUser.getModel();
 
-        bindDataToTableSearchUser(getUsers());
+        bindDataToTableSearchUsers(getUsers());
         bindExistingDataToTableAddedUser(users);
 
     }
 
-    private void bindDataToTableSearchUser(ArrayList<Operator> users) {
+    private void bindDataToTableSearchUsers(ArrayList<Operator> users) {
         if (users != null) {
             for (int i = 0; i < users.size(); i++) {
 
@@ -66,12 +67,38 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
         }
     }
 
+    private void bindDataToTableSearchUser(Operator user) {
+        if (user != null) {
+
+            this.tabSearchForUserModel.addRow(new Object[]{
+                user.getFirstName().toString(),
+                user.getLastName().toString(),
+                user.getEmail().toString()
+            });
+        }
+    }
+
+    private void deleteDataFromRow() {
+
+        for (int i = 0; i < this.tabAddedUserModel.getRowCount(); i++) {
+            for (int a = 0; a < this.tabSearchForUserModel.getRowCount(); a++) {
+
+                if (this.tabAddedUserModel.getValueAt(i, 2).toString().equalsIgnoreCase(this.tabSearchForUserModel.getValueAt(a, 2).toString())) { //change to Email !!!!!!
+
+                    this.tabSearchForUserModel.removeRow(a);
+                }
+            }
+        }
+    }
+
     private void bindDataToTableAddedUser(Operator users) {
         this.tabAddedUserModel.addRow(new Object[]{
             users.getFirstName().toString(),
             users.getLastName().toString(),
             users.getEmail().toString()
         });
+        deleteDataFromRow();
+        this.repaint();
     }
 
     private void bindExistingDataToTableAddedUser(ArrayList<Operator> users) {
@@ -83,15 +110,14 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
                     users.get(i).getLastName().toString(),
                     users.get(i).getEmail().toString()
                 });
-             //   for (int a = 0; 0 < this.tabSearchForUserModel.getColumnCount(); a++) {
-             //      if (this.tabAddedUserModel.getValueAt(i, 1) == this.tabSearchForUserModel.getValueAt(a, 1)) { //change to Email !!!!!!
-             //           this.tabSearchForUserModel.removeRow(a);
-                    }
-                }
-            }
-        
 
-        
+            }
+            deleteDataFromRow();
+
+            this.repaint();
+
+        }
+    }
 
     private ArrayList<Operator> getUsers() {
         UserHandler uHandler = new UserHandler();
@@ -114,10 +140,6 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
             selectedUser = uHandler.getUser(userEmail);
         }
         return selectedUser;
-    }
-
-    private void refreshAddUserTable() {
-
     }
 
     private Operator getSelectedUserFromAddUserTable(int rowIndex) {
@@ -154,7 +176,6 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        txtSearch.setText("jTextField1");
         txtSearch.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtSearchKeyTyped(evt);
@@ -303,9 +324,12 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
     private void txtSearchKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyTyped
         // TODO add your handling code here:
         DefaultTableModel model = (DefaultTableModel) tabSearchUser.getModel();
-        TableRowSorter<DefaultTableModel> tableRowSorter = new TableRowSorter<DefaultTableModel>(model);
-        tabSearchUser.setRowSorter(tableRowSorter);
+        TableRowSorter<DefaultTableModel> tableRowSorter = new TableRowSorter<DefaultTableModel>(tabSearchForUserModel);
         tableRowSorter.setRowFilter(RowFilter.regexFilter(txtSearch.getText().trim()));
+        tabSearchUser.setRowSorter(tableRowSorter);
+
+        this.revalidate();
+        this.repaint();
     }//GEN-LAST:event_txtSearchKeyTyped
 
 
@@ -314,6 +338,8 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
         this.selectedUser = getSelectedUserFromSearchUserTab(selectedRowIndex);
         if (this.selectedUser != null) {
             bindDataToTableAddedUser(this.selectedUser);
+            this.revalidate();
+            this.repaint();
         }
     }//GEN-LAST:event_btnAddUserActionPerformed
 
@@ -326,17 +352,15 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
 
             for (int i = 0; i < tabAddedUser.getModel().getRowCount(); i++) {
                 int b = tabAddedUser.getModel().getRowCount();
-                System.out.println(b + i);
 
                 String userEmail = (String) tabAddedUserModel.getValueAt(i, 2);
                 Operator user = getUserByEmail(userEmail);
                 participantsToAdd.add(user);
             }
             frmEvent.setParticipants(participantsToAdd);
-            // System.out.println("jo");
+
         } else {
-            // System.out.println("0");
-            //JOptionPane.showMessageDialog(null, "You have to add Participants", "Error", JOptionPane.INFORMATION_MESSAGE);
+
         }
         this.setVisible(false);
         frmEvent.repaint();
@@ -346,50 +370,11 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
         // TODO add your handling code here:
         int selectedRowIndex = tabAddedUser.getSelectedRow();
         this.selectedUser = getSelectedUserFromAddUserTable(selectedRowIndex);
+        bindDataToTableSearchUser(this.selectedUser);
         tabAddedUserModel.removeRow(selectedRowIndex);
+        this.repaint();
     }//GEN-LAST:event_btnDeleteUserFromAppointmentActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrmAddUserToAppointment.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrmAddUserToAppointment.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrmAddUserToAppointment.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrmAddUserToAppointment.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the dialog */
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//            public void run() {
-//                FrmAddUserToAppointment dialog = new FrmAddUserToAppointment(new javax.swing.JFrame(), true);
-//                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-//                    @Override
-//                    public void windowClosing(java.awt.event.WindowEvent e) {
-//                        System.exit(0);
-//                    }
-//                });
-//                dialog.setVisible(true);
-//            }
-//        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddToAppointment;
