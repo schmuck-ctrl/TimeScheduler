@@ -20,17 +20,16 @@ import java.util.ArrayList;
  */
 public class DatabaseHandler {
 
-    /*public static void main(String[] args) {
+    public static void main(String[] args) {
         DatabaseHandler db = new DatabaseHandler();
         //Event evt = db.getEventById(5)
-        ArrayList<Event> evt = db.getNotNotified(1);
-        for(Event ev : evt)
-        System.out.println(ev.getID());
-    }*/
+        db.getNotNotifiedEventsFromUser(1);
+    }
     private Connection con = null;
 
     public DatabaseHandler() {
         con = getConnection();
+
     }
 
     //PRIVATE FUNCTION SECTION 
@@ -235,9 +234,11 @@ public class DatabaseHandler {
             eventDuration = rs.getInt("ED_eventDuration");
             eventLocation = rs.getString("ED_eventLocation");
             Event.Priority Priority = Event.Priority.valueOf(rs.getString("ED_priority"));
-            if(reminder != null){
-            reminder = rs.getTimestamp("ED_reminder").toLocalDateTime();
+            if( rs.getTimestamp("ED_reminder") != null){
+                reminder = rs.getTimestamp("ED_reminder").toLocalDateTime();
             }
+            
+
             Event.Notification notification = Event.Notification.valueOf(rs.getString("ED_notification"));
             Event temp
                     = new Event(eventID, eventName, organisator, event, eventDuration, eventLocation, participants, files, Priority, notification, reminder);
@@ -295,10 +296,10 @@ public class DatabaseHandler {
         String notNotified = "SELECT * FROM eventdetails WHERE ED_eventID IN(" + listToString(eventIDs) + ") AND ED_notification <> 'NONE';";
         ArrayList<Event> events = new ArrayList<>();
         try ( PreparedStatement stmt = con.prepareStatement(notNotified)) {
-
             try ( ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     events.add(getEvent(rs));
+
                 }
             }
         } catch (SQLException ex) {
