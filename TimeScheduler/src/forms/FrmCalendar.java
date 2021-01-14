@@ -385,7 +385,7 @@ public class FrmCalendar extends javax.swing.JPanel {
      */
     private PnlDayPanel getPnlDayPanelByDay(java.time.LocalDate ld) {
 
-        int rowCount = (this.calculateDaysOfMonth(this.localDate.getMonthValue(), this.localDate.getDayOfMonth()) + this.calculateOverflowDaysOfLastMonth() + this.calculateOverflowDaysOfNextMonth()) / 7;
+        int rowCount = this.panelArray == null ? -1 : this.panelArray.length;
         int columnCount = 7;
 
         for (int i = 0; i < rowCount; i++) {
