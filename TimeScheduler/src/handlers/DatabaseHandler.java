@@ -218,7 +218,7 @@ public class DatabaseHandler {
         String orgFirstName, orgLastName, orgEmail, orgRole; //Organisator
         int orgID, eventID;
         String eventName, eventLocation; //EventStrings
-        LocalDateTime event, reminder;
+        LocalDateTime event, reminder = null;
         ArrayList<Operator> participants = null;
         ArrayList<File> files = null;
         int eventDuration;
@@ -235,7 +235,9 @@ public class DatabaseHandler {
             eventDuration = rs.getInt("ED_eventDuration");
             eventLocation = rs.getString("ED_eventLocation");
             Event.Priority Priority = Event.Priority.valueOf(rs.getString("ED_priority"));
+            if(reminder != null){
             reminder = rs.getTimestamp("ED_reminder").toLocalDateTime();
+            }
             Event.Notification notification = Event.Notification.valueOf(rs.getString("ED_notification"));
             Event temp
                     = new Event(eventID, eventName, organisator, event, eventDuration, eventLocation, participants, files, Priority, notification, reminder);
