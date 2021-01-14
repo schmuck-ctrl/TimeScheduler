@@ -170,7 +170,7 @@ public class PnlDayPanel extends javax.swing.JPanel {
             @Override
             public void mousePressed(MouseEvent e) {
                 btnMousePressed(e, btn);
-                btnMousePressed(e, btn);
+//                btnMousePressed(e, btn);
             }
 
             @Override
@@ -390,6 +390,11 @@ public class PnlDayPanel extends javax.swing.JPanel {
         return this.isSelected;
     }
 
+    /**
+     * 
+     * @param e
+     * @param btn 
+     */
     private void btnMousePressed(MouseEvent e, BtnAppointment btn) {
         
         clearButtonSelection();
@@ -399,7 +404,10 @@ public class PnlDayPanel extends javax.swing.JPanel {
         if (getParent() instanceof forms.FrmCalendar) {
             ((forms.FrmCalendar) getParent()).clearDaySelection();
         }
+
         setSelected();
+        
         forms.FrmMain.getInstance().displayEventDetails(btn.getEvent().getID());
+
     }
 }

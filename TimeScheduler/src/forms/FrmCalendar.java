@@ -544,7 +544,7 @@ public class FrmCalendar extends javax.swing.JPanel {
 
         if (this.getPnlDayPanelByDay(ld) != null) {
             this.clearDaySelection();
-            this.clearButtonSelection();
+            //clearButtonSelection();
             this.getPnlDayPanelByDay(ld).setSelected();
             this.focusDayPanel(this.getPnlDayPanelByDay(ld));
             this.localDate = ld;
@@ -589,7 +589,7 @@ public class FrmCalendar extends javax.swing.JPanel {
         //clear every day selection
         clearDaySelection();
         //clear also every button
-        clearButtonSelection();
+        //clearButtonSelection();
         //set this dayPanel to selected
         dayPanel.setSelected();
         //Call FrmMain to do some important stuff
