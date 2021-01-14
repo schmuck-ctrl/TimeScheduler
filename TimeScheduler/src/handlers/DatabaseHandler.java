@@ -782,8 +782,6 @@ public class DatabaseHandler {
         if (!usersEvents.isEmpty()) {
             fillEventsWithParticipants(usersEvents);
             return usersEvents;
-        } else {
-            System.out.println("User doesn't have any Events this week");
         }
         return usersEvents;
     }
@@ -820,9 +818,8 @@ public class DatabaseHandler {
         if (!usersEvents.isEmpty()) {
             fillEventsWithParticipants(usersEvents);
             return usersEvents;
-        } else {
-            System.out.println("User doesn't have any Events this week");
         }
+        
         return usersEvents;
     }
 
@@ -852,8 +849,6 @@ public class DatabaseHandler {
         if (!usersEvents.isEmpty()) {
             fillEventsWithParticipants(usersEvents);
             return usersEvents;
-        } else {
-            System.out.println("User doesn't have any Events this week");
         }
         return usersEvents;
     }
@@ -961,8 +956,6 @@ public class DatabaseHandler {
         if (!usersEvents.isEmpty()) {
             fillEventsWithParticipants(usersEvents);
             return usersEvents;
-        } else {
-            System.out.println("User doesn't have any Events this week");
         }
         return usersEvents;
     }
