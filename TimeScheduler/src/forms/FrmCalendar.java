@@ -322,7 +322,7 @@ public class FrmCalendar extends javax.swing.JPanel {
     public void clearDaySelection() {
 
         //get rowCount of view
-        int rowCount = (this.calculateDaysOfMonth(this.localDate.getMonthValue(), this.localDate.getYear()) + this.calculateOverflowDaysOfLastMonth() + this.calculateOverflowDaysOfNextMonth()) / 7;
+        int rowCount = this.panelArray == null ? -1 : this.panelArray.length;
         //set weekdays to 7
         int columnCount = 7;
 
@@ -595,7 +595,7 @@ public class FrmCalendar extends javax.swing.JPanel {
         //Call FrmMain to do some important stuff
         FrmMain.getInstance().displayAllEventsOfDay(dayPanel.getDay());
     }
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
 }
