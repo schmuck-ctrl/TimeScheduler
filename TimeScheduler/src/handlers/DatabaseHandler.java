@@ -237,7 +237,6 @@ public class DatabaseHandler {
             Event.Priority Priority = Event.Priority.valueOf(rs.getString("ED_priority"));
             reminder = rs.getTimestamp("ED_reminder").toLocalDateTime();
             Event.Notification notification = Event.Notification.valueOf(rs.getString("ED_notification"));
-            //ArrayList<Operator> participant;
             Event temp
                     = new Event(eventID, eventName, organisator, event, eventDuration, eventLocation, participants, files, Priority, notification, reminder);
             return temp;
@@ -713,7 +712,9 @@ public class DatabaseHandler {
             stmt.setTimestamp(3, java.sql.Timestamp.valueOf(new_event.getDate()));
             stmt.setString(4, new_event.getPriority().toString());
             stmt.setString(5, new_event.getLocation());
-            stmt.setTimestamp(6, java.sql.Timestamp.valueOf(new_event.getReminder()));
+            if (new_event.getReminder() != null) {
+                stmt.setTimestamp(6, java.sql.Timestamp.valueOf(new_event.getReminder()));
+            }
             stmt.setString(7, new_event.getNotification().toString());
             stmt.executeUpdate();
         } catch (SQLException ex) {
@@ -819,7 +820,7 @@ public class DatabaseHandler {
             fillEventsWithParticipants(usersEvents);
             return usersEvents;
         }
-        
+
         return usersEvents;
     }
 
@@ -992,9 +993,9 @@ public class DatabaseHandler {
                 stmt.addBatch();
             }
             stmt.executeBatch();
-        }catch(SQLException ex){
-            System.out.println("reset Reminder:"+ex.getMessage());
+        } catch (SQLException ex) {
+            System.out.println("reset Reminder:" + ex.getMessage());
         }
     }
 
-    }
+}
