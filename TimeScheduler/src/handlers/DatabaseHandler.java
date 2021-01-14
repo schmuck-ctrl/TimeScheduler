@@ -605,14 +605,13 @@ public class DatabaseHandler {
     //Event Methods
     public void setParticipantsOfEvent(ArrayList<Operator> participants, int eventID) {
         ArrayList<Operator> event_old = selectParticipantsByID(eventID); //old
-        ArrayList<Operator> event_new = (ArrayList<Operator>)participants.clone(); //new
-        ArrayList<Operator> toBeAdded = (ArrayList<Operator>)event_new.clone();
-        ArrayList<Operator> toBeDeleted = (ArrayList<Operator>)event_old.clone();
-        
+        ArrayList<Operator> event_new = (ArrayList<Operator>) participants.clone(); //new
+        ArrayList<Operator> toBeAdded = (ArrayList<Operator>) event_new.clone();
+        ArrayList<Operator> toBeDeleted = (ArrayList<Operator>) event_old.clone();
+
         toBeAdded.removeAll(event_old);
         toBeDeleted.removeAll(event_new);
-        
-        
+
         deleteParticipants(toBeDeleted, eventID);
         insertParticipants(toBeAdded, eventID);
     }
@@ -625,7 +624,7 @@ public class DatabaseHandler {
                 stmt.setInt(1, o.getUserId());
                 stmt.setInt(2, eventID);
                 stmt.addBatch();
-                
+
             }
             stmt.executeBatch();
         } catch (SQLException ex) {
@@ -641,7 +640,7 @@ public class DatabaseHandler {
                 stmt.setInt(1, o.getUserId());
                 stmt.setInt(2, eventID);
                 stmt.addBatch();
-                
+
             }
             stmt.executeBatch();
         } catch (SQLException ex) {
@@ -676,6 +675,10 @@ public class DatabaseHandler {
             System.out.println("editEvent: " + ex.getMessage());
         }
 
+        if (LocalDateTime.now().isBefore(toBeEdited.getReminder())) {
+            resetReminder(toBeEdited.getParticipants(), toBeEdited.getID());
+
+        }
         System.out.println("Event erfolgreich bearbeitet");
         return editSuccessfull;
     }
@@ -986,4 +989,19 @@ public class DatabaseHandler {
         return usersEvents;
     }
 
-}
+    private void resetReminder(ArrayList<Operator> participants, int eventID) {
+        String sql = "UPDATE participant SET P_notified = 0 WHERE P_userID = ? AND P_eventID = ?;";
+
+        try ( PreparedStatement stmt = con.prepareStatement(sql)) {
+            for (Operator o : participants) {
+                stmt.setInt(1, o.getUserId());
+                stmt.setInt(2, eventID);
+                stmt.addBatch();
+            }
+            stmt.executeBatch();
+        }catch(SQLException ex){
+            System.out.println("reset Reminder:"+ex.getMessage());
+        }
+    }
+
+    }
