@@ -6,6 +6,7 @@
 package CalendarUtilities;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.time.DayOfWeek;
@@ -20,7 +21,8 @@ import javax.swing.JLabel;
 public class PnlDayPanel extends javax.swing.JPanel {
 
     /**
-     * Type for the Panel. There are 3 Types: LAST_MONTH, CURRENT_MONTH, NEXT_MONTH
+     * Type for the Panel. There are 3 Types: LAST_MONTH, CURRENT_MONTH,
+     * NEXT_MONTH
      */
     public enum TYPE {
         LAST_MONTH, CURRENT_MONTH, NEXT_MONTH
@@ -58,6 +60,7 @@ public class PnlDayPanel extends javax.swing.JPanel {
 
     /**
      * Gets the LblDayNumber
+     *
      * @return returns javax.swing.JLabel
      */
     public JLabel getLblDayNumber() {
@@ -66,6 +69,7 @@ public class PnlDayPanel extends javax.swing.JPanel {
 
     /**
      * Sets a lblDayNumber
+     *
      * @param lblDayNumber javax.swing.JLabel
      */
     public void setLblDayNumber(JLabel lblDayNumber) {
@@ -74,7 +78,8 @@ public class PnlDayPanel extends javax.swing.JPanel {
 
     /**
      * Returns the LocalDate of the current Panel.
-     * @return 
+     *
+     * @return
      */
     public LocalDate getDay() {
         return day;
@@ -82,6 +87,7 @@ public class PnlDayPanel extends javax.swing.JPanel {
 
     /**
      * Sets the Day of the Panel
+     *
      * @param day Receives a java.time.LocalDate
      */
     public void setDay(LocalDate day) {
@@ -90,7 +96,8 @@ public class PnlDayPanel extends javax.swing.JPanel {
     }
 
     /**
-     * Returns the AppointmentList of Buttons 
+     * Returns the AppointmentList of Buttons
+     *
      * @return returns a java.util.ArrayList(BtnAppointment)
      */
     public ArrayList<BtnAppointment> getBtnAppointmentList() {
@@ -124,7 +131,8 @@ public class PnlDayPanel extends javax.swing.JPanel {
     }
 
     /**
-     * Scales the Label, which contains the day number to fit in the size of the view.
+     * Scales the Label, which contains the day number to fit in the size of the
+     * view.
      */
     private void scaleLblDayNumber() {
 
@@ -145,9 +153,12 @@ public class PnlDayPanel extends javax.swing.JPanel {
 
     /**
      * Adds MouseListener for the Appointment Buttons
+     *
      * @param btn CalendarUtilities.BtnAppointment
      */
     private void addButtonListener(BtnAppointment btn) {
+        
+        
         btn.addMouseListener(new java.awt.event.MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -158,15 +169,8 @@ public class PnlDayPanel extends javax.swing.JPanel {
 
             @Override
             public void mousePressed(MouseEvent e) {
-
-                clearButtonSelection();
-                btn.setBackground(java.awt.Color.DARK_GRAY);
-                
-                if (getParent() instanceof forms.FrmCalendar){
-                    ((forms.FrmCalendar)getParent()).clearDaySelection();
-                }
-                setSelected();
-                forms.FrmMain.getInstance().displayEventDetails(btn.getEvent().getID());
+                btnMousePressed(e, btn);
+                btnMousePressed(e, btn);
             }
 
             @Override
@@ -189,7 +193,7 @@ public class PnlDayPanel extends javax.swing.JPanel {
     /**
      * Function adds ComponentListener and MouseWheelListener
      */
-    private void addPanelListener(){
+    private void addPanelListener() {
         //add listener
         this.addComponentListener(new java.awt.event.ComponentAdapter() {
 
@@ -204,12 +208,12 @@ public class PnlDayPanel extends javax.swing.JPanel {
         this.addMouseWheelListener(new java.awt.event.MouseWheelListener() {
             @Override
             public void mouseWheelMoved(MouseWheelEvent e) {
-                
+
                 //returns if user is trying to scroll on a non selected day
-                if (!isSelected){
+                if (!isSelected) {
                     return;
                 }
-                
+
                 //checks if user is scrolling up or down
                 if (e.getWheelRotation() < 0) {
                     scrollEventButtons(Scroll.UP);
@@ -219,9 +223,10 @@ public class PnlDayPanel extends javax.swing.JPanel {
             }
         });
     }
-    
+
     /**
-     * Clears the Button Selection and set its Color to Green Yellow Red based on priority
+     * Clears the Button Selection and set its Color to Green Yellow Red based
+     * on priority
      */
     private void clearButton() {
         for (BtnAppointment btn : this.btnAppointmentList) {
@@ -231,6 +236,7 @@ public class PnlDayPanel extends javax.swing.JPanel {
 
     /**
      * Scrolls based on Argument Scroll type
+     *
      * @param type PnlDayPanel.Scroll up or down
      */
     private void scrollEventButtons(Scroll type) {
@@ -246,7 +252,7 @@ public class PnlDayPanel extends javax.swing.JPanel {
                     return;
                 }
             }
-        } catch(java.lang.IndexOutOfBoundsException iooe){
+        } catch (java.lang.IndexOutOfBoundsException iooe) {
             return;
         }
 
@@ -261,7 +267,9 @@ public class PnlDayPanel extends javax.swing.JPanel {
     }
 
     /**
-     * Sets the Color of the Panel based on the Type, white on CURRENT_MONTH else light gray
+     * Sets the Color of the Panel based on the Type, white on CURRENT_MONTH
+     * else light gray
+     *
      * @param type TYPE
      */
     public void setType(TYPE type) {
@@ -275,6 +283,7 @@ public class PnlDayPanel extends javax.swing.JPanel {
 
     /**
      * Returns the TYPE of the panel for easier maintenance
+     *
      * @return Returns the Type of the panel
      */
     public TYPE getType() {
@@ -290,7 +299,8 @@ public class PnlDayPanel extends javax.swing.JPanel {
     }
 
     /**
-     * Unselect the day and sets it Color back to White or Gray based on the TYPE
+     * Unselect the day and sets it Color back to White or Gray based on the
+     * TYPE
      */
     public void setUnselected() {
         this.setType(this.type);
@@ -299,7 +309,8 @@ public class PnlDayPanel extends javax.swing.JPanel {
 
     /**
      * Adds an appointment to the current day
-     * @param event 
+     *
+     * @param event
      */
     public void addAppointment(classes.Event event) {
         BtnAppointment btn = new BtnAppointment(event);
@@ -317,7 +328,8 @@ public class PnlDayPanel extends javax.swing.JPanel {
     }
 
     /**
-     * Removes all Buttons from panel first and add them fresh from btnAppointmentList and sets the bounds.
+     * Removes all Buttons from panel first and add them fresh from
+     * btnAppointmentList and sets the bounds.
      */
     public void scaleButtons() {
         //remove all appointments
@@ -333,7 +345,7 @@ public class PnlDayPanel extends javax.swing.JPanel {
         int buttonPadding = (int) Math.ceil((float) this.getHeight() / 40);
         //Labeloffset so button is not created on day label
         int labelOffset = (int) (Math.ceil((float) this.getHeight() / 5));
-        
+
         for (BtnAppointment bt : this.btnAppointmentList) {
             //set the bounds for 
             bt.setBounds(0, count * (int) Math.ceil((float) this.getHeight() / 4) + labelOffset, this.getWidth(), (int) Math.ceil((float) this.getHeight() / 5) - buttonPadding);
@@ -362,8 +374,8 @@ public class PnlDayPanel extends javax.swing.JPanel {
      */
     public void removeAllAppointments() {
         this.btnAppointmentList.clear();
-        for (java.awt.Component c : this.getComponents()){
-            if (c instanceof BtnAppointment){
+        for (java.awt.Component c : this.getComponents()) {
+            if (c instanceof BtnAppointment) {
                 this.remove(c);
             }
         }
@@ -371,9 +383,23 @@ public class PnlDayPanel extends javax.swing.JPanel {
 
     /**
      * Returns if Panel is selected
+     *
      * @return Returns a boolean.
      */
-    public boolean isSelected(){
+    public boolean isSelected() {
         return this.isSelected;
+    }
+
+    private void btnMousePressed(MouseEvent e, BtnAppointment btn) {
+        
+        clearButtonSelection();
+            
+        btn.setBackground(java.awt.Color.DARK_GRAY);
+
+        if (getParent() instanceof forms.FrmCalendar) {
+            ((forms.FrmCalendar) getParent()).clearDaySelection();
+        }
+        setSelected();
+        forms.FrmMain.getInstance().displayEventDetails(btn.getEvent().getID());
     }
 }

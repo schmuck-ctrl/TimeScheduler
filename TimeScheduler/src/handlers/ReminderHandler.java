@@ -80,6 +80,8 @@ public class ReminderHandler extends Thread {
 
             } catch (InterruptedException e) {
                 e.printStackTrace();
+            } catch (java.lang.NullPointerException e){
+                System.out.println(e.getMessage());
             }
         }
     }
