@@ -30,16 +30,20 @@ public class FrmLogin extends javax.swing.JFrame {
     private void loginFunction() {
         LoginHandler lgHandler = new LoginHandler();
         DatabaseHandler dbHandler = new DatabaseHandler();
-        if (lgHandler.checkUserInput(txtEmail.getText().trim(), ptxtPassword.getPassword()) == true) {
-            FrmMain frmMain = FrmMain.getInstance();
-            frmMain.setCurrentUser(dbHandler.getUserByUsername(txtEmail.getText().trim()));
-            frmMain.setVisible(true);
-            this.dispose();
+        if (lgHandler.checkIfUserInputExist(txtEmail.getText()) == true) {
+            if (lgHandler.checkUserInput(txtEmail.getText().trim(), ptxtPassword.getPassword()) == true) {
+                FrmMain frmMain = FrmMain.getInstance();
+                frmMain.setCurrentUser(dbHandler.getUserByUsername(txtEmail.getText().trim()));
+                frmMain.setVisible(true);
+                this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(null, "You did not sign in correctly.", "Login error", JOptionPane.INFORMATION_MESSAGE);
+                ptxtPassword.setText("");
+            }
         } else {
-            JOptionPane.showMessageDialog(null, "You did not sign in correctly.", "Login error", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "User does not exist", "Login error", JOptionPane.INFORMATION_MESSAGE);
             ptxtPassword.setText("");
         }
-
     }
 
     /**
@@ -270,7 +274,6 @@ public class FrmLogin extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_txtEmailKeyPressed
-
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

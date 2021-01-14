@@ -324,9 +324,9 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
     private void txtSearchKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyTyped
         // TODO add your handling code here:
         DefaultTableModel model = (DefaultTableModel) tabSearchUser.getModel();
-        TableRowSorter<DefaultTableModel> tableRowSorter = new TableRowSorter<DefaultTableModel>(tabSearchForUserModel);
-        tableRowSorter.setRowFilter(RowFilter.regexFilter(txtSearch.getText().trim()));
+        TableRowSorter<DefaultTableModel> tableRowSorter = new TableRowSorter<DefaultTableModel>(model);
         tabSearchUser.setRowSorter(tableRowSorter);
+        tableRowSorter.setRowFilter(RowFilter.regexFilter(txtSearch.getText().trim()));
 
         this.revalidate();
         this.repaint();
@@ -336,6 +336,8 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
     private void btnAddUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddUserActionPerformed
         int selectedRowIndex = tabSearchUser.getSelectedRow();
         this.selectedUser = getSelectedUserFromSearchUserTab(selectedRowIndex);
+        userEmail = getSelectedUserFromSearchUserTab(selectedRowIndex).getEmail();
+        System.out.println(userEmail);
         if (this.selectedUser != null) {
             bindDataToTableAddedUser(this.selectedUser);
             this.revalidate();
