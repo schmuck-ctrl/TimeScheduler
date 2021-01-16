@@ -29,25 +29,33 @@ public class FrmEditUser extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Constructors">
     /**
      * Creates new form FrmEditUser
+     *
      */
     public FrmEditUser(java.awt.Frame parent, boolean modal, Operator user) {
         super(parent, modal);
         initComponents();
-
-        if (user.getUserId() == FrmMain.getInstance().getCurrentUser().getUserId()) {
-            btnDelete.setEnabled(false);
-            btnDelete.setVisible(false);
-            chkAdminPrivileges.setEnabled(false);
-        }
 
         setUser(user);
     }
 
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Methods">
+    /**
+     * Sets this frmEditUser user to the specified user and loads the data
+     * in the relevant controls on the form.
+     *
+     * @param user The user who is to be set in this frmEditUser and displayed
+     * in the form.
+     */
     public void setUser(Operator user) {
         if (user != null) {
             this.user = user;
+
+            if (this.user.getUserId() == FrmMain.getInstance().getCurrentUser().getUserId()) {
+                btnDelete.setEnabled(false);
+                btnDelete.setVisible(false);
+                chkAdminPrivileges.setEnabled(false);
+            }
 
             txtFirstName.setText(this.user.getFirstName());
             txtLastName.setText(this.user.getLastName());
@@ -57,6 +65,13 @@ public class FrmEditUser extends javax.swing.JDialog {
         }
     }
 
+    /**
+     * Validates if the String match the pattern.
+     * 
+     * 
+     * @param firstName
+     * @return Returns true if and only if the String match pattern.
+     */
     private boolean validateFirstName(String firstName) {
         if (firstName != null && !firstName.isBlank()) {
 
@@ -69,11 +84,11 @@ public class FrmEditUser extends javax.swing.JDialog {
             } else {
                 txtFirstName.setBorder(BorderFactory.createLineBorder(Color.RED));
             }
-            
+
             return matchFound;
         }
         txtFirstName.setBorder(BorderFactory.createLineBorder(Color.RED));
-        
+
         return false;
     }
 
@@ -89,11 +104,11 @@ public class FrmEditUser extends javax.swing.JDialog {
             } else {
                 txtLastName.setBorder(BorderFactory.createLineBorder(Color.RED));
             }
-            
+
             return matchFound;
         }
         txtLastName.setBorder(BorderFactory.createLineBorder(Color.RED));
-        
+
         return false;
     }
 
@@ -109,11 +124,11 @@ public class FrmEditUser extends javax.swing.JDialog {
             } else {
                 txtEmail.setBorder(BorderFactory.createLineBorder(Color.RED));
             }
-            
+
             return matchFound;
         }
         txtEmail.setBorder(BorderFactory.createLineBorder(Color.RED));
-        
+
         return false;
     }
 
