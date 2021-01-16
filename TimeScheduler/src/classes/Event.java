@@ -11,10 +11,12 @@ import java.util.ArrayList;
 
 /**
  *
- * @author nilss
+ * @author Nils Schmuck
  */
 public class Event {
 
+    // <editor-fold defaultstate="collapsed" desc="Enums">
+    
     public enum Priority {
         LOW,
         MEDIUM,
@@ -29,6 +31,10 @@ public class Event {
         ONE_WEEK
     }
 
+    // </editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="Attributes">
+    
     private int id = -1;
     private String name = null;
     private Operator host = null;
@@ -40,6 +46,10 @@ public class Event {
     private Priority priority = null;
     private Notification notification = Notification.NONE;
     private LocalDateTime reminder = null;
+    
+    // </editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="Constructors">
     
     public Event(){
         
@@ -86,6 +96,10 @@ public class Event {
         this.setReminder(calculateReminder());
     }
     
+    // </editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="Setter">
+    
     private void setID(int eventID) {
         if(eventID >= 0)
             this.id = eventID;
@@ -131,6 +145,9 @@ public class Event {
         this.reminder = reminder;
     } 
     
+    // </editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="Getter">
     
     public int getID(){
         return this.id;
@@ -176,6 +193,10 @@ public class Event {
         return this.reminder;
     }
     
+    // </editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="Methods">
+    
     private LocalDateTime calculateReminder() {
         
         switch(this.notification){
@@ -192,4 +213,6 @@ public class Event {
     public String toString() {
         return name;
     }
+    
+    // </editor-fold>
 }

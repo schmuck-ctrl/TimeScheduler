@@ -5,21 +5,23 @@
  */
 package handlers;
 
-import classes.Event;
-import classes.User;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import javax.swing.JFileChooser;
 
 /**
- *
- * @author Benny
+ * Handles the weekly schedule.
+ * 
+ * @author Nils Schmuck
  */
 public class ExportHandler {
 
+    /**
+     * Creates a filesave dialog, to choose a directory to save the weekly schedule.
+     * 
+     * @return The directory path.
+     */
     public String openSaveDialog() {
         JFileChooser saveDialog = new JFileChooser();
         String directory = null;

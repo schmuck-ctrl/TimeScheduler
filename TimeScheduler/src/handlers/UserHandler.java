@@ -10,8 +10,9 @@ import classes.User;
 import java.util.ArrayList;
 
 /**
- *
- * @author nilss
+ * Handles the users
+ * 
+ * @author Nils Schmuck
  */
 public class UserHandler {
     DatabaseHandler dbHandler = null;
