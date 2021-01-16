@@ -43,6 +43,7 @@ public class FrmRegistration extends javax.swing.JFrame {
 
         pnlFooter = new javax.swing.JPanel();
         btnRegistration = new javax.swing.JButton();
+        btnBackToLogin = new javax.swing.JButton();
         pnlHeader = new javax.swing.JPanel();
         lblRegistration = new javax.swing.JLabel();
         pnlContent = new javax.swing.JPanel();
@@ -74,20 +75,34 @@ public class FrmRegistration extends javax.swing.JFrame {
             }
         });
 
+        btnBackToLogin.setBackground(new java.awt.Color(255, 255, 255));
+        btnBackToLogin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/arrow-left-circle-line.png"))); // NOI18N
+        btnBackToLogin.setToolTipText("back to login");
+        btnBackToLogin.setBorder(null);
+        btnBackToLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackToLoginActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlFooterLayout = new javax.swing.GroupLayout(pnlFooter);
         pnlFooter.setLayout(pnlFooterLayout);
         pnlFooterLayout.setHorizontalGroup(
             pnlFooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFooterLayout.createSequentialGroup()
-                .addContainerGap(175, Short.MAX_VALUE)
+                .addGap(31, 31, 31)
+                .addComponent(btnBackToLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(114, 114, 114)
                 .addComponent(btnRegistration, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(198, 198, 198))
+                .addContainerGap(193, Short.MAX_VALUE))
         );
         pnlFooterLayout.setVerticalGroup(
             pnlFooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlFooterLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnRegistration, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(pnlFooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnRegistration, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnBackToLogin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
 
@@ -404,7 +419,15 @@ public class FrmRegistration extends javax.swing.JFrame {
         lblPasswordToolTip.setToolTipText("<html>Your password should contain at least 8 characters <br> at least one upper case letter <br> at least one lower case letter <br> at least one digit <br> at least one of those special symbols (@#$%^&+=]) </html>");
     }//GEN-LAST:event_lblPasswordToolTipMouseEntered
 
+    private void btnBackToLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackToLoginActionPerformed
+        // TODO add your handling code here:
+                new FrmLogin().setVisible(true);
+                this.dispose();
+            
+    }//GEN-LAST:event_btnBackToLoginActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBackToLogin;
     private javax.swing.JButton btnRegistration;
     private javax.swing.JLabel lblEmail;
     private javax.swing.JLabel lblEmailError;

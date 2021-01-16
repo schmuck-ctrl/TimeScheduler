@@ -11,12 +11,13 @@ import java.security.NoSuchAlgorithmException;
  */
 public class LoginHandler {
         // Checks if the user is in the database by the users email and the Encrypted password.
+    DatabaseHandler dbHandler = new DatabaseHandler();
     
     public boolean checkUserInput(String userEmail, char[] password) {
-        DatabaseHandler dbHandler = new DatabaseHandler();
         try {
             String passwordEncrypted = EncryptionHandler.toHexString(EncryptionHandler.getShaEncrypt(password));
             if (dbHandler.checkIfUserExists(userEmail, passwordEncrypted) == true) {
+                if(dbHandler.checkIfUserExists(userEmail) == true)
                 return true;
             }
         } catch (NoSuchAlgorithmException e) {
@@ -24,5 +25,13 @@ public class LoginHandler {
         }
      
         return false;
+    }
+    public boolean checkIfUserInputExist(String userEmail){
+        if(dbHandler.checkIfUserExists(userEmail) == true){
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 }
