@@ -10,13 +10,15 @@ import java.util.ArrayList;
 import javax.swing.AbstractListModel;
 
 /**
- *
+ * Default ListModel for the JList {@link forms.FrmEvent#liEventParticipants} in {@link forms.FrmEvent}.
+ * 
  * @author Nils Schmuck
  */
 public final class ParticipantListModel extends AbstractListModel<Operator> {
 
     // <editor-fold defaultstate="collapsed" desc="Global variables">
     
+    //The current list.
     private ArrayList<Operator> listOfParticipants = null;
 
     // </editor-fold>
@@ -109,5 +111,4 @@ public final class ParticipantListModel extends AbstractListModel<Operator> {
     }
     
     // </editor-fold>
-
 }

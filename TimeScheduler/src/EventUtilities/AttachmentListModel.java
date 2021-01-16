@@ -10,13 +10,15 @@ import java.util.ArrayList;
 import javax.swing.AbstractListModel;
 
 /**
- *
+ * Default ListModel for the JList {@link forms.FrmEvent#liEventAttachments} in {@link forms.FrmEvent}.
+ * 
  * @author Nils Schmuck
  */
 public final class AttachmentListModel extends AbstractListModel<File> {
 
     // <editor-fold defaultstate="collapsed" desc="Global variables">
     
+    //The current list.
     private ArrayList<File> listOfAttachments = null;
 
     // </editor-fold>
