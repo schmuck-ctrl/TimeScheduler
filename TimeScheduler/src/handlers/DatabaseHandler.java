@@ -49,7 +49,7 @@ public class DatabaseHandler {
         return eventIDs;
     }
 
-    private void addFiles(ArrayList<File> toBeAdded, int eventID) {
+    private void insertFiles(ArrayList<File> toBeAdded, int eventID) {
         String addFile = "INSERT INTO file (F_file,F_eventID) VALUES(?,?)";
 
         try ( PreparedStatement stmt = con.prepareStatement(addFile)) {
@@ -93,7 +93,7 @@ public class DatabaseHandler {
         //return update_successfull;
     }
 
-    private void deleteFiles(int eventID) {
+    private void deleteFiles(ArrayList<File> toBeDeleted, int eventID) {
 
         String deleteFiles = "DELETE FROM file WHERE P_eventID = ?;";
         //int update_successfull = -1;
@@ -147,10 +147,11 @@ public class DatabaseHandler {
         }
     }
 
-    private void fillEventsWithParticipants(ArrayList<Event> events) {
+    private void fillEventsWithParticipantsAndFiles(ArrayList<Event> events) {
         if (!events.isEmpty()) {
             events.forEach(temp -> {
                 temp.setParticipants(selectParticipantsByID(temp.getID()));
+                temp.setAttachments(getEventsDocuments(temp.getID()));
             });
         }
     }
@@ -617,6 +618,19 @@ public class DatabaseHandler {
         deleteParticipants(toBeDeleted, eventID);
         insertParticipants(toBeAdded, eventID);
     }
+    
+    public void setFilesOfEvent(ArrayList<Operator> participants, int eventID) {
+        ArrayList<File> file_old = getEventsDocuments(eventID); //old
+        ArrayList<File> file_new = (ArrayList<File>) participants.clone(); //new
+        ArrayList<File> toBeAdded = (ArrayList<File>) file_new.clone();
+        ArrayList<File> toBeDeleted = (ArrayList<File>) file_old.clone();
+
+        toBeAdded.removeAll(file_old);
+        toBeDeleted.removeAll(file_new);
+
+        deleteFiles(toBeDeleted, eventID);
+        insertFiles(toBeAdded, eventID);
+    }
 
     public void insertParticipants(ArrayList<Operator> toBeAdded, int eventID) {
         String sql = "INSERT INTO participant (P_userID,P_eventID) VALUES (?,?);";
@@ -699,7 +713,7 @@ public class DatabaseHandler {
             System.out.println(ex.getMessage());
         }
 
-        fillEventsWithParticipants(Events);
+        fillEventsWithParticipantsAndFiles(Events);
         return Events;
     }
 
@@ -754,7 +768,7 @@ public class DatabaseHandler {
             System.out.println(ex.getMessage());
         }
 
-        fillEventsWithParticipants(usersEvents);
+        fillEventsWithParticipantsAndFiles(usersEvents);
 
         return usersEvents;
     }
@@ -784,15 +798,10 @@ public class DatabaseHandler {
             System.out.println(ex.getMessage());
         }
         if (!usersEvents.isEmpty()) {
-            fillEventsWithParticipants(usersEvents);
+            fillEventsWithParticipantsAndFiles(usersEvents);
             return usersEvents;
         }
         return usersEvents;
-    }
-
-    public void setFilesOfEvent(ArrayList<File> eventFiles, int eventID) {
-        deleteFiles(eventID);
-        addFiles(eventFiles, eventID);
     }
 
     public ArrayList<Event> getThisMonthsEventsByUserID(int userID) {
@@ -820,7 +829,7 @@ public class DatabaseHandler {
             System.out.println(ex.getMessage());
         }
         if (!usersEvents.isEmpty()) {
-            fillEventsWithParticipants(usersEvents);
+            fillEventsWithParticipantsAndFiles(usersEvents);
             return usersEvents;
         }
 
@@ -851,7 +860,7 @@ public class DatabaseHandler {
             System.out.println("This Weeks: " + ex.getMessage());
         }
         if (!usersEvents.isEmpty()) {
-            fillEventsWithParticipants(usersEvents);
+            fillEventsWithParticipantsAndFiles(usersEvents);
             return usersEvents;
         }
         return usersEvents;
@@ -883,7 +892,7 @@ public class DatabaseHandler {
             System.out.println(ex.getMessage());
         }
 
-        fillEventsWithParticipants(Events);
+        fillEventsWithParticipantsAndFiles(Events);
         return Events;
     }
 
@@ -958,7 +967,7 @@ public class DatabaseHandler {
         }
 
         if (!usersEvents.isEmpty()) {
-            fillEventsWithParticipants(usersEvents);
+            fillEventsWithParticipantsAndFiles(usersEvents);
             return usersEvents;
         }
         return usersEvents;
@@ -982,7 +991,7 @@ public class DatabaseHandler {
             System.out.println(ex.getMessage());
         }
 
-        fillEventsWithParticipants(usersEvents);
+        fillEventsWithParticipantsAndFiles(usersEvents);
         return usersEvents;
     }
 
@@ -1000,5 +1009,31 @@ public class DatabaseHandler {
             System.out.println("reset Reminder:" + ex.getMessage());
         }
     }
+    
+    public ArrayList<File> getEventsDocuments(int eventID) {
+        String sql = "SELECT * FROM File where F_eventID = ?";
+        ArrayList<File> Files = new ArrayList<>();
+        int i = 0;
+        try ( PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setInt(1, eventID);
+            try ( ResultSet rs = stmt.executeQuery()) {
 
+                while (rs.next()) {
+                    i++;
+                    File new_file = new File("File"+i+".pdf");
+                    try ( java.io.FileOutputStream output = new java.io.FileOutputStream(new_file)) {
+                        java.io.InputStream input = rs.getBinaryStream("F_file");
+                        byte[] buffer = new byte[1024];
+                        while (input.read(buffer) > 0) {
+                            output.write(buffer);
+                        }
+                    }
+                    Files.add(new_file);
+                }
+            }
+        } catch (Exception ex) {
+            System.out.println("getEventsDocuments: " + ex.getMessage());
+        }
+        return Files;
+    }
 }
