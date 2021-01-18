@@ -50,13 +50,14 @@ public class DatabaseHandler {
     }
 
     private void insertFiles(ArrayList<File> toBeAdded, int eventID) {
-        String addFile = "INSERT INTO file (F_file,F_eventID) VALUES(?,?)";
+        String addFile = "INSERT INTO file (F_file,F_eventID,F_fileName) VALUES(?,?,?)";
 
         try ( PreparedStatement stmt = con.prepareStatement(addFile)) {
-            for (File f : toBeAdded) {
-                FileInputStream file = new FileInputStream(f);
-                stmt.setBinaryStream(1, file);
+            for (File file : toBeAdded) {
+                FileInputStream fileInput = new FileInputStream(file);
+                stmt.setBinaryStream(1, fileInput);
                 stmt.setInt(2, eventID);
+                stmt.setString(3,file.getName());
                 stmt.addBatch();
             }
             stmt.executeBatch();
@@ -1008,8 +1009,7 @@ public class DatabaseHandler {
             try ( ResultSet rs = stmt.executeQuery()) {
 
                 while (rs.next()) {
-                    i++;
-                    File new_file = new File("File" + i + ".pdf");
+                    File new_file = new File(rs.getString("F_fileName"));
                     try ( java.io.FileOutputStream output = new java.io.FileOutputStream(new_file)) {
                         java.io.InputStream input = rs.getBinaryStream("F_file");
                         byte[] buffer = new byte[1024];
