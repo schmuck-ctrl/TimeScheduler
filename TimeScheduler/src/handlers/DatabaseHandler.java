@@ -96,7 +96,7 @@ public class DatabaseHandler {
     }
 
     private void setHostOfEvent(int userID, int eventID) {
-        String sql = "INSERT INTO organiser (O_userID,O_eventID)  VALUES (?,?);";
+        String sql = "INSERT INTO host (H_userID,H_eventID)  VALUES (?,?);";
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setInt(1, userID);
             stmt.setInt(2, eventID);
@@ -169,12 +169,12 @@ public class DatabaseHandler {
 
     private ArrayList<Integer> getHostsEventIDs(int userID) {
         ArrayList<Integer> eventIDs = new ArrayList<>();
-        String sql = "SELECT OE_eventID, OE_deleted FROM organiserevent WHERE OE_userID = ? AND OE_deleted = 0;";
+        String sql = "SELECT HE_eventID, HE_deleted FROM hostevent WHERE HE_userID = ? AND HE_deleted = 0;";
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setInt(1, userID);
             try ( ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    eventIDs.add(rs.getInt("OE_eventID"));
+                    eventIDs.add(rs.getInt("HE_eventID"));
                 }
             }
         } catch (SQLException ex) {
@@ -442,8 +442,8 @@ public class DatabaseHandler {
     }
 
     /*public Operator getHostByEventName(String eventName) {
-        String prefix = "OE";
-        String sql = "SELECT * FROM organiserevent WHERE OE_EventID = ? AND OE_deleted = 0;";
+        String prefix = "HE";
+        String sql = "SELECT * FROM hostevent WHERE HE_EventID = ? AND HE_deleted = 0;";
         int userID;
         Operator host = null;
         String role, firstName, lastName, email;
@@ -462,8 +462,8 @@ public class DatabaseHandler {
     }*/
 
     public Operator getHostByID(int EventID) {
-        String prefix = "OE";
-        String sql = "SELECT * FROM organiserevent WHERE OE_eventID = ?  AND OE_deleted = 0;";
+        String prefix = "HE";
+        String sql = "SELECT * FROM hostevent WHERE HE_eventID = ?  AND HE_deleted = 0;";
         Operator host = null;
         int userID;
         String role, firstName, lastName, email;
