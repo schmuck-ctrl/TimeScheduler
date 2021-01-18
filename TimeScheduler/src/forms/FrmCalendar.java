@@ -596,6 +596,10 @@ public class FrmCalendar extends javax.swing.JPanel {
         FrmMain.getInstance().displayAllEventsOfDay(dayPanel.getDay());
     }
     
+    /**
+     * Returns the Month value from current month
+     * @return Returns the Month value of current month (1 - 12). PanelArray is null, -1 is returned.
+     */
     public int getCurrentMonthValue(){
         
         int columnCount = 7;
