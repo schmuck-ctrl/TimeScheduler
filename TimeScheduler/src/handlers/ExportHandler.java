@@ -13,11 +13,13 @@ import javax.swing.JFileChooser;
 /**
  * Handles the weekly schedule.
  * 
- * @author Nils Schmuck
+ * @author Benny
  */
 public class ExportHandler {
 
     /**
+     * @author Nils Schmuck
+     * 
      * Creates a filesave dialog, to choose a directory to save the weekly schedule.
      * 
      * @return The directory path.
