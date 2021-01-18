@@ -596,6 +596,23 @@ public class FrmCalendar extends javax.swing.JPanel {
         FrmMain.getInstance().displayAllEventsOfDay(dayPanel.getDay());
     }
     
+    public int getCurrentMonthValue(){
+        
+        int columnCount = 7;
+        
+        for (int i = 0; i < this.panelArray.length; i++){
+            
+            for (int j = 0; j < columnCount; j++){
+                
+                if (this.panelArray[i][j] != null && this.panelArray[i][j].getType() == CalendarUtilities.PnlDayPanel.TYPE.CURRENT_MONTH)
+                    return this.panelArray[i][j].getDay().getMonthValue();
+                
+            }
+            
+        }
+        return -1;
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
 }
