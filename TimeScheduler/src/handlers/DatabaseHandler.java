@@ -83,11 +83,15 @@ public class DatabaseHandler {
     
     private void deleteFiles(ArrayList<File> toBeDeleted, int eventID) {
         
-        String deleteFiles = "DELETE FROM file WHERE F_eventID = ?;";
+        String deleteFiles = "DELETE FROM file WHERE F_eventID = ? AND F_fileName = ?";
         //int update_successfull = -1;
-        try ( PreparedStatement stmt = con.prepareStatement(deleteFiles)) {
+        try (PreparedStatement stmt = con.prepareStatement(deleteFiles)) {
+            for(File file : toBeDeleted){
             stmt.setInt(1, eventID);
-            stmt.executeUpdate();
+            stmt.setString(2, file.getName());
+            stmt.addBatch();
+            }
+            stmt.executeBatch();
         } catch (SQLException ex) {
             System.out.println("delete file: " + ex.getMessage());
         }
