@@ -80,40 +80,29 @@ public class DatabaseHandler {
         }
     }
 
-    private void deleteParticipants(int eventID) {
-
-        String deleteParticipant = "DELETE FROM participant WHERE P_eventID = ?;";
-        //int update_successfull = -1;
-        try ( PreparedStatement stmt = con.prepareStatement(deleteParticipant)) {
-            stmt.setInt(1, eventID);
-            stmt.executeUpdate();
-        } catch (SQLException ex) {
-            System.out.println("delete parti: " + ex.getMessage());
-        }
-        //return update_successfull;
-    }
+    
 
     private void deleteFiles(ArrayList<File> toBeDeleted, int eventID) {
 
-        String deleteFiles = "DELETE FROM file WHERE P_eventID = ?;";
+        String deleteFiles = "DELETE FROM file WHERE F_eventID = ?;";
         //int update_successfull = -1;
         try ( PreparedStatement stmt = con.prepareStatement(deleteFiles)) {
             stmt.setInt(1, eventID);
             stmt.executeUpdate();
         } catch (SQLException ex) {
-            System.out.println("delete parti: " + ex.getMessage());
+            System.out.println("delete file: " + ex.getMessage());
         }
         //return update_successfull;
     }
 
-    private void setOrganiserOfEvent(int userID, int eventID) {
+    private void setHostOfEvent(int userID, int eventID) {
         String sql = "INSERT INTO organiser (O_userID,O_eventID)  VALUES (?,?);";
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setInt(1, userID);
             stmt.setInt(2, eventID);
             stmt.executeUpdate();
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println(""+ex.getMessage());
         }
     }
 
@@ -127,7 +116,7 @@ public class DatabaseHandler {
                 return max;
             }
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println(""+ex.getMessage());
         }
 
         return -1;
@@ -143,7 +132,7 @@ public class DatabaseHandler {
             }
             stmt.executeBatch();
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println(""+ex.getMessage());
         }
     }
 
@@ -178,7 +167,7 @@ public class DatabaseHandler {
         return null;
     }
 
-    private ArrayList<Integer> getOrganiserEventIDs(int userID) {
+    private ArrayList<Integer> getHostsEventIDs(int userID) {
         ArrayList<Integer> eventIDs = new ArrayList<>();
         String sql = "SELECT OE_eventID, OE_deleted FROM organiserevent WHERE OE_userID = ? AND OE_deleted = 0;";
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
@@ -189,7 +178,7 @@ public class DatabaseHandler {
                 }
             }
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println(""+ex.getMessage());
         }
 
         return eventIDs;
@@ -208,44 +197,48 @@ public class DatabaseHandler {
             lastName = rs.getString(prefix + "_lastName");
             user = AdminOrUser(role, userID, firstName, lastName, email);
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println("return User: "+ex.getMessage());
         }
         return user;
     }
 
     private Event getEvent(ResultSet rs) {
-        Operator organisator;
-        String orgFirstName, orgLastName, orgEmail, orgRole; //Organisator
-        int orgID, eventID;
+        Operator host;
+        String hostFirstName, hostLastName, hostEmail, hostRole; //Host
+        int hostID, eventID;
         String eventName, eventLocation; //EventStrings
-        LocalDateTime event, reminder = null;
+        LocalDateTime event;
         ArrayList<Operator> participants = null;
         ArrayList<File> files = null;
         int eventDuration;
         try {
-            orgID = rs.getInt("ED_userID");
-            orgRole = rs.getString("ED_role");
-            orgFirstName = rs.getString("ED_firstName");
-            orgLastName = rs.getString("ED_lastName");
-            orgEmail = rs.getString("ED_email");
-            organisator = AdminOrUser(orgRole, orgID, orgFirstName, orgLastName, orgEmail);
+            hostID = rs.getInt("ED_userID");
+            hostRole = rs.getString("ED_role");
+            hostFirstName = rs.getString("ED_firstName");
+            hostLastName = rs.getString("ED_lastName");
+            hostEmail = rs.getString("ED_email");
+            host = AdminOrUser(hostRole, hostID, hostFirstName, hostLastName, hostEmail);
             eventID = rs.getInt("ED_eventID");
             eventName = rs.getString("ED_eventName");
             event = rs.getTimestamp("ED_eventDate").toLocalDateTime();
             eventDuration = rs.getInt("ED_eventDuration");
             eventLocation = rs.getString("ED_eventLocation");
             Event.Priority Priority = Event.Priority.valueOf(rs.getString("ED_priority"));
-            if( rs.getTimestamp("ED_reminder") != null){
-                reminder = rs.getTimestamp("ED_reminder").toLocalDateTime();
-            }
-            
-
             Event.Notification notification = Event.Notification.valueOf(rs.getString("ED_notification"));
-            Event temp
-                    = new Event(eventID, eventName, organisator, event, eventDuration, eventLocation, participants, files, Priority, notification, reminder);
+            Event temp = new Event(
+                            eventID,
+                            eventName,
+                            host,
+                            event,
+                            eventDuration,
+                            eventLocation,
+                            participants,
+                            files,
+                            Priority,
+                            notification);
             return temp;
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println("get Event: "+ex.getMessage());
         }
         return null;
     }
@@ -266,14 +259,14 @@ public class DatabaseHandler {
     public static Connection getConnection() {
         final String USERNAME = "Admin";
         final String PASSWORD = "admin";
-        String URL = "jdbc:mysql://localhost:3306/timescheduler?zeroDateTimeBehavior=convertToNull&serverTimezone=Europe/Berlin";
+        String URL = "jdbc:mysql://localhost:3306/Mytimescheduler?zeroDateTimeBehavior=convertToNull&serverTimezone=Europe/Berlin";
         //String URL = "jdbc:mysql://localhost:3306/timescheduler?zerodatetimebehavior=Converttonull";
         Connection con = null;
         try {
             con = DriverManager.getConnection(URL, USERNAME, PASSWORD);
             return con;
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println(""+ex.getMessage());
         }
         return null;
     }
@@ -318,7 +311,7 @@ public class DatabaseHandler {
                 return rs.next();
             }
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println(""+ex.getMessage());
         }
         return false;
     }
@@ -331,7 +324,7 @@ public class DatabaseHandler {
                 return rs.next();
             }
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println(""+ex.getMessage());
         }
         return false;
     }
@@ -347,7 +340,7 @@ public class DatabaseHandler {
             stmt.setString(5, password);
             insertSuccessfull = stmt.executeUpdate();
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println(""+ex.getMessage());
         }
         System.out.println("Nutzer Erfolgreich angelegt");
         return insertSuccessfull;
@@ -365,12 +358,12 @@ public class DatabaseHandler {
                 }
             }
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println(""+ex.getMessage());
         }
         return null;
     }
 
-    public ArrayList<Operator> getUserByLastName(String usersLastName) {
+    /*public ArrayList<Operator> getUserByLastName(String usersLastName) {
         String prefix = "U";
         ArrayList<Operator> allUser = new ArrayList<>();
         Operator toBeAdded;
@@ -384,13 +377,13 @@ public class DatabaseHandler {
                 }
             }
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println(""+ex.getMessage());
         }
 
         return allUser;
-    }
+    }*/
 
-    public ArrayList<Operator> getUserByFirstName(String usersFirstName) {
+    /*public ArrayList<Operator> getUserByFirstName(String usersFirstName) {
         String prefix = "U";
         ArrayList<Operator> allUser = new ArrayList<>();
         Operator toBeReturned;
@@ -404,11 +397,11 @@ public class DatabaseHandler {
 
             }
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println(""+ex.getMessage());
         }
 
         return allUser;
-    }
+    }*/
 
     public Operator getUserByUsername(String username) {
         String prefix = "U";
@@ -423,7 +416,7 @@ public class DatabaseHandler {
                 }
             }
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println(""+ex.getMessage());
         }
         return null;
 
@@ -442,50 +435,50 @@ public class DatabaseHandler {
                 }
             }
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println(""+ex.getMessage());
         }
 
         return allUser;
     }
 
-    public Operator getOrganiserByEventName(String eventName) {
+    /*public Operator getHostByEventName(String eventName) {
         String prefix = "OE";
         String sql = "SELECT * FROM organiserevent WHERE OE_EventID = ? AND OE_deleted = 0;";
         int userID;
-        Operator organiser = null;
+        Operator host = null;
         String role, firstName, lastName, email;
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             try ( ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    organiser = returnUser(rs, prefix);
+                    host = returnUser(rs, prefix);
                 }
-                return organiser;
+                return host;
             }
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println(""+ex.getMessage());
         }
-        System.out.println("Kein Organisator für dieses Event");
+        System.out.println("Kein Host für dieses Event");
         return null;
-    }
+    }*/
 
-    public Operator getOrganiserByID(int EventID) {
+    public Operator getHostByID(int EventID) {
         String prefix = "OE";
         String sql = "SELECT * FROM organiserevent WHERE OE_eventID = ?  AND OE_deleted = 0;";
-        Operator organiser = null;
+        Operator host = null;
         int userID;
         String role, firstName, lastName, email;
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setInt(1, EventID);
             try ( ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    organiser = returnUser(rs, prefix);
+                    host = returnUser(rs, prefix);
                 }
-                return organiser;
+                return host;
             }
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println(""+ex.getMessage());
         }
-        System.out.println("There's no organisator for thisppointment");
+        System.out.println("There's no host for this appointment");
         return null;
     }
 
@@ -522,7 +515,7 @@ public class DatabaseHandler {
                 }
             }
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println(""+ex.getMessage());
         }
         return userAndAdmins;
     }
@@ -540,7 +533,7 @@ public class DatabaseHandler {
 
             editSuccessfull = stmt.executeUpdate();
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println(""+ex.getMessage());
         }
         System.out.println("User erfolgreich bearbeitet");
         return editSuccessfull;
@@ -548,7 +541,7 @@ public class DatabaseHandler {
     }
 
     public void deleteUser(Operator toBeDeleted) {
-        String eventIDs = listToString(getOrganiserEventIDs(toBeDeleted.getUserId()));
+        String eventIDs = listToString(getHostsEventIDs(toBeDeleted.getUserId()));
         String deleteUser = "UPDATE user SET U_deleted = 1 WHERE U_userID = ?;";
         String deleteUsersEvents = "UPDATE Event SET E_deleted = 1 WHERE E_EventID IN (" + eventIDs + ");";
         int deleteSuccessfull = -1;
@@ -557,13 +550,13 @@ public class DatabaseHandler {
             stmt.setInt(1, toBeDeleted.getUserId());
             stmt.executeUpdate();
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println(""+ex.getMessage());
         }
 
         try ( PreparedStatement stmt = con.prepareStatement(deleteUsersEvents)) {
             stmt.executeUpdate();
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println(""+ex.getMessage());
         }
         if (deleteSuccessfull == 0) {
             System.out.println("User erfolgreich gelöscht");
@@ -594,7 +587,7 @@ public class DatabaseHandler {
                 }
             }
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println(""+ex.getMessage());
         }
 
         if (users.isEmpty()) {
@@ -618,10 +611,10 @@ public class DatabaseHandler {
         deleteParticipants(toBeDeleted, eventID);
         insertParticipants(toBeAdded, eventID);
     }
-    
-    public void setFilesOfEvent(ArrayList<Operator> participants, int eventID) {
+
+    public void setFilesOfEvent(ArrayList<File> files, int eventID) {
         ArrayList<File> file_old = getEventsDocuments(eventID); //old
-        ArrayList<File> file_new = (ArrayList<File>) participants.clone(); //new
+        ArrayList<File> file_new = (ArrayList<File>) files.clone(); //new
         ArrayList<File> toBeAdded = (ArrayList<File>) file_new.clone();
         ArrayList<File> toBeDeleted = (ArrayList<File>) file_old.clone();
 
@@ -644,7 +637,7 @@ public class DatabaseHandler {
             }
             stmt.executeBatch();
         } catch (SQLException ex) {
-            System.out.println("insertPart: " + ex.getMessage());
+            System.out.println("insert Participants: " + ex.getMessage());
         }
     }
 
@@ -660,7 +653,7 @@ public class DatabaseHandler {
             }
             stmt.executeBatch();
         } catch (SQLException ex) {
-            System.out.println("deletePart: " + ex.getMessage());
+            System.out.println("delete Participants: " + ex.getMessage());
         }
     }
 
@@ -670,21 +663,20 @@ public class DatabaseHandler {
         new_participants.add(toBeEdited.getHost());
         String editEvent
                 = "UPDATE event SET E_eventName = ?, E_eventDuration = ?, E_eventDate = ?, E_priority = ?,"
-                + "E_eventLocation = ?, E_reminder = ?, E_notification = ? "
+                + "E_eventLocation = ?, E_notification = ? "
                 + "WHERE E_eventID = ?;";
 
         setParticipantsOfEvent(new_participants, toBeEdited.getID());
-
-        //setFilesOfEvent(toBeEdited.getAttachments(), toBeEdited.getID());
+        
+        setFilesOfEvent(toBeEdited.getAttachments(), toBeEdited.getID());
         try ( PreparedStatement stmt = con.prepareStatement(editEvent)) {
             stmt.setString(1, toBeEdited.getName());
             stmt.setInt(2, toBeEdited.getDuration());
             stmt.setTimestamp(3, Timestamp.valueOf(toBeEdited.getDate()));
             stmt.setString(4, toBeEdited.getPriority().toString());
             stmt.setString(5, toBeEdited.getLocation());
-            stmt.setTimestamp(6, Timestamp.valueOf(toBeEdited.getReminder()));
-            stmt.setString(7, toBeEdited.getNotification().toString());
-            stmt.setInt(8, toBeEdited.getID());
+            stmt.setString(6, toBeEdited.getNotification().toString());
+            stmt.setInt(7, toBeEdited.getID());
             stmt.executeUpdate();
 
         } catch (SQLException ex) {
@@ -710,7 +702,7 @@ public class DatabaseHandler {
                 }
             }
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println("get All Events: "+ex.getMessage());
         }
 
         fillEventsWithParticipantsAndFiles(Events);
@@ -719,7 +711,7 @@ public class DatabaseHandler {
 
     public void createNewEvent(Event new_event) {
 
-        String sqlEvent = "INSERT INTO event (E_eventName, E_eventDuration, E_eventDate, E_priority, E_eventLocation, E_reminder, E_notification) VALUES (?, ?, ?, ?, ?, ?, ?);";
+        String sqlEvent = "INSERT INTO event (E_eventName, E_eventDuration, E_eventDate, E_priority, E_eventLocation, E_notification) VALUES (?, ?, ?, ?, ?, ?);";
         ArrayList<Operator> temp = new_event.getParticipants();
         temp.add(new_event.getHost());
 
@@ -729,18 +721,15 @@ public class DatabaseHandler {
             stmt.setTimestamp(3, java.sql.Timestamp.valueOf(new_event.getDate()));
             stmt.setString(4, new_event.getPriority().toString());
             stmt.setString(5, new_event.getLocation());
-            if (new_event.getReminder() != null) {
-                stmt.setTimestamp(6, java.sql.Timestamp.valueOf(new_event.getReminder()));
-            }
-            stmt.setString(7, new_event.getNotification().toString());
+            stmt.setString(6, new_event.getNotification().toString());
             stmt.executeUpdate();
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println("Create new Event: "+ex.getMessage());
         }
 
-        setOrganiserOfEvent(new_event.getHost().getUserId(), getMaxEventID());
+        setHostOfEvent(new_event.getHost().getUserId(), getMaxEventID());
         setParticipantsOfEvent(temp, getMaxEventID());
-        //setFilesOfEvent(new_event.getAttachments(), getMaxEventID());
+        setFilesOfEvent(new_event.getAttachments(), getMaxEventID());
     }
 
     public void deleteEvent(int EventID) {
@@ -753,7 +742,7 @@ public class DatabaseHandler {
         }
     }
 
-    public ArrayList<Event> getEventsByUsername(String username) {
+    /*public ArrayList<Event> getEventsByUsername(String username) {
         ArrayList<Event> usersEvents = new ArrayList<>();
         String usersEventIDs = listToString(getEventIDsOfUser(username));
         String sql = "SELECT * FROM eventDetails WHERE ED_EventID IN (" + usersEventIDs + ") AND ED_deleted = 0 ORDER BY ED_eventDate;";
@@ -765,13 +754,13 @@ public class DatabaseHandler {
                 }
             }
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println(""+ex.getMessage());
         }
 
         fillEventsWithParticipantsAndFiles(usersEvents);
 
         return usersEvents;
-    }
+    }*/
 
     public ArrayList<Event> getUsersEventsOfACertainMonth(int userID, int month) {
         ArrayList<Event> usersEvents = new ArrayList<>();
@@ -795,7 +784,7 @@ public class DatabaseHandler {
                 }
             }
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println("get Users Appointment of a certain Month: "+ex.getMessage());
         }
         if (!usersEvents.isEmpty()) {
             fillEventsWithParticipantsAndFiles(usersEvents);
@@ -826,7 +815,7 @@ public class DatabaseHandler {
                 }
             }
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println("getThisMonthsEventsByUserID"+ex.getMessage());
         }
         if (!usersEvents.isEmpty()) {
             fillEventsWithParticipantsAndFiles(usersEvents);
@@ -877,7 +866,7 @@ public class DatabaseHandler {
         return null;
     }
 
-    public ArrayList<Event> getAllEventByUser(int userID) {
+    public ArrayList<Event> getAllEventsOfUser(int userID) {
         ArrayList<Event> Events = new ArrayList<>();
         String sql = "SELECT * FROM eventDetails WHERE ED_userID = ? AND ED_deleted = 0 ORDER BY ed_eventDate;";
 
@@ -889,7 +878,7 @@ public class DatabaseHandler {
                 }
             }
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println("get all Events of user"+ex.getMessage());
         }
 
         fillEventsWithParticipantsAndFiles(Events);
@@ -908,7 +897,7 @@ public class DatabaseHandler {
                 }
             }
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println("Get Event By Id: "+ex.getMessage());
         }
 
         toBeReturned.setParticipants(selectParticipantsByID(toBeReturned.getID()));
@@ -926,7 +915,7 @@ public class DatabaseHandler {
                 }
             }
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println("getEventIDsOfUser: "+ex.getMessage());
         }
 
         return EventIDs;
@@ -944,7 +933,7 @@ public class DatabaseHandler {
                 }
             }
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println("get EventIDs Of User"+ex.getMessage());
         }
 
         return EventIDs;
@@ -963,7 +952,7 @@ public class DatabaseHandler {
                 }
             }
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println("getUsersEventsOfCertainDay: "+ex.getMessage());
         }
 
         if (!usersEvents.isEmpty()) {
@@ -988,7 +977,7 @@ public class DatabaseHandler {
                 }
             }
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println("get Events Of Period: "+ex.getMessage());
         }
 
         fillEventsWithParticipantsAndFiles(usersEvents);
@@ -1009,7 +998,7 @@ public class DatabaseHandler {
             System.out.println("reset Reminder:" + ex.getMessage());
         }
     }
-    
+
     public ArrayList<File> getEventsDocuments(int eventID) {
         String sql = "SELECT * FROM File where F_eventID = ?";
         ArrayList<File> Files = new ArrayList<>();
@@ -1020,7 +1009,7 @@ public class DatabaseHandler {
 
                 while (rs.next()) {
                     i++;
-                    File new_file = new File("File"+i+".pdf");
+                    File new_file = new File("File" + i + ".pdf");
                     try ( java.io.FileOutputStream output = new java.io.FileOutputStream(new_file)) {
                         java.io.InputStream input = rs.getBinaryStream("F_file");
                         byte[] buffer = new byte[1024];
