@@ -259,7 +259,7 @@ public class DatabaseHandler {
     public static Connection getConnection() {
         final String USERNAME = "Admin";
         final String PASSWORD = "admin";
-        String URL = "jdbc:mysql://localhost:3306/Mytimescheduler?zeroDateTimeBehavior=convertToNull&serverTimezone=Europe/Berlin";
+        String URL = "jdbc:mysql://localhost:3306/timescheduler?zeroDateTimeBehavior=convertToNull&serverTimezone=Europe/Berlin";
         //String URL = "jdbc:mysql://localhost:3306/timescheduler?zerodatetimebehavior=Converttonull";
         Connection con = null;
         try {

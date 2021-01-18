@@ -359,12 +359,18 @@ public class FrmMain extends javax.swing.JFrame {
     }//GEN-LAST:event_btnNextMonthActionPerformed
 
     private void btnPreviousMonthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPreviousMonthActionPerformed
-        LocalDate previousMonth = frmCalendar.getLocalDate().minusMonths(1);
-
+        LocalDate previousMonth = this.frmCalendar.getLocalDate().minusMonths(1);
+        
+        System.out.println("Selected: " + frmCalendar.getSelectedLocalDate() + " Local: " + frmCalendar.getLocalDate());
+        
+        if(this.frmCalendar.getSelectedLocalDate().getMonthValue() != this.frmCalendar.getCurrentMonthValue()) {
+            previousMonth = previousMonth.plusMonths(1);
+        }
+        
         if (previousMonth.getYear() == LocalDate.now().getYear() && previousMonth.getMonthValue() == LocalDate.now().getMonthValue()) {
-            datePicker.setDate(LocalDate.now());
+            this.datePicker.setDate(LocalDate.now());
         } else {
-            datePicker.setDate(previousMonth.withDayOfMonth(1));
+            this.datePicker.setDate(previousMonth.withDayOfMonth(1));
         }
 
         this.frmCalendar.setLocalDate(datePicker.getDate());
@@ -372,6 +378,7 @@ public class FrmMain extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnPreviousMonthActionPerformed
 
+    
     /**
      * @param args the command line arguments
      */
