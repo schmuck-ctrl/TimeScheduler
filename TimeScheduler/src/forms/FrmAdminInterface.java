@@ -15,7 +15,7 @@ import javax.swing.table.TableColumn;
 
 /**
  *
- * @author nilss
+ * @author Nils Schmuck
  */
 public class FrmAdminInterface extends javax.swing.JDialog {
 
@@ -24,9 +24,14 @@ public class FrmAdminInterface extends javax.swing.JDialog {
     private Operator selectedUser = null;
 
     // </editor-fold>
+    
     // <editor-fold defaultstate="collapsed" desc="Constructors">
     /**
-     * Creates new form FrmAdminInterface
+     * Creates a new dialog with the specified modality and Frame as its owner.
+     * In addition the specified user will be set.
+     * 
+     * @param parentThe Frame from which the dialog is displayed.
+     * @param modal Specifies if the dialog blocks user input to other windows when shown.
      */
     public FrmAdminInterface(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -36,10 +41,7 @@ public class FrmAdminInterface extends javax.swing.JDialog {
 
         bindDataToTable(getUsers());
 
-        TableColumn col = tabUser.getColumn("UserID");
-        col.setMaxWidth(0);
-        col.setMinWidth(0);
-        col.setPreferredWidth(0);
+        
 
     }
 
@@ -56,7 +58,11 @@ public class FrmAdminInterface extends javax.swing.JDialog {
                 });
             }
         }
-
+        
+        TableColumn col = tabUser.getColumn("UserID");
+        col.setMaxWidth(0);
+        col.setMinWidth(0);
+        col.setPreferredWidth(0);
     }
 
     private ArrayList<Operator> getUsers() {
@@ -249,6 +255,10 @@ public class FrmAdminInterface extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_tabUserMouseClicked
 
+    /**
+     * Close this and discard all changes.
+     * @param evt 
+     */
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnCancelActionPerformed

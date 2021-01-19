@@ -78,14 +78,23 @@ public final class AttachmentListModel extends AbstractListModel<File> {
 
     /**
      * Removes from this list all of its elements.
+     * The list will be empty after this call.
      *
      * @throws ClassCastException If the class of an element of this list is incompatible with the specified collection.
      * @throws NullPointerException If this list contains a null element and the specified collection does not permit null elements, or if the specified collection is null.
      */
     public void removeAll(){
-        for(int i = 0; i < this.listOfAttachments.size(); i++) {
-            this.listOfAttachments.remove(i);
-        }
+        this.listOfAttachments.clear();
+    }
+    
+    /**
+     * Remove the element at the specified position in this list.
+     * 
+     * @param index The index of the element to be removed.
+     * @throws IndexOutOfBoundsException If the index is out of range.
+     */
+    public void remove(int index) {
+        this.listOfAttachments.remove(index);
     }
     
     /**

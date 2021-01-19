@@ -88,6 +88,7 @@ public class FrmEvent extends javax.swing.JPanel {
     }
 
     // </editor-fold>
+    
     // <editor-fold defaultstate="collapsed" desc="Methods">
     public void setParticipants(ArrayList<Operator> participants) {
 
@@ -97,8 +98,11 @@ public class FrmEvent extends javax.swing.JPanel {
             }
 
             this.liModelParticipants.addElement(participants);
-            this.liEventParticipants.setModel((ListModel) liModelParticipants);
+            //this.liEventParticipants.setModel((ListModel) liModelParticipants);
+            this.liEventParticipants.revalidate();
+            this.liEventParticipants.revalidate();
         }
+        
     }
 
     public void setEvent(Event event) {
@@ -649,6 +653,13 @@ public class FrmEvent extends javax.swing.JPanel {
         pnlEventAttachments.add(btnAddAttachments, gridBagConstraints);
 
         liEventAttachments.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        liEventAttachments.setToolTipText("Select an attachment and press the ENTF key to remove the attachment.");
+        liEventAttachments.setValueIsAdjusting(true);
+        liEventAttachments.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                liEventAttachmentsKeyPressed(evt);
+            }
+        });
         jScrollPane2.setViewportView(liEventAttachments);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -706,13 +717,26 @@ public class FrmEvent extends javax.swing.JPanel {
         if (state == JFileChooser.APPROVE_OPTION) {
             file = openFileDialog.getSelectedFile();
 
-            liModelAttachments.addElement(file);
+            this.liModelAttachments.addElement(file);
 
-            liEventAttachments.setCellRenderer(new EventUtilities.AttachmentListCellRenderer());
-            liEventAttachments.setModel((ListModel) liModelAttachments);
+            this.liEventAttachments.setCellRenderer(new EventUtilities.AttachmentListCellRenderer());
+            this.liEventAttachments.setModel((ListModel) liModelAttachments);
 
         }
     }//GEN-LAST:event_btnAddAttachmentsActionPerformed
+
+    private void liEventAttachmentsKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_liEventAttachmentsKeyPressed
+        System.out.println(evt.getKeyCode());
+        if((this.liEventAttachments.getSelectedIndex()>= 0) && (evt.getKeyCode() == 127)) { //127 == ENTF Key
+            int retVal = JOptionPane.showConfirmDialog(FrmMain.getInstance(), "Are you sure you want to remove the attachment?", "Delete attachment", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+            
+            if(retVal == JOptionPane.YES_OPTION) {
+                this.liModelAttachments.remove(this.liEventAttachments.getSelectedIndex());
+                this.liEventAttachments.revalidate();
+                this.liEventAttachments.repaint();
+            }
+        } 
+    }//GEN-LAST:event_liEventAttachmentsKeyPressed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddAttachments;

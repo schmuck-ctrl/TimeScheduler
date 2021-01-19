@@ -16,8 +16,10 @@ import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 
 /**
- *
- * @author nilss
+ * Displays the settings (first name, last name, email and roll) of the specified user.
+ * In addition it is also possible to edit them.
+ * 
+ * @author Nils Schmuck
  */
 public class FrmEditUser extends javax.swing.JDialog {
 
@@ -27,9 +29,14 @@ public class FrmEditUser extends javax.swing.JDialog {
 
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Constructors">
+    
     /**
-     * Creates new form FrmEditUser
-     *
+     * Creates a new dialog with the specified modality and Frame as its owner.
+     * In addition the specified user will be set.
+     * 
+     * @param parent The Frame from which the dialog is displayed.
+     * @param modal Specifies if the dialog blocks user input to other windows when shown.
+     * @param user The user for the settings.
      */
     public FrmEditUser(java.awt.Frame parent, boolean modal, Operator user) {
         super(parent, modal);
@@ -39,13 +46,12 @@ public class FrmEditUser extends javax.swing.JDialog {
     }
 
     // </editor-fold>
+    
     // <editor-fold defaultstate="collapsed" desc="Methods">
     /**
-     * Sets this frmEditUser user to the specified user and loads the data
-     * in the relevant controls on the form.
+     * Sets this user to the specified user and loads the data in the relevant controls on the form.
      *
-     * @param user The user who is to be set in this frmEditUser and displayed
-     * in the form.
+     * @param user The user who is to be set in this and displayed in the form.
      */
     public void setUser(Operator user) {
         if (user != null) {
@@ -68,9 +74,8 @@ public class FrmEditUser extends javax.swing.JDialog {
     /**
      * Validates if the String match the pattern.
      * 
-     * 
-     * @param firstName
-     * @return Returns true if and only if the String match pattern.
+     * @param firstName The String from {@link#txtFirstName}
+     * @return Returns true if the String match pattern.
      */
     private boolean validateFirstName(String firstName) {
         if (firstName != null && !firstName.isBlank()) {
@@ -92,6 +97,12 @@ public class FrmEditUser extends javax.swing.JDialog {
         return false;
     }
 
+    /**
+     * Validates if the String match the pattern
+     * 
+     * @param lastNameThe String from {@link#txtLastName}
+     * @return Returns true if the String match pattern.
+     */
     private boolean validateLastName(String lastName) {
         if (lastName != null && !lastName.isBlank()) {
 
@@ -112,6 +123,12 @@ public class FrmEditUser extends javax.swing.JDialog {
         return false;
     }
 
+    /**
+     * Validates if the String match the pattern
+     * 
+     * @param The String from {@link#txtEmail}
+     * @return Returns true if the String match pattern.
+     */
     private boolean validateEmail(String email) {
         if (email != null && !email.isBlank()) {
 
@@ -137,7 +154,7 @@ public class FrmEditUser extends javax.swing.JDialog {
      * gloabel User will changed.
      *
      * @return -1 User input not correct. 0 Input not changed. 1 Global user
-     * updated.
+     * updated successfully.
      */
     private int getInput() {
         if (checkIfDataChanged()) {
@@ -168,6 +185,15 @@ public class FrmEditUser extends javax.swing.JDialog {
 
     }
 
+    /**
+     * Checks whether the content of the controls corresponds to the validation.
+     * 
+     * @return Returns true if and only if all controls match the specified pattern.
+     * 
+     * @see FrmEditUser#validateFirstName(java.lang.String) 
+     * @see FrmEditUser#validateLastName(java.lang.String) 
+     * @see FrmEditUser#validateEmail(java.lang.String) 
+     */
     private boolean validateInput() {
         boolean checkFirstName = false;
         boolean checkLastName = false;
@@ -185,6 +211,13 @@ public class FrmEditUser extends javax.swing.JDialog {
 
     }
 
+    /**
+     * Checks if the input of an control changed.
+     * 
+     * @return Returns true if and only if the input of an control changed.
+     * 
+     * @throws NullPointerException
+     */
     private boolean checkIfDataChanged() {
         boolean dataChanged = false;
 
@@ -354,6 +387,13 @@ public class FrmEditUser extends javax.swing.JDialog {
 
     // <editor-fold defaultstate="collapsed" desc="Events">
 
+    /**
+     * Checks the input and save the changes if necessary.
+     * 
+     * @param evt The action event.
+     * @see FrmEditUser#getInput()
+     * @see handlers.UserHandler#editUser(classes.Operator) 
+     */
     private void btnOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOkActionPerformed
         int retVal = getInput();
 
@@ -368,6 +408,12 @@ public class FrmEditUser extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_btnOkActionPerformed
 
+    /**
+     * Delete the specified user.
+     * 
+     * @param evt The action event.
+     * @see handlers.UserHandler#deleteUser(classes.Operator) 
+     */
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         int retVal = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete the user?", "Delete user", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
         if (retVal == JOptionPane.YES_OPTION) {
@@ -377,6 +423,10 @@ public class FrmEditUser extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
+    /**
+     * Close this and discard all changes.
+     * @param evt 
+     */
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnCancelActionPerformed
