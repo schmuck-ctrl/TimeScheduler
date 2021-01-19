@@ -28,6 +28,7 @@ public class FrmEditUser extends javax.swing.JDialog {
     private boolean isAdmin = false;
 
     // </editor-fold>
+    
     // <editor-fold defaultstate="collapsed" desc="Constructors">
     
     /**

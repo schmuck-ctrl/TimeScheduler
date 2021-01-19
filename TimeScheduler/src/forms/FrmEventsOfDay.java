@@ -16,7 +16,7 @@ import javax.swing.border.EmptyBorder;
 
 /**
  *
- * @author nilss
+ * @author Nils Schmuck
  */
 public class FrmEventsOfDay extends javax.swing.JPanel {
 
