@@ -1020,6 +1020,7 @@ public class DatabaseHandler {
                     }
                     Files.add(new_file);
                     new_file.delete();
+                    
                 }
             }
         } catch (Exception ex) {
