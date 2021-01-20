@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package handlers;
+import classes.Operator;
 import java.security.NoSuchAlgorithmException;
 /**
  *
@@ -12,6 +13,8 @@ import java.security.NoSuchAlgorithmException;
 public class LoginHandler {
         // Checks if the user is in the database by the users email and the Encrypted password.
     DatabaseHandler dbHandler = new DatabaseHandler();
+    EncryptionHandler encrypHandler = new EncryptionHandler();
+    EmailHandler eHandler = new EmailHandler();
     
     public boolean checkUserInput(String userEmail, char[] password) {
         try {
@@ -34,4 +37,18 @@ public class LoginHandler {
             return false;
         }
     }
+    public void sendVerificationCode(Operator user,int rand){
+        eHandler.emailSenderVerifyAccount(user, rand);
+    }
+    public boolean verifySendedCode(int rand,String userInput){
+        if(rand == Integer.valueOf(userInput)){
+            return true;
+        }
+        return false;
+    }
+    public int getRandomNumber(){
+        int ran = encrypHandler.randNumberGen();
+        return ran;
+    }
+    
 }

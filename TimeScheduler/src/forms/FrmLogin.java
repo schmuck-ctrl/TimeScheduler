@@ -25,17 +25,30 @@ public class FrmLogin extends javax.swing.JFrame {
         this.pnlHeader.setBackground(new Color(255, 255, 255));
         this.pnlContent.setBackground(new Color(255, 255, 255));
         this.pnlFooter.setBackground(new Color(255, 255, 255));
+
     }
 
     private void loginFunction() {
         LoginHandler lgHandler = new LoginHandler();
         DatabaseHandler dbHandler = new DatabaseHandler();
+
         if (lgHandler.checkIfUserInputExist(txtEmail.getText()) == true) {
             if (lgHandler.checkUserInput(txtEmail.getText().trim(), ptxtPassword.getPassword()) == true) {
-                FrmMain frmMain = FrmMain.getInstance();
-                frmMain.setCurrentUser(dbHandler.getUserByUsername(txtEmail.getText().trim()));
-                frmMain.setVisible(true);
-                this.dispose();
+//                int rand = lgHandler.getRandomNumber();
+//                lgHandler.sendVerificationCode(dbHandler.getUserByUsername(txtEmail.getText()), rand);
+//                String userInputRan = JOptionPane.showInputDialog("Enter Verification");
+//                if (Integer.valueOf(userInputRan) == rand) {
+                    FrmMain frmMain = FrmMain.getInstance();
+                    frmMain.setCurrentUser(dbHandler.getUserByUsername(txtEmail.getText().trim()));
+                    frmMain.setVisible(true);
+                    this.dispose();
+
+                
+                
+//                FrmMain frmMain = FrmMain.getInstance();
+//                frmMain.setCurrentUser(dbHandler.getUserByUsername(txtEmail.getText().trim()));
+//                frmMain.setVisible(true);
+//                this.dispose();
             } else {
                 JOptionPane.showMessageDialog(null, "You did not sign in correctly.", "Login error", JOptionPane.INFORMATION_MESSAGE);
                 ptxtPassword.setText("");

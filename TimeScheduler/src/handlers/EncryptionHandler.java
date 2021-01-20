@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Random;
 
 /**
  *
@@ -38,5 +39,12 @@ public class EncryptionHandler {
         }
 
         return hexString.toString();
+    }
+    
+    public static int randNumberGen() {
+        Random randomNumber = new Random();
+        int checkRandomeNumber = randomNumber.nextInt(899999)+100000;
+
+        return checkRandomeNumber;
     }
 }
