@@ -127,6 +127,8 @@ public class FrmAdminInterface extends javax.swing.JDialog {
         pnlContent = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabUser = new javax.swing.JTable();
+        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
+        filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
         pnlFooter = new javax.swing.JPanel();
         btnCancel = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
@@ -192,6 +194,8 @@ public class FrmAdminInterface extends javax.swing.JDialog {
         }
 
         pnlContent.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+        pnlContent.add(filler1, java.awt.BorderLayout.LINE_START);
+        pnlContent.add(filler2, java.awt.BorderLayout.LINE_END);
 
         getContentPane().add(pnlContent, java.awt.BorderLayout.CENTER);
 
@@ -308,6 +312,8 @@ public class FrmAdminInterface extends javax.swing.JDialog {
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnEdit;
+    private javax.swing.Box.Filler filler1;
+    private javax.swing.Box.Filler filler2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel pnlContent;
     private javax.swing.JPanel pnlFooter;

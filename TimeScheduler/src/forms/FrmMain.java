@@ -178,8 +178,11 @@ public class FrmMain extends javax.swing.JFrame {
 
         pnlHeader = new javax.swing.JPanel();
         pnlMenuBar = new javax.swing.JPanel();
+        filler5 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
         mnuAdminInterface = new javax.swing.JButton();
+        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
         btnExport = new javax.swing.JButton();
+        filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
         pnlHeadline = new javax.swing.JPanel();
         lblHeadline = new javax.swing.JLabel();
         splitPnlContent = new javax.swing.JSplitPane();
@@ -191,7 +194,9 @@ public class FrmMain extends javax.swing.JFrame {
         datePicker = new com.github.lgooddatepicker.components.DatePicker();
         btnNextMonth = new javax.swing.JButton();
         pnlFooter = new javax.swing.JPanel();
+        filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
         btnNewEvent = new javax.swing.JButton();
+        filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setFocusCycleRoot(false);
@@ -200,17 +205,20 @@ public class FrmMain extends javax.swing.JFrame {
         pnlHeader.setPreferredSize(new java.awt.Dimension(736, 88));
         pnlHeader.setLayout(new java.awt.GridLayout(2, 1));
 
-        pnlMenuBar.setPreferredSize(new java.awt.Dimension(736, 45));
+        pnlMenuBar.setPreferredSize(new java.awt.Dimension(736, 50));
+        pnlMenuBar.setLayout(new javax.swing.BoxLayout(pnlMenuBar, javax.swing.BoxLayout.LINE_AXIS));
+        pnlMenuBar.add(filler5);
 
         mnuAdminInterface.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/user-settings-line.png"))); // NOI18N
         mnuAdminInterface.setText("Admin Interface");
         mnuAdminInterface.setPreferredSize(new java.awt.Dimension(145, 35));
-        mnuAdminInterface.setToolTipText("");
         mnuAdminInterface.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mnuAdminInterfaceActionPerformed(evt);
             }
         });
+        pnlMenuBar.add(mnuAdminInterface);
+        pnlMenuBar.add(filler1);
 
         btnExport.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/share-line.png"))); // NOI18N
         btnExport.setText("Export to PDF");
@@ -220,27 +228,8 @@ public class FrmMain extends javax.swing.JFrame {
                 btnExportActionPerformed(evt);
             }
         });
-
-        javax.swing.GroupLayout pnlMenuBarLayout = new javax.swing.GroupLayout(pnlMenuBar);
-        pnlMenuBar.setLayout(pnlMenuBarLayout);
-        pnlMenuBarLayout.setHorizontalGroup(
-            pnlMenuBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlMenuBarLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(mnuAdminInterface, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnExport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-        pnlMenuBarLayout.setVerticalGroup(
-            pnlMenuBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlMenuBarLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(pnlMenuBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnExport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(mnuAdminInterface, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(8, 8, 8))
-        );
+        pnlMenuBar.add(btnExport);
+        pnlMenuBar.add(filler4);
 
         pnlHeader.add(pnlMenuBar);
 
@@ -248,8 +237,8 @@ public class FrmMain extends javax.swing.JFrame {
         pnlHeadline.setPreferredSize(new java.awt.Dimension(736, 50));
         pnlHeadline.setLayout(new java.awt.BorderLayout());
 
-        lblHeadline.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         lblHeadline.setText("Welcome message!");
+        lblHeadline.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         pnlHeadline.add(lblHeadline, java.awt.BorderLayout.CENTER);
 
         pnlHeader.add(pnlHeadline);
@@ -269,7 +258,6 @@ public class FrmMain extends javax.swing.JFrame {
         pnlCalendarControl.setPreferredSize(new java.awt.Dimension(694, 50));
 
         btnPreviousMonth.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/arrow-left-s-fill.png"))); // NOI18N
-        btnPreviousMonth.setToolTipText("");
         btnPreviousMonth.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnPreviousMonthActionPerformed(evt);
@@ -294,7 +282,9 @@ public class FrmMain extends javax.swing.JFrame {
 
         getContentPane().add(splitPnlContent, java.awt.BorderLayout.CENTER);
 
-        pnlFooter.setPreferredSize(new java.awt.Dimension(999, 45));
+        pnlFooter.setPreferredSize(new java.awt.Dimension(999, 50));
+        pnlFooter.setLayout(new javax.swing.BoxLayout(pnlFooter, javax.swing.BoxLayout.LINE_AXIS));
+        pnlFooter.add(filler2);
 
         btnNewEvent.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/add-circle-line.png"))); // NOI18N
         btnNewEvent.setText("Create new event");
@@ -304,23 +294,8 @@ public class FrmMain extends javax.swing.JFrame {
                 btnNewEventActionPerformed(evt);
             }
         });
-
-        javax.swing.GroupLayout pnlFooterLayout = new javax.swing.GroupLayout(pnlFooter);
-        pnlFooter.setLayout(pnlFooterLayout);
-        pnlFooterLayout.setHorizontalGroup(
-            pnlFooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFooterLayout.createSequentialGroup()
-                .addContainerGap(1149, Short.MAX_VALUE)
-                .addComponent(btnNewEvent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-        pnlFooterLayout.setVerticalGroup(
-            pnlFooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFooterLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnNewEvent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
+        pnlFooter.add(btnNewEvent);
+        pnlFooter.add(filler3);
 
         getContentPane().add(pnlFooter, java.awt.BorderLayout.PAGE_END);
 
@@ -422,6 +397,11 @@ public class FrmMain extends javax.swing.JFrame {
     private javax.swing.JButton btnNextMonth;
     private javax.swing.JButton btnPreviousMonth;
     private com.github.lgooddatepicker.components.DatePicker datePicker;
+    private javax.swing.Box.Filler filler1;
+    private javax.swing.Box.Filler filler2;
+    private javax.swing.Box.Filler filler3;
+    private javax.swing.Box.Filler filler4;
+    private javax.swing.Box.Filler filler5;
     private forms.FrmCalendar frmCalendar;
     private javax.swing.JLabel lblHeadline;
     private javax.swing.JButton mnuAdminInterface;

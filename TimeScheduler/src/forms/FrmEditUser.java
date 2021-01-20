@@ -271,8 +271,8 @@ public class FrmEditUser extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Edit user");
-        setMinimumSize(new java.awt.Dimension(470, 200));
-        setPreferredSize(new java.awt.Dimension(470, 200));
+        setMinimumSize(new java.awt.Dimension(470, 270));
+        setPreferredSize(new java.awt.Dimension(470, 270));
 
         pnlContent.setPreferredSize(new java.awt.Dimension(470, 200));
 
