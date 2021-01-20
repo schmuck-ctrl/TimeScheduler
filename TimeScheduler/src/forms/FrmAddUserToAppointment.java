@@ -335,7 +335,14 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
             }
         });
         tabSearchUser.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tabSearchUser.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(tabSearchUser);
+        if (tabSearchUser.getColumnModel().getColumnCount() > 0) {
+            tabSearchUser.getColumnModel().getColumn(0).setResizable(false);
+            tabSearchUser.getColumnModel().getColumn(1).setResizable(false);
+            tabSearchUser.getColumnModel().getColumn(2).setResizable(false);
+            tabSearchUser.getColumnModel().getColumn(3).setResizable(false);
+        }
 
         txtErrorAdd.setText("d");
 

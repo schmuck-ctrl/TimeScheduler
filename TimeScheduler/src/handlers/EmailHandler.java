@@ -185,6 +185,10 @@ public class EmailHandler {
         } catch (MessagingException e) {
             e.printStackTrace();
         }
+        
 
+    }
+    public static void emailSenderAppointmentReminder(Event event){
+        
     }
 }
