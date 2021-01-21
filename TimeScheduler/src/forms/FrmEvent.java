@@ -14,7 +14,6 @@ import handlers.EventHandler;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.nio.file.Files;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -54,8 +53,7 @@ public class FrmEvent extends javax.swing.JPanel {
         pnlHeader.setBorder(new EmptyBorder(10, 10, 10, 10));
         pnlContent1.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-        liModelParticipants = new ParticipantListModel();
-        liModelAttachments = new AttachmentListModel();
+        prepareLists();
 
         handleView(view);
         setEvent(event);
@@ -67,8 +65,7 @@ public class FrmEvent extends javax.swing.JPanel {
         pnlHeader.setBorder(new EmptyBorder(10, 10, 10, 10));
         pnlContent1.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-        liModelParticipants = new ParticipantListModel();
-        liModelAttachments = new AttachmentListModel();
+        prepareLists();
 
         clearInput(date);
         handleView(view);
@@ -82,8 +79,7 @@ public class FrmEvent extends javax.swing.JPanel {
         pnlHeader.setBorder(new EmptyBorder(10, 10, 10, 10));
         pnlContent1.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-        liModelParticipants = new ParticipantListModel();
-        liModelAttachments = new AttachmentListModel();
+        prepareLists();
 
         handleView(view);
         setEvent(event);
@@ -91,6 +87,13 @@ public class FrmEvent extends javax.swing.JPanel {
 
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Methods">
+    private void prepareLists() {
+        this.liModelParticipants = new ParticipantListModel();
+
+        this.liModelAttachments = new AttachmentListModel();
+        this.liEventAttachments.setCellRenderer(new EventUtilities.AttachmentListCellRenderer());
+    }
+
     public void setParticipants(ArrayList<Operator> participants) {
 
         if (participants != null) {
@@ -99,9 +102,9 @@ public class FrmEvent extends javax.swing.JPanel {
             }
 
             this.liModelParticipants.addElement(participants);
-            //this.liEventParticipants.setModel((ListModel) liModelParticipants);
+            this.liEventParticipants.setModel((ListModel) liModelParticipants);
             this.liEventParticipants.revalidate();
-            this.liEventParticipants.revalidate();
+            this.liEventParticipants.repaint();
         }
 
     }
@@ -154,6 +157,7 @@ public class FrmEvent extends javax.swing.JPanel {
 
             if (event.getAttachments() != null) {
                 liModelAttachments.addElement(event.getAttachments());
+
                 liEventAttachments.setModel((ListModel) liModelAttachments);
             }
 
@@ -720,12 +724,14 @@ public class FrmEvent extends javax.swing.JPanel {
 
         if (state == JFileChooser.APPROVE_OPTION) {
             file = openFileDialog.getSelectedFile();
-            
+
             this.liModelAttachments.addElement(new Attachment(file));
+            
+            
+            this.liEventAttachments.revalidate();
+            this.liEventAttachments.repaint();
 
-            //this.liEventAttachments.setCellRenderer(new EventUtilities.AttachmentListCellRenderer());
             this.liEventAttachments.setModel((ListModel) liModelAttachments);
-
         }
     }//GEN-LAST:event_btnAddAttachmentsActionPerformed
 
@@ -774,9 +780,7 @@ public class FrmEvent extends javax.swing.JPanel {
 
             if (state == JFileChooser.APPROVE_OPTION) {
                 path = saveDialog.getSelectedFile().toString() + "\\" + attachment.getFileName();
-                
-                
-                
+
             }
 
         }

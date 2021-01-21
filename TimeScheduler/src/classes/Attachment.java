@@ -16,6 +16,7 @@ public class Attachment extends java.io.File {
 
     public Attachment(java.io.File file) {
         super(file.getPath());
+        setFileName(file.getName());
     }
 
     public Attachment(String fileName, int id) {
@@ -44,4 +45,8 @@ public class Attachment extends java.io.File {
         return attachmentID;
     }
 
+    @Override
+    public String toString() {
+        return this.fileName;
+    }
 }
