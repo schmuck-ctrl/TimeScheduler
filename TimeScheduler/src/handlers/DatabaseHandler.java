@@ -49,18 +49,17 @@ public class DatabaseHandler {
         return eventIDs;
     }
 
-    private void insertFiles(ArrayList<File> toBeAdded, int eventID) {
-        String addFile = "INSERT INTO file (F_file,F_eventID,F_fileName) VALUES(?,?,?)";
+    private void insertAttachments(ArrayList<Attachment> toBeAdded, int eventID) {
+        String addAttachment = "INSERT INTO file (F_file,F_eventID,F_fileName) VALUES(?,?,?)";
 
-        try ( PreparedStatement stmt = con.prepareStatement(addFile)) {
-            for (File file : toBeAdded) {
+        try ( PreparedStatement stmt = con.prepareStatement(addAttachment)) {
+            for (Attachment file : toBeAdded) {
                 FileInputStream fileInput = new FileInputStream(file);
                 stmt.setBinaryStream(1, fileInput);
                 stmt.setInt(2, eventID);
                 stmt.setString(3, file.getName());
-                stmt.addBatch();
+                stmt.executeUpdate();
             }
-            stmt.executeBatch();
         } catch (Exception ex) {
             System.out.println("add Files: " + ex.getMessage());
         }
@@ -81,15 +80,15 @@ public class DatabaseHandler {
         }
     }
 
-    private void deleteFiles(ArrayList<File> toBeDeleted, int eventID) {
+    private void deleteAttachments(ArrayList<Attachment> toBeDeleted, int eventID) {
 
-        String deleteFiles = "DELETE FROM file WHERE F_eventID = ? AND F_fileName = ?";
+        String deleteAttachments = "DELETE FROM file WHERE F_eventID = ? AND F_fileName = ?";
         //int update_successfull = -1;
-        try ( PreparedStatement stmt = con.prepareStatement(deleteFiles)) {
+        try ( PreparedStatement stmt = con.prepareStatement(deleteAttachments)) {
 
-            for (File file : toBeDeleted) {
+            for (Attachment attachment : toBeDeleted) {
                 stmt.setInt(1, eventID);
-                stmt.setString(2, file.getName());
+                stmt.setString(2, attachment.getName());
                 stmt.addBatch();
             }
 
@@ -214,7 +213,7 @@ public class DatabaseHandler {
         String eventName, eventLocation; //EventStrings
         LocalDateTime event;
         ArrayList<Operator> participants = null;
-        ArrayList<File> files = null;
+        ArrayList<Attachment> attachments = null;
         int eventDuration;
         try {
             hostID = rs.getInt("ED_userID");
@@ -238,7 +237,7 @@ public class DatabaseHandler {
                     eventDuration,
                     eventLocation,
                     participants,
-                    files,
+                    attachments,
                     Priority,
                     notification);
             return temp;
@@ -615,17 +614,17 @@ public class DatabaseHandler {
         insertParticipants(toBeAdded, eventID);
     }
 
-    public void setFilesOfEvent(ArrayList<File> files, int eventID) {
-        ArrayList<File> file_old = getEventsDocuments(eventID); //old
-        ArrayList<File> file_new = (ArrayList<File>) files.clone(); //new
-        ArrayList<File> toBeAdded = (ArrayList<File>) file_new.clone();
-        ArrayList<File> toBeDeleted = (ArrayList<File>) file_old.clone();
+    public void setFilesOfEvent(ArrayList<Attachment> attachments, int eventID) {
+        ArrayList<Attachment> attachment_old = getEventsDocuments(eventID); //old
+        ArrayList<Attachment> attachment_new = (ArrayList<Attachment>) attachments.clone(); //new
+        ArrayList<Attachment> toBeAdded = (ArrayList<Attachment>) attachment_new.clone();
+        ArrayList<Attachment> toBeDeleted = (ArrayList<Attachment>) attachment_old.clone();
 
-        toBeAdded.removeAll(file_old);
-        toBeDeleted.removeAll(file_new);
+        toBeAdded.removeAll(attachment_old);
+        toBeDeleted.removeAll(attachment_new);
 
-        deleteFiles(toBeDeleted, eventID);
-        insertFiles(toBeAdded, eventID);
+        deleteAttachments(toBeDeleted, eventID);
+        insertAttachments(toBeAdded, eventID);
     }
 
     public void insertParticipants(ArrayList<Operator> toBeAdded, int eventID) {
@@ -1002,30 +1001,20 @@ public class DatabaseHandler {
         }
     }
 
-    public ArrayList<File> getEventsDocuments(int eventID) {
-        String sql = "SELECT * FROM File where F_eventID = ?";
-        ArrayList<File> Files = new ArrayList<>();
+    public ArrayList<Attachment> getEventsDocuments(int eventID) {
+        String sql = "SELECT F_id, F_fileName FROM File where F_eventID = ?";
+        ArrayList<Attachment> attachments = new ArrayList<>();
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setInt(1, eventID);
             try ( ResultSet rs = stmt.executeQuery()) {
-
                 while (rs.next()) {
-                    File new_file = new File(rs.getString("F_fileName"));
-                    try ( java.io.FileOutputStream output = new java.io.FileOutputStream(new_file)) {
-                        java.io.InputStream input = rs.getBinaryStream("F_file");
-                        byte[] buffer = new byte[1024];
-                        while (input.read(buffer) > 0) {
-                            output.write(buffer);
-                        }
-                    }
-                    Files.add(new_file);
-                    new_file.delete();
-                    
+                    Attachment temp = new Attachment(rs.getString("F_fileName"), rs.getInt("F_id"));
+                    attachments.add(temp);
                 }
             }
         } catch (Exception ex) {
             System.out.println("getEventsDocuments: " + ex.getMessage());
         }
-        return Files;
+        return attachments;
     }
 }
