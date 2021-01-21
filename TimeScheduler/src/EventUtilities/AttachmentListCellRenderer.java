@@ -5,8 +5,8 @@
  */
 package EventUtilities;
 
+import classes.Attachment;
 import java.awt.Component;
-import java.io.File;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JList;
 
@@ -34,8 +34,8 @@ public class AttachmentListCellRenderer extends DefaultListCellRenderer{
     {
         super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
-        File file = (File)value;
-        setText(file.getName());
+        Attachment file = (Attachment)value;
+        setText(file.getFileName());
 
         return this;
     }

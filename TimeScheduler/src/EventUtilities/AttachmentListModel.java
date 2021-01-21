@@ -5,7 +5,7 @@
  */
 package EventUtilities;
 
-import java.io.File;
+import classes.Attachment;
 import java.util.ArrayList;
 import javax.swing.AbstractListModel;
 
@@ -14,12 +14,12 @@ import javax.swing.AbstractListModel;
  * 
  * @author Nils Schmuck
  */
-public final class AttachmentListModel extends AbstractListModel<File> {
+public final class AttachmentListModel extends AbstractListModel<Attachment> {
 
     // <editor-fold defaultstate="collapsed" desc="Global variables">
     
     //The current list.
-    private ArrayList<File> listOfAttachments = null;
+    private ArrayList<Attachment> listOfAttachments = null;
 
     // </editor-fold>
     
@@ -38,7 +38,7 @@ public final class AttachmentListModel extends AbstractListModel<File> {
      * @param attachments The collection whose elements are to be placed into this list.
      * @throws NullPointerException If the specified collection is null.
      */
-    public AttachmentListModel(ArrayList<File> attachments) {
+    public AttachmentListModel(ArrayList<Attachment> attachments) {
         listOfAttachments = new ArrayList();
         addElement(attachments);
     }
@@ -48,12 +48,12 @@ public final class AttachmentListModel extends AbstractListModel<File> {
     // <editor-fold defaultstate="collapsed" desc="Methods">
     
     /**
-     * Appends the File element to the end of this list.
+     * Appends the Attachment> element to the end of this list.
      * 
-     * @param attachment The collection whose elements are to be placed into this list.
+     * @param attachment The element to be added to the list.
      * @throws NullPointerException If the specified collection is null.
      */
-    public void addElement(File attachment) {
+    public void addElement(Attachment attachment) {
         if (attachment != null) {
             this.listOfAttachments.add(attachment);
         }
@@ -67,7 +67,7 @@ public final class AttachmentListModel extends AbstractListModel<File> {
      * @param attachments The collection which elements added to this list.
      * @throws NullPointerException If the specified collection is null.
      */
-    public void addElement(ArrayList<File> attachments) {
+    public void addElement(ArrayList<Attachment> attachments) {
         if (attachments != null) {
             for(int i = 0; i < attachments.size(); i++) {
                 this.listOfAttachments.add(attachments.get(i));
@@ -114,7 +114,7 @@ public final class AttachmentListModel extends AbstractListModel<File> {
      * @return The element at the specified position in this list.
      */
     @Override
-    public File getElementAt(int index) {
+    public Attachment getElementAt(int index) {
         return this.listOfAttachments.get(index);
     }
     // </editor-fold>    

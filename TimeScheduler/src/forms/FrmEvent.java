@@ -13,6 +13,7 @@ import handlers.EventHandler;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.nio.file.Files;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -88,7 +89,6 @@ public class FrmEvent extends javax.swing.JPanel {
     }
 
     // </editor-fold>
-    
     // <editor-fold defaultstate="collapsed" desc="Methods">
     public void setParticipants(ArrayList<Operator> participants) {
 
@@ -102,7 +102,7 @@ public class FrmEvent extends javax.swing.JPanel {
             this.liEventParticipants.revalidate();
             this.liEventParticipants.revalidate();
         }
-        
+
     }
 
     public void setEvent(Event event) {
@@ -646,6 +646,11 @@ public class FrmEvent extends javax.swing.JPanel {
         liEventAttachments.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         liEventAttachments.setToolTipText("Select an attachment and press the ENTF key to remove the attachment.");
         liEventAttachments.setValueIsAdjusting(true);
+        liEventAttachments.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                liEventAttachmentsMouseClicked(evt);
+            }
+        });
         liEventAttachments.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 liEventAttachmentsKeyPressed(evt);
@@ -725,15 +730,15 @@ public class FrmEvent extends javax.swing.JPanel {
 
     private void liEventAttachmentsKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_liEventAttachmentsKeyPressed
         System.out.println(evt.getKeyCode());
-        if((this.liEventAttachments.getSelectedIndex()>= 0) && (evt.getKeyCode() == 127)) { //127 == ENTF Key
+        if ((this.liEventAttachments.getSelectedIndex() >= 0) && (evt.getKeyCode() == 127)) { //127 == ENTF Key
             int retVal = JOptionPane.showConfirmDialog(FrmMain.getInstance(), "Are you sure you want to remove the attachment?", "Delete attachment", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-            
-            if(retVal == JOptionPane.YES_OPTION) {
+
+            if (retVal == JOptionPane.YES_OPTION) {
                 this.liModelAttachments.remove(this.liEventAttachments.getSelectedIndex());
                 this.liEventAttachments.revalidate();
                 this.liEventAttachments.repaint();
             }
-        } 
+        }
     }//GEN-LAST:event_liEventAttachmentsKeyPressed
 
     private void btnAddParticipantsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddParticipantsActionPerformed
@@ -752,6 +757,29 @@ public class FrmEvent extends javax.swing.JPanel {
             frmAddUserToAppointment.setVisible(true);
         }
     }//GEN-LAST:event_btnAddParticipantsActionPerformed
+
+    private void liEventAttachmentsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_liEventAttachmentsMouseClicked
+        if (evt.getClickCount() >= 2) {
+            File attachment = liModelAttachments.getElementAt(liEventAttachments.getSelectedIndex());
+
+            JFileChooser saveDialog = new JFileChooser();
+            String path = null;
+
+            saveDialog.setDialogType(JFileChooser.SAVE_DIALOG);
+            saveDialog.setDialogTitle("Save weekly schedule");
+            saveDialog.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+            int state = saveDialog.showSaveDialog(forms.FrmMain.getInstance());
+
+            if (state == JFileChooser.APPROVE_OPTION) {
+                path = saveDialog.getSelectedFile().toString() + "\\" + attachment.getName();
+                
+                
+                
+            }
+
+        }
+    }//GEN-LAST:event_liEventAttachmentsMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddAttachments;

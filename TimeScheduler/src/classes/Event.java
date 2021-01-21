@@ -42,7 +42,7 @@ public class Event {
     private int duration = 0;
     private String location = null;
     private ArrayList<Operator> participants = null;
-    private ArrayList<File> attachments = null;
+    private ArrayList<Attachment> attachments = null;
     private Priority priority = null;
     private Notification notification = Notification.NONE;
     private LocalDateTime reminder = null;
@@ -55,7 +55,7 @@ public class Event {
         
     }
     
-    public Event(int eventID, String eventName, Operator host, LocalDateTime event, int eventDuration, String eventLocation, ArrayList<Operator> participants, ArrayList<File> files, Priority Priority, Notification notification, LocalDateTime reminder) {
+    public Event(int eventID, String eventName, Operator host, LocalDateTime event, int eventDuration, String eventLocation, ArrayList<Operator> participants, ArrayList<Attachment> files, Priority Priority, Notification notification, LocalDateTime reminder) {
         this.setID(eventID);
         this.setName(eventName);
         this.setHost(host);
@@ -69,7 +69,7 @@ public class Event {
         this.setReminder(reminder);
     }
     
-    public Event(String eventName, Operator host, LocalDateTime event, int eventDuration, String eventLocation, ArrayList<Operator> participants, ArrayList<File> files, Priority Priority, Notification notification) {
+    public Event(String eventName, Operator host, LocalDateTime event, int eventDuration, String eventLocation, ArrayList<Operator> participants, ArrayList<Attachment> files, Priority Priority, Notification notification) {
         this.setName(eventName);
         this.setHost(host);
         this.setDate(event);
@@ -82,7 +82,7 @@ public class Event {
         this.setReminder(calculateReminder());
     }
     
-    public Event(int eventId, String eventName, Operator host, LocalDateTime event, int eventDuration, String eventLocation, ArrayList<Operator> participants, ArrayList<File> files, Priority Priority, Notification notification) {
+    public Event(int eventId, String eventName, Operator host, LocalDateTime event, int eventDuration, String eventLocation, ArrayList<Operator> participants, ArrayList<Attachment> files, Priority Priority, Notification notification) {
         this.setID(eventId);
         this.setName(eventName);
         this.setHost(host);
@@ -129,7 +129,7 @@ public class Event {
         this.participants = participants;
     }
 
-    public void setAttachments(ArrayList<File> attachments) {
+    public void setAttachments(ArrayList<Attachment> attachments) {
         this.attachments = attachments;
     }
 
@@ -177,7 +177,7 @@ public class Event {
         return this.participants;
     }
 
-    public ArrayList<File> getAttachments() {
+    public ArrayList<Attachment> getAttachments() {
         return this.attachments;
     }
 
