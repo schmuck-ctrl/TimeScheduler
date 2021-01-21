@@ -5,9 +5,9 @@
  */
 package forms;
 
-import EventUtilities.EventsOfDayListModel;
 import classes.Event;
 import java.util.ArrayList;
+import javax.swing.DefaultListModel;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.ListModel;
@@ -20,49 +20,51 @@ import javax.swing.border.EmptyBorder;
  */
 public class FrmEventsOfDay extends javax.swing.JPanel {
 
-    private EventsOfDayListModel liModelEventsOfDay;
+    private final DefaultListModel<Event> modelEventsOfDay = new DefaultListModel();
 
     /**
-     * Creates new form FrmEventsOfDay
+     * Constructs a new Panel and displays the specified list.
      *
-     * @param eventsOfDay
+     * @param eventsOfDay The list that will be shownn.
      */
     public FrmEventsOfDay(ArrayList<Event> eventsOfDay) {
         initComponents();
 
-        liModelEventsOfDay = new EventsOfDayListModel();
-
-        liEventsOfDay.setCellRenderer(new EventUtilities.EventsOfDayListCellRenderer());
-        liEventsOfDay.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        prepareList();
+        
         setEvents(eventsOfDay);
     }
 
+    private void prepareList(){
+        this.liEventsOfDay.setModel((ListModel) modelEventsOfDay);
+        this.liEventsOfDay.setCellRenderer(new EventUtilities.EventsOfDayListCellRenderer());
+        this.liEventsOfDay.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    }
+    
     public void setEvents(ArrayList<Event> eventsOfDay) {
         if (eventsOfDay.size() > 0) {
 
-            liModelEventsOfDay.addElement(eventsOfDay);
+            this.modelEventsOfDay.addAll(eventsOfDay);
 
-            liEventsOfDay.setModel((ListModel) liModelEventsOfDay);
-
-            lblHeadline.setText("Your daily appointments:");
+            this.lblHeadline.setText("Your daily appointments:");
             this.liEventsOfDay.setSelectedIndex(0);
             this.liEventsOfDay.setVisible(true);        
             btnOpen.setVisible(true);
         } else {
             lblHeadline.setText("No events for today!");
             this.liEventsOfDay.setVisible(false);
-            btnOpen.setVisible(false);
+            this.btnOpen.setVisible(false);
         }
 
-        pnlHeader.setBorder(new EmptyBorder(10, 10, 10, 10));
-        pnlContent.setBorder(new EmptyBorder(10, 10, 10, 10));
+        this.pnlHeader.setBorder(new EmptyBorder(10, 10, 10, 10));
+        this.pnlContent.setBorder(new EmptyBorder(10, 10, 10, 10));
     }
 
-    private void displayEventDetail(Event event) {
+    private void displayEventDetails(Event event) {
         if (event != null) {
             JDialog dialog = new JDialog();
 
-            dialog.setSize(500, 700);
+            dialog.setSize(500, 900);
             dialog.setModal(true);
             dialog.setTitle("Event details");
             dialog.add(new FrmEvent(FrmEvent.View.READ, event, dialog));
@@ -127,9 +129,9 @@ public class FrmEventsOfDay extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenActionPerformed
-        if (liEventsOfDay.getSelectedIndex() >= 0) {
-            Event selctedEvent = liModelEventsOfDay.getElementAt(liEventsOfDay.getSelectedIndex());
-            displayEventDetail(selctedEvent);
+        if (this.liEventsOfDay.getSelectedIndex() >= 0) {
+            Event selctedEvent = this.modelEventsOfDay.getElementAt(this.liEventsOfDay.getSelectedIndex());
+            displayEventDetails(selctedEvent);
         } else {
             JOptionPane.showMessageDialog(FrmMain.getInstance(), "You have to select a event first in order to see the details.", "No event selected", JOptionPane.INFORMATION_MESSAGE);
         }
@@ -137,9 +139,9 @@ public class FrmEventsOfDay extends javax.swing.JPanel {
 
     private void liEventsOfDayMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_liEventsOfDayMouseClicked
         if (evt.getClickCount() == 2) {
-            if (liEventsOfDay.getSelectedIndex() >= 0) {
-                Event selctedEvent = liModelEventsOfDay.getElementAt(liEventsOfDay.getSelectedIndex());
-                displayEventDetail(selctedEvent);
+            if (this.liEventsOfDay.getSelectedIndex() >= 0) {
+                Event selctedEvent = this.modelEventsOfDay.getElementAt(this.liEventsOfDay.getSelectedIndex());
+                displayEventDetails(selctedEvent);
             } else {
                 JOptionPane.showMessageDialog(FrmMain.getInstance(), "You have to select a event first in order to see the details.", "No event selected", JOptionPane.INFORMATION_MESSAGE);
             }

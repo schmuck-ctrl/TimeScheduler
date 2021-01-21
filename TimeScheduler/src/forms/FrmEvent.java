@@ -91,18 +91,12 @@ public class FrmEvent extends javax.swing.JPanel {
         this.liEventAttachments.setModel((ListModel) modelAttachments);
     }
 
-    public void setParticipants(ArrayList<Operator> participants) {
-
-        if (participants != null) {
-            if (this.modelParticipants.getSize() > 0) {
-                this.modelParticipants.clear();
-            }
-
-            this.modelParticipants.addAll(participants);
+    public void setTitle(String title) {
+        if (!title.isBlank()) {
+            this.lblHeadline.setText(title);
         }
-
     }
-
+    
     public void setEvent(Event event) {
         if (event != null) {
             this.eventID = event.getID();
@@ -153,6 +147,18 @@ public class FrmEvent extends javax.swing.JPanel {
             }
 
         }
+    }
+    
+    public void setParticipants(ArrayList<Operator> participants) {
+
+        if (participants != null) {
+            if (this.modelParticipants.getSize() > 0) {
+                this.modelParticipants.clear();
+            }
+
+            this.modelParticipants.addAll(participants);
+        }
+
     }
 
     private Event getInput() {
@@ -364,12 +370,6 @@ public class FrmEvent extends javax.swing.JPanel {
 
             pnlFooter.add(btnDelete);
             pnlFooter.add(btnEdit);
-        }
-    }
-
-    public void setTitle(String title) {
-        if (!title.isBlank()) {
-            this.lblHeadline.setText(title);
         }
     }
 
@@ -725,14 +725,11 @@ public class FrmEvent extends javax.swing.JPanel {
 
             if (retVal == JOptionPane.YES_OPTION) {
                 this.modelAttachments.remove(this.liEventAttachments.getSelectedIndex());
-                //this.liEventAttachments.revalidate();
-                //this.liEventAttachments.repaint();
             }
         }
     }//GEN-LAST:event_liEventAttachmentsKeyPressed
 
     private void btnAddParticipantsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddParticipantsActionPerformed
-        // TODO add your handling code here:
         ArrayList<Operator> all = new ArrayList();
         if (modelParticipants.getSize() > 0) {
             for (int i = 0; i < modelParticipants.getSize(); i++) {
