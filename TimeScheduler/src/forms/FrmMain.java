@@ -130,6 +130,8 @@ public class FrmMain extends javax.swing.JFrame {
         pnlEventRoot.add(frmEvent);
         frmEvent.setTitle("Edit event " + event.toString() + ":");
         frmEvent.setVisible(true);
+        this.revalidate();
+        this.repaint();
 
     }
 

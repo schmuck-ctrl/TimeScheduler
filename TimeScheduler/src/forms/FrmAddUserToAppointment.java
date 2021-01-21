@@ -108,7 +108,7 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
         for (int i = 0; i < this.tabAddedUserModel.getRowCount(); i++) {
             for (int a = 0; a < this.tabSearchForUserModel.getRowCount(); a++) {
 //                System.out.println((Integer) this.tabAddedUserModel.getValueAt(i, 3) + (Integer) this.tabSearchForUserModel.getValueAt(a, 3));
-                if ((Integer) this.tabAddedUserModel.getValueAt(i, 3) == (Integer) this.tabSearchForUserModel.getValueAt(a, 3)) { 
+                if ((Integer) this.tabAddedUserModel.getValueAt(i, 3) == (Integer) this.tabSearchForUserModel.getValueAt(a, 3)) {
 
                     this.tabSearchForUserModel.removeRow(a);
                 }
@@ -161,7 +161,6 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
     private Operator getSelectedUserFromSearchUserTab(int rowIndex) {
         Operator selectedUser = null;
         UserHandler uHandler = new UserHandler();
-        
 
         if (rowIndex >= 0) {
             int userID = (Integer) tabSearchUser.getValueAt(rowIndex, 3);
@@ -192,6 +191,7 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
 
         jPanel1 = new javax.swing.JPanel();
         txtSearch = new javax.swing.JTextField();
+        lblAddUserToAppointment = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tabAddedUser = new javax.swing.JTable();
@@ -199,18 +199,24 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
         btnDeleteUserFromAppointment = new javax.swing.JButton();
         txtErrorWarning = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
-        btnAddUser = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabSearchUser = new javax.swing.JTable();
         txtErrorAdd = new javax.swing.JLabel();
+        btnAddUser = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
         txtSearch.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtSearchKeyTyped(evt);
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtSearchKeyReleased(evt);
             }
         });
+
+        lblAddUserToAppointment.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lblAddUserToAppointment.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblAddUserToAppointment.setText("Add user to Appointment");
+        lblAddUserToAppointment.setName(""); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -218,15 +224,21 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 413, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(174, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblAddUserToAppointment, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 165, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(39, 39, 39)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblAddUserToAppointment, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(39, Short.MAX_VALUE))
+                .addGap(23, 23, 23))
         );
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.PAGE_START);
@@ -255,7 +267,14 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
             }
         });
         tabAddedUser.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tabAddedUser.getTableHeader().setReorderingAllowed(false);
         jScrollPane2.setViewportView(tabAddedUser);
+        if (tabAddedUser.getColumnModel().getColumnCount() > 0) {
+            tabAddedUser.getColumnModel().getColumn(0).setResizable(false);
+            tabAddedUser.getColumnModel().getColumn(1).setResizable(false);
+            tabAddedUser.getColumnModel().getColumn(2).setResizable(false);
+            tabAddedUser.getColumnModel().getColumn(3).setResizable(false);
+        }
 
         btnAddToAppointment.setText("Add to Appointment");
         btnAddToAppointment.addActionListener(new java.awt.event.ActionListener() {
@@ -271,30 +290,28 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
             }
         });
 
-        txtErrorWarning.setText("jLabel1");
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 422, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnDeleteUserFromAppointment, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnAddToAppointment, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(txtErrorWarning, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(31, 31, 31))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtErrorWarning, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnDeleteUserFromAppointment, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAddToAppointment, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(txtErrorWarning)
-                        .addGap(18, 18, 18)
+                        .addGap(46, 46, 46)
                         .addComponent(btnAddToAppointment)
                         .addGap(18, 18, 18)
                         .addComponent(btnDeleteUserFromAppointment))
@@ -303,13 +320,6 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
         );
 
         getContentPane().add(jPanel2, java.awt.BorderLayout.PAGE_END);
-
-        btnAddUser.setText("Add");
-        btnAddUser.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddUserActionPerformed(evt);
-            }
-        });
 
         tabSearchUser.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -344,7 +354,12 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
             tabSearchUser.getColumnModel().getColumn(3).setResizable(false);
         }
 
-        txtErrorAdd.setText("d");
+        btnAddUser.setText("Add");
+        btnAddUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddUserActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -352,41 +367,30 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 413, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnAddUser, javax.swing.GroupLayout.DEFAULT_SIZE, 83, Short.MAX_VALUE)
-                    .addComponent(txtErrorAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(73, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtErrorAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAddUser, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(txtErrorAdd)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnAddUser))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(136, 136, 136))
+                        .addGap(46, 46, 46)
+                        .addComponent(btnAddUser)))
+                .addGap(51, 51, 51))
         );
 
         getContentPane().add(jPanel3, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void txtSearchKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyTyped
-
-        DefaultTableModel model = (DefaultTableModel) tabSearchUser.getModel();
-        TableRowSorter<DefaultTableModel> tableRowSorter = new TableRowSorter<DefaultTableModel>(model);
-        tabSearchUser.setRowSorter(tableRowSorter);
-        tableRowSorter.setRowFilter(RowFilter.regexFilter(txtSearch.getText().trim()));
-        this.revalidate();
-        this.repaint();
-        
-    }//GEN-LAST:event_txtSearchKeyTyped
 
 
     private void btnAddUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddUserActionPerformed
@@ -424,6 +428,7 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
 
         }
         this.setVisible(false);
+        frmEvent.revalidate();
         frmEvent.repaint();
     }//GEN-LAST:event_btnAddToAppointmentActionPerformed
 
@@ -436,12 +441,23 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
             bindDataToTableSearchUser(this.selectedUser);
             tabAddedUserModel.removeRow(selectedRowIndex);
             this.repaint();
+            frmEvent.revalidate();
             frmEvent.repaint();
         } else {
             txtErrorWarning.setText("Please select an entry");
         }
 
     }//GEN-LAST:event_btnDeleteUserFromAppointmentActionPerformed
+
+    private void txtSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyReleased
+        // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) tabSearchUser.getModel();
+        TableRowSorter<DefaultTableModel> tableRowSorter = new TableRowSorter<DefaultTableModel>(model);
+        tabSearchUser.setRowSorter(tableRowSorter);
+        tableRowSorter.setRowFilter(RowFilter.regexFilter(txtSearch.getText().trim()));
+        this.revalidate();
+        this.repaint();
+    }//GEN-LAST:event_txtSearchKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -453,6 +469,7 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel lblAddUserToAppointment;
     private javax.swing.JTable tabAddedUser;
     private javax.swing.JTable tabSearchUser;
     private javax.swing.JLabel txtErrorAdd;
