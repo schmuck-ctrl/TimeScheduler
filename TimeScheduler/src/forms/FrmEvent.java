@@ -7,6 +7,7 @@ package forms;
 
 import EventUtilities.AttachmentListModel;
 import EventUtilities.ParticipantListModel;
+import classes.Attachment;
 import classes.Event;
 import classes.Operator;
 import handlers.EventHandler;
@@ -169,7 +170,7 @@ public class FrmEvent extends javax.swing.JPanel {
         int duration = 0;
         String location = null;
         ArrayList<Operator> participants = new ArrayList();
-        ArrayList<File> attachments = new ArrayList();
+        ArrayList<Attachment> attachments = new ArrayList();
         Event.Priority priority = null;
         Event.Notification notification = Event.Notification.NONE;
         LocalDateTime reminder = null;
@@ -253,8 +254,8 @@ public class FrmEvent extends javax.swing.JPanel {
         }
 
         for (int i = 0; i < liEventAttachments.getModel().getSize(); i++) {
-            File attachment = liModelAttachments.getElementAt(i);
-            attachments.add(attachment);
+            Attachment file = liModelAttachments.getElementAt(i);
+            attachments.add(file);
         }
 
         Event newEvent = null;
@@ -719,10 +720,10 @@ public class FrmEvent extends javax.swing.JPanel {
 
         if (state == JFileChooser.APPROVE_OPTION) {
             file = openFileDialog.getSelectedFile();
+            
+            this.liModelAttachments.addElement(new Attachment(file));
 
-            this.liModelAttachments.addElement(file);
-
-            this.liEventAttachments.setCellRenderer(new EventUtilities.AttachmentListCellRenderer());
+            //this.liEventAttachments.setCellRenderer(new EventUtilities.AttachmentListCellRenderer());
             this.liEventAttachments.setModel((ListModel) liModelAttachments);
 
         }
@@ -760,7 +761,7 @@ public class FrmEvent extends javax.swing.JPanel {
 
     private void liEventAttachmentsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_liEventAttachmentsMouseClicked
         if (evt.getClickCount() >= 2) {
-            File attachment = liModelAttachments.getElementAt(liEventAttachments.getSelectedIndex());
+            Attachment attachment = liModelAttachments.getElementAt(liEventAttachments.getSelectedIndex());
 
             JFileChooser saveDialog = new JFileChooser();
             String path = null;
@@ -772,7 +773,7 @@ public class FrmEvent extends javax.swing.JPanel {
             int state = saveDialog.showSaveDialog(forms.FrmMain.getInstance());
 
             if (state == JFileChooser.APPROVE_OPTION) {
-                path = saveDialog.getSelectedFile().toString() + "\\" + attachment.getName();
+                path = saveDialog.getSelectedFile().toString() + "\\" + attachment.getFileName();
                 
                 
                 

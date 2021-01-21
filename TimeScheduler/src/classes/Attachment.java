@@ -9,12 +9,17 @@ package classes;
  *
  * @author Nils Schmuck
  */
-public class Attachment {
+public class Attachment extends java.io.File {
 
     private String fileName = null;
     public int attachmentID = -1;
 
-    public Attachment(String fileName, int id) {
+    public Attachment(java.io.File file) {
+        super(file.getPath());
+    }
+    
+    public Attachment(String fileName, int id, java.io.File file) {
+        super(file.getPath());
         setAttachmentID(id);
         setFileName(fileName);
     }
