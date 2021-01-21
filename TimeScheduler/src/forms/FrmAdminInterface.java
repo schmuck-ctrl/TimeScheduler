@@ -267,14 +267,16 @@ public class FrmAdminInterface extends javax.swing.JDialog {
      * @param evt The action event.
      */
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        if (this.selectedUser != null) {
-            int retVal = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete the user?", "Delete user", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+        if (this.selectedUser != null && !(this.selectedUser.equals(FrmMain.getInstance().getCurrentUser()))) {
+            int retVal = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete the user ?", "Delete user", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
             if (retVal == JOptionPane.YES_OPTION) {
                 UserHandler uHander = new UserHandler();
                 uHander.deleteUser(this.selectedUser);
                 this.refreshTable();
-            }
-        } else {
+            } 
+        } else if (this.selectedUser.equals(FrmMain.getInstance().getCurrentUser())) {
+            JOptionPane.showMessageDialog(this, "It is not possible to delete yourself.", "Not a verified operation", JOptionPane.INFORMATION_MESSAGE);
+        }  else {
             JOptionPane.showMessageDialog(this, "You have to select a user first in order to delete the user.", "No user selected", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_btnDeleteActionPerformed

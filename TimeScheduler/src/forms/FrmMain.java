@@ -238,6 +238,7 @@ public class FrmMain extends javax.swing.JFrame {
         pnlHeadline.setLayout(new java.awt.BorderLayout());
 
         lblHeadline.setText("Welcome message!");
+        lblHeadline.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 1));
         lblHeadline.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         pnlHeadline.add(lblHeadline, java.awt.BorderLayout.CENTER);
 

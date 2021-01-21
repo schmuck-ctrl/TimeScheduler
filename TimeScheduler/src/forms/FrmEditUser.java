@@ -62,6 +62,8 @@ public class FrmEditUser extends javax.swing.JDialog {
                 btnDelete.setEnabled(false);
                 btnDelete.setVisible(false);
                 chkAdminPrivileges.setEnabled(false);
+                txtFirstName.setEnabled(false);
+                txtFirstName.setEditable(false);
             }
 
             txtFirstName.setText(this.user.getFirstName());

@@ -50,7 +50,7 @@ public class FrmEvent extends javax.swing.JPanel {
         initComponents();
 
         pnlHeader.setBorder(new EmptyBorder(10, 10, 10, 10));
-        pnlContent.setBorder(new EmptyBorder(10, 10, 10, 10));
+        pnlContent1.setBorder(new EmptyBorder(10, 10, 10, 10));
 
         liModelParticipants = new ParticipantListModel();
         liModelAttachments = new AttachmentListModel();
@@ -63,7 +63,7 @@ public class FrmEvent extends javax.swing.JPanel {
         initComponents();
 
         pnlHeader.setBorder(new EmptyBorder(10, 10, 10, 10));
-        pnlContent.setBorder(new EmptyBorder(10, 10, 10, 10));
+        pnlContent1.setBorder(new EmptyBorder(10, 10, 10, 10));
 
         liModelParticipants = new ParticipantListModel();
         liModelAttachments = new AttachmentListModel();
@@ -78,7 +78,7 @@ public class FrmEvent extends javax.swing.JPanel {
         this.isDialog = parent;
 
         pnlHeader.setBorder(new EmptyBorder(10, 10, 10, 10));
-        pnlContent.setBorder(new EmptyBorder(10, 10, 10, 10));
+        pnlContent1.setBorder(new EmptyBorder(10, 10, 10, 10));
 
         liModelParticipants = new ParticipantListModel();
         liModelAttachments = new AttachmentListModel();
@@ -487,11 +487,11 @@ public class FrmEvent extends javax.swing.JPanel {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
 
         pnlHeader = new javax.swing.JPanel();
         lblHeadline = new javax.swing.JLabel();
         pnlContent = new javax.swing.JPanel();
+        pnlContent1 = new javax.swing.JPanel();
         lblEventName = new javax.swing.JLabel();
         txtEventName = new javax.swing.JTextField();
         filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20), new java.awt.Dimension(32767, 20));
@@ -512,19 +512,17 @@ public class FrmEvent extends javax.swing.JPanel {
         filler5 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20), new java.awt.Dimension(32767, 20));
         lblEventNotification = new javax.swing.JLabel();
         cbEventNotification = new javax.swing.JComboBox<>();
-        filler6 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20), new java.awt.Dimension(32767, 20));
-        lblEventParticipants = new javax.swing.JLabel();
+        pnlContent2 = new javax.swing.JPanel();
         pnlEventParticipants = new javax.swing.JPanel();
+        lblEventParticipants = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         liEventParticipants = new javax.swing.JList<>();
         btnAddParticipants = new javax.swing.JButton();
-        filler7 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20), new java.awt.Dimension(32767, 20));
-        lblEventAttachments = new javax.swing.JLabel();
         pnlEventAttachments = new javax.swing.JPanel();
-        btnAddAttachments = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         liEventAttachments = new javax.swing.JList<>();
-        filler8 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20), new java.awt.Dimension(32767, 20));
+        btnAddAttachments = new javax.swing.JButton();
+        lblEventAttachments = new javax.swing.JLabel();
         lblInformation = new javax.swing.JLabel();
         pnlFooter = new javax.swing.JPanel();
 
@@ -540,82 +538,73 @@ public class FrmEvent extends javax.swing.JPanel {
 
         add(pnlHeader, java.awt.BorderLayout.PAGE_START);
 
-        pnlContent.setAlignmentX(0.0F);
-        pnlContent.setAlignmentY(0.0F);
-        pnlContent.setLayout(new javax.swing.BoxLayout(pnlContent, javax.swing.BoxLayout.Y_AXIS));
+        pnlContent.setLayout(new java.awt.BorderLayout());
+
+        pnlContent1.setAlignmentX(0.0F);
+        pnlContent1.setAlignmentY(0.0F);
+        pnlContent1.setLayout(new java.awt.GridLayout(20, 1));
 
         lblEventName.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblEventName.setText("Name: *");
         lblEventName.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         lblEventName.setToolTipText("");
-        pnlContent.add(lblEventName);
+        pnlContent1.add(lblEventName);
 
         txtEventName.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        pnlContent.add(txtEventName);
-        pnlContent.add(filler3);
+        pnlContent1.add(txtEventName);
+        pnlContent1.add(filler3);
 
         lblDateTime.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblDateTime.setText("Date: *");
         lblDateTime.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-        pnlContent.add(lblDateTime);
-        pnlContent.add(dtPicker);
-        pnlContent.add(filler4);
+        pnlContent1.add(lblDateTime);
+        pnlContent1.add(dtPicker);
+        pnlContent1.add(filler4);
 
         lblEventHost.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblEventHost.setText("Host: *");
         lblEventHost.setToolTipText("");
-        pnlContent.add(lblEventHost);
-        pnlContent.add(txtEventHost);
-        pnlContent.add(filler9);
+        pnlContent1.add(lblEventHost);
+        pnlContent1.add(txtEventHost);
+        pnlContent1.add(filler9);
 
         lblEventDuration.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblEventDuration.setText("Duration (min): *");
-        pnlContent.add(lblEventDuration);
-        pnlContent.add(txtEventDuration);
-        pnlContent.add(filler1);
+        pnlContent1.add(lblEventDuration);
+        pnlContent1.add(txtEventDuration);
+        pnlContent1.add(filler1);
 
         lblEventLocation.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblEventLocation.setText("Location:");
-        pnlContent.add(lblEventLocation);
-        pnlContent.add(txtEventLocation);
-        pnlContent.add(filler2);
+        pnlContent1.add(lblEventLocation);
+        pnlContent1.add(txtEventLocation);
+        pnlContent1.add(filler2);
 
         lblEventPriority.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblEventPriority.setText("Priority: *");
-        pnlContent.add(lblEventPriority);
+        pnlContent1.add(lblEventPriority);
 
         cbEventPriority.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "low", "medium", "high" }));
-        pnlContent.add(cbEventPriority);
-        pnlContent.add(filler5);
+        pnlContent1.add(cbEventPriority);
+        pnlContent1.add(filler5);
 
         lblEventNotification.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblEventNotification.setText("Notification: *");
-        pnlContent.add(lblEventNotification);
+        pnlContent1.add(lblEventNotification);
 
         cbEventNotification.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "none", "10 minutes", "1 hour", "3 days", "1 week" }));
-        pnlContent.add(cbEventNotification);
-        pnlContent.add(filler6);
+        pnlContent1.add(cbEventNotification);
+
+        pnlContent.add(pnlContent1, java.awt.BorderLayout.CENTER);
+
+        pnlContent2.setLayout(new java.awt.BorderLayout());
 
         lblEventParticipants.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblEventParticipants.setText("Participants:");
-        pnlContent.add(lblEventParticipants);
-
-        pnlEventParticipants.setLayout(new java.awt.GridBagLayout());
 
         liEventParticipants.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        liEventParticipants.setName(""); // NOI18N
         jScrollPane1.setViewportView(liEventParticipants);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.ipadx = 285;
-        gridBagConstraints.ipady = 14;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 0);
-        pnlEventParticipants.add(jScrollPane1, gridBagConstraints);
 
         btnAddParticipants.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/add-circle-line.png"))); // NOI18N
         btnAddParticipants.addActionListener(new java.awt.event.ActionListener() {
@@ -623,34 +612,36 @@ public class FrmEvent extends javax.swing.JPanel {
                 btnAddParticipantsActionPerformed(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 6);
-        pnlEventParticipants.add(btnAddParticipants, gridBagConstraints);
 
-        pnlContent.add(pnlEventParticipants);
-        pnlContent.add(filler7);
+        javax.swing.GroupLayout pnlEventParticipantsLayout = new javax.swing.GroupLayout(pnlEventParticipants);
+        pnlEventParticipants.setLayout(pnlEventParticipantsLayout);
+        pnlEventParticipantsLayout.setHorizontalGroup(
+            pnlEventParticipantsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlEventParticipantsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlEventParticipantsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblEventParticipants, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(pnlEventParticipantsLayout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnAddParticipants)))
+                .addContainerGap())
+        );
+        pnlEventParticipantsLayout.setVerticalGroup(
+            pnlEventParticipantsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlEventParticipantsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblEventParticipants)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlEventParticipantsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlEventParticipantsLayout.createSequentialGroup()
+                        .addComponent(btnAddParticipants)
+                        .addGap(0, 34, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addContainerGap())
+        );
 
-        lblEventAttachments.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lblEventAttachments.setText("Attachments:");
-        pnlContent.add(lblEventAttachments);
-
-        pnlEventAttachments.setLayout(new java.awt.GridBagLayout());
-
-        btnAddAttachments.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/add-circle-line.png"))); // NOI18N
-        btnAddAttachments.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddAttachmentsActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(6, 6, 0, 6);
-        pnlEventAttachments.add(btnAddAttachments, gridBagConstraints);
+        pnlContent2.add(pnlEventParticipants, java.awt.BorderLayout.NORTH);
 
         liEventAttachments.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         liEventAttachments.setToolTipText("Select an attachment and press the ENTF key to remove the attachment.");
@@ -662,47 +653,54 @@ public class FrmEvent extends javax.swing.JPanel {
         });
         jScrollPane2.setViewportView(liEventAttachments);
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridheight = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.ipadx = 285;
-        gridBagConstraints.ipady = 34;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 0);
-        pnlEventAttachments.add(jScrollPane2, gridBagConstraints);
+        btnAddAttachments.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/add-circle-line.png"))); // NOI18N
+        btnAddAttachments.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddAttachmentsActionPerformed(evt);
+            }
+        });
 
-        pnlContent.add(pnlEventAttachments);
-        pnlContent.add(filler8);
+        lblEventAttachments.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lblEventAttachments.setText("Attachments:");
+
+        javax.swing.GroupLayout pnlEventAttachmentsLayout = new javax.swing.GroupLayout(pnlEventAttachments);
+        pnlEventAttachments.setLayout(pnlEventAttachmentsLayout);
+        pnlEventAttachmentsLayout.setHorizontalGroup(
+            pnlEventAttachmentsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlEventAttachmentsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlEventAttachmentsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblEventAttachments, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(pnlEventAttachmentsLayout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnAddAttachments)))
+                .addContainerGap())
+        );
+        pnlEventAttachmentsLayout.setVerticalGroup(
+            pnlEventAttachmentsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlEventAttachmentsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblEventAttachments)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnlEventAttachmentsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnAddAttachments)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(28, Short.MAX_VALUE))
+        );
+
+        pnlContent2.add(pnlEventAttachments, java.awt.BorderLayout.CENTER);
 
         lblInformation.setText("* mandatory fields");
-        pnlContent.add(lblInformation);
+        pnlContent2.add(lblInformation, java.awt.BorderLayout.SOUTH);
+
+        pnlContent.add(pnlContent2, java.awt.BorderLayout.SOUTH);
 
         add(pnlContent, java.awt.BorderLayout.CENTER);
 
         pnlFooter.setLayout(new java.awt.GridLayout(1, 0));
         add(pnlFooter, java.awt.BorderLayout.PAGE_END);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnAddParticipantsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddParticipantsActionPerformed
-        // TODO add your handling code here:
-        ArrayList<Operator> all = new ArrayList();
-        if (liModelParticipants.getSize() > 0) {
-            for (int i = 0; i < liModelParticipants.getSize(); i++) {
-                Operator participant = liModelParticipants.getElementAt(i);
-                all.add(participant);
-            }
-            FrmAddUserToAppointment frmAddUserToAppointment = new FrmAddUserToAppointment(FrmMain.getInstance(), true, all, this);
-            frmAddUserToAppointment.setVisible(true);
-
-        } else {
-            FrmAddUserToAppointment frmAddUserToAppointment = new FrmAddUserToAppointment(FrmMain.getInstance(), true, this);
-            frmAddUserToAppointment.setVisible(true);
-        }
-    }//GEN-LAST:event_btnAddParticipantsActionPerformed
 
     private void btnAddAttachmentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddAttachmentsActionPerformed
         JFileChooser openFileDialog = new JFileChooser();
@@ -738,6 +736,23 @@ public class FrmEvent extends javax.swing.JPanel {
         } 
     }//GEN-LAST:event_liEventAttachmentsKeyPressed
 
+    private void btnAddParticipantsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddParticipantsActionPerformed
+        // TODO add your handling code here:
+        ArrayList<Operator> all = new ArrayList();
+        if (liModelParticipants.getSize() > 0) {
+            for (int i = 0; i < liModelParticipants.getSize(); i++) {
+                Operator participant = liModelParticipants.getElementAt(i);
+                all.add(participant);
+            }
+            FrmAddUserToAppointment frmAddUserToAppointment = new FrmAddUserToAppointment(FrmMain.getInstance(), true, all, this);
+            frmAddUserToAppointment.setVisible(true);
+
+        } else {
+            FrmAddUserToAppointment frmAddUserToAppointment = new FrmAddUserToAppointment(FrmMain.getInstance(), true, this);
+            frmAddUserToAppointment.setVisible(true);
+        }
+    }//GEN-LAST:event_btnAddParticipantsActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddAttachments;
     private javax.swing.JButton btnAddParticipants;
@@ -749,9 +764,6 @@ public class FrmEvent extends javax.swing.JPanel {
     private javax.swing.Box.Filler filler3;
     private javax.swing.Box.Filler filler4;
     private javax.swing.Box.Filler filler5;
-    private javax.swing.Box.Filler filler6;
-    private javax.swing.Box.Filler filler7;
-    private javax.swing.Box.Filler filler8;
     private javax.swing.Box.Filler filler9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -769,6 +781,8 @@ public class FrmEvent extends javax.swing.JPanel {
     private javax.swing.JList<String> liEventAttachments;
     private javax.swing.JList<String> liEventParticipants;
     private javax.swing.JPanel pnlContent;
+    private javax.swing.JPanel pnlContent1;
+    private javax.swing.JPanel pnlContent2;
     private javax.swing.JPanel pnlEventAttachments;
     private javax.swing.JPanel pnlEventParticipants;
     private javax.swing.JPanel pnlFooter;
