@@ -5,8 +5,6 @@
  */
 package forms;
 
-import EventUtilities.AttachmentListModel;
-import EventUtilities.ParticipantListModel;
 import classes.Attachment;
 import classes.Event;
 import classes.Operator;
@@ -19,6 +17,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
@@ -38,8 +37,8 @@ public class FrmEvent extends javax.swing.JPanel {
         NEW
     }
 
-    private ParticipantListModel liModelParticipants = null;
-    private AttachmentListModel liModelAttachments = null;
+    private final DefaultListModel<Operator> modelParticipants = new DefaultListModel<>();
+    private final DefaultListModel<Attachment> modelAttachments = new DefaultListModel<>();
     private int eventID = -1;
     private JDialog isDialog = null;
 
@@ -88,23 +87,18 @@ public class FrmEvent extends javax.swing.JPanel {
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Methods">
     private void prepareLists() {
-        this.liModelParticipants = new ParticipantListModel();
-
-        this.liModelAttachments = new AttachmentListModel();
-        this.liEventAttachments.setCellRenderer(new EventUtilities.AttachmentListCellRenderer());
+        this.liEventParticipants.setModel((ListModel) modelParticipants);
+        this.liEventAttachments.setModel((ListModel) modelAttachments);
     }
 
     public void setParticipants(ArrayList<Operator> participants) {
 
         if (participants != null) {
-            if (this.liModelParticipants.getSize() > 0) {
-                this.liModelParticipants.removeAll();
+            if (this.modelParticipants.getSize() > 0) {
+                this.modelParticipants.clear();
             }
 
-            this.liModelParticipants.addElement(participants);
-            this.liEventParticipants.setModel((ListModel) liModelParticipants);
-            this.liEventParticipants.revalidate();
-            this.liEventParticipants.repaint();
+            this.modelParticipants.addAll(participants);
         }
 
     }
@@ -151,21 +145,17 @@ public class FrmEvent extends javax.swing.JPanel {
             }
 
             if (event.getParticipants() != null) {
-                liModelParticipants.addElement(event.getParticipants());
-                liEventParticipants.setModel((ListModel) liModelParticipants);
+                modelParticipants.addAll(event.getParticipants());
             }
 
             if (event.getAttachments() != null) {
-                liModelAttachments.addElement(event.getAttachments());
-
-                liEventAttachments.setModel((ListModel) liModelAttachments);
+                modelAttachments.addAll(event.getAttachments());
             }
 
         }
     }
 
     private Event getInput() {
-
         boolean checkInput = true;
 
         String name = null;
@@ -252,13 +242,13 @@ public class FrmEvent extends javax.swing.JPanel {
                 break;
         }
 
-        for (int i = 0; i < liEventParticipants.getModel().getSize(); i++) {
-            Operator participant = liModelParticipants.getElementAt(i);
+        for (int i = 0; i < modelParticipants.getSize(); i++) {
+            Operator participant = modelParticipants.getElementAt(i);
             participants.add(participant);
         }
 
-        for (int i = 0; i < liEventAttachments.getModel().getSize(); i++) {
-            Attachment file = liModelAttachments.getElementAt(i);
+        for (int i = 0; i < modelAttachments.getSize(); i++) {
+            Attachment file = modelAttachments.getElementAt(i);
             attachments.add(file);
         }
 
@@ -269,8 +259,6 @@ public class FrmEvent extends javax.swing.JPanel {
             } else {
                 newEvent = new Event(eventID, name, host, date, duration, location, participants, attachments, priority, notification);
             }
-        } else {
-
         }
 
         return newEvent;
@@ -290,12 +278,8 @@ public class FrmEvent extends javax.swing.JPanel {
         this.cbEventPriority.setSelectedIndex(0);
         this.cbEventNotification.setSelectedIndex(0);
 
-        if (this.liModelAttachments.getSize() > 0) {
-            this.liModelAttachments.removeAll();
-        }
-        if (this.liModelParticipants.getSize() > 0) {
-            this.liModelParticipants.removeAll();
-        }
+        this.modelAttachments.clear();
+        this.modelParticipants.clear();
 
         clearFooter();
     }
@@ -725,13 +709,12 @@ public class FrmEvent extends javax.swing.JPanel {
         if (state == JFileChooser.APPROVE_OPTION) {
             file = openFileDialog.getSelectedFile();
 
-            this.liModelAttachments.addElement(new Attachment(file));
-            
-            
+            this.modelAttachments.addElement(new Attachment(file));
+
             this.liEventAttachments.revalidate();
             this.liEventAttachments.repaint();
 
-            this.liEventAttachments.setModel((ListModel) liModelAttachments);
+            this.liEventAttachments.setModel((ListModel) modelAttachments);
         }
     }//GEN-LAST:event_btnAddAttachmentsActionPerformed
 
@@ -741,9 +724,9 @@ public class FrmEvent extends javax.swing.JPanel {
             int retVal = JOptionPane.showConfirmDialog(FrmMain.getInstance(), "Are you sure you want to remove the attachment?", "Delete attachment", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 
             if (retVal == JOptionPane.YES_OPTION) {
-                this.liModelAttachments.remove(this.liEventAttachments.getSelectedIndex());
-                this.liEventAttachments.revalidate();
-                this.liEventAttachments.repaint();
+                this.modelAttachments.remove(this.liEventAttachments.getSelectedIndex());
+                //this.liEventAttachments.revalidate();
+                //this.liEventAttachments.repaint();
             }
         }
     }//GEN-LAST:event_liEventAttachmentsKeyPressed
@@ -751,9 +734,9 @@ public class FrmEvent extends javax.swing.JPanel {
     private void btnAddParticipantsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddParticipantsActionPerformed
         // TODO add your handling code here:
         ArrayList<Operator> all = new ArrayList();
-        if (liModelParticipants.getSize() > 0) {
-            for (int i = 0; i < liModelParticipants.getSize(); i++) {
-                Operator participant = liModelParticipants.getElementAt(i);
+        if (modelParticipants.getSize() > 0) {
+            for (int i = 0; i < modelParticipants.getSize(); i++) {
+                Operator participant = modelParticipants.getElementAt(i);
                 all.add(participant);
             }
             FrmAddUserToAppointment frmAddUserToAppointment = new FrmAddUserToAppointment(FrmMain.getInstance(), true, all, this);
@@ -767,7 +750,7 @@ public class FrmEvent extends javax.swing.JPanel {
 
     private void liEventAttachmentsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_liEventAttachmentsMouseClicked
         if (evt.getClickCount() >= 2) {
-            Attachment attachment = liModelAttachments.getElementAt(liEventAttachments.getSelectedIndex());
+            Attachment attachment = modelAttachments.getElementAt(liEventAttachments.getSelectedIndex());
 
             JFileChooser saveDialog = new JFileChooser();
             String path = null;
