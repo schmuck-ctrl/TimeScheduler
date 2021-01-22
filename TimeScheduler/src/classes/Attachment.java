@@ -5,6 +5,8 @@
  */
 package classes;
 
+import handlers.DatabaseHandler;
+
 /**
  *
  * @author Nils Schmuck
@@ -45,6 +47,13 @@ public class Attachment extends java.io.File {
         return attachmentID;
     }
 
+    public byte[] getByteStream() {
+        handlers.DatabaseHandler dbHandler = new DatabaseHandler();
+        byte[] buffer = dbHandler.getDocument(this.attachmentID);
+        
+        return buffer;
+    }
+    
     @Override
     public String toString() {
         return this.fileName;

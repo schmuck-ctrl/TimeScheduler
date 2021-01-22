@@ -340,6 +340,7 @@
                         <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
                           <StringArray count="0"/>
                         </Property>
+                        <Property name="selectionMode" type="int" value="0"/>
                         <Property name="name" type="java.lang.String" value="" noResource="true"/>
                       </Properties>
                       <AuxValues>
@@ -417,6 +418,7 @@
                         <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
                           <StringArray count="0"/>
                         </Property>
+                        <Property name="selectionMode" type="int" value="0"/>
                         <Property name="toolTipText" type="java.lang.String" value="Select an attachment and press the ENTF key to remove the attachment."/>
                         <Property name="valueIsAdjusting" type="boolean" value="true"/>
                       </Properties>

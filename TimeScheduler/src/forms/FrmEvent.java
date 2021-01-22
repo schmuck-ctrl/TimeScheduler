@@ -12,10 +12,16 @@ import handlers.EventHandler;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.StandardOpenOption;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -27,7 +33,7 @@ import javax.swing.border.EmptyBorder;
 
 /**
  *
- * @author nilss
+ * @author Nils Schmuck
  */
 public class FrmEvent extends javax.swing.JPanel {
 
@@ -337,7 +343,7 @@ public class FrmEvent extends javax.swing.JPanel {
         } else if (view == View.READ) {
             enableControls(false);
 
-            //setTitle("Deatils of " + event.toString() + ":");
+            setTitle("Deatils of " + txtEventName.getText() + ":");
             
             JButton btnDisplayEditView = new JButton("Edit", new javax.swing.ImageIcon(getClass().getResource("/icons/pencil-line.png")));
 
@@ -352,7 +358,7 @@ public class FrmEvent extends javax.swing.JPanel {
         } else if (view == View.EDIT) {
             enableControls(true);
             
-            //setTitle("Edit event " + event.toString() + ":");
+            setTitle("Edit event " +  txtEventName.getText() + ":");
             
             JButton btnDelete = new JButton("Delete", new javax.swing.ImageIcon(getClass().getResource("/icons/delete-bin-line.png")));
 
@@ -598,6 +604,7 @@ public class FrmEvent extends javax.swing.JPanel {
         lblEventParticipants.setText("Participants:");
 
         liEventParticipants.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        liEventParticipants.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         liEventParticipants.setName(""); // NOI18N
         jScrollPane1.setViewportView(liEventParticipants);
 
@@ -639,6 +646,7 @@ public class FrmEvent extends javax.swing.JPanel {
         pnlContent2.add(pnlEventParticipants, java.awt.BorderLayout.NORTH);
 
         liEventAttachments.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        liEventAttachments.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         liEventAttachments.setToolTipText("Select an attachment and press the ENTF key to remove the attachment.");
         liEventAttachments.setValueIsAdjusting(true);
         liEventAttachments.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -753,20 +761,37 @@ public class FrmEvent extends javax.swing.JPanel {
 
     private void liEventAttachmentsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_liEventAttachmentsMouseClicked
         if (evt.getClickCount() >= 2) {
-            Attachment attachment = modelAttachments.getElementAt(liEventAttachments.getSelectedIndex());
+            int selectedIndex = liEventAttachments.getSelectedIndex();
 
+            Attachment file = modelAttachments.get(selectedIndex);
+            
             JFileChooser saveDialog = new JFileChooser();
             String path = null;
 
             saveDialog.setDialogType(JFileChooser.SAVE_DIALOG);
-            saveDialog.setDialogTitle("Save weekly schedule");
+            saveDialog.setDialogTitle("Save attachment");
             saveDialog.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
             int state = saveDialog.showSaveDialog(forms.FrmMain.getInstance());
 
             if (state == JFileChooser.APPROVE_OPTION) {
-                path = saveDialog.getSelectedFile().toString() + "\\" + attachment.getFileName();
-
+                FileOutputStream fos = null;
+                try {
+                    path = saveDialog.getSelectedFile().toString() + "\\" + file.getFileName();
+                    fos = new  FileOutputStream(path);
+                    fos.write(file.getByteStream());
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(FrmEvent.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(FrmEvent.class.getName()).log(Level.SEVERE, null, ex);
+                } finally {
+                    try {
+                        fos.close();
+                    } catch (IOException ex) {
+                        Logger.getLogger(FrmEvent.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                
             }
 
         }
