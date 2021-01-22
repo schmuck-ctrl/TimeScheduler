@@ -919,11 +919,11 @@ public class DatabaseHandler {
 
     }
 
-    private ArrayList<Integer> getEventIDsOfUser(int userId) {
+    private ArrayList<Integer> getEventIDsOfUser(int userID) {
         ArrayList<Integer> EventIDs = new ArrayList<>();
         String sql = "SELECT EM_EventID FROM eventmembers WHERE EM_userID = ? AND EM_deleted = 0;";
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
-            stmt.setInt(1, userId);
+            stmt.setInt(1, userID);
             try ( ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     EventIDs.add(rs.getInt("EM_EventID"));
@@ -962,12 +962,10 @@ public class DatabaseHandler {
     public ArrayList<Event> getEventsOfPeriod(int userID, LocalDate from, LocalDate to) {
         ArrayList<Integer> EventIDs = getEventIDsOfUser(userID);
         ArrayList<Event> usersEvents = new ArrayList<>();
-        String sql = "SELECT * FROM eventDetails WHERE ED_userID = ? AND ED_eventDate >= ? AND ED_eventDate <= ? AND ED_deleted = 0 ORDER BY ED_eventDate;";
+        String sql = "SELECT * FROM eventDetails WHERE ED_eventID IN ("+listToString(EventIDs)+") AND ED_eventDate >= ? AND ED_eventDate <= ? AND ED_deleted = 0 ORDER BY ED_eventDate;";
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
-            stmt.setInt(1, userID);
-            stmt.setTimestamp(2, Timestamp.valueOf(from.atStartOfDay()));
-            stmt.setTimestamp(3, Timestamp.valueOf(to.atTime(23, 59, 59, 59)));
-            System.out.println(stmt.toString());
+            stmt.setTimestamp(1, Timestamp.valueOf(from.atStartOfDay()));
+            stmt.setTimestamp(2, Timestamp.valueOf(to.atTime(23, 59, 59, 59)));
             try ( ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     usersEvents.add(getEvent(rs));
