@@ -1004,13 +1004,13 @@ public class DatabaseHandler {
     }
 
     public ArrayList<Attachment> getEventsDocuments(int eventID) {
-        String sql = "SELECT F_id, F_fileName FROM File where F_eventID = ?";
+        String sql = "SELECT F_fileID, F_fileName FROM File where F_eventID = ?";
         ArrayList<Attachment> attachments = new ArrayList<>();
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setInt(1, eventID);
             try ( ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    Attachment temp = new Attachment(rs.getString("F_fileName"), rs.getInt("F_id"));
+                    Attachment temp = new Attachment(rs.getString("F_fileName"), rs.getInt("F_fileID"));
                     attachments.add(temp);
                 }
             }
