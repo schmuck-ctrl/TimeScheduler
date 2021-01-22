@@ -6,9 +6,6 @@
 package handlers;
 
 import classes.*;
-import classes.Operator;
-import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.sql.*;
@@ -22,16 +19,12 @@ import java.util.ArrayList;
  */
 public class DatabaseHandler {
 
-    public static void main(String[] args) {
-        DatabaseHandler db = new DatabaseHandler();
-        //Event evt = db.getEventById(5)
-        db.getNotNotifiedEventsFromUser(1);
-    }
+
     private Connection con = null;
 
     public DatabaseHandler() {
         con = getConnection();
-
+        System.out.println("Bin da!");
     }
 
     //PRIVATE FUNCTION SECTION 
@@ -974,7 +967,7 @@ public class DatabaseHandler {
             stmt.setInt(1, userID);
             stmt.setTimestamp(2, Timestamp.valueOf(from.atStartOfDay()));
             stmt.setTimestamp(3, Timestamp.valueOf(to.atTime(23, 59, 59, 59)));
-
+            System.out.println(stmt.toString());
             try ( ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     usersEvents.add(getEvent(rs));
