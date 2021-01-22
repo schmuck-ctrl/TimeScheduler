@@ -45,7 +45,6 @@ public class FrmMain extends javax.swing.JFrame {
         eventHandler = new EventHandler();
         this.datePicker.getComponentDateTextField().setEditable(false);
         addDatePickerDateChangedEvent();
-        LoggerHandler.logger.info("Programm gesteratet.");
     }
 
     private void addDatePickerDateChangedEvent() {

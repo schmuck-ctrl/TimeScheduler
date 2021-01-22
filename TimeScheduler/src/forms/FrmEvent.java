@@ -15,7 +15,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.StandardOpenOption;
+import java.nio.file.Files;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -57,7 +57,7 @@ public class FrmEvent extends javax.swing.JPanel {
 
         pnlHeader.setBorder(new EmptyBorder(10, 10, 10, 10));
         pnlContent1.setBorder(new EmptyBorder(10, 10, 10, 10));
-        
+
         prepareLists();
 
         handleView(view);
@@ -69,7 +69,7 @@ public class FrmEvent extends javax.swing.JPanel {
 
         pnlHeader.setBorder(new EmptyBorder(10, 10, 10, 10));
         pnlContent1.setBorder(new EmptyBorder(10, 10, 10, 10));
-        
+
         prepareLists();
 
         clearInput(date);
@@ -102,7 +102,7 @@ public class FrmEvent extends javax.swing.JPanel {
             this.lblHeadline.setText(title);
         }
     }
-    
+
     public void setEvent(Event event) {
         if (event != null) {
             this.eventID = event.getID();
@@ -154,7 +154,7 @@ public class FrmEvent extends javax.swing.JPanel {
 
         }
     }
-    
+
     public void setParticipants(ArrayList<Operator> participants) {
 
         if (participants != null) {
@@ -330,7 +330,7 @@ public class FrmEvent extends javax.swing.JPanel {
             enableControls(true);
 
             setTitle("Create new event: ");
-            
+
             JButton btnNew = new JButton("Create new event", new javax.swing.ImageIcon(getClass().getResource("/icons/save-line.png")));
 
             btnNew.addActionListener(new java.awt.event.ActionListener() {
@@ -344,7 +344,7 @@ public class FrmEvent extends javax.swing.JPanel {
             enableControls(false);
 
             setTitle("Deatils of " + txtEventName.getText() + ":");
-            
+
             JButton btnDisplayEditView = new JButton("Edit", new javax.swing.ImageIcon(getClass().getResource("/icons/pencil-line.png")));
 
             btnDisplayEditView.addActionListener(new java.awt.event.ActionListener() {
@@ -357,9 +357,9 @@ public class FrmEvent extends javax.swing.JPanel {
             pnlFooter.add(btnDisplayEditView);
         } else if (view == View.EDIT) {
             enableControls(true);
-            
-            setTitle("Edit event " +  txtEventName.getText() + ":");
-            
+
+            setTitle("Edit event " + txtEventName.getText() + ":");
+
             JButton btnDelete = new JButton("Delete", new javax.swing.ImageIcon(getClass().getResource("/icons/delete-bin-line.png")));
 
             btnDelete.addActionListener(new java.awt.event.ActionListener() {
@@ -764,7 +764,7 @@ public class FrmEvent extends javax.swing.JPanel {
             int selectedIndex = liEventAttachments.getSelectedIndex();
 
             Attachment file = modelAttachments.get(selectedIndex);
-            
+
             JFileChooser saveDialog = new JFileChooser();
             String path = null;
 
@@ -776,22 +776,35 @@ public class FrmEvent extends javax.swing.JPanel {
 
             if (state == JFileChooser.APPROVE_OPTION) {
                 FileOutputStream fos = null;
+
                 try {
                     path = saveDialog.getSelectedFile().toString() + "\\" + file.getFileName();
-                    fos = new  FileOutputStream(path);
-                    fos.write(file.getByteStream());
+                    
+                    if (java.nio.file.Files.exists(java.nio.file.Paths.get(path), java.nio.file.LinkOption.NOFOLLOW_LINKS)) {
+                        int retVal = JOptionPane.showConfirmDialog(FrmMain.getInstance(), "The file already exists. Do you want to overwrite the file?", "File already exists", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+
+                        if (retVal == JOptionPane.YES_OPTION) {
+                            fos = new FileOutputStream(path);
+                            fos.write(file.getByteStream());
+                        }
+                    } else {
+                        fos = new FileOutputStream(path);
+                        fos.write(file.getByteStream());
+                    }
                 } catch (FileNotFoundException ex) {
-                    Logger.getLogger(FrmEvent.class.getName()).log(Level.SEVERE, null, ex);
+                    handlers.LoggerHandler.logger.severe(ex.getMessage());
                 } catch (IOException ex) {
-                    Logger.getLogger(FrmEvent.class.getName()).log(Level.SEVERE, null, ex);
+                    handlers.LoggerHandler.logger.severe(ex.getMessage());
                 } finally {
                     try {
-                        fos.close();
+                        if (fos != null) {
+                            fos.close();
+                        }
                     } catch (IOException ex) {
-                        Logger.getLogger(FrmEvent.class.getName()).log(Level.SEVERE, null, ex);
+                        handlers.LoggerHandler.logger.severe(ex.getMessage());
                     }
                 }
-                
+
             }
 
         }
