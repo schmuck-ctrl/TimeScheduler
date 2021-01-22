@@ -15,13 +15,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -40,12 +37,12 @@ public class FrmEvent extends javax.swing.JPanel {
     public enum View {
         READ,
         EDIT,
-        NEW
+        NEW,
     }
 
     private DefaultListModel<Operator> modelParticipants = new DefaultListModel<>();
     private DefaultListModel<Attachment> modelAttachments = new DefaultListModel<>();
-    private int eventID = -1;
+    private Event currentEvent = null;
     private JDialog isDialog = null;
 
     // <editor-fold defaultstate="collapsed" desc="Constructors">
@@ -60,8 +57,9 @@ public class FrmEvent extends javax.swing.JPanel {
 
         prepareLists();
 
-        handleView(view);
         setEvent(event);
+        handleView(view);
+        
     }
 
     public FrmEvent(View view, LocalDate date) {
@@ -86,8 +84,9 @@ public class FrmEvent extends javax.swing.JPanel {
 
         prepareLists();
 
-        handleView(view);
         setEvent(event);
+        handleView(view);
+        
     }
 
     // </editor-fold>
@@ -105,7 +104,7 @@ public class FrmEvent extends javax.swing.JPanel {
 
     public void setEvent(Event event) {
         if (event != null) {
-            this.eventID = event.getID();
+            this.currentEvent = event;
 
             txtEventName.setText(event.getName());
             dtPicker.datePicker.setDate(LocalDate.of(event.getDate().getYear(), event.getDate().getMonth(), event.getDate().getDayOfMonth()));
@@ -266,10 +265,10 @@ public class FrmEvent extends javax.swing.JPanel {
 
         Event newEvent = null;
         if (checkInput) {
-            if (this.eventID == -1) {
+            if (this.currentEvent.getID() == -1) {
                 newEvent = new Event(name, host, date, duration, location, participants, attachments, priority, notification);
             } else {
-                newEvent = new Event(eventID, name, host, date, duration, location, participants, attachments, priority, notification);
+                newEvent = new Event(this.currentEvent.getID(), name, host, date, duration, location, participants, attachments, priority, notification);
             }
         }
 
@@ -343,7 +342,7 @@ public class FrmEvent extends javax.swing.JPanel {
         } else if (view == View.READ) {
             enableControls(false);
 
-            setTitle("Deatils of " + txtEventName.getText() + ":");
+            setTitle("Deatils of " + this.currentEvent.toString() + ":");
 
             JButton btnDisplayEditView = new JButton("Edit", new javax.swing.ImageIcon(getClass().getResource("/icons/pencil-line.png")));
 
@@ -358,18 +357,27 @@ public class FrmEvent extends javax.swing.JPanel {
         } else if (view == View.EDIT) {
             enableControls(true);
 
-            setTitle("Edit event " + txtEventName.getText() + ":");
+            setTitle("Edit event " + this.currentEvent.toString() + ":");
 
-            JButton btnDelete = new JButton("Delete", new javax.swing.ImageIcon(getClass().getResource("/icons/delete-bin-line.png")));
+            if ((FrmMain.getInstance().getCurrentUser().getUserId() != this.currentEvent.getHost().getUserId())) {
+                setEnabled(false);
+                liEventAttachments.setEnabled(true);
+                btnAddAttachments.setEnabled(true);
 
-            btnDelete.addActionListener(new java.awt.event.ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    btnDeleteActionPerformed(e);
-                }
+            } else {
 
-            });
+                JButton btnDelete = new JButton("Delete", new javax.swing.ImageIcon(getClass().getResource("/icons/delete-bin-line.png")));
 
+                btnDelete.addActionListener(new java.awt.event.ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        btnDeleteActionPerformed(e);
+                    }
+
+                });
+
+                pnlFooter.add(btnDelete);
+            }
             JButton btnEdit = new JButton("Speichern", new javax.swing.ImageIcon(getClass().getResource("/icons/save-line.png")));
 
             btnEdit.addActionListener(new java.awt.event.ActionListener() {
@@ -380,7 +388,6 @@ public class FrmEvent extends javax.swing.JPanel {
 
             });
 
-            pnlFooter.add(btnDelete);
             pnlFooter.add(btnEdit);
         }
     }
@@ -447,7 +454,7 @@ public class FrmEvent extends javax.swing.JPanel {
     private void btnDeleteActionPerformed(ActionEvent e) {
         int retVal = JOptionPane.showConfirmDialog(FrmMain.getInstance(), "Are you sure you want to delete the event?", "Delete user", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
         if (retVal == JOptionPane.YES_OPTION) {
-            deleteEvent(this.eventID);
+            deleteEvent(this.currentEvent.getID());
 
             refreshCalendar(dtPicker.datePicker.getDate());
 
@@ -779,7 +786,7 @@ public class FrmEvent extends javax.swing.JPanel {
 
                 try {
                     path = saveDialog.getSelectedFile().toString() + "\\" + file.getFileName();
-                    
+
                     if (java.nio.file.Files.exists(java.nio.file.Paths.get(path), java.nio.file.LinkOption.NOFOLLOW_LINKS)) {
                         int retVal = JOptionPane.showConfirmDialog(FrmMain.getInstance(), "The file already exists. Do you want to overwrite the file?", "File already exists", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
 
