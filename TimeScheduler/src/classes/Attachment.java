@@ -58,4 +58,13 @@ public class Attachment extends java.io.File {
     public String toString() {
         return this.fileName;
     }
+    
+    @Override
+    public boolean equals(Object anObject) {
+        if (!(anObject instanceof Attachment)) {
+            return false;
+        }
+        Attachment otherMember = (Attachment)anObject;        
+        return otherMember.getAttachmentID()== (getAttachmentID());
+    }
 }

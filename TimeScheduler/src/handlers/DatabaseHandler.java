@@ -77,16 +77,14 @@ public class DatabaseHandler {
 
     private void deleteAttachments(ArrayList<Attachment> toBeDeleted, int eventID) {
 
-        String deleteAttachments = "DELETE FROM file WHERE F_eventID = ? AND F_fileName = ?";
+        String deleteAttachments = "DELETE FROM file WHERE F_fileID = ? ";
         //int update_successfull = -1;
         try ( PreparedStatement stmt = con.prepareStatement(deleteAttachments)) {
 
             for (Attachment attachment : toBeDeleted) {
-                stmt.setInt(1, eventID);
-                stmt.setString(2, attachment.getName());
+                stmt.setInt(1, attachment.getAttachmentID());
                 stmt.addBatch();
             }
-
             stmt.executeBatch();
         } catch (SQLException ex) {
             System.out.println("delete file: " + ex.getMessage());
@@ -610,14 +608,22 @@ public class DatabaseHandler {
     }
 
     public void setFilesOfEvent(ArrayList<Attachment> attachments, int eventID) {
-        ArrayList<Attachment> attachment_old = getEventsDocuments(eventID); //old
-        ArrayList<Attachment> attachment_new = (ArrayList<Attachment>) attachments.clone(); //new
+        //Every old Attachment{x1,x2,x3,x4}
+        ArrayList<Attachment> attachment_old = getEventsDocuments(eventID); 
+        //Every new Attachment {x3,x4,x5,x6}
+        ArrayList<Attachment> attachment_new = (ArrayList<Attachment>) attachments.clone();
+        //Every Attachment which is estimated to be added {x3,x4,x5,x6}
         ArrayList<Attachment> toBeAdded = (ArrayList<Attachment>) attachment_new.clone();
+        //Every Attachment which ist estimated to be removed .{x1,x2,x3,x4}
         ArrayList<Attachment> toBeDeleted = (ArrayList<Attachment>) attachment_old.clone();
-
+        
+        //{x3,x4,x5,x6} remove {x1,x2,x3,x4} return {x5,x6}
+        //Remove every Attachment which was already contained in the Events Attachment list
         toBeAdded.removeAll(attachment_old);
-        toBeDeleted.removeAll(attachment_new);
-
+        //{x1,x2,x3,x4} remove {x3,x4,x5,x6} return {x1,x2}
+        //Remove every Attachment which was contained in the old list of the Event but isn't contained in the new list of
+        //Attachments anymore.
+        toBeDeleted.removeAll(attachment_new); 
         deleteAttachments(toBeDeleted, eventID);
         insertAttachments(toBeAdded, eventID);
     }
