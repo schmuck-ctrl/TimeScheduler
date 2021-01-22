@@ -37,8 +37,8 @@ public class FrmEvent extends javax.swing.JPanel {
         NEW
     }
 
-    private final DefaultListModel<Operator> modelParticipants = new DefaultListModel<>();
-    private final DefaultListModel<Attachment> modelAttachments = new DefaultListModel<>();
+    private DefaultListModel<Operator> modelParticipants = new DefaultListModel<>();
+    private DefaultListModel<Attachment> modelAttachments = new DefaultListModel<>();
     private int eventID = -1;
     private JDialog isDialog = null;
 
@@ -51,7 +51,7 @@ public class FrmEvent extends javax.swing.JPanel {
 
         pnlHeader.setBorder(new EmptyBorder(10, 10, 10, 10));
         pnlContent1.setBorder(new EmptyBorder(10, 10, 10, 10));
-
+        
         prepareLists();
 
         handleView(view);
@@ -63,7 +63,7 @@ public class FrmEvent extends javax.swing.JPanel {
 
         pnlHeader.setBorder(new EmptyBorder(10, 10, 10, 10));
         pnlContent1.setBorder(new EmptyBorder(10, 10, 10, 10));
-
+        
         prepareLists();
 
         clearInput(date);
@@ -323,6 +323,8 @@ public class FrmEvent extends javax.swing.JPanel {
         if (view == View.NEW) {
             enableControls(true);
 
+            setTitle("Create new event: ");
+            
             JButton btnNew = new JButton("Create new event", new javax.swing.ImageIcon(getClass().getResource("/icons/save-line.png")));
 
             btnNew.addActionListener(new java.awt.event.ActionListener() {
@@ -335,6 +337,8 @@ public class FrmEvent extends javax.swing.JPanel {
         } else if (view == View.READ) {
             enableControls(false);
 
+            //setTitle("Deatils of " + event.toString() + ":");
+            
             JButton btnDisplayEditView = new JButton("Edit", new javax.swing.ImageIcon(getClass().getResource("/icons/pencil-line.png")));
 
             btnDisplayEditView.addActionListener(new java.awt.event.ActionListener() {
@@ -347,7 +351,9 @@ public class FrmEvent extends javax.swing.JPanel {
             pnlFooter.add(btnDisplayEditView);
         } else if (view == View.EDIT) {
             enableControls(true);
-
+            
+            //setTitle("Edit event " + event.toString() + ":");
+            
             JButton btnDelete = new JButton("Delete", new javax.swing.ImageIcon(getClass().getResource("/icons/delete-bin-line.png")));
 
             btnDelete.addActionListener(new java.awt.event.ActionListener() {

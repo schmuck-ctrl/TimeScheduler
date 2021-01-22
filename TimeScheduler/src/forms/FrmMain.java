@@ -213,6 +213,8 @@ public class FrmMain extends javax.swing.JFrame {
 
         mnuAdminInterface.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/user-settings-line.png"))); // NOI18N
         mnuAdminInterface.setText("Admin Interface");
+        mnuAdminInterface.setFocusPainted(false);
+        mnuAdminInterface.setFocusable(false);
         mnuAdminInterface.setPreferredSize(new java.awt.Dimension(145, 35));
         mnuAdminInterface.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -223,8 +225,10 @@ public class FrmMain extends javax.swing.JFrame {
         pnlMenuBar.add(filler1);
 
         btnExport.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/share-line.png"))); // NOI18N
-        btnExport.setText("Export to PDF");
-        btnExport.setPreferredSize(new java.awt.Dimension(130, 35));
+        btnExport.setText("Export weekly schedule");
+        btnExport.setFocusPainted(false);
+        btnExport.setFocusable(false);
+        btnExport.setPreferredSize(new java.awt.Dimension(190, 35));
         btnExport.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnExportActionPerformed(evt);
@@ -261,6 +265,8 @@ public class FrmMain extends javax.swing.JFrame {
         pnlCalendarControl.setPreferredSize(new java.awt.Dimension(694, 50));
 
         btnPreviousMonth.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/arrow-left-s-fill.png"))); // NOI18N
+        btnPreviousMonth.setFocusPainted(false);
+        btnPreviousMonth.setFocusable(false);
         btnPreviousMonth.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnPreviousMonthActionPerformed(evt);
@@ -272,6 +278,8 @@ public class FrmMain extends javax.swing.JFrame {
         pnlCalendarControl.add(datePicker);
 
         btnNextMonth.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/arrow-right-s-fill.png"))); // NOI18N
+        btnNextMonth.setFocusPainted(false);
+        btnNextMonth.setFocusable(false);
         btnNextMonth.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNextMonthActionPerformed(evt);
@@ -291,6 +299,8 @@ public class FrmMain extends javax.swing.JFrame {
 
         btnNewEvent.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/add-circle-line.png"))); // NOI18N
         btnNewEvent.setText("Create new event");
+        btnNewEvent.setFocusPainted(false);
+        btnNewEvent.setFocusable(false);
         btnNewEvent.setPreferredSize(new java.awt.Dimension(150, 35));
         btnNewEvent.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

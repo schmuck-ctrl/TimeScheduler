@@ -75,6 +75,8 @@
                   <Image iconType="3" name="/icons/user-settings-line.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Admin Interface"/>
+                <Property name="focusPainted" type="boolean" value="false"/>
+                <Property name="focusable" type="boolean" value="false"/>
                 <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                   <Dimension value="[145, 35]"/>
                 </Property>
@@ -98,9 +100,11 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/icons/share-line.png"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Export to PDF"/>
+                <Property name="text" type="java.lang.String" value="Export weekly schedule"/>
+                <Property name="focusPainted" type="boolean" value="false"/>
+                <Property name="focusable" type="boolean" value="false"/>
                 <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[130, 35]"/>
+                  <Dimension value="[190, 35]"/>
                 </Property>
               </Properties>
               <Events>
@@ -229,6 +233,8 @@
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                       <Image iconType="3" name="/icons/arrow-left-s-fill.png"/>
                     </Property>
+                    <Property name="focusPainted" type="boolean" value="false"/>
+                    <Property name="focusable" type="boolean" value="false"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnPreviousMonthActionPerformed"/>
@@ -246,6 +252,8 @@
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                       <Image iconType="3" name="/icons/arrow-right-s-fill.png"/>
                     </Property>
+                    <Property name="focusPainted" type="boolean" value="false"/>
+                    <Property name="focusable" type="boolean" value="false"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnNextMonthActionPerformed"/>
@@ -287,6 +295,8 @@
               <Image iconType="3" name="/icons/add-circle-line.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Create new event"/>
+            <Property name="focusPainted" type="boolean" value="false"/>
+            <Property name="focusable" type="boolean" value="false"/>
             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[150, 35]"/>
             </Property>
