@@ -7,8 +7,10 @@ package handlers;
 
 import classes.*;
 import classes.Operator;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -1016,5 +1018,23 @@ public class DatabaseHandler {
             System.out.println("getEventsDocuments: " + ex.getMessage());
         }
         return attachments;
+    }
+    
+    public byte[] getDocument(int FileID){
+       byte[] document;
+       String getDoc = "SELECT F_file FROM file WHERE F_fileID = ?";
+       try(PreparedStatement stmt = con.prepareStatement(getDoc)){
+         stmt.setInt(1, FileID);
+         try(ResultSet rs = stmt.executeQuery()){
+             if(rs.next()){
+                 InputStream is = rs.getBinaryStream("F_file");
+                 document =  is.readAllBytes();
+                 return document;
+             }
+         }
+       }catch(Exception ex){
+           System.out.println("getDocument:"+ex.getMessage());
+       }
+      return null;
     }
 }
