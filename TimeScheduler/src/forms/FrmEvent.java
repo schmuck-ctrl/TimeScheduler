@@ -361,7 +361,7 @@ public class FrmEvent extends javax.swing.JPanel {
             setTitle("Edit event " + this.currentEvent.toString() + ":");
 
             if ((FrmMain.getInstance().getCurrentUser().getUserId() != this.currentEvent.getHost().getUserId())) {
-                setEnabled(false);
+                enableControls(false);
                 liEventAttachments.setEnabled(true);
                 btnAddAttachments.setEnabled(true);
 
