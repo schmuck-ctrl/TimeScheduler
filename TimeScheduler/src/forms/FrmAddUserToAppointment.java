@@ -10,6 +10,7 @@ import handlers.UserHandler;
 import handlers.DatabaseHandler;
 import java.awt.List;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
@@ -24,37 +25,22 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
     //private DatabaseHandler dbHandler;
     private DefaultTableModel tabSearchForUserModel = null;
     private DefaultTableModel tabAddedUserModel = null;
+    private DatabaseHandler dbHandler = null;
     private Operator selectedUser = null;
+    private Operator eventHost = null;
     private String userEmail = null;
     private FrmEvent frmEvent = null;
 
     /**
      * Creates new form FrmAddUserToAppointment
      */
-    public FrmAddUserToAppointment(java.awt.Frame parent, boolean modal, FrmEvent source) {
+
+
+    public FrmAddUserToAppointment(java.awt.Frame parent, boolean modal, ArrayList<Operator> users, FrmEvent source,Operator host) {
         super(parent, modal);
         initComponents();
-        this.frmEvent = source;
-        tabSearchForUserModel = (DefaultTableModel) tabSearchUser.getModel();
-        tabAddedUserModel = (DefaultTableModel) tabAddedUser.getModel();
-
-        bindDataToTableSearchUsers(getUsers());
-
-        TableColumn colSearchUser = tabSearchUser.getColumn("UserID");
-        colSearchUser.setMaxWidth(0);
-        colSearchUser.setMinWidth(0);
-        colSearchUser.setPreferredWidth(0);
-
-        TableColumn colAddedUser = tabAddedUser.getColumn("UserID");
-        colAddedUser.setMaxWidth(0);
-        colAddedUser.setMinWidth(0);
-        colAddedUser.setPreferredWidth(0);
-
-    }
-
-    public FrmAddUserToAppointment(java.awt.Frame parent, boolean modal, ArrayList<Operator> users, FrmEvent source) {
-        super(parent, modal);
-        initComponents();
+        eventHost = host;
+        dbHandler = new DatabaseHandler();
         this.frmEvent = source;
         tabSearchForUserModel = (DefaultTableModel) tabSearchUser.getModel();
         tabAddedUserModel = (DefaultTableModel) tabAddedUser.getModel();
@@ -107,9 +93,7 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
 
         for (int i = 0; i < this.tabAddedUserModel.getRowCount(); i++) {
             for (int a = 0; a < this.tabSearchForUserModel.getRowCount(); a++) {
-//                System.out.println((Integer) this.tabAddedUserModel.getValueAt(i, 3) + (Integer) this.tabSearchForUserModel.getValueAt(a, 3));
                 if ((Integer) this.tabAddedUserModel.getValueAt(i, 3) == (Integer) this.tabSearchForUserModel.getValueAt(a, 3)) {
-
                     this.tabSearchForUserModel.removeRow(a);
                 }
             }
@@ -174,8 +158,10 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
         UserHandler uHandler = new UserHandler();
 
         if (rowIndex >= 0) {
+
             int userID = (Integer) tabAddedUserModel.getValueAt(rowIndex, 3);
             selectedUser = uHandler.getUser(userID);
+
         }
         return selectedUser;
     }
@@ -268,6 +254,11 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
         });
         tabAddedUser.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tabAddedUser.getTableHeader().setReorderingAllowed(false);
+        tabAddedUser.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                tabAddedUserFocusGained(evt);
+            }
+        });
         jScrollPane2.setViewportView(tabAddedUser);
         if (tabAddedUser.getColumnModel().getColumnCount() > 0) {
             tabAddedUser.getColumnModel().getColumn(0).setResizable(false);
@@ -345,7 +336,13 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
             }
         });
         tabSearchUser.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tabSearchUser.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tabSearchUser.getTableHeader().setReorderingAllowed(false);
+        tabSearchUser.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                tabSearchUserFocusGained(evt);
+            }
+        });
         jScrollPane1.setViewportView(tabSearchUser);
         if (tabSearchUser.getColumnModel().getColumnCount() > 0) {
             tabSearchUser.getColumnModel().getColumn(0).setResizable(false);
@@ -438,14 +435,21 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
         int selectedRowIndex = tabAddedUser.getSelectedRow();
         if (getSelectedUserFromAddUserTable(selectedRowIndex) != null) {
             this.selectedUser = getSelectedUserFromAddUserTable(selectedRowIndex);
-            bindDataToTableSearchUser(this.selectedUser);
-            tabAddedUserModel.removeRow(selectedRowIndex);
-            this.repaint();
-            frmEvent.revalidate();
-            frmEvent.repaint();
+            if (this.eventHost.getUserId() == (Integer) this.selectedUser.getUserId()) {
+            JOptionPane.showMessageDialog(null, "You can not delete the Host of the event ");
+            } else {
+                bindDataToTableSearchUser(this.selectedUser);
+                tabAddedUserModel.removeRow(selectedRowIndex);
+                this.repaint();
+                frmEvent.revalidate();
+                frmEvent.repaint();
+
+            }
         } else {
-            txtErrorWarning.setText("Please select an entry");
+            txtErrorWarning.setText("Please select an user");
         }
+        frmEvent.revalidate();
+        frmEvent.repaint();
 
     }//GEN-LAST:event_btnDeleteUserFromAppointmentActionPerformed
 
@@ -458,6 +462,16 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
         this.revalidate();
         this.repaint();
     }//GEN-LAST:event_txtSearchKeyReleased
+
+    private void tabSearchUserFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tabSearchUserFocusGained
+        // TODO add your handling code here:
+        tabAddedUser.clearSelection();
+    }//GEN-LAST:event_tabSearchUserFocusGained
+
+    private void tabAddedUserFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tabAddedUserFocusGained
+        // TODO add your handling code here:
+        tabSearchUser.clearSelection();
+    }//GEN-LAST:event_tabAddedUserFocusGained
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

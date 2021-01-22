@@ -158,7 +158,7 @@ public class FrmLogin extends javax.swing.JFrame {
         txtEmail.setBackground(new java.awt.Color(243, 242, 241));
         txtEmail.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         txtEmail.setForeground(new java.awt.Color(0, 0, 0));
-        txtEmail.setText("LukasBauer@web.de");
+        txtEmail.setText("Javaprojekt@gmail.de");
         txtEmail.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 txtEmailFocusGained(evt);

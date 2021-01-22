@@ -758,12 +758,16 @@ public class FrmEvent extends javax.swing.JPanel {
                 Operator participant = modelParticipants.getElementAt(i);
                 all.add(participant);
             }
-            FrmAddUserToAppointment frmAddUserToAppointment = new FrmAddUserToAppointment(FrmMain.getInstance(), true, all, this);
+            Operator host;
+            if(currentEvent == null){
+                host = FrmMain.getInstance().getCurrentUser();
+            }else {
+                host = this.currentEvent.getHost();
+            }
+            FrmAddUserToAppointment frmAddUserToAppointment = new FrmAddUserToAppointment(FrmMain.getInstance(), true, all, this,host);
+            frmAddUserToAppointment.setLocationRelativeTo(null);
             frmAddUserToAppointment.setVisible(true);
 
-        } else {
-            FrmAddUserToAppointment frmAddUserToAppointment = new FrmAddUserToAppointment(FrmMain.getInstance(), true, this);
-            frmAddUserToAppointment.setVisible(true);
         }
     }//GEN-LAST:event_btnAddParticipantsActionPerformed
 

@@ -100,7 +100,7 @@ public class FrmRegistration extends javax.swing.JFrame {
             pnlFooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlFooterLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnlFooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnlFooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnRegistration, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnBackToLogin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(20, Short.MAX_VALUE))
@@ -154,7 +154,6 @@ public class FrmRegistration extends javax.swing.JFrame {
         txtFirstName.setBackground(new java.awt.Color(243, 242, 241));
         txtFirstName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         txtFirstName.setForeground(new java.awt.Color(0, 0, 0));
-        txtFirstName.setText("Fritz");
         txtFirstName.setToolTipText("First name should contain at least two letters");
         txtFirstName.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -168,7 +167,6 @@ public class FrmRegistration extends javax.swing.JFrame {
         txtLastName.setBackground(new java.awt.Color(243, 242, 241));
         txtLastName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         txtLastName.setForeground(new java.awt.Color(0, 0, 0));
-        txtLastName.setText("Meier");
         txtLastName.setToolTipText("Last name should contain at least two letters");
         txtLastName.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -182,7 +180,6 @@ public class FrmRegistration extends javax.swing.JFrame {
         txtEmail.setBackground(new java.awt.Color(243, 242, 241));
         txtEmail.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         txtEmail.setForeground(new java.awt.Color(0, 0, 0));
-        txtEmail.setText("Fritzmeier@web.de");
         txtEmail.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 txtEmailFocusGained(evt);
@@ -195,7 +192,6 @@ public class FrmRegistration extends javax.swing.JFrame {
         ptxtPassword.setBackground(new java.awt.Color(243, 242, 241));
         ptxtPassword.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         ptxtPassword.setForeground(new java.awt.Color(0, 0, 0));
-        ptxtPassword.setText("Fritzmeier123&");
         ptxtPassword.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 ptxtPasswordFocusGained(evt);
@@ -208,7 +204,6 @@ public class FrmRegistration extends javax.swing.JFrame {
         ptxtRepeatPassword.setBackground(new java.awt.Color(243, 242, 241));
         ptxtRepeatPassword.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         ptxtRepeatPassword.setForeground(new java.awt.Color(0, 0, 0));
-        ptxtRepeatPassword.setText("Fritzmeier123&");
         ptxtRepeatPassword.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 ptxtRepeatPasswordFocusGained(evt);
