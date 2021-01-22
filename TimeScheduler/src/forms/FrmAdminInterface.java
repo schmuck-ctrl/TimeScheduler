@@ -16,7 +16,7 @@ import javax.swing.table.TableColumn;
 /**
  * Displays all operators from the database and provides methods for editing.
  * Only visible for operators whose role is "Admin".
- * 
+ *
  * @author Nils Schmuck
  */
 public class FrmAdminInterface extends javax.swing.JDialog {
@@ -26,15 +26,14 @@ public class FrmAdminInterface extends javax.swing.JDialog {
     private Operator selectedUser = null;
 
     // </editor-fold>
-    
     // <editor-fold defaultstate="collapsed" desc="Constructors">
-    
     /**
      * Creates a new dialog with the specified modality and Frame as its owner.
      * In addition the specified user will be set.
-     * 
+     *
      * @param parentThe Frame from which the dialog is displayed.
-     * @param modal Specifies if the dialog blocks user input to other windows when shown.
+     * @param modal Specifies if the dialog blocks user input to other windows
+     * when shown.
      */
     public FrmAdminInterface(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -44,17 +43,15 @@ public class FrmAdminInterface extends javax.swing.JDialog {
 
         bindDataToTable(getUsers());
 
-        
-
     }
 
     // </editor-fold>
-    
     // <editor-fold defaultstate="collapsed" desc="Methods">
-    
     /**
      * Binds the Collection to this {@link FrmAdminInterface#tabUser}.
-     * @param users The collection whose elements are to be placed into this table.
+     *
+     * @param users The collection whose elements are to be placed into this
+     * table.
      */
     private void bindDataToTable(ArrayList<Operator> users) {
         if (users != null) {
@@ -67,7 +64,7 @@ public class FrmAdminInterface extends javax.swing.JDialog {
                 });
             }
         }
-        
+
         TableColumn col = tabUser.getColumn("UserID");
         col.setMaxWidth(0);
         col.setMinWidth(0);
@@ -76,7 +73,7 @@ public class FrmAdminInterface extends javax.swing.JDialog {
 
     /**
      * Returns a list with all operators in the database.
-     * 
+     *
      * @return The list with all operators.
      */
     private ArrayList<Operator> getUsers() {
@@ -87,19 +84,22 @@ public class FrmAdminInterface extends javax.swing.JDialog {
 
     /**
      * Returns the Operator at the specified position in this table.
+     *
      * @param rowIndex Index of the operator to return.
      * @return The operator at the specified position in this table.
      */
-    private Operator getSelectedUserFromTabUser(int rowIndex) {
-        Operator selectedUser = null;
+    private Operator getSelectedUserFromTabUser() {
+        Operator user = null;
         UserHandler uHandler = new UserHandler();
 
+        int rowIndex = tabUser.getSelectedRow();
+        
         if (rowIndex >= 0) {
             int userId = (int) tabUserModel.getValueAt(rowIndex, 0); //0 = ID spalte.
-            selectedUser = uHandler.getUser(userId);
+            user = uHandler.getUser(userId);
         }
 
-        return selectedUser;
+        return user;
     }
 
     /**
@@ -112,7 +112,6 @@ public class FrmAdminInterface extends javax.swing.JDialog {
     }
 
     // </editor-fold>
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -181,8 +180,8 @@ public class FrmAdminInterface extends javax.swing.JDialog {
         tabUser.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tabUser.getTableHeader().setReorderingAllowed(false);
         tabUser.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tabUserMouseClicked(evt);
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                tabUserMousePressed(evt);
             }
         });
         jScrollPane1.setViewportView(tabUser);
@@ -244,10 +243,9 @@ public class FrmAdminInterface extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     // <editor-fold defaultstate="collapsed" desc="Events">
-
     /**
      * Opens the {@link FrmEditUser} form to edit the selected operator.
-     * 
+     *
      * @param evt The action event.
      */
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
@@ -263,33 +261,40 @@ public class FrmAdminInterface extends javax.swing.JDialog {
 
     /**
      * Delets the operator at the specified position in this list.
-     * 
+     *
      * @param evt The action event.
      */
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        if (this.selectedUser != null && !(this.selectedUser.equals(FrmMain.getInstance().getCurrentUser()))) {
-            int retVal = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete the user ?", "Delete user", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-            if (retVal == JOptionPane.YES_OPTION) {
-                UserHandler uHander = new UserHandler();
-                uHander.deleteUser(this.selectedUser);
-                this.refreshTable();
-            } 
-        } else if (this.selectedUser.equals(FrmMain.getInstance().getCurrentUser())) {
-            JOptionPane.showMessageDialog(this, "It is not possible to delete yourself.", "Not a verified operation", JOptionPane.INFORMATION_MESSAGE);
-        }  else {
-            JOptionPane.showMessageDialog(this, "You have to select a user first in order to delete the user.", "No user selected", JOptionPane.INFORMATION_MESSAGE);
+        if (this.selectedUser != null) {
+            if (this.selectedUser.getUserId() != FrmMain.getInstance().getCurrentUser().getUserId()) {
+                int retVal = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete the user ?", "Delete user", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+                if (retVal == JOptionPane.YES_OPTION) {
+                    UserHandler uHander = new UserHandler();
+                    uHander.deleteUser(this.selectedUser);
+                    this.refreshTable();
+                }
+            } else if (this.selectedUser.getUserId() == FrmMain.getInstance().getCurrentUser().getUserId()) {
+                JOptionPane.showMessageDialog(this, "It is not possible to delete yourself.", "Not a verified operation", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "You have to select a user first in order to delete the user.", "No user selected", JOptionPane.INFORMATION_MESSAGE);
+            }
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     /**
-     * Opens the {@link FrmEditUser} form to edit the selected operator.
-     * 
+     * Close this and discard all changes.
+     *
      * @param evt The action event.
      */
-    private void tabUserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabUserMouseClicked
-        int selectedRowIndex = tabUser.getSelectedRow();
-        this.selectedUser = getSelectedUserFromTabUser(selectedRowIndex);
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btnCancelActionPerformed
 
+    private void tabUserMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabUserMousePressed
+        System.out.println(tabUser.getSelectedRow());
+        this.selectedUser = getSelectedUserFromTabUser();
+        
+        
         if (evt.getClickCount() == 2) {
             if (selectedUser != null) {
                 FrmEditUser frmEditUserForm = new FrmEditUser((JFrame) this.getParent(), true, selectedUser);
@@ -297,16 +302,7 @@ public class FrmAdminInterface extends javax.swing.JDialog {
                 this.refreshTable();
             }
         }
-    }//GEN-LAST:event_tabUserMouseClicked
-
-    /**
-     * Close this and discard all changes.
-     * 
-     * @param evt The action event.
-     */
-    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
-        this.dispose();
-    }//GEN-LAST:event_btnCancelActionPerformed
+    }//GEN-LAST:event_tabUserMousePressed
 
     // </editor-fold>
 
