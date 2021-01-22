@@ -276,9 +276,9 @@ public class FrmEvent extends javax.swing.JPanel {
     }
 
     private void clearInput(LocalDate date) {
-        String name = FrmMain.getInstance().getCurrentUser().getFirstName() + " " + FrmMain.getInstance().getCurrentUser().getLastName();
-        this.txtEventHost.setText(name);
-
+        Operator host = FrmMain.getInstance().getCurrentUser();//.getFirstName() + " " + FrmMain.getInstance().getCurrentUser().getLastName();
+        this.txtEventHost.setText(host.getFirstName() + " " + host.getLastName());        
+        
         this.dtPicker.datePicker.setDate(date);
         this.dtPicker.timePicker.setTimeToNow();
 
@@ -291,6 +291,7 @@ public class FrmEvent extends javax.swing.JPanel {
 
         this.modelAttachments.clear();
         this.modelParticipants.clear();
+        this.modelParticipants.addElement(host);
 
         clearFooter();
     }
