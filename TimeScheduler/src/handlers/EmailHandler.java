@@ -193,7 +193,7 @@ public class EmailHandler {
      *
      * @param event
      */
-//    public static void emailSenderAppointmentReminder(Event event) {
+    public static void emailSenderAppointmentReminder(Event event) {
 //        String from = "Javprojekt@gmail.com"; // from address. As this is using Gmail SMTP your from address should be gmail
 //        String password = "Javaprojekt123"; // password for from gmail address that you have used in above line. 
 //
@@ -232,6 +232,6 @@ public class EmailHandler {
 //        } catch (MessagingException e) {
 //            e.printStackTrace();
 //        }
-//
-//    }
+
+    }
 }
