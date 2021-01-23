@@ -571,7 +571,6 @@ public class FrmEvent extends javax.swing.JPanel {
 
         lblEventHost.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblEventHost.setText("Host: *");
-        lblEventHost.setToolTipText("");
         pnlContent1.add(lblEventHost);
         pnlContent1.add(txtEventHost);
         pnlContent1.add(filler9);
@@ -615,7 +614,8 @@ public class FrmEvent extends javax.swing.JPanel {
         liEventParticipants.setName(""); // NOI18N
         jScrollPane1.setViewportView(liEventParticipants);
 
-        btnAddParticipants.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/add-circle-line.png"))); // NOI18N
+        btnAddParticipants.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/user-add-line.png"))); // NOI18N
+        btnAddParticipants.setFocusPainted(false);
         btnAddParticipants.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddParticipantsActionPerformed(evt);
@@ -668,7 +668,8 @@ public class FrmEvent extends javax.swing.JPanel {
         });
         jScrollPane2.setViewportView(liEventAttachments);
 
-        btnAddAttachments.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/add-circle-line.png"))); // NOI18N
+        btnAddAttachments.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/file-add-line.png"))); // NOI18N
+        btnAddAttachments.setFocusPainted(false);
         btnAddAttachments.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddAttachmentsActionPerformed(evt);
