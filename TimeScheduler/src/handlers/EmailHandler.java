@@ -9,6 +9,8 @@ import classes.*;
 
 import java.util.ArrayList;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
@@ -21,9 +23,36 @@ import javax.mail.internet.MimeMessage;
  *
  * @author Vadym
  */
-public class EmailHandler {
+public class EmailHandler implements Runnable{
+    public enum MailOperation{
+        VERIFY_ACCOUNT,CREATE_EVENT,EDIT_EVENT,DELETE_EVENT,REMIND_EVENT;
+    }
+    private Operator user;
+    private ArrayList<Operator> participants;
+    private Event event;
+    private int rand;
+    private Operator organizer;
+    private MailOperation operation;
+    
+    public EmailHandler(Operator user,int rand){
+        this.operation = MailOperation.VERIFY_ACCOUNT;
+        this.user = user;
+        this.rand = rand;
+    }
+    public EmailHandler(MailOperation operation,Operator organizer,ArrayList<Operator> participants,Event event){
+        this.operation = operation;
+        this.organizer = organizer;
+        this.participants = participants;
+        this.event = event;
+    }
+    public EmailHandler(Event event){
+        this.operation = MailOperation.REMIND_EVENT;
+        this.event = event;
+    }
 
-    public static void emailSenderVerifyAccount(Operator user, int rand) {
+    
+
+    public void emailSenderVerifyAccount(Operator user, int rand) {
         String from = "Javprojekt@gmail.com"; // from address. As this is using Gmail SMTP your from address should be gmail
         String password = "Javaprojekt123"; // password for from gmail address that you have used in above line. 
 
@@ -62,7 +91,7 @@ public class EmailHandler {
         }
     }
 
-    public static void emailSenderAddEvent(Operator orginater, ArrayList<Operator> participants) {
+    public void emailSenderAddEvent(Operator orginater, ArrayList<Operator> participants, Event event) {
         //String to = ""; // to address. It can be any like gmail, yahoo etc.
         String from = "Javprojekt@gmail.com"; // from address. As this is using Gmail SMTP your from address should be gmail
         String password = "Javaprojekt123"; // password for from gmail address that you have used in above line. 
@@ -104,7 +133,7 @@ public class EmailHandler {
 
     }
 
-    public static void emailSenderEditEvent(Operator orginater, ArrayList<Operator> participants) {
+    public void emailSenderEditEvent(Operator orginater, ArrayList<Operator> participants, Event event) {
         String from = "Javprojekt@gmail.com"; // from address. As this is using Gmail SMTP your from address should be gmail
         String password = "Javaprojekt123"; // password for from gmail address that you have used in above line. 
 
@@ -130,8 +159,12 @@ public class EmailHandler {
                 if (participants.get(i).getEmail() != null && !participants.get(i).getEmail().isEmpty()) {
                     message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(participants.get(i).getEmail()));
                     // Edit benachrichtigung
-                    message.setSubject("You : " + participants.get(i).getLastName() + "Appointment update");
-                    message.setText("appointment info");
+                    message.setSubject("Hallo " + participants.get(i).getLastName() + "   The event \"" + event.getName()+ "\" was updated");
+                    message.setText("All informations about the meeting are below."+"\n"+"Appointment name: " + event.getName()
+                            + "\n" + "Date: " + event.getDate() + "\n" + "Meeting duration: " + event.getDuration() + " Minutes" + "\n" + "Place: " + event.getLocation());
+//                    for (int k = 0; i < participants.size();i++) {
+//                        message.setText("Paricipants: "+ participants.get(k).getLastName() + "\n" );
+//                    }
 
                     Transport.send(message);
 
@@ -146,7 +179,7 @@ public class EmailHandler {
 
     }
 
-    public static void emailSenderEditEventDeleted(Operator orginater, ArrayList<Operator> participants) {
+    public void emailSenderDeleteEvent(Operator orginater, ArrayList<Operator> participants, Event event) {
         String from = "Javprojekt@gmail.com"; // from address. As this is using Gmail SMTP your from address should be gmail
         String password = "Javaprojekt123"; // password for from gmail address that you have used in above line. 
 
@@ -193,7 +226,7 @@ public class EmailHandler {
      *
      * @param event
      */
-    public static void emailSenderAppointmentReminder(Event event) {
+    public void emailSenderAppointmentReminder(Event event) {
 //        String from = "Javprojekt@gmail.com"; // from address. As this is using Gmail SMTP your from address should be gmail
 //        String password = "Javaprojekt123"; // password for from gmail address that you have used in above line. 
 //
@@ -233,5 +266,28 @@ public class EmailHandler {
 //            e.printStackTrace();
 //        }
 
+    }
+
+    @Override
+    public void run() {
+        switch(this.operation){
+            case VERIFY_ACCOUNT:
+                this.emailSenderVerifyAccount(this.user, this.rand); 
+                break;
+            case CREATE_EVENT:
+                this.emailSenderAddEvent(this.organizer, this.participants, this.event);
+                break;
+            case EDIT_EVENT:
+                this.emailSenderEditEvent(this.organizer, this.participants, this.event);
+                break;
+            case DELETE_EVENT:
+                this.emailSenderDeleteEvent(this.organizer, this.participants, this.event);
+                break;
+            case REMIND_EVENT:
+                this.emailSenderAppointmentReminder(this.event);
+                break;
+            default:
+                return;
+        }
     }
 }

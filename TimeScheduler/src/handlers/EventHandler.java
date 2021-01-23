@@ -16,11 +16,10 @@ import java.util.ArrayList;
 public class EventHandler {
 
     private DatabaseHandler dbHandler = null;
-    private EmailHandler eHandler = null;
 
     public EventHandler() {
         dbHandler = new DatabaseHandler();
-        eHandler = new EmailHandler();
+
     }
 
     public ArrayList<Event> getAllEvents(int userID) {
@@ -38,35 +37,35 @@ public class EventHandler {
 
     public Event getEvent(int eventID) {
         Event event = dbHandler.getEventById(eventID);
-        
+
         return event;
     }
-    
+
     public ArrayList<Event> getEventsOfMonth(int userId, int monthValue) {
         ArrayList<Event> eventList = dbHandler.getUsersEventsOfACertainMonth(userId, monthValue);
-        
+
         return eventList;
     }
-    
+
     public ArrayList<Event> getEventsOfCurrentMonth(int userId) {
         ArrayList<Event> eventList = dbHandler.getThisMonthsEventsByUserID(userId);
-        
+
         return eventList;
     }
-    
+
     public ArrayList<Event> getEventsOfPeriod(int userId, LocalDate start, LocalDate end) {
         ArrayList<Event> eventList = dbHandler.getEventsOfPeriod(userId, start, end);
-        
+
         return eventList;
     }
-    
+
     public ArrayList<Event> getEventsOfWeek(int userId) {
 
         ArrayList<Event> eventList = dbHandler.getThisWeeksEventsByUserID(userId);
 
         return eventList;
     }
-    
+
     public ArrayList<Event> getEventsOfDay(int userId, LocalDate day) {
         ArrayList<Event> eventList = dbHandler.getUsersEventsOfCertainDay(userId, day);
 
@@ -75,16 +74,20 @@ public class EventHandler {
 
     public void addEvent(Event event) {
         dbHandler.createNewEvent(event);
-        //eHandler.emailSenderAddEvent(dbHandler.getHostByID(event.getID()),dbHandler.selectParticipantsByID(event.getID()));
+        EmailHandler eHandler = new EmailHandler(EmailHandler.MailOperation.CREATE_EVENT, dbHandler.getHostByID(event.getID()), dbHandler.selectParticipantsByID(event.getID()), event);
+        new Thread(eHandler).start();
+
     }
 
     public void editEvent(Event event) {
         dbHandler.editEvent(event);
-        //eHandler.emailSenderEditEvent(dbHandler.getHostByID(event.getID()),dbHandler.selectParticipantsByID(event.getID()));
+        EmailHandler eHandler = new EmailHandler(EmailHandler.MailOperation.EDIT_EVENT, dbHandler.getHostByID(event.getID()), dbHandler.selectParticipantsByID(event.getID()), event);
+        new Thread(eHandler).start();
     }
 
     public void deleteEvent(int eventID) {
         dbHandler.deleteEvent(eventID);
-        //eHandler.emailSenderEditEventDeleted(dbHandler.getHostByID(eventID),dbHandler.selectParticipantsByID(eventID));
+        EmailHandler eHandler = new EmailHandler(dbHandler.getEventById(eventID));
+        new Thread(eHandler).start();
     }
 }

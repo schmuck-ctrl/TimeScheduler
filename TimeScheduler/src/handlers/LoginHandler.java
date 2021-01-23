@@ -14,7 +14,7 @@ public class LoginHandler {
         // Checks if the user is in the database by the users email and the Encrypted password.
     DatabaseHandler dbHandler = new DatabaseHandler();
     EncryptionHandler encrypHandler = new EncryptionHandler();
-    EmailHandler eHandler = new EmailHandler();
+    
     
     public boolean checkUserInput(String userEmail, char[] password) {
         try {
@@ -38,7 +38,8 @@ public class LoginHandler {
         }
     }
     public void sendVerificationCode(Operator user,int rand){
-        eHandler.emailSenderVerifyAccount(user, rand);
+        EmailHandler eHandler = new EmailHandler(user,rand);
+        new Thread(eHandler).start();
     }
     public boolean verifySendedCode(int rand,String userInput){
         if(rand == Integer.valueOf(userInput)){

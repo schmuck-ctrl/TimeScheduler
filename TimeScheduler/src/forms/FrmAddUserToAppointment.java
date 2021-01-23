@@ -178,6 +178,7 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
         jPanel1 = new javax.swing.JPanel();
         txtSearch = new javax.swing.JTextField();
         lblAddUserToAppointment = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tabAddedUser = new javax.swing.JTable();
@@ -204,6 +205,8 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
         lblAddUserToAppointment.setText("Add user to Appointment");
         lblAddUserToAppointment.setName(""); // NOI18N
 
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/search-line.png"))); // NOI18N
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -211,10 +214,11 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblAddUserToAppointment, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblAddUserToAppointment, javax.swing.GroupLayout.DEFAULT_SIZE, 765, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 165, Short.MAX_VALUE)))
+                        .addComponent(txtSearch)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel1)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -223,7 +227,9 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
                 .addContainerGap()
                 .addComponent(lblAddUserToAppointment, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(23, 23, 23))
         );
 
@@ -276,7 +282,7 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
         });
 
         btnDeleteUserFromAppointment.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/delete-bin-line.png"))); // NOI18N
-        btnDeleteUserFromAppointment.setText("Delete");
+        btnDeleteUserFromAppointment.setText("Remove");
         btnDeleteUserFromAppointment.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDeleteUserFromAppointmentActionPerformed(evt);
@@ -488,6 +494,7 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
     private javax.swing.JButton btnAddToAppointment;
     private javax.swing.JButton btnAddUser;
     private javax.swing.JButton btnDeleteUserFromAppointment;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
