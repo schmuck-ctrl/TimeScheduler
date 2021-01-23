@@ -39,10 +39,10 @@ public class EmailHandler implements Runnable{
         this.user = user;
         this.rand = rand;
     }
-    public EmailHandler(MailOperation operation,Operator organizer,ArrayList<Operator> participants,Event event){
+    public EmailHandler(MailOperation operation,Operator organizer,Event event){
         this.operation = operation;
         this.organizer = organizer;
-        this.participants = participants;
+        this.participants = event.getParticipants();
         this.event = event;
     }
     public EmailHandler(Event event){
@@ -91,7 +91,7 @@ public class EmailHandler implements Runnable{
         }
     }
 
-    public void emailSenderAddEvent(Operator orginater, ArrayList<Operator> participants, Event event) {
+    public void emailSenderAddEvent(Operator orginater, Event event) {
         //String to = ""; // to address. It can be any like gmail, yahoo etc.
         String from = "Javprojekt@gmail.com"; // from address. As this is using Gmail SMTP your from address should be gmail
         String password = "Javaprojekt123"; // password for from gmail address that you have used in above line. 
@@ -133,7 +133,7 @@ public class EmailHandler implements Runnable{
 
     }
 
-    public void emailSenderEditEvent(Operator orginater, ArrayList<Operator> participants, Event event) {
+    public void emailSenderEditEvent(Operator orginater, Event event) {
         String from = "Javprojekt@gmail.com"; // from address. As this is using Gmail SMTP your from address should be gmail
         String password = "Javaprojekt123"; // password for from gmail address that you have used in above line. 
 
@@ -179,7 +179,7 @@ public class EmailHandler implements Runnable{
 
     }
 
-    public void emailSenderDeleteEvent(Operator orginater, ArrayList<Operator> participants, Event event) {
+    public void emailSenderDeleteEvent(Operator orginater,Event event) {
         String from = "Javprojekt@gmail.com"; // from address. As this is using Gmail SMTP your from address should be gmail
         String password = "Javaprojekt123"; // password for from gmail address that you have used in above line. 
 
@@ -275,13 +275,13 @@ public class EmailHandler implements Runnable{
                 this.emailSenderVerifyAccount(this.user, this.rand); 
                 break;
             case CREATE_EVENT:
-                this.emailSenderAddEvent(this.organizer, this.participants, this.event);
+                this.emailSenderAddEvent(this.organizer, this.event);
                 break;
             case EDIT_EVENT:
-                this.emailSenderEditEvent(this.organizer, this.participants, this.event);
+                this.emailSenderEditEvent(this.organizer,this.event);
                 break;
             case DELETE_EVENT:
-                this.emailSenderDeleteEvent(this.organizer, this.participants, this.event);
+                this.emailSenderDeleteEvent(this.organizer,this.event);
                 break;
             case REMIND_EVENT:
                 this.emailSenderAppointmentReminder(this.event);

@@ -38,13 +38,13 @@ public class FrmLogin extends javax.swing.JFrame {
 //                lgHandler.sendVerificationCode(dbHandler.getUserByUsername(txtEmail.getText()), rand);
 //                String userInputRan = JOptionPane.showInputDialog("Check Email for the Verification code");
 //                if (Integer.valueOf(userInputRan) == rand) {
-//                    LoggerHandler.setupLogger();
-//                    LoggerHandler.logger.info("FrmLogin");
+                    LoggerHandler.setupLogger();
+                    LoggerHandler.logger.info("FrmLogin");
                     FrmMain frmMain = FrmMain.getInstance();
                     frmMain.setCurrentUser(dbHandler.getUserByUsername(txtEmail.getText().trim()));
                     frmMain.setVisible(true);
                     this.dispose();
-
+//                }
                 } else {
                     JOptionPane.showMessageDialog(null, "You did not sign in correctly.", "Login error", JOptionPane.INFORMATION_MESSAGE);
                     ptxtPassword.setText("");
