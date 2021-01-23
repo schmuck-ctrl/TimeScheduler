@@ -42,7 +42,7 @@ public class FrmEvent extends javax.swing.JPanel {
 
     private DefaultListModel<Operator> modelParticipants = new DefaultListModel<>();
     private DefaultListModel<Attachment> modelAttachments = new DefaultListModel<>();
-    private Event currentEvent = null;
+    private Event currentEvent = new Event();
     private JDialog isDialog = null;
 
     // <editor-fold defaultstate="collapsed" desc="Constructors">
@@ -59,7 +59,7 @@ public class FrmEvent extends javax.swing.JPanel {
 
         setEvent(event);
         handleView(view);
-        
+
     }
 
     public FrmEvent(View view, LocalDate date) {
@@ -86,7 +86,7 @@ public class FrmEvent extends javax.swing.JPanel {
 
         setEvent(event);
         handleView(view);
-        
+
     }
 
     // </editor-fold>
@@ -262,7 +262,6 @@ public class FrmEvent extends javax.swing.JPanel {
             Attachment file = modelAttachments.getElementAt(i);
             attachments.add(file);
         }
-
         Event newEvent = null;
         if (checkInput) {
             if (this.currentEvent.getID() == -1) {
@@ -277,8 +276,8 @@ public class FrmEvent extends javax.swing.JPanel {
 
     private void clearInput(LocalDate date) {
         Operator host = FrmMain.getInstance().getCurrentUser();//.getFirstName() + " " + FrmMain.getInstance().getCurrentUser().getLastName();
-        this.txtEventHost.setText(host.getFirstName() + " " + host.getLastName());        
-        
+        this.txtEventHost.setText(host.getFirstName() + " " + host.getLastName());
+
         this.dtPicker.datePicker.setDate(date);
         this.dtPicker.timePicker.setTimeToNow();
 
@@ -658,8 +657,8 @@ public class FrmEvent extends javax.swing.JPanel {
         liEventAttachments.setToolTipText("Select an attachment and press the ENTF key to remove the attachment.");
         liEventAttachments.setValueIsAdjusting(true);
         liEventAttachments.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                liEventAttachmentsMouseClicked(evt);
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                liEventAttachmentsMousePressed(evt);
             }
         });
         liEventAttachments.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -759,68 +758,70 @@ public class FrmEvent extends javax.swing.JPanel {
                 all.add(participant);
             }
             Operator host;
-            if(currentEvent == null){
+            if (currentEvent == null) {
                 host = FrmMain.getInstance().getCurrentUser();
-            }else {
+            } else {
                 host = this.currentEvent.getHost();
             }
-            FrmAddUserToAppointment frmAddUserToAppointment = new FrmAddUserToAppointment(FrmMain.getInstance(), true, all, this,host);
+            FrmAddUserToAppointment frmAddUserToAppointment = new FrmAddUserToAppointment(FrmMain.getInstance(), true, all, this, host);
             frmAddUserToAppointment.setLocationRelativeTo(null);
             frmAddUserToAppointment.setVisible(true);
 
         }
     }//GEN-LAST:event_btnAddParticipantsActionPerformed
 
-    private void liEventAttachmentsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_liEventAttachmentsMouseClicked
-        if (evt.getClickCount() >= 2) {
+    private void liEventAttachmentsMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_liEventAttachmentsMousePressed
+        if (liEventAttachments.isEnabled() && evt.getClickCount() >= 2) {
             int selectedIndex = liEventAttachments.getSelectedIndex();
 
-            Attachment file = modelAttachments.get(selectedIndex);
+            if (selectedIndex > -1) {
 
-            JFileChooser saveDialog = new JFileChooser();
-            String path = null;
+                Attachment file = modelAttachments.get(selectedIndex);
 
-            saveDialog.setDialogType(JFileChooser.SAVE_DIALOG);
-            saveDialog.setDialogTitle("Save attachment");
-            saveDialog.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                JFileChooser saveDialog = new JFileChooser();
+                String path = null;
 
-            int state = saveDialog.showSaveDialog(forms.FrmMain.getInstance());
+                saveDialog.setDialogType(JFileChooser.SAVE_DIALOG);
+                saveDialog.setDialogTitle("Save attachment");
+                saveDialog.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
-            if (state == JFileChooser.APPROVE_OPTION) {
-                FileOutputStream fos = null;
+                int state = saveDialog.showSaveDialog(forms.FrmMain.getInstance());
 
-                try {
-                    path = saveDialog.getSelectedFile().toString() + "\\" + file.getFileName();
+                if (state == JFileChooser.APPROVE_OPTION) {
+                    FileOutputStream fos = null;
 
-                    if (java.nio.file.Files.exists(java.nio.file.Paths.get(path), java.nio.file.LinkOption.NOFOLLOW_LINKS)) {
-                        int retVal = JOptionPane.showConfirmDialog(FrmMain.getInstance(), "The file already exists. Do you want to overwrite the file?", "File already exists", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+                    try {
+                        path = saveDialog.getSelectedFile().toString() + "\\" + file.getFileName();
 
-                        if (retVal == JOptionPane.YES_OPTION) {
+                        if (java.nio.file.Files.exists(java.nio.file.Paths.get(path), java.nio.file.LinkOption.NOFOLLOW_LINKS)) {
+                            int retVal = JOptionPane.showConfirmDialog(FrmMain.getInstance(), "The file already exists. Do you want to overwrite the file?", "File already exists", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+
+                            if (retVal == JOptionPane.YES_OPTION) {
+                                fos = new FileOutputStream(path);
+                                fos.write(file.getByteStream());
+                            }
+                        } else {
                             fos = new FileOutputStream(path);
                             fos.write(file.getByteStream());
                         }
-                    } else {
-                        fos = new FileOutputStream(path);
-                        fos.write(file.getByteStream());
-                    }
-                } catch (FileNotFoundException ex) {
-                    handlers.LoggerHandler.logger.severe(ex.getMessage());
-                } catch (IOException ex) {
-                    handlers.LoggerHandler.logger.severe(ex.getMessage());
-                } finally {
-                    try {
-                        if (fos != null) {
-                            fos.close();
-                        }
+                    } catch (FileNotFoundException ex) {
+                        handlers.LoggerHandler.logger.severe(ex.getMessage());
                     } catch (IOException ex) {
                         handlers.LoggerHandler.logger.severe(ex.getMessage());
+                    } finally {
+                        try {
+                            if (fos != null) {
+                                fos.close();
+                            }
+                        } catch (IOException ex) {
+                            handlers.LoggerHandler.logger.severe(ex.getMessage());
+                        }
                     }
+
                 }
-
             }
-
         }
-    }//GEN-LAST:event_liEventAttachmentsMouseClicked
+    }//GEN-LAST:event_liEventAttachmentsMousePressed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddAttachments;
