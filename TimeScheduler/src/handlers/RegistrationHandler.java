@@ -10,12 +10,15 @@ import handlers.EncryptionHandler;
 import java.security.NoSuchAlgorithmException;
 import classes.User;
 import handlers.UserHandler;
+import handlers.EncryptionHandler;
 
 /**
  *
  * @author Vadym
  */
 public class RegistrationHandler {
+
+    EncryptionHandler encrypHandler = new EncryptionHandler();
 
     //checks if first/lastname input from user is longer than 2 and has no numbers and is not null. []+ one or more
     public static boolean checkInputUserName(String name) {
@@ -72,7 +75,7 @@ public class RegistrationHandler {
 
     public static boolean checkIfNewUserExist(String email) {
         //check if email exists.
-        
+
         DatabaseHandler dbHandler;
         dbHandler = new DatabaseHandler();
         if (dbHandler.checkIfUserExists(email) == true) {
@@ -92,5 +95,22 @@ public class RegistrationHandler {
             System.out.println("Exception thrown");
         }
 
+    }
+
+    public int getRandomEmailVerificationNumber() {
+        int ran = encrypHandler.randNumberGen();
+        return ran;
+    }
+
+    public void sendEmailVerificationCode(String email, int rand) {
+        EmailHandler eHandler = new EmailHandler(email, rand);
+        new Thread(eHandler).start();
+    }
+
+    public boolean verifyEmailSendedCode(int rand, String userInput) {
+        if (rand == Integer.valueOf(userInput)) {
+            return true;
+        }
+        return false;
     }
 }

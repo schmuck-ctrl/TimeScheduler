@@ -67,7 +67,7 @@ public class ReminderHandler extends Thread {
                 String message = "";
                 for (classes.Event evt : toBeRemindedList) {
                     //Send emails to all participants of an event
-                    EmailHandler eHandler = new EmailHandler(evt);
+                    EmailHandler eHandler = new EmailHandler(EmailHandler.MailOperation.REMIND_EVENT,evt);
                     new Thread(eHandler).start();
                     //build message string
                     message += evt.getName() + ": " + evt.getDate().getDayOfMonth() + "/" + evt.getDate().getMonthValue() + 

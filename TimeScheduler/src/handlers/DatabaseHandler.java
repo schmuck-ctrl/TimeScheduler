@@ -662,8 +662,8 @@ public class DatabaseHandler {
 
     public int editEvent(Event toBeEdited) {
         int editSuccessfull = -1;
-        ArrayList<Operator> new_participants = toBeEdited.getParticipants();
-        new_participants.add(toBeEdited.getHost());
+        ArrayList<Operator> new_participants = (ArrayList<Operator>) toBeEdited.getParticipants().clone();
+       // new_participants.add(toBeEdited.getHost());
         String editEvent
                 = "UPDATE event SET E_eventName = ?, E_eventDuration = ?, E_eventDate = ?, E_priority = ?,"
                 + "E_eventLocation = ?, E_notification = ? "
@@ -716,7 +716,7 @@ public class DatabaseHandler {
 
         String sqlEvent = "INSERT INTO event (E_eventName, E_eventDuration, E_eventDate, E_priority, E_eventLocation, E_notification) VALUES (?, ?, ?, ?, ?, ?);";
         ArrayList<Operator> temp = new_event.getParticipants();
-        temp.add(new_event.getHost());
+        //temp.add(new_event.getHost());
 
         try ( PreparedStatement stmt = con.prepareStatement(sqlEvent)) {
             stmt.setString(1, new_event.getName());

@@ -8,7 +8,6 @@ package forms;
 import classes.Operator;
 import handlers.UserHandler;
 import handlers.DatabaseHandler;
-import java.awt.List;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
@@ -22,7 +21,7 @@ import javax.swing.table.TableColumn;
  */
 public class FrmAddUserToAppointment extends javax.swing.JDialog {
 
-    //private DatabaseHandler dbHandler;
+    
     private DefaultTableModel tabSearchForUserModel = null;
     private DefaultTableModel tabAddedUserModel = null;
     private DatabaseHandler dbHandler = null;

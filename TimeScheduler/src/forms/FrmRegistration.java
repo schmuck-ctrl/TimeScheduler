@@ -9,7 +9,6 @@ import classes.*;
 import handlers.*;
 import java.awt.Color;
 import javax.swing.ToolTipManager;
-import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 
 /**
@@ -30,7 +29,6 @@ public class FrmRegistration extends javax.swing.JFrame {
         dismissDelay = Integer.MAX_VALUE;
         ToolTipManager.sharedInstance().setDismissDelay(dismissDelay);
     }
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -370,17 +368,17 @@ public class FrmRegistration extends javax.swing.JFrame {
         lblRepeatPasswordError.setText("");
         RegistrationHandler reHandler = new RegistrationHandler();
         boolean inputError = true;
-        
+
         if (!reHandler.checkInputUserName(txtFirstName.getText())) {
-            lblFirstNameError.setText("Firstname is not correct");
+            lblFirstNameError.setText("Firstname is incorrect");
             inputError = false;
         }
         if (!reHandler.checkInputUserName(txtLastName.getText())) {
-            lblLastNameError.setText("Lastname is not correct");
+            lblLastNameError.setText("Lastname is incorrect");
             inputError = false;
         }
         if (!reHandler.checkInputUserEmail(txtEmail.getText())) {
-            lblEmailError.setText("Email is not correct");
+            lblEmailError.setText("Email is incorrect");
             inputError = false;
         }
         if (!reHandler.checkIfNewUserExist(txtEmail.getText())) {
@@ -388,13 +386,17 @@ public class FrmRegistration extends javax.swing.JFrame {
             inputError = false;
         }
         if (!reHandler.checkInputUserPassword(ptxtPassword.getPassword())) {
-            lblPasswordError.setText("Password is not correct");
+            lblPasswordError.setText("Password does not match");
             inputError = false;
         } else if (!reHandler.checkIfPasswordTheSame(ptxtPassword.getPassword(), ptxtRepeatPassword.getPassword())) {
-            lblRepeatPasswordError.setText("Password is not the same");
+            lblRepeatPasswordError.setText("Password ");
             inputError = false;
         }
         if (inputError == true) {
+//            int rand = reHandler.getRandomEmailVerificationNumber();
+//            reHandler.sendEmailVerificationCode(txtEmail.getText().trim(), rand);
+//            String userVerificationInput = JOptionPane.showInputDialog("Email with the verification code was send to you");
+//            if (Integer.valueOf(userVerificationInput) == rand) {
             User user = new User(txtFirstName.getText().trim(), txtLastName.getText().trim(), txtEmail.getText().trim());
             reHandler.createNewUser(user, ptxtPassword.getPassword());
             JOptionPane.showMessageDialog(null, "User was created", "Registration Information", JOptionPane.INFORMATION_MESSAGE);
@@ -402,6 +404,17 @@ public class FrmRegistration extends javax.swing.JFrame {
             frmLogin.setVisible(true);
             this.dispose();
 
+//           } 
+//else {
+//                String userVerificationInputSecondTry = JOptionPane.showInputDialog("Your input was incorrect please try one last time");
+//                if (Integer.valueOf(userVerificationInput) == rand) {
+//                    User user = new User(txtFirstName.getText().trim(), txtLastName.getText().trim(), txtEmail.getText().trim());
+//                    reHandler.createNewUser(user, ptxtPassword.getPassword());
+//                    JOptionPane.showMessageDialog(null, "User was created", "Registration Information", JOptionPane.INFORMATION_MESSAGE);
+//                    FrmLogin frmLogin = new FrmLogin();
+//                    frmLogin.setVisible(true);
+//                    this.dispose();
+//                }
         }
 
         ptxtPassword.setText("");
@@ -416,9 +429,9 @@ public class FrmRegistration extends javax.swing.JFrame {
 
     private void btnBackToLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackToLoginActionPerformed
         // TODO add your handling code here:
-                new FrmLogin().setVisible(true);
-                this.dispose();
-            
+        new FrmLogin().setVisible(true);
+        this.dispose();
+
     }//GEN-LAST:event_btnBackToLoginActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

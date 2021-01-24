@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author Vadym
+ * @author Benny / Vadym
  */
 public class LoggerHandler {
 
