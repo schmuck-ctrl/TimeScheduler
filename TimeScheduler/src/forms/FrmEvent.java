@@ -555,7 +555,6 @@ public class FrmEvent extends javax.swing.JPanel {
         lblEventName.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblEventName.setText("Name: *");
         lblEventName.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-        lblEventName.setToolTipText("");
         pnlContent1.add(lblEventName);
 
         txtEventName.setHorizontalAlignment(javax.swing.JTextField.LEFT);

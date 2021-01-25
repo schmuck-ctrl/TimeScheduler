@@ -80,7 +80,6 @@
                 <Property name="horizontalAlignment" type="int" value="2"/>
                 <Property name="text" type="java.lang.String" value="Name: *"/>
                 <Property name="horizontalTextPosition" type="int" value="2"/>
-                <Property name="toolTipText" type="java.lang.String" value=""/>
               </Properties>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_SerializeTo" type="java.lang.String" value="FrmEvent_lblEventName"/>
