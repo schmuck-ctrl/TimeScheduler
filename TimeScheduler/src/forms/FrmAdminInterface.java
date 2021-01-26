@@ -22,7 +22,13 @@ import javax.swing.table.TableColumn;
 public class FrmAdminInterface extends javax.swing.JDialog {
 
     // <editor-fold defaultstate="collapsed" desc="Global Variables">
+    /**
+     * Model of {@link FrmAdminInterface#tabUser}.
+     */
     private DefaultTableModel tabUserModel = null;
+    /**
+     * The selected user from {@link FrmAdminInterface#tabUser}
+     */
     private Operator selectedUser = null;
 
     // </editor-fold>
@@ -93,7 +99,7 @@ public class FrmAdminInterface extends javax.swing.JDialog {
         UserHandler uHandler = new UserHandler();
 
         int rowIndex = tabUser.getSelectedRow();
-        
+
         if (rowIndex >= 0) {
             int userId = (int) tabUserModel.getValueAt(rowIndex, 0); //0 = ID spalte.
             user = uHandler.getUser(userId);
@@ -290,15 +296,21 @@ public class FrmAdminInterface extends javax.swing.JDialog {
         this.dispose();
     }//GEN-LAST:event_btnCancelActionPerformed
 
+    /**
+     * Sets this user to the selected one from this table. If the number of
+     * clicks is greater or equal 2 the edit user form will be opened.
+     *
+     * @param evt The action event.
+     * @see FrmAdminInterface#getSelectedUserFromTabUser()
+     */
     private void tabUserMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabUserMousePressed
         System.out.println(tabUser.getSelectedRow());
         this.selectedUser = getSelectedUserFromTabUser();
-        
-        
+
         if (evt.getClickCount() == 2) {
             if (selectedUser != null) {
-                FrmEditUser frmEditUserForm = new FrmEditUser((JFrame) this.getParent(), true, selectedUser);
-                frmEditUserForm.setVisible(true);
+                FrmEditUser frmEditUser = new FrmEditUser((JFrame) this.getParent(), true, selectedUser);
+                frmEditUser.setVisible(true);
                 this.refreshTable();
             }
         }

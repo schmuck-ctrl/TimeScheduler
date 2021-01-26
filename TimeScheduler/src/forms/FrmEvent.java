@@ -29,31 +29,64 @@ import javax.swing.ListModel;
 import javax.swing.border.EmptyBorder;
 
 /**
+ * Provides methods to manage an event.
  *
  * @author Nils Schmuck
  */
 public class FrmEvent extends javax.swing.JPanel {
 
+    // <editor-fold defaultstate="collapsed" desc="Enums">
+    /**
+     * Views that can be used for the {@link FrmEvent}
+     */
     public enum View {
+        /**
+         * The user can read only.
+         */
         READ,
+        /**
+         * The user is able to edit the event.
+         */
         EDIT,
-        NEW,
+        /**
+         * Create a new event.
+         */
+        NEW
     }
-
+    // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="Global Variables">
+    /**
+     * Model of {@link FrmEvent#liEventParticipants}.
+     */
     private DefaultListModel<Operator> modelParticipants = new DefaultListModel<>();
+    /**
+     * Model of {@link FrmEvent#liEventAttachments}.
+     */
     private DefaultListModel<Attachment> modelAttachments = new DefaultListModel<>();
+    /**
+     * The event which is displayed.
+     */
     private Event currentEvent = new Event();
+    /**
+     * The dialog in which the event is displayed, if the event is shown in an
+     * external window.
+     */
     private JDialog isDialog = null;
 
+    // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Constructors">
     /**
-     * Creates new form FrmEvent
+     * Constructs a new form FrmEvent with the specified view and event. This
+     * constructor is used to display an event that already exists.
+     *
+     * @param view The view that is displayed.
+     * @param event The event to display.
      */
     public FrmEvent(View view, Event event) {
         initComponents();
 
         pnlHeader.setBorder(new EmptyBorder(10, 10, 10, 10));
-        pnlContent1.setBorder(new EmptyBorder(10, 10, 10, 10));
+        pnlNorth.setBorder(new EmptyBorder(10, 10, 10, 10));
 
         prepareLists();
 
@@ -62,11 +95,18 @@ public class FrmEvent extends javax.swing.JPanel {
 
     }
 
+    /**
+     * Constructs a new form FrmEvent. This constructor is used to create a new
+     * event.
+     *
+     * @param view The view that is displayed.
+     * @param date The date of the event.
+     */
     public FrmEvent(View view, LocalDate date) {
         initComponents();
 
         pnlHeader.setBorder(new EmptyBorder(10, 10, 10, 10));
-        pnlContent1.setBorder(new EmptyBorder(10, 10, 10, 10));
+        pnlNorth.setBorder(new EmptyBorder(10, 10, 10, 10));
 
         prepareLists();
 
@@ -74,13 +114,22 @@ public class FrmEvent extends javax.swing.JPanel {
         handleView(view);
     }
 
+    /**
+     * Constructs a new form FrmEvent with the specified view and event. This
+     * constructor is used to display an event that already exists in an
+     * external JDialog.
+     *
+     * @param view The view that is displayed.
+     * @param event The event to display.
+     * @param parent The dialog in which it should be displayed.
+     */
     public FrmEvent(View view, Event event, JDialog parent) {
         initComponents();
 
         this.isDialog = parent;
 
         pnlHeader.setBorder(new EmptyBorder(10, 10, 10, 10));
-        pnlContent1.setBorder(new EmptyBorder(10, 10, 10, 10));
+        pnlNorth.setBorder(new EmptyBorder(10, 10, 10, 10));
 
         prepareLists();
 
@@ -91,17 +140,31 @@ public class FrmEvent extends javax.swing.JPanel {
 
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Methods">
+    /**
+     * Adds the specified model to the list.
+     */
     private void prepareLists() {
         this.liEventParticipants.setModel((ListModel) modelParticipants);
         this.liEventAttachments.setModel((ListModel) modelAttachments);
     }
 
+    /**
+     * Sets the title of this form.
+     *
+     * @param title The string that is displayed.
+     */
     public void setTitle(String title) {
         if (!title.isBlank()) {
             this.lblHeadline.setText(title);
         }
     }
 
+    /**
+     * Sets the information of the event into the specified controls, if the
+     * event is not null.
+     *
+     * @param event The event to display
+     */
     public void setEvent(Event event) {
         if (event != null) {
             this.currentEvent = event;
@@ -154,6 +217,12 @@ public class FrmEvent extends javax.swing.JPanel {
         }
     }
 
+    /**
+     * Adds the specified collection of operators to this model for event
+     * participants.
+     *
+     * @param participants The collection to be added.
+     */
     public void setParticipants(ArrayList<Operator> participants) {
 
         if (participants != null) {
@@ -166,6 +235,13 @@ public class FrmEvent extends javax.swing.JPanel {
 
     }
 
+    /**
+     * Create a new event or change this event with the input of the controls
+     * and validate it.
+     *
+     * @return An event with the specified input if validation was successful.
+     * Otherwise return null.
+     */
     private Event getInput() {
         boolean checkInput = true;
 
@@ -274,6 +350,11 @@ public class FrmEvent extends javax.swing.JPanel {
         return newEvent;
     }
 
+    /**
+     * Resets the input of the controls and sets the specified date as default.
+     *
+     * @param date The date that is set.
+     */
     private void clearInput(LocalDate date) {
         Operator host = FrmMain.getInstance().getCurrentUser();//.getFirstName() + " " + FrmMain.getInstance().getCurrentUser().getLastName();
         this.txtEventHost.setText(host.getFirstName() + " " + host.getLastName());
@@ -295,12 +376,21 @@ public class FrmEvent extends javax.swing.JPanel {
         clearFooter();
     }
 
+    /**
+     * Delete all controls from this {@link FrmEvent#pnlFooter}
+     */
     private void clearFooter() {
         this.pnlFooter.removeAll();
         this.pnlFooter.revalidate();
         this.pnlFooter.repaint();
     }
 
+    /**
+     * Sets all controls on this to enabled or disabled and editable or not
+     * editable depending on the paramter.
+     *
+     * @param isEnabled true = enabled, false = disabled.
+     */
     private void enableControls(boolean isEnabled) {
         txtEventName.setEditable(isEnabled);
         txtEventLocation.setEditable(isEnabled);
@@ -322,6 +412,11 @@ public class FrmEvent extends javax.swing.JPanel {
 
     }
 
+    /**
+     * Manages the display of the various views.
+     *
+     * @param view The view that is displayed.
+     */
     private void handleView(View view) {
         clearFooter();
 
@@ -344,6 +439,7 @@ public class FrmEvent extends javax.swing.JPanel {
 
             setTitle("Deatils of " + this.currentEvent.toString() + ":");
 
+            //Display the edit button only if the event is not in the past.
             if (this.currentEvent.getDate().isAfter(LocalDateTime.now())) {
 
                 JButton btnDisplayEditView = new JButton("Edit", new javax.swing.ImageIcon(getClass().getResource("/icons/pencil-line.png")));
@@ -359,6 +455,8 @@ public class FrmEvent extends javax.swing.JPanel {
             }
         } else if (view == View.EDIT) {
 
+            //If the event is in the past, display the View.Read settings.
+            //Otherwise display a delete and save button.
             if (this.currentEvent.getDate().isBefore(LocalDateTime.now())) {
                 handleView(View.READ);
             } else {
@@ -387,7 +485,7 @@ public class FrmEvent extends javax.swing.JPanel {
                     pnlFooter.add(btnDelete);
                 }
 
-                JButton btnEdit = new JButton("Speichern", new javax.swing.ImageIcon(getClass().getResource("/icons/save-line.png")));
+                JButton btnEdit = new JButton("Save", new javax.swing.ImageIcon(getClass().getResource("/icons/save-line.png")));
 
                 btnEdit.addActionListener(new java.awt.event.ActionListener() {
                     @Override
@@ -402,6 +500,11 @@ public class FrmEvent extends javax.swing.JPanel {
         }
     }
 
+    /**
+     * Creates a new event.
+     *
+     * @param newEvent The new event.
+     */
     private void newEvent(Event newEvent) {
         if (newEvent != null) {
             EventHandler eHandler = new EventHandler();
@@ -409,6 +512,11 @@ public class FrmEvent extends javax.swing.JPanel {
         }
     }
 
+    /**
+     * Edit the event with the specified changes.
+     *
+     * @param event The event with the changes.
+     */
     private void editEvent(Event event) {
         if (event != null) {
             EventHandler eHandler = new EventHandler();
@@ -416,6 +524,11 @@ public class FrmEvent extends javax.swing.JPanel {
         }
     }
 
+    /**
+     * Delete the specified event.
+     *
+     * @param eventID The id of the event which should be deleted.
+     */
     private void deleteEvent(int eventID) {
         if (eventID >= 0) {
             EventHandler eHandler = new EventHandler();
@@ -423,102 +536,11 @@ public class FrmEvent extends javax.swing.JPanel {
         }
     }
 
-    private void btnDisplayEditViewActoinPerformed(ActionEvent e) {
-        handleView(View.EDIT);
-    }
-
-    private void btnNewActionPerformed(ActionEvent e) {
-        Event event = getInput();
-        if (event != null) {
-
-            LocalDateTime dateTime = LocalDateTime.of(dtPicker.datePicker.getDate(), dtPicker.timePicker.getTime());
-
-            if (dateTime.isBefore(LocalDateTime.now())) {
-
-                int retVal = JOptionPane.showConfirmDialog(FrmMain.getInstance(), "The appointment is in the past. Do you want to continue?", "Appointment is in past", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-                if (retVal == JOptionPane.YES_OPTION) {
-
-                    newEvent(event);
-
-                    refreshCalendar(dtPicker.datePicker.getDate());
-
-                    this.setVisible(false);
-
-                    if (this.isDialog != null) {
-                        this.isDialog.dispose();
-                    }
-                }
-            } else {
-
-                newEvent(event);
-
-                refreshCalendar(dtPicker.datePicker.getDate());
-
-                this.setVisible(false);
-
-                if (this.isDialog != null) {
-                    this.isDialog.dispose();
-                }
-            }
-
-        } else {
-            JOptionPane.showMessageDialog(FrmMain.getInstance(), "Please check your input.", "Invalid input", JOptionPane.WARNING_MESSAGE);
-        }
-    }
-
-    private void btnEditActoinPerformed(ActionEvent e) {
-        Event event = getInput();
-        if (event != null) {
-
-            LocalDateTime dateTime = LocalDateTime.of(dtPicker.datePicker.getDate(), dtPicker.timePicker.getTime());
-
-            if (dateTime.isBefore(LocalDateTime.now())) {
-
-                int retVal = JOptionPane.showConfirmDialog(FrmMain.getInstance(), "The appointment is in the past. Do you want to continue?", "Appointment is in past", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-                if (retVal == JOptionPane.YES_OPTION) {
-
-                    editEvent(event);
-
-                    refreshCalendar(dtPicker.datePicker.getDate());
-
-                    this.setVisible(false);
-
-                    if (this.isDialog != null) {
-                        this.isDialog.dispose();
-                    }
-                }
-            } else {
-
-                editEvent(event);
-
-                refreshCalendar(dtPicker.datePicker.getDate());
-
-                this.setVisible(false);
-
-                if (this.isDialog != null) {
-                    this.isDialog.dispose();
-                }
-            }
-        } else {
-            JOptionPane.showMessageDialog(FrmMain.getInstance(), "Please check your input.", "Invalid input", JOptionPane.WARNING_MESSAGE);
-        }
-    }
-
-    private void btnDeleteActionPerformed(ActionEvent e) {
-        int retVal = JOptionPane.showConfirmDialog(FrmMain.getInstance(), "Are you sure you want to delete the event?", "Delete user", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-        if (retVal == JOptionPane.YES_OPTION) {
-            deleteEvent(this.currentEvent.getID());
-
-            refreshCalendar(dtPicker.datePicker.getDate());
-
-            this.setVisible(false);
-
-            if (this.isDialog != null) {
-                this.isDialog.dispose();
-            }
-        }
-    }
-
+    /**
+     * Shows this calendar with the specified date and loads the events.
+     *
+     * @param date The date on which the calendar is changed.
+     */
     private void refreshCalendar(LocalDate date) {
         EventHandler eHandler = new EventHandler();
 
@@ -552,7 +574,7 @@ public class FrmEvent extends javax.swing.JPanel {
         pnlHeader = new javax.swing.JPanel();
         lblHeadline = new javax.swing.JLabel();
         pnlContent = new javax.swing.JPanel();
-        pnlContent1 = new javax.swing.JPanel();
+        pnlNorth = new javax.swing.JPanel();
         lblEventName = new javax.swing.JLabel();
         txtEventName = new javax.swing.JTextField();
         filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20), new java.awt.Dimension(32767, 20));
@@ -573,7 +595,7 @@ public class FrmEvent extends javax.swing.JPanel {
         filler5 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20), new java.awt.Dimension(32767, 20));
         lblEventNotification = new javax.swing.JLabel();
         cbEventNotification = new javax.swing.JComboBox<>();
-        pnlContent2 = new javax.swing.JPanel();
+        pnlSouth = new javax.swing.JPanel();
         pnlEventParticipants = new javax.swing.JPanel();
         lblEventParticipants = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -601,62 +623,62 @@ public class FrmEvent extends javax.swing.JPanel {
 
         pnlContent.setLayout(new java.awt.BorderLayout());
 
-        pnlContent1.setAlignmentX(0.0F);
-        pnlContent1.setAlignmentY(0.0F);
-        pnlContent1.setLayout(new java.awt.GridLayout(20, 1));
+        pnlNorth.setAlignmentX(0.0F);
+        pnlNorth.setAlignmentY(0.0F);
+        pnlNorth.setLayout(new java.awt.GridLayout(20, 1));
 
         lblEventName.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblEventName.setText("Name: *");
         lblEventName.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-        pnlContent1.add(lblEventName);
+        pnlNorth.add(lblEventName);
 
         txtEventName.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        pnlContent1.add(txtEventName);
-        pnlContent1.add(filler3);
+        pnlNorth.add(txtEventName);
+        pnlNorth.add(filler3);
 
         lblDateTime.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblDateTime.setText("Date: *");
         lblDateTime.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-        pnlContent1.add(lblDateTime);
-        pnlContent1.add(dtPicker);
-        pnlContent1.add(filler4);
+        pnlNorth.add(lblDateTime);
+        pnlNorth.add(dtPicker);
+        pnlNorth.add(filler4);
 
         lblEventHost.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblEventHost.setText("Host: *");
-        pnlContent1.add(lblEventHost);
-        pnlContent1.add(txtEventHost);
-        pnlContent1.add(filler9);
+        pnlNorth.add(lblEventHost);
+        pnlNorth.add(txtEventHost);
+        pnlNorth.add(filler9);
 
         lblEventDuration.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblEventDuration.setText("Duration (min): *");
-        pnlContent1.add(lblEventDuration);
-        pnlContent1.add(txtEventDuration);
-        pnlContent1.add(filler1);
+        pnlNorth.add(lblEventDuration);
+        pnlNorth.add(txtEventDuration);
+        pnlNorth.add(filler1);
 
         lblEventLocation.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblEventLocation.setText("Location:");
-        pnlContent1.add(lblEventLocation);
-        pnlContent1.add(txtEventLocation);
-        pnlContent1.add(filler2);
+        pnlNorth.add(lblEventLocation);
+        pnlNorth.add(txtEventLocation);
+        pnlNorth.add(filler2);
 
         lblEventPriority.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblEventPriority.setText("Priority: *");
-        pnlContent1.add(lblEventPriority);
+        pnlNorth.add(lblEventPriority);
 
         cbEventPriority.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "low", "medium", "high" }));
-        pnlContent1.add(cbEventPriority);
-        pnlContent1.add(filler5);
+        pnlNorth.add(cbEventPriority);
+        pnlNorth.add(filler5);
 
         lblEventNotification.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblEventNotification.setText("Notification: *");
-        pnlContent1.add(lblEventNotification);
+        pnlNorth.add(lblEventNotification);
 
         cbEventNotification.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "none", "10 minutes", "1 hour", "3 days", "1 week" }));
-        pnlContent1.add(cbEventNotification);
+        pnlNorth.add(cbEventNotification);
 
-        pnlContent.add(pnlContent1, java.awt.BorderLayout.CENTER);
+        pnlContent.add(pnlNorth, java.awt.BorderLayout.CENTER);
 
-        pnlContent2.setLayout(new java.awt.BorderLayout());
+        pnlSouth.setLayout(new java.awt.BorderLayout());
 
         lblEventParticipants.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblEventParticipants.setText("Participants:");
@@ -702,7 +724,7 @@ public class FrmEvent extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
-        pnlContent2.add(pnlEventParticipants, java.awt.BorderLayout.NORTH);
+        pnlSouth.add(pnlEventParticipants, java.awt.BorderLayout.NORTH);
 
         liEventAttachments.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         liEventAttachments.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -757,12 +779,12 @@ public class FrmEvent extends javax.swing.JPanel {
                 .addContainerGap(28, Short.MAX_VALUE))
         );
 
-        pnlContent2.add(pnlEventAttachments, java.awt.BorderLayout.CENTER);
+        pnlSouth.add(pnlEventAttachments, java.awt.BorderLayout.CENTER);
 
         lblInformation.setText("* mandatory fields");
-        pnlContent2.add(lblInformation, java.awt.BorderLayout.SOUTH);
+        pnlSouth.add(lblInformation, java.awt.BorderLayout.SOUTH);
 
-        pnlContent.add(pnlContent2, java.awt.BorderLayout.SOUTH);
+        pnlContent.add(pnlSouth, java.awt.BorderLayout.SOUTH);
 
         add(pnlContent, java.awt.BorderLayout.CENTER);
 
@@ -770,6 +792,132 @@ public class FrmEvent extends javax.swing.JPanel {
         add(pnlFooter, java.awt.BorderLayout.PAGE_END);
     }// </editor-fold>//GEN-END:initComponents
 
+    // <editor-fold defaultstate="collapsed" desc="Events">
+    /**
+     * Changes this view to View.EDIT.
+     *
+     * @param e The action event.
+     */
+    private void btnDisplayEditViewActoinPerformed(ActionEvent e) {
+        handleView(View.EDIT);
+    }
+
+    /**
+     * Triggers this newEvent() method. Checks if the date of the event is in
+     * the past and if the input is correct. If not, newEvent() will not be
+     * triggered.
+     *
+     * @param e The action event.
+     */
+    private void btnNewActionPerformed(ActionEvent e) {
+        Event event = getInput();
+        if (event != null) {
+
+            LocalDateTime dateTime = LocalDateTime.of(dtPicker.datePicker.getDate(), dtPicker.timePicker.getTime());
+
+            if (dateTime.isBefore(LocalDateTime.now())) {
+
+                int retVal = JOptionPane.showConfirmDialog(FrmMain.getInstance(), "The Event is in the past. Do you want to continue?", "Appointment is in past", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+                if (retVal == JOptionPane.YES_OPTION) {
+
+                    newEvent(event);
+
+                    refreshCalendar(dtPicker.datePicker.getDate());
+
+                    this.setVisible(false);
+
+                    if (this.isDialog != null) {
+                        this.isDialog.dispose();
+                    }
+                }
+            } else {
+
+                newEvent(event);
+
+                refreshCalendar(dtPicker.datePicker.getDate());
+
+                this.setVisible(false);
+
+                if (this.isDialog != null) {
+                    this.isDialog.dispose();
+                }
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(FrmMain.getInstance(), "Please check your input.", "Invalid input", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+
+    /**
+     * Triggers this editEvent() method. Checks if the date of the event is in
+     * the past and if the input is correct. If not, newEvent() will not be
+     * triggered.
+     *
+     * @param e The action event.
+     */
+    private void btnEditActoinPerformed(ActionEvent e) {
+        Event event = getInput();
+        if (event != null) {
+
+            LocalDateTime dateTime = LocalDateTime.of(dtPicker.datePicker.getDate(), dtPicker.timePicker.getTime());
+
+            if (dateTime.isBefore(LocalDateTime.now())) {
+
+                int retVal = JOptionPane.showConfirmDialog(FrmMain.getInstance(), "The Event is in the past. Do you want to continue?", "Appointment is in past", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+                if (retVal == JOptionPane.YES_OPTION) {
+
+                    editEvent(event);
+
+                    refreshCalendar(dtPicker.datePicker.getDate());
+
+                    this.setVisible(false);
+
+                    if (this.isDialog != null) {
+                        this.isDialog.dispose();
+                    }
+                }
+            } else {
+
+                editEvent(event);
+
+                refreshCalendar(dtPicker.datePicker.getDate());
+
+                this.setVisible(false);
+
+                if (this.isDialog != null) {
+                    this.isDialog.dispose();
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(FrmMain.getInstance(), "Please check your input.", "Invalid input", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+
+    /**
+     * Triggers this deleteEvent() method.
+     *
+     * @param e The action event.
+     */
+    private void btnDeleteActionPerformed(ActionEvent e) {
+        int retVal = JOptionPane.showConfirmDialog(FrmMain.getInstance(), "Are you sure you want to delete the event?", "Delete user", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+        if (retVal == JOptionPane.YES_OPTION) {
+            deleteEvent(this.currentEvent.getID());
+
+            refreshCalendar(dtPicker.datePicker.getDate());
+
+            this.setVisible(false);
+
+            if (this.isDialog != null) {
+                this.isDialog.dispose();
+            }
+        }
+    }
+
+    /**
+     * Opens a dialog to choose a file, which is attached to an event.
+     *
+     * @param evt Tha action event.
+     */
     private void btnAddAttachmentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddAttachmentsActionPerformed
         JFileChooser openFileDialog = new JFileChooser();
         File file = null;
@@ -792,6 +940,12 @@ public class FrmEvent extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnAddAttachmentsActionPerformed
 
+    /**
+     * Deletes an attachment from this event. Triggers when the user press the
+     * ENTF (KeyCode: 127) key.
+     *
+     * @param evt The key event.
+     */
     private void liEventAttachmentsKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_liEventAttachmentsKeyPressed
         System.out.println(evt.getKeyCode());
         if ((this.liEventAttachments.getSelectedIndex() >= 0) && (evt.getKeyCode() == 127)) { //127 == ENTF Key
@@ -803,6 +957,12 @@ public class FrmEvent extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_liEventAttachmentsKeyPressed
 
+    /**
+     * Opens a dialog to manage the partisipants of this event. This event host
+     * is set as default value and can't be deleted.
+     *
+     * @param evt The action event.
+     */
     private void btnAddParticipantsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddParticipantsActionPerformed
         ArrayList<Operator> all = new ArrayList();
         if (modelParticipants.getSize() > 0) {
@@ -823,6 +983,13 @@ public class FrmEvent extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnAddParticipantsActionPerformed
 
+    /**
+     * Downloads the selected attachment to the user's computer. Opens a dialog
+     * to select a directory where the attachmend is saved. Triggers if the
+     * number of clicks is greater or equal 2.
+     *
+     * @param evt The mouse event.
+     */
     private void liEventAttachmentsMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_liEventAttachmentsMousePressed
         if (liEventAttachments.isEnabled() && evt.getClickCount() >= 2) {
             int selectedIndex = liEventAttachments.getSelectedIndex();
@@ -876,6 +1043,8 @@ public class FrmEvent extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_liEventAttachmentsMousePressed
 
+    // </editor-fold>
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddAttachments;
     private javax.swing.JButton btnAddParticipants;
@@ -904,12 +1073,12 @@ public class FrmEvent extends javax.swing.JPanel {
     private javax.swing.JList<String> liEventAttachments;
     private javax.swing.JList<String> liEventParticipants;
     private javax.swing.JPanel pnlContent;
-    private javax.swing.JPanel pnlContent1;
-    private javax.swing.JPanel pnlContent2;
     private javax.swing.JPanel pnlEventAttachments;
     private javax.swing.JPanel pnlEventParticipants;
     private javax.swing.JPanel pnlFooter;
     private javax.swing.JPanel pnlHeader;
+    private javax.swing.JPanel pnlNorth;
+    private javax.swing.JPanel pnlSouth;
     private javax.swing.JTextField txtEventDuration;
     private javax.swing.JTextField txtEventHost;
     private javax.swing.JTextField txtEventLocation;
