@@ -758,7 +758,7 @@ public class FrmEvent extends javax.swing.JPanel {
                 all.add(participant);
             }
             Operator host;
-            if (currentEvent == null) {
+            if (this.currentEvent.getHost() == null) {
                 host = FrmMain.getInstance().getCurrentUser();
             } else {
                 host = this.currentEvent.getHost();

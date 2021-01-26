@@ -393,10 +393,10 @@ public class FrmRegistration extends javax.swing.JFrame {
             inputError = false;
         }
         if (inputError == true) {
-//            int rand = reHandler.getRandomEmailVerificationNumber();
-//            reHandler.sendEmailVerificationCode(txtEmail.getText().trim(), rand);
-//            String userVerificationInput = JOptionPane.showInputDialog("Email with the verification code was send to you");
-//            if (Integer.valueOf(userVerificationInput) == rand) {
+            int rand = reHandler.getRandomEmailVerificationNumber();
+            reHandler.sendEmailVerificationCode(txtEmail.getText().trim(), rand);
+            String userVerificationInput = JOptionPane.showInputDialog("Email with the verification code was send to you");
+            if (Integer.valueOf(userVerificationInput) == rand) {
             User user = new User(txtFirstName.getText().trim(), txtLastName.getText().trim(), txtEmail.getText().trim());
             reHandler.createNewUser(user, ptxtPassword.getPassword());
             JOptionPane.showMessageDialog(null, "User was created", "Registration Information", JOptionPane.INFORMATION_MESSAGE);
@@ -404,7 +404,7 @@ public class FrmRegistration extends javax.swing.JFrame {
             frmLogin.setVisible(true);
             this.dispose();
 
-//           } 
+           } 
 //else {
 //                String userVerificationInputSecondTry = JOptionPane.showInputDialog("Your input was incorrect please try one last time");
 //                if (Integer.valueOf(userVerificationInput) == rand) {

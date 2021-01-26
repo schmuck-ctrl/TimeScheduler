@@ -6,7 +6,8 @@
 package handlers;
 
 import classes.*;
-import java.text.SimpleDateFormat;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
 import java.util.Properties;
@@ -25,7 +26,7 @@ import javax.mail.internet.MimeMessage;
 public class EmailHandler implements Runnable {
 
     public enum MailOperation {
-        VERIFY_ACCOUNT,VERIFY_EMAIL,CREATE_EVENT, EDIT_EVENT, DELETE_EVENT, REMIND_EVENT;
+        VERIFY_ACCOUNT, VERIFY_EMAIL, CREATE_EVENT, EDIT_EVENT, DELETE_EVENT, REMIND_EVENT;
     }
     private Operator user;
     private ArrayList<Operator> participants;
@@ -34,8 +35,8 @@ public class EmailHandler implements Runnable {
     private Operator organizer;
     private MailOperation operation;
     private String email;
-    
-    public EmailHandler(String email,int rand){
+
+    public EmailHandler(String email, int rand) {
         this.operation = MailOperation.VERIFY_EMAIL;
         this.email = email;
         this.rand = rand;
@@ -136,6 +137,9 @@ public class EmailHandler implements Runnable {
         String from = "Javprojekt@gmail.com"; // from address. As this is using Gmail SMTP your from address should be gmail
         String password = "Javaprojekt123"; // password for from gmail address that you have used in above line. 
         StringBuilder text = new StringBuilder();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm");
+        LocalTime localTime = LocalTime.of(event.getDate().getHour(), event.getDate().getMinute());
+        String time = formatter.format(localTime);
 
         Properties prop = new Properties();
         prop.put("mail.smtp.host", "smtp.gmail.com");
@@ -155,7 +159,7 @@ public class EmailHandler implements Runnable {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(from));
             for (int i = 0; i < participants.size(); i++) {
-                text.append("Participant of the event: " + participants.get(i).getLastName() + ", " + participants.get(i).getFirstName());
+                text.append(participants.get(i).getLastName() + ", " + participants.get(i).getFirstName());
                 text.append("\n");
             }
             for (int i = 0; i < participants.size(); i++) {
@@ -163,13 +167,15 @@ public class EmailHandler implements Runnable {
                 if (participants.get(i).getEmail() != null && !participants.get(i).getEmail().isEmpty()) {
                     message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(participants.get(i).getEmail()));
                     message.setSubject("You where invited to the: \"" + event.getName() + "\" meeting");
-                    message.setText("Dear Mrs/Mr " + participants.get(i).getLastName() + ",\n"
-                            + "All informations about the new meeting are below." + "\n"
+                    message.setText("Dear Mrs/Mr " + participants.get(i).getLastName() + ",\n\n"
+                            + "All informations about the new meeting are below." + "\n" + "\n"
                             + "Appointment name: " + event.getName() + "\n"
                             + "Meeting owner: " + organizer.getLastName() + "\n"
-                            + "Date: " + event.getDate() + "\n"
+                            + "Date: " + event.getDate().getDayOfMonth() + "." + event.getDate().getMonth() + "." + event.getDate().getYear() + "\n"
+                            + "Time: " + time + "\n"
                             + "Meeting duration: " + event.getDuration() + " Minutes" + "\n"
                             + "Place: " + event.getLocation() + "\n"
+                            + "Participants of the meeting: \n"
                             + text);
 
                     Transport.send(message);
@@ -189,6 +195,9 @@ public class EmailHandler implements Runnable {
         String from = "Javprojekt@gmail.com"; // from address. As this is using Gmail SMTP your from address should be gmail
         String password = "Javaprojekt123"; // password for from gmail address that you have used in above line. 
         StringBuilder text = new StringBuilder();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm");
+        LocalTime localTime = LocalTime.of(event.getDate().getHour(), event.getDate().getMinute());
+        String time = formatter.format(localTime);
 
         Properties prop = new Properties();
         prop.put("mail.smtp.host", "smtp.gmail.com");
@@ -208,9 +217,10 @@ public class EmailHandler implements Runnable {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(from));
             for (int i = 0; i < participants.size(); i++) {
-                text.append("Participant of the event: " + participants.get(i).getLastName() + ", " + participants.get(i).getFirstName());
+                text.append(participants.get(i).getLastName() + ", " + participants.get(i).getFirstName());
                 text.append("\n");
             }
+
             for (int i = 0; i < participants.size(); i++) {
 
                 System.out.println(participants.get(i).getLastName());
@@ -218,13 +228,15 @@ public class EmailHandler implements Runnable {
                     message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(participants.get(i).getEmail()));
 
                     message.setSubject("The event \"" + event.getName() + "\" was updated");
-                    message.setText("Dear Mrs/Mr " + participants.get(i).getLastName() + ",\n"
+                    message.setText("Dear Mrs/Mr " + participants.get(i).getLastName() + ",\n\n"
                             + "All informations about the updated meeting are below." + "\n"
                             + "Appointment name: " + event.getName() + "\n"
                             + "Meeting owner: " + organizer.getLastName() + "\n"
-                            + "Date: " + event.getDate() + "\n"
+                            + "Date: " + event.getDate().getDayOfMonth() + "." + event.getDate().getMonth() + "." + event.getDate().getYear() + "\n"
+                            + "Time: " + time + "\n"
                             + "Meeting duration: " + event.getDuration() + " Minutes" + "\n"
                             + "Place: " + event.getLocation() + "\n"
+                            + "Participants of the meeting: \n"
                             + text);
 
                     Transport.send(message);

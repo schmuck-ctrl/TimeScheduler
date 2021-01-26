@@ -74,20 +74,20 @@ public class EventHandler {
 
     public void addEvent(Event event) {
         dbHandler.createNewEvent(event);
-        //EmailHandler eHandler = new EmailHandler(EmailHandler.MailOperation.CREATE_EVENT, event);
-        //new Thread(eHandler).start();
+//        EmailHandler eHandler = new EmailHandler(EmailHandler.MailOperation.CREATE_EVENT, event);
+//        new Thread(eHandler).start();
 
     }
 
     public void editEvent(Event event) {
         dbHandler.editEvent(event);
-       // EmailHandler eHandler = new EmailHandler(EmailHandler.MailOperation.EDIT_EVENT, event);
-       // new Thread(eHandler).start();
+//        EmailHandler eHandler = new EmailHandler(EmailHandler.MailOperation.EDIT_EVENT, event);
+//        new Thread(eHandler).start();
     }
 
     public void deleteEvent(int eventID) {
-       // EmailHandler eHandler = new EmailHandler(EmailHandler.MailOperation.DELETE_EVENT,dbHandler.getEventById(eventID));
-       // new Thread(eHandler).start();
+//        EmailHandler eHandler = new EmailHandler(EmailHandler.MailOperation.DELETE_EVENT,dbHandler.getEventById(eventID));
+//        new Thread(eHandler).start();
         dbHandler.deleteEvent(eventID);
        
     }

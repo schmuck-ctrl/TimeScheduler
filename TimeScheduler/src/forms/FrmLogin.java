@@ -18,6 +18,7 @@ import javax.swing.JOptionPane;
 public class FrmLogin extends javax.swing.JFrame {
 
     /**
+     * 
      * Creates new form FrmLogin
      */
     public FrmLogin() {
