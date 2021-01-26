@@ -344,51 +344,61 @@ public class FrmEvent extends javax.swing.JPanel {
 
             setTitle("Deatils of " + this.currentEvent.toString() + ":");
 
-            JButton btnDisplayEditView = new JButton("Edit", new javax.swing.ImageIcon(getClass().getResource("/icons/pencil-line.png")));
+            if (this.currentEvent.getDate().isAfter(LocalDateTime.now())) {
 
-            btnDisplayEditView.addActionListener(new java.awt.event.ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    btnDisplayEditViewActoinPerformed(e);
-                }
-            });
+                JButton btnDisplayEditView = new JButton("Edit", new javax.swing.ImageIcon(getClass().getResource("/icons/pencil-line.png")));
 
-            pnlFooter.add(btnDisplayEditView);
-        } else if (view == View.EDIT) {
-            enableControls(true);
-
-            setTitle("Edit event " + this.currentEvent.toString() + ":");
-
-            if ((FrmMain.getInstance().getCurrentUser().getUserId() != this.currentEvent.getHost().getUserId())) {
-                enableControls(false);
-                liEventAttachments.setEnabled(true);
-                btnAddAttachments.setEnabled(true);
-
-            } else {
-
-                JButton btnDelete = new JButton("Delete", new javax.swing.ImageIcon(getClass().getResource("/icons/delete-bin-line.png")));
-
-                btnDelete.addActionListener(new java.awt.event.ActionListener() {
+                btnDisplayEditView.addActionListener(new java.awt.event.ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        btnDeleteActionPerformed(e);
+                        btnDisplayEditViewActoinPerformed(e);
+                    }
+                });
+
+                pnlFooter.add(btnDisplayEditView);
+            }
+        } else if (view == View.EDIT) {
+
+            if (this.currentEvent.getDate().isBefore(LocalDateTime.now())) {
+                handleView(View.READ);
+            } else {
+
+                enableControls(true);
+
+                setTitle("Edit event " + this.currentEvent.toString() + ":");
+
+                if ((FrmMain.getInstance().getCurrentUser().getUserId() != this.currentEvent.getHost().getUserId())) {
+                    enableControls(false);
+                    liEventAttachments.setEnabled(true);
+                    btnAddAttachments.setEnabled(true);
+
+                } else {
+
+                    JButton btnDelete = new JButton("Delete", new javax.swing.ImageIcon(getClass().getResource("/icons/delete-bin-line.png")));
+
+                    btnDelete.addActionListener(new java.awt.event.ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            btnDeleteActionPerformed(e);
+                        }
+
+                    });
+
+                    pnlFooter.add(btnDelete);
+                }
+
+                JButton btnEdit = new JButton("Speichern", new javax.swing.ImageIcon(getClass().getResource("/icons/save-line.png")));
+
+                btnEdit.addActionListener(new java.awt.event.ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        btnEditActoinPerformed(e);
                     }
 
                 });
 
-                pnlFooter.add(btnDelete);
+                pnlFooter.add(btnEdit);
             }
-            JButton btnEdit = new JButton("Speichern", new javax.swing.ImageIcon(getClass().getResource("/icons/save-line.png")));
-
-            btnEdit.addActionListener(new java.awt.event.ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    btnEditActoinPerformed(e);
-                }
-
-            });
-
-            pnlFooter.add(btnEdit);
         }
     }
 
@@ -420,15 +430,37 @@ public class FrmEvent extends javax.swing.JPanel {
     private void btnNewActionPerformed(ActionEvent e) {
         Event event = getInput();
         if (event != null) {
-            newEvent(event);
 
-            refreshCalendar(dtPicker.datePicker.getDate());
+            LocalDateTime dateTime = LocalDateTime.of(dtPicker.datePicker.getDate(), dtPicker.timePicker.getTime());
 
-            this.setVisible(false);
+            if (dateTime.isBefore(LocalDateTime.now())) {
 
-            if (this.isDialog != null) {
-                this.isDialog.dispose();;
+                int retVal = JOptionPane.showConfirmDialog(FrmMain.getInstance(), "The appointment is in the past. Do you want to continue?", "Appointment is in past", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+                if (retVal == JOptionPane.YES_OPTION) {
+
+                    newEvent(event);
+
+                    refreshCalendar(dtPicker.datePicker.getDate());
+
+                    this.setVisible(false);
+
+                    if (this.isDialog != null) {
+                        this.isDialog.dispose();
+                    }
+                }
+            } else {
+
+                newEvent(event);
+
+                refreshCalendar(dtPicker.datePicker.getDate());
+
+                this.setVisible(false);
+
+                if (this.isDialog != null) {
+                    this.isDialog.dispose();
+                }
             }
+
         } else {
             JOptionPane.showMessageDialog(FrmMain.getInstance(), "Please check your input.", "Invalid input", JOptionPane.WARNING_MESSAGE);
         }
@@ -437,14 +469,35 @@ public class FrmEvent extends javax.swing.JPanel {
     private void btnEditActoinPerformed(ActionEvent e) {
         Event event = getInput();
         if (event != null) {
-            editEvent(event);
 
-            refreshCalendar(dtPicker.datePicker.getDate());
+            LocalDateTime dateTime = LocalDateTime.of(dtPicker.datePicker.getDate(), dtPicker.timePicker.getTime());
 
-            this.setVisible(false);
+            if (dateTime.isBefore(LocalDateTime.now())) {
 
-            if (this.isDialog != null) {
-                this.isDialog.dispose();;
+                int retVal = JOptionPane.showConfirmDialog(FrmMain.getInstance(), "The appointment is in the past. Do you want to continue?", "Appointment is in past", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+                if (retVal == JOptionPane.YES_OPTION) {
+
+                    editEvent(event);
+
+                    refreshCalendar(dtPicker.datePicker.getDate());
+
+                    this.setVisible(false);
+
+                    if (this.isDialog != null) {
+                        this.isDialog.dispose();
+                    }
+                }
+            } else {
+
+                editEvent(event);
+
+                refreshCalendar(dtPicker.datePicker.getDate());
+
+                this.setVisible(false);
+
+                if (this.isDialog != null) {
+                    this.isDialog.dispose();
+                }
             }
         } else {
             JOptionPane.showMessageDialog(FrmMain.getInstance(), "Please check your input.", "Invalid input", JOptionPane.WARNING_MESSAGE);

@@ -111,7 +111,6 @@ public class FrmMain extends javax.swing.JFrame {
         FrmEvent frmEvent = new FrmEvent(FrmEvent.View.READ, event);
 
         pnlEventRoot.add(frmEvent);
-        frmEvent.setTitle("Details of " + event.toString() + ":");
         frmEvent.setVisible(true);
 
     }
@@ -128,7 +127,6 @@ public class FrmMain extends javax.swing.JFrame {
 
         FrmEvent frmEvent = new FrmEvent(FrmEvent.View.EDIT, event);
         pnlEventRoot.add(frmEvent);
-        frmEvent.setTitle("Edit event " + event.toString() + ":");
         frmEvent.setVisible(true);
         this.revalidate();
         this.repaint();
@@ -159,7 +157,6 @@ public class FrmMain extends javax.swing.JFrame {
 
         FrmEvent frmEvent = new FrmEvent(FrmEvent.View.NEW, date);
         pnlEventRoot.add(frmEvent);
-        frmEvent.setTitle("Create new Event: ");
         frmEvent.setVisible(true);
     }
 
