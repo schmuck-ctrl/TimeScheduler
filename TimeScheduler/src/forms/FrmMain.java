@@ -53,6 +53,7 @@ public class FrmMain extends javax.swing.JFrame {
         eventHandler = new EventHandler();
         this.datePicker.getComponentDateTextField().setEditable(false);
         addDatePickerDateChangedEvent();
+        setIcon();
     }
 
     /**
@@ -493,4 +494,8 @@ public class FrmMain extends javax.swing.JFrame {
     private javax.swing.JPanel pnlMenuBar;
     private javax.swing.JSplitPane splitPnlContent;
     // End of variables declaration//GEN-END:variables
+
+    private void setIcon() {
+        setIconImage(java.awt.Toolkit.getDefaultToolkit().getImage(getClass().getResource("/icons/calendar-event-line.png")));
+    }
 }
