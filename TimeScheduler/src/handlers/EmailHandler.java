@@ -10,7 +10,6 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
-import java.util.Locale;
 import java.util.Properties;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -26,8 +25,16 @@ import javax.mail.internet.MimeMessage;
  */
 public class EmailHandler implements Runnable {
 
+    /**
+     *
+     */
     public enum MailOperation {
-        VERIFY_ACCOUNT, VERIFY_EMAIL, CREATE_EVENT, EDIT_EVENT, DELETE_EVENT, REMIND_EVENT;
+        VERIFY_ACCOUNT,
+        VERIFY_EMAIL,
+        CREATE_EVENT,
+        EDIT_EVENT,
+        DELETE_EVENT,
+        REMIND_EVENT;
     }
     private Operator user;
     private ArrayList<Operator> participants;
@@ -37,18 +44,33 @@ public class EmailHandler implements Runnable {
     private MailOperation operation;
     private String email;
 
+    /**
+     *
+     * @param email
+     * @param rand
+     */
     public EmailHandler(String email, int rand) {
         this.operation = MailOperation.VERIFY_EMAIL;
         this.email = email;
         this.rand = rand;
     }
 
+    /**
+     *
+     * @param user
+     * @param rand
+     */
     public EmailHandler(Operator user, int rand) {
         this.operation = MailOperation.VERIFY_ACCOUNT;
         this.user = user;
         this.rand = rand;
     }
 
+    /**
+     *
+     * @param operation
+     * @param event
+     */
     public EmailHandler(MailOperation operation, Event event) {
         this.operation = operation;
         this.organizer = event.getHost();
@@ -56,6 +78,10 @@ public class EmailHandler implements Runnable {
         this.event = event;
     }
 
+    /**
+     *
+     * @return
+     */
     public String timeFormater() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         LocalTime localTime = LocalTime.of(event.getDate().getHour(), event.getDate().getMinute());
@@ -63,6 +89,11 @@ public class EmailHandler implements Runnable {
         return time;
     }
 
+    /**
+     *
+     * @param user
+     * @param rand
+     */
     public void emailSenderVerifyAccount(Operator user, int rand) {
         String from = "Javprojekt@gmail.com"; // from address. As this is using Gmail SMTP your from address should be gmail
         String password = "Javaprojekt123"; // password for from gmail address that you have used in above line. 
@@ -102,6 +133,11 @@ public class EmailHandler implements Runnable {
         }
     }
 
+    /**
+     *
+     * @param email
+     * @param rand
+     */
     public void emailSenderVerifyEmail(String email, int rand) {
         String from = "Javprojekt@gmail.com"; // from address. As this is using Gmail SMTP your from address should be gmail
         String password = "Javaprojekt123"; // password for from gmail address that you have used in above line. 
@@ -140,6 +176,10 @@ public class EmailHandler implements Runnable {
         }
     }
 
+    /**
+     *
+     * @param event
+     */
     public void emailSenderAddEvent(Event event) {
         //String to = ""; // to address. It can be any like gmail, yahoo etc.
         String from = "Javprojekt@gmail.com"; // from address. As this is using Gmail SMTP your from address should be gmail
@@ -198,6 +238,10 @@ public class EmailHandler implements Runnable {
 
     }
 
+    /**
+     *
+     * @param event
+     */
     public void emailSenderEditEvent(Event event) {
         String from = "Javprojekt@gmail.com"; // from address. As this is using Gmail SMTP your from address should be gmail
         String password = "Javaprojekt123"; // password for from gmail address that you have used in above line. 
@@ -257,6 +301,10 @@ public class EmailHandler implements Runnable {
 
     }
 
+    /**
+     *
+     * @param event
+     */
     public void emailSenderDeleteEvent(Event event) {
         String from = "Javprojekt@gmail.com"; // from address. As this is using Gmail SMTP your from address should be gmail
         String password = "Javaprojekt123"; // password for from gmail address that you have used in above line. 
@@ -365,6 +413,9 @@ public class EmailHandler implements Runnable {
 
     }
 
+    /**
+     *
+     */
     @Override
     public void run() {
         switch (this.operation) {
