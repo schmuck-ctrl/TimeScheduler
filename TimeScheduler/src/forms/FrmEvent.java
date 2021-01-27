@@ -223,7 +223,7 @@ public class FrmEvent extends javax.swing.JPanel {
      *
      * @param participants The collection to be added.
      */
-    public void setParticipants(ArrayList<Operator> participants) {
+    public void addParticipants(ArrayList<Operator> participants) {
 
         if (participants != null) {
             if (this.modelParticipants.getSize() > 0) {

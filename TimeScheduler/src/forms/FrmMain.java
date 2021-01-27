@@ -22,6 +22,9 @@ import java.util.ArrayList;
  */
 public class FrmMain extends javax.swing.JFrame {
 
+    /**
+     * The operator who is currently logged in.
+     */
     private Operator user = null;
     private EventHandler eventHandler = null;
     private ReminderHandler reminderHandler = null;
@@ -78,7 +81,7 @@ public class FrmMain extends javax.swing.JFrame {
      *
      * @param currentUser
      */
-    public void setCurrentUser(Operator currentUser) {
+    public void setConfigurations(Operator currentUser) {
         if (currentUser != null) {
             this.user = currentUser;
 
@@ -107,8 +110,9 @@ public class FrmMain extends javax.swing.JFrame {
     }
 
     /**
+     * Gets the {@link FrmMain#user} who is currently logged in.
      *
-     * @return
+     * @return The current operator.
      */
     public Operator getCurrentUser() {
         return this.user;
@@ -119,12 +123,13 @@ public class FrmMain extends javax.swing.JFrame {
      * null or empty string, nothing is displayed.
      *
      * @param text The text this component will display.
-     * @param error true = if this text is an error message, false = if this text is an success message.
+     * @param error true = if this text is an error message, false = if this
+     * text is an success message.
      */
     public void setFeedback(String text, boolean error) {
         if (!text.isBlank()) {
             this.lblFeedback.setText("");
-            
+
             if (error) {
                 this.lblFeedback.setForeground(Color.RED);
             } else {
@@ -135,7 +140,6 @@ public class FrmMain extends javax.swing.JFrame {
         }
     }
 
-    //FUNKTIONEN DIE VOM CALENDAR AUFGERUFEN WERDEN
     /**
      *
      * @param eventID
