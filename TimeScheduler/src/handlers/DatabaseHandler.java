@@ -362,18 +362,19 @@ public class DatabaseHandler {
      * @return a list of Integers.
      */
     public ArrayList<Event> getNotNotifiedEventsFromUser(int userID) {
-        ArrayList<Integer> eventIDs = getEventIDsNotNotified(userID);
+        //ArrayList<Integer> eventIDs = getEventIDsNotNotified(userID);
         String notNotified
                 = "SELECT * FROM eventdetails WHERE ED_eventID IN"
                 + "(SELECT P_eventID FROM participant WHERE P_userID = ? AND P_notified = 0)"
                 + " AND ED_notification <> 'NONE';";
         
+        
         ArrayList<Event> events = new ArrayList<>();
         try ( PreparedStatement stmt = con.prepareStatement(notNotified)) {
+            stmt.setInt(1, userID);
             try ( ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     events.add(getEvent(rs));
-                    
                 }
             }
         } catch (SQLException ex) {
