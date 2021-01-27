@@ -10,6 +10,7 @@ import classes.Operator;
 import com.github.lgooddatepicker.optionalusertools.DateChangeListener;
 import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
 import handlers.*;
+import java.awt.Color;
 import java.awt.Frame;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author nilss
+ * @author Nils Schmuck
  */
 public class FrmMain extends javax.swing.JFrame {
 
@@ -27,6 +28,10 @@ public class FrmMain extends javax.swing.JFrame {
 
     private static FrmMain form = null;
 
+    /**
+     *
+     * @return
+     */
     public static FrmMain getInstance() {
         if (form != null) {
             return form;
@@ -41,12 +46,15 @@ public class FrmMain extends javax.swing.JFrame {
      */
     private FrmMain() {
         initComponents();
-        this.setExtendedState(Frame.MAXIMIZED_BOTH);
+        this.setExtendedState(Frame.MAXIMIZED_BOTH); //full screen
         eventHandler = new EventHandler();
         this.datePicker.getComponentDateTextField().setEditable(false);
         addDatePickerDateChangedEvent();
     }
 
+    /**
+     *
+     */
     private void addDatePickerDateChangedEvent() {
         datePicker.addDateChangeListener(new DateChangeListener() {
             @Override
@@ -66,6 +74,10 @@ public class FrmMain extends javax.swing.JFrame {
     }
 
     // <editor-fold defaultstate="collapsed" desc="Methods"> 
+    /**
+     *
+     * @param currentUser
+     */
     public void setCurrentUser(Operator currentUser) {
         if (currentUser != null) {
             this.user = currentUser;
@@ -94,11 +106,40 @@ public class FrmMain extends javax.swing.JFrame {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public Operator getCurrentUser() {
         return this.user;
     }
 
+    /**
+     * Displays the specified text in this component. If the value of text is a
+     * null or empty string, nothing is displayed.
+     *
+     * @param text The text this component will display.
+     * @param error true = if this text is an error message, false = if this text is an success message.
+     */
+    public void setFeedback(String text, boolean error) {
+        if (!text.isBlank()) {
+            this.lblFeedback.setText("");
+            
+            if (error) {
+                this.lblFeedback.setForeground(Color.RED);
+            } else {
+                this.lblFeedback.setForeground(Color.GREEN);
+            }
+
+            this.lblFeedback.setText(text);
+        }
+    }
+
     //FUNKTIONEN DIE VOM CALENDAR AUFGERUFEN WERDEN
+    /**
+     *
+     * @param eventID
+     */
     public void displayEventDetails(int eventID) {
         pnlEventRoot.removeAll();
         pnlEventRoot.revalidate();
@@ -115,6 +156,10 @@ public class FrmMain extends javax.swing.JFrame {
 
     }
 
+    /**
+     *
+     * @param eventID
+     */
     public void editEvent(int eventID) {
         pnlEventRoot.removeAll();
         pnlEventRoot.revalidate();
@@ -133,6 +178,10 @@ public class FrmMain extends javax.swing.JFrame {
 
     }
 
+    /**
+     *
+     * @param today
+     */
     public void displayAllEventsOfDay(LocalDate today) {
         pnlEventRoot.removeAll();
         pnlEventRoot.revalidate();
@@ -148,6 +197,10 @@ public class FrmMain extends javax.swing.JFrame {
         frmEventsOfDay.setVisible(true);
     }
 
+    /**
+     *
+     * @param date
+     */
     public void createNewEvent(LocalDate date) {
         pnlEventRoot.removeAll();
         pnlEventRoot.revalidate();
@@ -160,6 +213,10 @@ public class FrmMain extends javax.swing.JFrame {
         frmEvent.setVisible(true);
     }
 
+    /**
+     *
+     * @return
+     */
     public FrmCalendar getCalendar() {
         return this.frmCalendar;
     }
@@ -193,6 +250,8 @@ public class FrmMain extends javax.swing.JFrame {
         datePicker = new com.github.lgooddatepicker.components.DatePicker();
         btnNextMonth = new javax.swing.JButton();
         pnlFooter = new javax.swing.JPanel();
+        filler6 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
+        lblFeedback = new javax.swing.JLabel();
         filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
         btnNewEvent = new javax.swing.JButton();
         filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
@@ -292,6 +351,11 @@ public class FrmMain extends javax.swing.JFrame {
 
         pnlFooter.setPreferredSize(new java.awt.Dimension(999, 50));
         pnlFooter.setLayout(new javax.swing.BoxLayout(pnlFooter, javax.swing.BoxLayout.LINE_AXIS));
+        pnlFooter.add(filler6);
+
+        lblFeedback.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblFeedback.setText("Feedback");
+        pnlFooter.add(lblFeedback);
         pnlFooter.add(filler2);
 
         btnNewEvent.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/add-circle-line.png"))); // NOI18N
@@ -333,10 +397,10 @@ public class FrmMain extends javax.swing.JFrame {
     private void btnNextMonthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextMonthActionPerformed
         LocalDate nextMonth = frmCalendar.getLocalDate().plusMonths(1);
 
-        if(this.frmCalendar.getSelectedLocalDate().getMonthValue() != this.frmCalendar.getCurrentMonthValue()) {
+        if (this.frmCalendar.getSelectedLocalDate().getMonthValue() != this.frmCalendar.getCurrentMonthValue()) {
             nextMonth = nextMonth.minusMonths(1);
         }
-        
+
         if (nextMonth.getYear() == LocalDate.now().getYear() && nextMonth.getMonthValue() == LocalDate.now().getMonthValue()) {
             datePicker.setDate(LocalDate.now());
         } else {
@@ -349,11 +413,11 @@ public class FrmMain extends javax.swing.JFrame {
 
     private void btnPreviousMonthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPreviousMonthActionPerformed
         LocalDate previousMonth = this.frmCalendar.getLocalDate().minusMonths(1);
-        
-        if(this.frmCalendar.getSelectedLocalDate().getMonthValue() != this.frmCalendar.getCurrentMonthValue()) {
+
+        if (this.frmCalendar.getSelectedLocalDate().getMonthValue() != this.frmCalendar.getCurrentMonthValue()) {
             previousMonth = previousMonth.plusMonths(1);
         }
-        
+
         if (previousMonth.getYear() == LocalDate.now().getYear() && previousMonth.getMonthValue() == LocalDate.now().getMonthValue()) {
             this.datePicker.setDate(LocalDate.now());
         } else {
@@ -365,7 +429,6 @@ public class FrmMain extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnPreviousMonthActionPerformed
 
-    
     /**
      * @param args the command line arguments
      */
@@ -412,7 +475,9 @@ public class FrmMain extends javax.swing.JFrame {
     private javax.swing.Box.Filler filler3;
     private javax.swing.Box.Filler filler4;
     private javax.swing.Box.Filler filler5;
+    private javax.swing.Box.Filler filler6;
     private forms.FrmCalendar frmCalendar;
+    private javax.swing.JLabel lblFeedback;
     private javax.swing.JLabel lblHeadline;
     private javax.swing.JButton mnuAdminInterface;
     private javax.swing.JPanel pnlCalendarControl;

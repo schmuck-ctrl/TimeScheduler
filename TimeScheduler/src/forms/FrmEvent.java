@@ -279,6 +279,10 @@ public class FrmEvent extends javax.swing.JPanel {
 
         if (!txtEventLocation.getText().isBlank()) {
             location = txtEventLocation.getText();
+            txtEventLocation.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+        } else {
+            txtEventLocation.setBorder(BorderFactory.createLineBorder(Color.RED));
+            checkInput = false;
         }
 
         if (dtPicker.datePicker.getDate() != null && dtPicker.timePicker.getTime() != null) {
@@ -656,7 +660,7 @@ public class FrmEvent extends javax.swing.JPanel {
         pnlNorth.add(filler1);
 
         lblEventLocation.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lblEventLocation.setText("Location:");
+        lblEventLocation.setText("Location: *");
         pnlNorth.add(lblEventLocation);
         pnlNorth.add(txtEventLocation);
         pnlNorth.add(filler2);
