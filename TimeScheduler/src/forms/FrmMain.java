@@ -15,6 +15,7 @@ import java.awt.Frame;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Timer;
 
 /**
  *
@@ -53,6 +54,7 @@ public class FrmMain extends javax.swing.JFrame {
         eventHandler = new EventHandler();
         this.datePicker.getComponentDateTextField().setEditable(false);
         addDatePickerDateChangedEvent();
+        setFeedback("Hallo das ist ein Test!", false);
     }
 
     /**
@@ -137,6 +139,16 @@ public class FrmMain extends javax.swing.JFrame {
             }
 
             this.lblFeedback.setText(text);
+            
+            Timer timer = new Timer();
+            timer.schedule(new java.util.TimerTask() {
+                @Override
+                public void run() {
+                    lblFeedback.setText("");
+                }
+            } , 7000);
+            
+            
         }
     }
 
@@ -357,7 +369,7 @@ public class FrmMain extends javax.swing.JFrame {
         pnlFooter.setLayout(new javax.swing.BoxLayout(pnlFooter, javax.swing.BoxLayout.LINE_AXIS));
         pnlFooter.add(filler6);
 
-        lblFeedback.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblFeedback.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         lblFeedback.setText("Feedback");
         pnlFooter.add(lblFeedback);
         pnlFooter.add(filler2);
