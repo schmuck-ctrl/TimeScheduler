@@ -333,9 +333,9 @@ public class EmailHandler implements Runnable {
                 if (participants.get(i).getEmail() != null && !participants.get(i).getEmail().isEmpty()) {
                     message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(participants.get(i).getEmail()));
 
-                    message.setSubject("Your : " + participants.get(i).getLastName() + "Event:" + "was deleted");
+                    message.setSubject("The event: \"" + event.getName() + "\" was deleted");
                     message.setText("Dear Mrs/Mr" + participants.get(i).getLastName() + ",\n"
-                            + "the meeting: " + event.getName() + " on the: " + event.getDate().getDayOfMonth()+ "." + event.getDate().getMonth() + "." + event.getDate().getYear() + " at: " + time + " was deleted.");
+                            + "the meeting: \"" + event.getName() + "\" on the: " + event.getDate().getDayOfMonth()+ "." + event.getDate().getMonth() + "." + event.getDate().getYear() + " at: " + time + " was deleted.");
 
                     Transport.send(message);
 
