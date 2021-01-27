@@ -11,44 +11,63 @@ import javax.swing.DefaultListModel;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.ListModel;
-import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 
 /**
+ * Displays all events of the specified date in chronological order.
  *
  * @author Nils Schmuck
  */
 public class FrmEventsOfDay extends javax.swing.JPanel {
 
-    private final DefaultListModel<Event> modelEventsOfDay = new DefaultListModel();
+    // <editor-fold defaultstate="collapsed" desc="Global Variables">
+    /**
+     * Model of {@link FrmEventsOfDay#liEventsOfDay}
+     */
+    private DefaultListModel<Event> modelEventsOfDay = new DefaultListModel<>();
 
+    // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="Constructors">
     /**
      * Constructs a new Panel and displays the specified list.
      *
-     * @param eventsOfDay The list that will be shownn.
+     * @param eventsOfDay The list that will be displayed.
      */
     public FrmEventsOfDay(ArrayList<Event> eventsOfDay) {
         initComponents();
 
         prepareList();
-        
+
         setEvents(eventsOfDay);
     }
 
-    private void prepareList(){
+    // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="Methods">
+    /**
+     * Adds the specified model to the list and change the list cell renderer.
+     *
+     * @see EventUtilities.EventsOfDayListCellRenderer
+     */
+    private void prepareList() {
         this.liEventsOfDay.setModel((ListModel) modelEventsOfDay);
         this.liEventsOfDay.setCellRenderer(new EventUtilities.EventsOfDayListCellRenderer());
-        this.liEventsOfDay.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
-    
-    public void setEvents(ArrayList<Event> eventsOfDay) {
+
+    /**
+     * Loads the specified collection in this list.
+     * {@link FrmEventsOfDay#liEventsOfDay}
+     *
+     * @param eventsOfDay The collection whose elements are to be placed into
+     * this list.
+     */
+    private void setEvents(ArrayList<Event> eventsOfDay) {
         if (eventsOfDay.size() > 0) {
 
             this.modelEventsOfDay.addAll(eventsOfDay);
 
-            this.lblHeadline.setText("Your daily appointments:");
+            this.lblHeadline.setText("Your events for today:");
             this.liEventsOfDay.setSelectedIndex(0);
-            this.liEventsOfDay.setVisible(true);        
+            this.liEventsOfDay.setVisible(true);
             btnOpen.setVisible(true);
         } else {
             lblHeadline.setText("No events for today!");
@@ -60,6 +79,12 @@ public class FrmEventsOfDay extends javax.swing.JPanel {
         this.pnlContent.setBorder(new EmptyBorder(10, 10, 10, 10));
     }
 
+    /**
+     * Opens a new dialog with {@link FrmEvent} inside and displays the
+     * specified event.
+     *
+     * @param event The event to display.
+     */
     private void displayEventDetails(Event event) {
         if (event != null) {
             JDialog dialog = new JDialog();
@@ -69,10 +94,11 @@ public class FrmEventsOfDay extends javax.swing.JPanel {
             dialog.setTitle("Event details");
             dialog.add(new FrmEvent(FrmEvent.View.READ, event, dialog));
             dialog.setLocationRelativeTo(null);
-            dialog.setVisible(true);        
+            dialog.setVisible(true);
         }
     }
 
+    // </editor-fold>
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -101,9 +127,10 @@ public class FrmEventsOfDay extends javax.swing.JPanel {
         pnlContent.setLayout(new java.awt.BorderLayout());
 
         liEventsOfDay.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        liEventsOfDay.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         liEventsOfDay.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                liEventsOfDayMouseClicked(evt);
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                liEventsOfDayMousePressed(evt);
             }
         });
         jScrollPane1.setViewportView(liEventsOfDay);
@@ -128,6 +155,13 @@ public class FrmEventsOfDay extends javax.swing.JPanel {
         add(pnlFooter, java.awt.BorderLayout.PAGE_END);
     }// </editor-fold>//GEN-END:initComponents
 
+    // <editor-fold defaultstate="collapsed" desc="Events">
+    /**
+     * Triggers the displayEventDetails() methods.
+     *
+     * @see FrmEventsOfDay#displayEventDetails(classes.Event)
+     * @param evt The action event.
+     */
     private void btnOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenActionPerformed
         if (this.liEventsOfDay.getSelectedIndex() >= 0) {
             Event selctedEvent = this.modelEventsOfDay.getElementAt(this.liEventsOfDay.getSelectedIndex());
@@ -137,8 +171,14 @@ public class FrmEventsOfDay extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnOpenActionPerformed
 
-    private void liEventsOfDayMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_liEventsOfDayMouseClicked
-        if (evt.getClickCount() == 2) {
+    /**
+     * Triggers the displayEventDetails() methods if the selcted record is
+     * clicked greater than or equal to two times.
+     *
+     * @param evt The mouse event.
+     */
+    private void liEventsOfDayMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_liEventsOfDayMousePressed
+        if (evt.getClickCount() >= 2) {
             if (this.liEventsOfDay.getSelectedIndex() >= 0) {
                 Event selctedEvent = this.modelEventsOfDay.getElementAt(this.liEventsOfDay.getSelectedIndex());
                 displayEventDetails(selctedEvent);
@@ -146,9 +186,8 @@ public class FrmEventsOfDay extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(FrmMain.getInstance(), "You have to select a event first in order to see the details.", "No event selected", JOptionPane.INFORMATION_MESSAGE);
             }
         }
-    }//GEN-LAST:event_liEventsOfDayMouseClicked
-
-
+    }//GEN-LAST:event_liEventsOfDayMousePressed
+    // </editor-fold>
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnOpen;
     private javax.swing.JScrollPane jScrollPane1;
