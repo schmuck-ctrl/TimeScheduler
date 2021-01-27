@@ -10,6 +10,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Properties;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -53,6 +54,13 @@ public class EmailHandler implements Runnable {
         this.organizer = event.getHost();
         this.participants = event.getParticipants();
         this.event = event;
+    }
+
+    public String timeFormater() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        LocalTime localTime = LocalTime.of(event.getDate().getHour(), event.getDate().getMinute());
+        String time = formatter.format(localTime);
+        return time;
     }
 
     public void emailSenderVerifyAccount(Operator user, int rand) {
@@ -137,9 +145,7 @@ public class EmailHandler implements Runnable {
         String from = "Javprojekt@gmail.com"; // from address. As this is using Gmail SMTP your from address should be gmail
         String password = "Javaprojekt123"; // password for from gmail address that you have used in above line. 
         StringBuilder text = new StringBuilder();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm");
-        LocalTime localTime = LocalTime.of(event.getDate().getHour(), event.getDate().getMinute());
-        String time = formatter.format(localTime);
+        String time = timeFormater();
 
         Properties prop = new Properties();
         prop.put("mail.smtp.host", "smtp.gmail.com");
@@ -158,6 +164,7 @@ public class EmailHandler implements Runnable {
 
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(from));
+
             for (int i = 0; i < participants.size(); i++) {
                 text.append(participants.get(i).getLastName() + ", " + participants.get(i).getFirstName());
                 text.append("\n");
@@ -168,7 +175,7 @@ public class EmailHandler implements Runnable {
                     message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(participants.get(i).getEmail()));
                     message.setSubject("You where invited to the: \"" + event.getName() + "\" meeting");
                     message.setText("Dear Mrs/Mr " + participants.get(i).getLastName() + ",\n\n"
-                            + "All informations about the new meeting are below." + "\n" + "\n"
+                            + "all informations about the new meeting are below." + "\n" + "\n"
                             + "Appointment name: " + event.getName() + "\n"
                             + "Meeting owner: " + organizer.getLastName() + "\n"
                             + "Date: " + event.getDate().getDayOfMonth() + "." + event.getDate().getMonth() + "." + event.getDate().getYear() + "\n"
@@ -195,10 +202,8 @@ public class EmailHandler implements Runnable {
         String from = "Javprojekt@gmail.com"; // from address. As this is using Gmail SMTP your from address should be gmail
         String password = "Javaprojekt123"; // password for from gmail address that you have used in above line. 
         StringBuilder text = new StringBuilder();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm");
-        LocalTime localTime = LocalTime.of(event.getDate().getHour(), event.getDate().getMinute());
-        String time = formatter.format(localTime);
 
+        String time = timeFormater();
         Properties prop = new Properties();
         prop.put("mail.smtp.host", "smtp.gmail.com");
         prop.put("mail.smtp.port", "465");
@@ -229,7 +234,7 @@ public class EmailHandler implements Runnable {
 
                     message.setSubject("The event \"" + event.getName() + "\" was updated");
                     message.setText("Dear Mrs/Mr " + participants.get(i).getLastName() + ",\n\n"
-                            + "All informations about the updated meeting are below." + "\n"
+                            + "all informations about the updated meeting are below." + "\n"
                             + "Appointment name: " + event.getName() + "\n"
                             + "Meeting owner: " + organizer.getLastName() + "\n"
                             + "Date: " + event.getDate().getDayOfMonth() + "." + event.getDate().getMonth() + "." + event.getDate().getYear() + "\n"
@@ -255,7 +260,72 @@ public class EmailHandler implements Runnable {
     public void emailSenderDeleteEvent(Event event) {
         String from = "Javprojekt@gmail.com"; // from address. As this is using Gmail SMTP your from address should be gmail
         String password = "Javaprojekt123"; // password for from gmail address that you have used in above line. 
+        String time = timeFormater();
 
+        Properties prop = new Properties();
+        prop.put("mail.smtp.host", "smtp.gmail.com");
+        prop.put("mail.smtp.port", "465");
+        prop.put("mail.smtp.auth", "true");
+        prop.put("mail.smtp.socketFactory.port", "465");
+        prop.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+
+        Session session = Session.getInstance(prop, new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(from, password);
+            }
+        });
+
+        try {
+
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(from));
+
+            for (int i = 0; i < participants.size(); i++) {
+                System.out.println(participants.get(i).getLastName());
+                if (participants.get(i).getEmail() != null && !participants.get(i).getEmail().isEmpty()) {
+                    message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(participants.get(i).getEmail()));
+
+                    message.setSubject("Your : " + participants.get(i).getLastName() + "Event:" + "was deleted");
+                    message.setText("Dear Mrs/Mr" + participants.get(i).getLastName() + ",\n"
+                            + "the meeting: " + event.getName() + " on the: " + event.getDate().getDayOfMonth()+ "." + event.getDate().getMonth() + "." + event.getDate().getYear() + " at: " + time + " was deleted.");
+
+                    Transport.send(message);
+
+                    System.out.println("Mail Sent...");
+                } else {
+                    System.out.println("fehler ist hier");
+                }
+            }
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    /**
+     * Sends an Email to all Participants of the Event
+     *
+     * @param event
+     */
+    public void emailSenderAppointmentReminder(Event event) {
+        String from = "Javprojekt@gmail.com"; // from address. As this is using Gmail SMTP your from address should be gmail
+        String password = "Javaprojekt123"; // password for from gmail address that you have used in above line. 
+        String time = timeFormater();
+        String notify = null;
+        switch (event.getNotification()) {
+            case TEN_MINUTES:
+                notify = "Your meeting: \"" + event.getName() + "\" will start in 10 minutes";
+                break;
+            case ONE_HOUR:
+                notify = "Your meeting: \"" + event.getName() + "\" will start in an Hour";
+                break;
+            case THREE_DAYS:
+                notify = "Your meeting: \"" + event.getName() + "\" will start " + event.getDate().getDayOfWeek();
+                break;
+            case ONE_WEEK:
+                notify = "Your meeting: \"" + event.getName() + "\" will start in one week";
+                break;
+        }
         Properties prop = new Properties();
         prop.put("mail.smtp.host", "smtp.gmail.com");
         prop.put("mail.smtp.port", "465");
@@ -277,9 +347,10 @@ public class EmailHandler implements Runnable {
                 System.out.println(participants.get(i).getLastName());
                 if (participants.get(i).getEmail() != null && !participants.get(i).getEmail().isEmpty()) {
                     message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(participants.get(i).getEmail()));
-
-                    message.setSubject("The meeting: \"" + event.getName() + "\" was cancelled");
-                    message.setText("appointment info");
+                    // Edit benachrichtigung
+                    message.setSubject("Event reminder");
+                    message.setText("Dear Mrs/Mr" + participants.get(i).getLastName() + ",\n\n"
+                        + notify +" on the: " + event.getDate().getDayOfMonth()+ "." + event.getDate().getMonth() + "." + event.getDate().getYear() + " at: " + time);
 
                     Transport.send(message);
 
@@ -291,53 +362,6 @@ public class EmailHandler implements Runnable {
         } catch (MessagingException e) {
             e.printStackTrace();
         }
-
-    }
-
-    /**
-     * Sends an Email to all Participants of the Event
-     *
-     * @param event
-     */
-    public void emailSenderAppointmentReminder(Event event) {
-//        String from = "Javprojekt@gmail.com"; // from address. As this is using Gmail SMTP your from address should be gmail
-//        String password = "Javaprojekt123"; // password for from gmail address that you have used in above line. 
-//
-//        Properties prop = new Properties();
-//        prop.put("mail.smtp.host", "smtp.gmail.com");
-//        prop.put("mail.smtp.port", "465");
-//        prop.put("mail.smtp.auth", "true");
-//        prop.put("mail.smtp.socketFactory.port", "465");
-//        prop.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-//
-//        Session session = Session.getInstance(prop, new javax.mail.Authenticator() {
-//            protected PasswordAuthentication getPasswordAuthentication() {
-//                return new PasswordAuthentication(from, password);
-//            }
-//        });
-//
-//        try {
-//
-//            Message message = new MimeMessage(session);
-//            message.setFrom(new InternetAddress(from));
-//            for (int i = 0; i < participants.size(); i++) {
-//                System.out.println(participants.get(i).getLastName());
-//                if (participants.get(i).getEmail() != null && !participants.get(i).getEmail().isEmpty()) {
-//                    message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(participants.get(i).getEmail()));
-//                    // Edit benachrichtigung
-//                    message.setSubject("You : " + participants.get(i).getLastName() + "Event:" + "was deleted");
-//                    message.setText("appointment info");
-//
-//                    Transport.send(message);
-//
-//                    System.out.println("Mail Sent...");
-//                } else {
-//                    System.out.println("fehler ist hier");
-//                }
-//            }
-//        } catch (MessagingException e) {
-//            e.printStackTrace();
-//        }
 
     }
 

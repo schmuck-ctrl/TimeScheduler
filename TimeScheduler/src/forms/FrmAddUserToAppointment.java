@@ -436,7 +436,7 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
                 Operator user = getUserByUserID(userID);
                 participantsToAdd.add(user);
             }
-            frmEvent.setParticipants(participantsToAdd);
+            frmEvent.addParticipants(participantsToAdd);
 
         }
         this.setVisible(false);

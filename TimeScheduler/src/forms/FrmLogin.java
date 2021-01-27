@@ -42,7 +42,7 @@ public class FrmLogin extends javax.swing.JFrame {
                     LoggerHandler.setupLogger();
                     LoggerHandler.logger.info("FrmLogin");
                     FrmMain frmMain = FrmMain.getInstance();
-                    frmMain.setCurrentUser(dbHandler.getUserByUsername(txtEmail.getText().trim()));
+                    frmMain.setConfigurations(dbHandler.getUserByUsername(txtEmail.getText().trim()));
                     frmMain.setVisible(true);
                     this.dispose();
 //                }
