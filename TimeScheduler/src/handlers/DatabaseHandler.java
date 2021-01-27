@@ -19,8 +19,15 @@ import java.util.ArrayList;
  */
 public class DatabaseHandler {
 
-
     private Connection con = null;
+
+    /*public static void main(String[] Args) {
+        DatabaseHandler db = new DatabaseHandler();
+        ArrayList<Event> test = db.getEventsByUserID(1);
+        test.forEach(Event -> {
+            System.out.println(Event);
+        });
+    }*/
 
     public DatabaseHandler() {
         con = getConnection();
@@ -609,21 +616,21 @@ public class DatabaseHandler {
 
     public void setFilesOfEvent(ArrayList<Attachment> attachments, int eventID) {
         //Every old Attachment{x1,x2,x3,x4}
-        ArrayList<Attachment> attachment_old = getEventsDocuments(eventID); 
+        ArrayList<Attachment> attachment_old = getEventsDocuments(eventID);
         //Every new Attachment {x3,x4,x5,x6}
         ArrayList<Attachment> attachment_new = (ArrayList<Attachment>) attachments.clone();
         //Every Attachment which is estimated to be added {x3,x4,x5,x6}
         ArrayList<Attachment> toBeAdded = (ArrayList<Attachment>) attachment_new.clone();
         //Every Attachment which ist estimated to be removed .{x1,x2,x3,x4}
         ArrayList<Attachment> toBeDeleted = (ArrayList<Attachment>) attachment_old.clone();
-        
+
         //{x3,x4,x5,x6} remove {x1,x2,x3,x4} return {x5,x6}
         //Remove every Attachment which was already contained in the Events Attachment list
         toBeAdded.removeAll(attachment_old);
         //{x1,x2,x3,x4} remove {x3,x4,x5,x6} return {x1,x2}
         //Remove every Attachment which was contained in the old list of the Event but isn't contained in the new list of
         //Attachments anymore.
-        toBeDeleted.removeAll(attachment_new); 
+        toBeDeleted.removeAll(attachment_new);
         deleteAttachments(toBeDeleted, eventID);
         insertAttachments(toBeAdded, eventID);
     }
@@ -663,7 +670,7 @@ public class DatabaseHandler {
     public int editEvent(Event toBeEdited) {
         int editSuccessfull = -1;
         ArrayList<Operator> new_participants = (ArrayList<Operator>) toBeEdited.getParticipants().clone();
-       // new_participants.add(toBeEdited.getHost());
+        // new_participants.add(toBeEdited.getHost());
         String editEvent
                 = "UPDATE event SET E_eventName = ?, E_eventDuration = ?, E_eventDate = ?, E_priority = ?,"
                 + "E_eventLocation = ?, E_notification = ? "
@@ -745,25 +752,29 @@ public class DatabaseHandler {
         }
     }
 
-    /*public ArrayList<Event> getEventsByUsername(String username) {
+    public ArrayList<Event> getEventsByUserID(int userID) {
         ArrayList<Event> usersEvents = new ArrayList<>();
-        String usersEventIDs = listToString(getEventIDsOfUser(username));
-        String sql = "SELECT * FROM eventDetails WHERE ED_EventID IN (" + usersEventIDs + ") AND ED_deleted = 0 ORDER BY ED_eventDate;";
+        //String usersEventIDs = listToString(getEventIDsOfUser(userID));
+        String sql = "SELECT * FROM eventDetails WHERE ED_EventID IN "
+                + "(SELECT P_eventID FROM Participant WHERE P_userID = ?) "
+                + "AND ED_deleted = 0 ORDER BY ED_eventDate;";
 
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setInt(1, userID);
             try ( ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     usersEvents.add(getEvent(rs));
                 }
             }
         } catch (SQLException ex) {
-            System.out.println(""+ex.getMessage());
+            System.out.println("" + ex.getMessage());
         }
 
         fillEventsWithParticipantsAndFiles(usersEvents);
 
         return usersEvents;
-    }*/
+    }
+
     public ArrayList<Event> getUsersEventsOfACertainMonth(int userID, int month) {
         ArrayList<Event> usersEvents = new ArrayList<>();
         ArrayList<Integer> usersEventIDs = getEventIDsOfUser(userID);
@@ -772,7 +783,7 @@ public class DatabaseHandler {
                 = "SELECT * FROM eventdetails WHERE ed_eventdate >= "
                 + "(SELECT MAKEDATE(YEAR(CURDATE()),1) + INTERVAL ? MONTH) "
                 + "AND ed_eventdate <= (SELECT MAKEDATE(YEAR(CURDATE()),1) + INTERVAL ? MONTH) "
-                + "AND ed_eventID = "+listToString(usersEventIDs)+"AND ed_deleted = 0 ORDER BY ed_eventDate;";
+                + "AND ed_eventID = " + listToString(usersEventIDs) + "AND ed_deleted = 0 ORDER BY ed_eventDate;";
 
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setInt(1, month - 1);
@@ -802,7 +813,7 @@ public class DatabaseHandler {
                 = "SELECT * FROM eventdetails\n"
                 + " WHERE ed_eventdate >= (SELECT MAKEDATE(YEAR(CURDATE()),1)) \n"
                 + " AND ed_eventdate <= (SELECT MAKEDATE(YEAR(CURDATE()),1) + INTERVAL 1 MONTH) "
-                + " AND IN ("+listToString(usersEventIDs)
+                + " AND IN (" + listToString(usersEventIDs)
                 + ") AND ed_deleted = 0"
                 + " ORDER BY ed_eventDate;";
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
@@ -832,7 +843,7 @@ public class DatabaseHandler {
                 = "SELECT * FROM eventdetails "
                 + "WHERE ED_eventDate >= (SELECT DATE_ADD(CURDATE(), INTERVAL - WEEKDAY(CURDATE()) DAY)) "
                 + "AND ED_eventDate <= (SELECT date(now() + INTERVAL 6 - weekday(now()) DAY)) "
-                + "AND ED_eventID IN("+listToString(usersEventIDs)
+                + "AND ED_eventID IN(" + listToString(usersEventIDs)
                 + ") AND ED_deleted = 0 "
                 + "ORDER BY ED_eventDate;";
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
@@ -882,7 +893,6 @@ public class DatabaseHandler {
         fillEventsWithParticipantsAndFiles(Events);
         return Events;
     }*/
-
     public Event getEventById(int EventID) {
         Event toBeReturned = null;
 
@@ -923,7 +933,7 @@ public class DatabaseHandler {
     public ArrayList<Event> getUsersEventsOfCertainDay(int userId, LocalDate eventDate) {
         ArrayList<Integer> EventIDs = getEventIDsOfUser(userId);
         ArrayList<Event> usersEvents = new ArrayList<>();
-        String sql = "SELECT * FROM eventDetails WHERE ED_eventID IN("+listToString(EventIDs)+")AND ED_eventDate LIKE ? AND ED_deleted = 0 ORDER BY ed_eventDate;";
+        String sql = "SELECT * FROM eventDetails WHERE ED_eventID IN(" + listToString(EventIDs) + ")AND ED_eventDate LIKE ? AND ED_deleted = 0 ORDER BY ed_eventDate;";
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setString(1, eventDate.toString() + "%");
             try ( ResultSet rs = stmt.executeQuery()) {
@@ -945,7 +955,7 @@ public class DatabaseHandler {
     public ArrayList<Event> getEventsOfPeriod(int userID, LocalDate from, LocalDate to) {
         ArrayList<Integer> EventIDs = getEventIDsOfUser(userID);
         ArrayList<Event> usersEvents = new ArrayList<>();
-        String sql = "SELECT * FROM eventDetails WHERE ED_eventID IN ("+listToString(EventIDs)+") AND ED_eventDate >= ? AND ED_eventDate <= ? AND ED_deleted = 0 ORDER BY ED_eventDate;";
+        String sql = "SELECT * FROM eventDetails WHERE ED_eventID IN (" + listToString(EventIDs) + ") AND ED_eventDate >= ? AND ED_eventDate <= ? AND ED_deleted = 0 ORDER BY ED_eventDate;";
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setTimestamp(1, Timestamp.valueOf(from.atStartOfDay()));
             stmt.setTimestamp(2, Timestamp.valueOf(to.atTime(23, 59, 59, 59)));
@@ -993,22 +1003,22 @@ public class DatabaseHandler {
         }
         return attachments;
     }
-    
-    public byte[] getDocument(int FileID){
-       byte[] document;
-       String getDoc = "SELECT F_file FROM file WHERE F_fileID = ?";
-       try(PreparedStatement stmt = con.prepareStatement(getDoc)){
-         stmt.setInt(1, FileID);
-         try(ResultSet rs = stmt.executeQuery()){
-             if(rs.next()){
-                 InputStream is = rs.getBinaryStream("F_file");
-                 document =  is.readAllBytes();
-                 return document;
-             }
-         }
-       }catch(Exception ex){
-           System.out.println("getDocument:"+ex.getMessage());
-       }
-      return null;
+
+    public byte[] getDocument(int FileID) {
+        byte[] document;
+        String getDoc = "SELECT F_file FROM file WHERE F_fileID = ?";
+        try ( PreparedStatement stmt = con.prepareStatement(getDoc)) {
+            stmt.setInt(1, FileID);
+            try ( ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    InputStream is = rs.getBinaryStream("F_file");
+                    document = is.readAllBytes();
+                    return document;
+                }
+            }
+        } catch (Exception ex) {
+            System.out.println("getDocument:" + ex.getMessage());
+        }
+        return null;
     }
 }
