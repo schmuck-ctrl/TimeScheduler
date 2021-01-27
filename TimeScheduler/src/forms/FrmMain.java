@@ -54,7 +54,8 @@ public class FrmMain extends javax.swing.JFrame {
         eventHandler = new EventHandler();
         this.datePicker.getComponentDateTextField().setEditable(false);
         addDatePickerDateChangedEvent();
-        setFeedback("Hallo das ist ein Test!", false);
+        setFeedback("Hallo das ist ein Test!", true);
+        setIcon();
     }
 
     /**
@@ -121,8 +122,8 @@ public class FrmMain extends javax.swing.JFrame {
     }
 
     /**
-     * Displays the specified text in this component. If the value of text is a
-     * null or empty string, nothing is displayed.
+     * Displays the specified text in this component for 5 seconds. If the value
+     * of text is a null or empty string, nothing is displayed.
      *
      * @param text The text this component will display.
      * @param error true = if this text is an error message, false = if this
@@ -139,16 +140,17 @@ public class FrmMain extends javax.swing.JFrame {
             }
 
             this.lblFeedback.setText(text);
-            
+
             Timer timer = new Timer();
             timer.schedule(new java.util.TimerTask() {
                 @Override
                 public void run() {
                     lblFeedback.setText("");
+                    timer.cancel();
+                    timer.purge();
                 }
-            } , 7000);
-            
-            
+            }, 5000);
+
         }
     }
 
@@ -369,8 +371,7 @@ public class FrmMain extends javax.swing.JFrame {
         pnlFooter.setLayout(new javax.swing.BoxLayout(pnlFooter, javax.swing.BoxLayout.LINE_AXIS));
         pnlFooter.add(filler6);
 
-        lblFeedback.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        lblFeedback.setText("Feedback");
+        lblFeedback.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         pnlFooter.add(lblFeedback);
         pnlFooter.add(filler2);
 
@@ -505,4 +506,8 @@ public class FrmMain extends javax.swing.JFrame {
     private javax.swing.JPanel pnlMenuBar;
     private javax.swing.JSplitPane splitPnlContent;
     // End of variables declaration//GEN-END:variables
+
+    private void setIcon() {
+        setIconImage(java.awt.Toolkit.getDefaultToolkit().getImage(getClass().getResource("/icons/calendar-todo-fill.png")));
+    }
 }
