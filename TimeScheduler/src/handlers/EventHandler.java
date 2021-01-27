@@ -43,7 +43,7 @@ public class EventHandler {
      */
     public ArrayList<Event> getAllEvents(int userID) {
 
-        ArrayList<Event> eventList = dbHandler.getAllEvents();
+        ArrayList<Event> eventList = dbHandler.getEventsByUserID(userID);
 
         return eventList;
     }
