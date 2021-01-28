@@ -87,8 +87,7 @@ public class FrmEventsOfDay extends javax.swing.JPanel {
      */
     private void displayEventDetails(Event event) {
         if (event != null) {
-            JDialog dialog = new JDialog();
-
+            JDialog dialog = new JDialog(FrmMain.getInstance());
             dialog.setSize(500, 900);
             dialog.setModal(true);
             dialog.setTitle("Event details");

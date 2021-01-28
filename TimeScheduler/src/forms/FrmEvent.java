@@ -38,6 +38,9 @@ public class FrmEvent extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Enums">
     /**
      * Views that can be used for the {@link FrmEvent}
+     * @see View#READ
+     * @see View#EDIT
+     * @see View#NEW
      */
     public enum View {
         /**
