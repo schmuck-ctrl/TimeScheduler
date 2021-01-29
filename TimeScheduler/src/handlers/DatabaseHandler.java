@@ -19,13 +19,12 @@ import java.util.ArrayList;
  * @author joshua
  */
 public class DatabaseHandler {
-    
+
     private Connection con = null;
-    
-    
+
     public DatabaseHandler() {
         con = getConnection();
-        
+
     }
 
     //PRIVATE FUNCTION SECTION 
@@ -59,7 +58,7 @@ public class DatabaseHandler {
      */
     private void insertAttachments(ArrayList<Attachment> toBeAdded, int eventID) {
         String addAttachment = "INSERT INTO file (F_file,F_eventID,F_fileName) VALUES(?,?,?)";
-        
+
         try ( PreparedStatement stmt = con.prepareStatement(addAttachment)) {
             for (Attachment file : toBeAdded) {
                 FileInputStream fileInput = new FileInputStream(file);
@@ -82,7 +81,7 @@ public class DatabaseHandler {
      */
     private void addParticipants(ArrayList<Operator> toBeAdded, int eventID) {
         String addParticipant = "INSERT INTO participant (P_userID,P_eventID) VALUES(?,?)";
-        
+
         try ( PreparedStatement stmt = con.prepareStatement(addParticipant)) {
             for (Operator participant : toBeAdded) {
                 stmt.setInt(1, participant.getUserId());
@@ -102,11 +101,11 @@ public class DatabaseHandler {
      * @param eventID EventID of the Event the files are assigned to
      */
     private void deleteAttachments(ArrayList<Attachment> toBeDeleted, int eventID) {
-        
+
         String deleteAttachments = "DELETE FROM file WHERE F_fileID = ? ";
-        
+
         try ( PreparedStatement stmt = con.prepareStatement(deleteAttachments)) {
-            
+
             for (Attachment attachment : toBeDeleted) {
                 stmt.setInt(1, attachment.getAttachmentID());
                 stmt.addBatch();
@@ -115,7 +114,7 @@ public class DatabaseHandler {
         } catch (SQLException ex) {
             System.out.println("delete file: " + ex.getMessage());
         }
-        
+
     }
 
     /**
@@ -152,7 +151,7 @@ public class DatabaseHandler {
         } catch (SQLException ex) {
             System.out.println("" + ex.getMessage());
         }
-        
+
         return -1;
     }
 
@@ -188,11 +187,11 @@ public class DatabaseHandler {
      */
     private static String listToString(ArrayList<Integer> numbers) {
         StringBuilder buffer = new StringBuilder();
-        
+
         numbers.forEach(number -> {
             buffer.append(number).append(",");
         });
-        
+
         return buffer.toString().substring(0, buffer.length() - 1);
     }
 
@@ -215,9 +214,9 @@ public class DatabaseHandler {
         } catch (SQLException ex) {
             System.out.println("" + ex.getMessage());
         }
-        
+
         return eventIDs;
-        
+
     }
 
     /**
@@ -260,7 +259,7 @@ public class DatabaseHandler {
         LocalDateTime eventDate = null;
         ArrayList<Operator> participants = null;
         ArrayList<Attachment> attachments = null;
-        
+
         Priority Priority = null;
         classes.Event.Notification notification = null;
         int eventDuration = 0;
@@ -277,7 +276,7 @@ public class DatabaseHandler {
             eventDuration = rs.getInt("ED_eventDuration");
             eventLocation = rs.getString("ED_eventLocation");
             Priority = Event.Priority.valueOf(rs.getString("ED_priority"));
-            notification = Event.Notification.valueOf(rs.getString("ED_notification"));            
+            notification = Event.Notification.valueOf(rs.getString("ED_notification"));
         } catch (SQLException ex) {
             System.out.println("get Event: " + ex.getMessage());
         }
@@ -299,7 +298,7 @@ public class DatabaseHandler {
      */
     private Operator AdminOrUser(String role, int userId, String firstName, String lastName, String email) {
         Operator toBeSpecified = null;
-        
+
         if (role.equals(Operator.Role.ADMIN.toString())) {
             toBeSpecified = new Admin(userId, firstName, lastName, email);
             return toBeSpecified;
@@ -340,7 +339,7 @@ public class DatabaseHandler {
      */
     public void setUserNotified(int eventID, int userID) {
         String notify = "UPDATE participant SET P_notified = 1 WHERE P_userID = ? AND P_eventID = ?;";
-        
+
         try ( PreparedStatement stmt = con.prepareStatement(notify)) {
             stmt.setInt(1, userID);
             stmt.setInt(2, eventID);
@@ -348,7 +347,7 @@ public class DatabaseHandler {
         } catch (SQLException ex) {
             System.out.println("setUserNotified" + ex.getMessage());
         }
-        
+
     }
 
     /**
@@ -363,8 +362,7 @@ public class DatabaseHandler {
                 = "SELECT * FROM eventdetails WHERE ED_eventID IN"
                 + "(SELECT P_eventID FROM participant WHERE P_userID = ? AND P_notified = 0)"
                 + " AND ED_notification <> 'NONE';";
-        
-        
+
         ArrayList<Event> events = new ArrayList<>();
         try ( PreparedStatement stmt = con.prepareStatement(notNotified)) {
             stmt.setInt(1, userID);
@@ -376,7 +374,7 @@ public class DatabaseHandler {
         } catch (SQLException ex) {
             System.out.println("getEventsNotNotified" + ex.getMessage());
         }
-        
+
         fillEventsWithParticipantsAndFiles(events);
         return events;
     }
@@ -428,7 +426,7 @@ public class DatabaseHandler {
      * @param password hashed password value of a user
      */
     public void insertNewUser(Operator user, String password) {
-        
+
         String sql = "INSERT INTO user (U_email, U_firstName, U_lastName, U_role, U_password) VALUES (?,?,?,?,?);";
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setString(1, user.getEmail());
@@ -440,7 +438,7 @@ public class DatabaseHandler {
             System.out.println("" + ex.getMessage());
         }
         System.out.println("Nutzer Erfolgreich angelegt");
-        
+
     }
 
     /**
@@ -453,7 +451,7 @@ public class DatabaseHandler {
     public Operator getUserByID(int userID) {
         String prefix = "U";
         String sql = "SELECT * FROM user WHERE U_UserID = ? AND U_deleted = 0;";
-        
+
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setInt(1, userID);
             try ( ResultSet rs = stmt.executeQuery()) {
@@ -467,45 +465,6 @@ public class DatabaseHandler {
         return null;
     }
 
-    /*public ArrayList<Operator> getUserByLastName(String usersLastName) {
-        String prefix = "U";
-        ArrayList<Operator> allUser = new ArrayList<>();
-        Operator toBeAdded;
-
-        String sql = "SELECT * FROM user WHERE U_lastName = ? AND U_deleted = 0;";
-        try ( PreparedStatement stmt = con.prepareStatement(sql)) {
-            stmt.setString(1, usersLastName);
-            try ( ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    allUser.add(returnUser(rs, prefix));
-                }
-            }
-        } catch (SQLException ex) {
-            System.out.println(""+ex.getMessage());
-        }
-
-        return allUser;
-    }*/
-
- /*public ArrayList<Operator> getUserByFirstName(String usersFirstName) {
-        String prefix = "U";
-        ArrayList<Operator> allUser = new ArrayList<>();
-        Operator toBeReturned;
-        String sql = "SELECT * FROM user WHERE U_firstName = ? AND U_deleted = 0;";
-        try ( PreparedStatement stmt = con.prepareStatement(sql)) {
-            stmt.setString(1, usersFirstName);
-            try ( ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    allUser.add(returnUser(rs, prefix));
-                }
-
-            }
-        } catch (SQLException ex) {
-            System.out.println(""+ex.getMessage());
-        }
-
-        return allUser;
-    }*/
     /**
      * Returns an {@link Operator} Object containing information of a user
      * identified by their username
@@ -529,7 +488,7 @@ public class DatabaseHandler {
             System.out.println("" + ex.getMessage());
         }
         return user;
-        
+
     }
 
     /**
@@ -543,7 +502,7 @@ public class DatabaseHandler {
         User user = null;
         String sql = "SELECT * FROM user WHERE U_deleted = 0;";
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
-            
+
             try ( ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     allUser.add(returnUser(rs, prefix));
@@ -552,49 +511,10 @@ public class DatabaseHandler {
         } catch (SQLException ex) {
             System.out.println("" + ex.getMessage());
         }
-        
+
         return allUser;
     }
 
-    /*public Operator getHostByEventName(String eventName) {
-        String prefix = "HE";
-        String sql = "SELECT * FROM hostevent WHERE HE_EventID = ? AND HE_deleted = 0;";
-        int userID;
-        Operator host = null;
-        String role, firstName, lastName, email;
-        try ( PreparedStatement stmt = con.prepareStatement(sql)) {
-            try ( ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    host = returnUser(rs, prefix);
-                }
-                return host;
-            }
-        } catch (SQLException ex) {
-            System.out.println(""+ex.getMessage());
-        }
-        System.out.println("Kein Host für dieses Event");
-        return null;
-    }*/
- /*public Operator getHostByID(int EventID) {
-        String prefix = "HE";
-        String sql = "SELECT * FROM hostevent WHERE HE_eventID = ?  AND HE_deleted = 0;";
-        Operator host = null;
-        int userID;
-        String role, firstName, lastName, email;
-        try ( PreparedStatement stmt = con.prepareStatement(sql)) {
-            stmt.setInt(1, EventID);
-            try ( ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    host = returnUser(rs, prefix);
-                }
-                return host;
-            }
-        } catch (SQLException ex) {
-            System.out.println("" + ex.getMessage());
-        }
-        System.out.println("There's no host for this appointment");
-        return null;
-    }*/
     /**
      * Returns a List of Users
      *
@@ -617,30 +537,16 @@ public class DatabaseHandler {
                 }
             }
         } catch (Exception ex) {
-            
+
         }
         return participants;
     }
 
-    /*
-    public ArrayList<Operator> getAllOperators() {
-        String prefix = "U";
-        ArrayList<Operator> userAndAdmins = new ArrayList<>();
-        String sql = "SELECT * FROM USER WHERE U_deleted = 0;";
-
-        try ( PreparedStatement stmt = con.prepareStatement(sql)) {
-            try ( ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    userAndAdmins.add(returnUser(rs, prefix));
-                }
-            }
-        } catch (SQLException ex) {
-            System.out.println("" + ex.getMessage());
-        }
-        return userAndAdmins;
-    }*/
-    public int editUser(Operator toBeEdited) {
-        int editSuccessfull = -1;
+    /**
+     * Function which edits a User
+     * @param toBeEdited {@link Operator} Object which has to be Edited
+     */
+    public void editUser(Operator toBeEdited) {
         String sqlUpdate
                 = "UPDATE user SET U_email = ?,U_firstName =?, U_lastName = ?,U_role = ? WHERE U_userID = ?;";
         try ( PreparedStatement stmt = con.prepareStatement(sqlUpdate)) {
@@ -649,27 +555,27 @@ public class DatabaseHandler {
             stmt.setString(3, toBeEdited.getLastName());
             stmt.setString(4, toBeEdited.getRole().toString());
             stmt.setInt(5, toBeEdited.getUserId());
-            
-            editSuccessfull = stmt.executeUpdate();
+            stmt.executeUpdate();
         } catch (SQLException ex) {
             System.out.println("" + ex.getMessage());
         }
-        System.out.println("User erfolgreich bearbeitet");
-        return editSuccessfull;
     }
-    
+    /**
+     * Function which deletes a User from the Database.
+     * @param toBeDeleted {@link Operator}
+     */
     public void deleteUser(Operator toBeDeleted) {
         String eventIDs = listToString(getHostsEventIDs(toBeDeleted.getUserId()));
         String deleteUser = "UPDATE user SET U_deleted = 1 WHERE U_userID = ?;";
         String deleteUsersEvents = "UPDATE Event SET E_deleted = 1 WHERE E_EventID IN (" + eventIDs + ");";
-        
+
         try ( PreparedStatement stmt = con.prepareStatement(deleteUser)) {
             stmt.setInt(1, toBeDeleted.getUserId());
             stmt.executeUpdate();
         } catch (SQLException ex) {
             System.out.println("" + ex.getMessage());
         }
-        
+
         try ( PreparedStatement stmt = con.prepareStatement(deleteUsersEvents)) {
             stmt.executeUpdate();
         } catch (SQLException ex) {
@@ -677,55 +583,34 @@ public class DatabaseHandler {
         }
     }
 
-    /*
-    public ArrayList<Operator> getAllUsersLike(String toBeLookedFor) {
-        ArrayList<Operator> users = new ArrayList<>();
-        String sql = "SELECT * FROM USER WHERE U_firstName LIKE ? OR U_lastName LIKE ? OR U_email LIKE ? AND U_deleted = 0;";
-        char prefix = '%';
-        char suffix = '%';
-        Operator user = null;
-        int userID = -1;
-        String email, firstName, lastName, role;
-
-        try ( PreparedStatement stmt = con.prepareStatement(sql)) {
-            stmt.setString(1, prefix + toBeLookedFor + suffix);
-            stmt.setString(2, prefix + toBeLookedFor + suffix);
-            stmt.setString(3, prefix + toBeLookedFor + suffix);
-            try ( ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    email = rs.getString("U_email");
-                    firstName = rs.getString("U_firstName");
-                    lastName = rs.getString("U_lastName");
-                    role = rs.getString("U_role");
-                    user = AdminOrUser(role, userID, firstName, lastName, email);
-                    users.add(user);
-                }
-            }
-        } catch (SQLException ex) {
-            System.out.println("" + ex.getMessage());
-        }
-
-        if (users.isEmpty()) {
-            System.out.println("No User with such criteria does exist");
-
-        }
-        return users;
-
-    }*/
     //Event Methods
+    /**
+     * sets the Participants of an Event
+     * @param participants {@link ArrayList} of {@link User} containing the 
+     * participants of an {@link Event}
+     * @param eventID ID of the {@link Event} of which the Participants will 
+     * be newly set
+     */
     public void setParticipantsOfEvent(ArrayList<Operator> participants, int eventID) {
         ArrayList<Operator> event_old = selectParticipantsByID(eventID); //old
         ArrayList<Operator> event_new = (ArrayList<Operator>) participants.clone(); //new
         ArrayList<Operator> toBeAdded = (ArrayList<Operator>) event_new.clone();
         ArrayList<Operator> toBeDeleted = (ArrayList<Operator>) event_old.clone();
-        
+
         toBeAdded.removeAll(event_old);
         toBeDeleted.removeAll(event_new);
-        
+
         deleteParticipants(toBeDeleted, eventID);
         insertParticipants(toBeAdded, eventID);
     }
     
+    
+    /**
+     * sets the Files of an Event
+     * @param attachments {@link ArrayList} of {@link Attachment} containing
+     * the Attachments of an Event
+     * @param eventID ID of an {@link Event}
+     */
     public void setFilesOfEvent(ArrayList<Attachment> attachments, int eventID) {
         //Every old Attachment{x1,x2,x3,x4}
         ArrayList<Attachment> attachment_old = getEventsDocuments(eventID);
@@ -746,50 +631,70 @@ public class DatabaseHandler {
         deleteAttachments(toBeDeleted, eventID);
         insertAttachments(toBeAdded, eventID);
     }
-    
-    public void insertParticipants(ArrayList<Operator> toBeAdded, int eventID) {
+
+    /**
+     * Helper method for inserting Participants into the database
+     * @param toBeAdded {@link ArrayList} of {@link Operator} containining
+     * the datasets of the participants of an {@link Event}
+     * @param eventID ID of an {@link Event} the participants will be assigned
+     * to
+     */
+    private void insertParticipants(ArrayList<Operator> toBeAdded, int eventID) {
         String sql = "INSERT INTO participant (P_userID,P_eventID) VALUES (?,?);";
-        
+
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             for (Operator o : toBeAdded) {
                 stmt.setInt(1, o.getUserId());
                 stmt.setInt(2, eventID);
                 stmt.addBatch();
-                
+
             }
             stmt.executeBatch();
         } catch (SQLException ex) {
             System.out.println("insert Participants: " + ex.getMessage());
         }
     }
+
     
+    /**
+     * Method to delete Participants from an Event in the Database
+     * @param toBeDeleted {@link ArrayList} of {@link Operator} containing the
+     * datasets of User which will be deleted
+     * @param eventID ID of the Event {@link Event}
+     */
     public void deleteParticipants(ArrayList<Operator> toBeDeleted, int eventID) {
         String sql = "DELETE FROM participant WHERE P_userID = ? AND P_eventID = ?;";
-        
+
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             for (Operator o : toBeDeleted) {
                 stmt.setInt(1, o.getUserId());
                 stmt.setInt(2, eventID);
                 stmt.addBatch();
-                
+
             }
             stmt.executeBatch();
         } catch (SQLException ex) {
             System.out.println("delete Participants: " + ex.getMessage());
         }
     }
-    
-    public int editEvent(Event toBeEdited) {
-        int editSuccessfull = -1;
+
+    /**
+     * Edits the Eventinformations withing the database
+     * @param toBeEdited {@link Event} Object containing all relevant 
+     * informations which have to be processed withing the database
+     * @return 
+     */
+    public void editEvent(Event toBeEdited) {
+        
         ArrayList<Operator> new_participants = (ArrayList<Operator>) toBeEdited.getParticipants().clone();
-        // new_participants.add(toBeEdited.getHost());
+
         String editEvent
                 = "UPDATE event SET E_eventName = ?, E_eventDuration = ?, E_eventDate = ?, E_priority = ?,"
                 + "E_eventLocation = ?, E_notification = ? "
                 + "WHERE E_eventID = ?;";
-        
+
         setParticipantsOfEvent(new_participants, toBeEdited.getID());
-        
+
         setFilesOfEvent(toBeEdited.getAttachments(), toBeEdited.getID());
         try ( PreparedStatement stmt = con.prepareStatement(editEvent)) {
             stmt.setString(1, toBeEdited.getName());
@@ -800,42 +705,26 @@ public class DatabaseHandler {
             stmt.setString(6, toBeEdited.getNotification().toString());
             stmt.setInt(7, toBeEdited.getID());
             stmt.executeUpdate();
-            
+
         } catch (SQLException ex) {
             System.out.println("editEvent: " + ex.getMessage());
         }
-        
+
         if (LocalDateTime.now().isBefore(toBeEdited.getReminder())) {
             resetReminder(toBeEdited.getParticipants(), toBeEdited.getID());
-            
-        }
-        System.out.println("Event erfolgreich bearbeitet");
-        return editSuccessfull;
-    }
-    
-    public ArrayList<Event> getAllEvents() {
-        ArrayList<Event> Events = new ArrayList<>();
-        String sql = "SELECT * FROM eventDetails WHERE ED_deleted = 0 ORDER BY ED_eventDate;";
-        
-        try ( PreparedStatement stmt = con.prepareStatement(sql)) {
-            try ( ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    Events.add(getEvent(rs));
-                }
-            }
-        } catch (SQLException ex) {
-            System.out.println("get All Events: " + ex.getMessage());
+
         }
         
-        fillEventsWithParticipantsAndFiles(Events);
-        return Events;
     }
     
+    /**
+     * Function to insert data of a new Event into the database
+     * @param new_event {@link Event} Object containing all relevant
+     * information of the Event which has to be processed
+     */
     public void createNewEvent(Event new_event) {
-        
         String sqlEvent = "INSERT INTO event (E_eventName, E_eventDuration, E_eventDate, E_priority, E_eventLocation, E_notification) VALUES (?, ?, ?, ?, ?, ?);";
         ArrayList<Operator> temp = new_event.getParticipants();
-        //temp.add(new_event.getHost());
 
         try ( PreparedStatement stmt = con.prepareStatement(sqlEvent)) {
             stmt.setString(1, new_event.getName());
@@ -848,12 +737,15 @@ public class DatabaseHandler {
         } catch (SQLException ex) {
             System.out.println("Create new Event: " + ex.getMessage());
         }
-        
+
         setHostOfEvent(new_event.getHost().getUserId(), getMaxEventID());
         setParticipantsOfEvent(temp, getMaxEventID());
         setFilesOfEvent(new_event.getAttachments(), getMaxEventID());
     }
-    
+    /**
+     * deletes an {@link Event} withing the database
+     * @param EventID ID of the {@link Event} which is to be deleted
+     */
     public void deleteEvent(int EventID) {
         String sql = "UPDATE Event SET E_deleted = 1 WHERE E_EventID = ?;";
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
@@ -863,14 +755,18 @@ public class DatabaseHandler {
             System.out.println("delete event:" + ex.getMessage());
         }
     }
-    
+    /**
+     * Returns a list of events containing all of the users events
+     * @param userID
+     * @return {@link ArrayList} of {@link ArrayList}
+     */
     public ArrayList<Event> getEventsByUserID(int userID) {
         ArrayList<Event> usersEvents = new ArrayList<>();
-        
+
         String sql = "SELECT * FROM eventDetails WHERE ED_EventID IN "
                 + "(SELECT P_eventID FROM Participant WHERE P_userID = ?) "
                 + "AND ED_deleted = 0 ORDER BY ED_eventDate;";
-        
+
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setInt(1, userID);
             try ( ResultSet rs = stmt.executeQuery()) {
@@ -881,29 +777,36 @@ public class DatabaseHandler {
         } catch (SQLException ex) {
             System.out.println("" + ex.getMessage());
         }
-        
+
         fillEventsWithParticipantsAndFiles(usersEvents);
-        
+
         return usersEvents;
     }
-    
+
+    /**
+     * fetches all the Events of a user within a certain month
+     * @param userID ID of the {@link Operator}
+     * @param month number respective to the occurence of the month within a 
+     * year
+     * @return {@link ArrayList} of {@link Event}  
+     */
     public ArrayList<Event> getUsersEventsOfACertainMonth(int userID, int month) {
         ArrayList<Event> usersEvents = new ArrayList<>();
         ArrayList<Integer> usersEventIDs = getEventIDsOfUser(userID);
-        
+
         String sql
                 = "SELECT * FROM eventdetails WHERE ed_eventdate >= "
                 + "(SELECT MAKEDATE(YEAR(CURDATE()),1) + INTERVAL ? MONTH) "
                 + "AND ed_eventdate <= (SELECT MAKEDATE(YEAR(CURDATE()),1) + INTERVAL ? MONTH) "
                 + "AND ed_eventID IN( " + listToString(usersEventIDs) + ") AND ed_deleted = 0 ORDER BY ed_eventDate;";
-        
+
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setInt(1, month - 1);
             stmt.setInt(2, month);
             try ( ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     Event temp = getEvent(rs);
-                    
+
                     usersEvents.add(temp);
                 }
             }
@@ -917,10 +820,15 @@ public class DatabaseHandler {
         return usersEvents;
     }
     
+    /**
+     * returns a List containing all Events of this month of a user
+     * @param userID ID of the {@link Operator}
+     * @return {@link ArrayList} of {@link Event}
+     */
     public ArrayList<Event> getThisMonthsEventsByUserID(int userID) {
         ArrayList<Event> usersEvents = new ArrayList<>();
         ArrayList<Integer> usersEventIDs = getEventIDsOfUser(userID);
-        
+
         String sql
                 = "SELECT * FROM eventdetails\n"
                 + " WHERE ed_eventdate >= (SELECT MAKEDATE(YEAR(CURDATE()),1)) \n"
@@ -932,7 +840,7 @@ public class DatabaseHandler {
             try ( ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     Event temp = getEvent(rs);
-                    
+
                     usersEvents.add(temp);
                 }
             }
@@ -943,14 +851,19 @@ public class DatabaseHandler {
             fillEventsWithParticipantsAndFiles(usersEvents);
             return usersEvents;
         }
-        
+
         return usersEvents;
     }
-    
+
+    /**
+     * returns a List of this Weeks Event of the User
+     * @param userID
+     * @return {@link ArrayList} of {@link Event}
+     */
     public ArrayList<Event> getThisWeeksEventsByUserID(int userID) {
         ArrayList<Event> usersEvents = new ArrayList<>();
         ArrayList<Integer> usersEventIDs = getEventIDsOfUser(userID);
-        
+
         String sql
                 = "SELECT * FROM eventdetails "
                 + "WHERE ED_eventDate >= (SELECT DATE_ADD(CURDATE(), INTERVAL - WEEKDAY(CURDATE()) DAY)) "
@@ -958,11 +871,12 @@ public class DatabaseHandler {
                 + "AND ED_eventID IN(" + listToString(usersEventIDs)
                 + ") AND ED_deleted = 0 "
                 + "ORDER BY ED_eventDate;";
+        
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             try ( ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     Event temp = getEvent(rs);
-                    
+
                     usersEvents.add(temp);
                 }
             }
@@ -975,39 +889,30 @@ public class DatabaseHandler {
         }
         return usersEvents;
     }
+
     
+    /**
+     * returns an either an Event if User takes part in it or null if not
+     * @param userID ID of the {@link Operator}
+     * @param eventID ID of the {@link Event}
+     * @return {@link Event}
+     */
     public Event getEventByUser(int userID, int eventID) {
         ArrayList<Integer> EventIDs = getEventIDsOfUser(userID);
-        
-        if (EventIDs.contains(eventID)) {
+
+        if (EventIDs.contains(eventID))
             return getEventById(eventID);
-        } else {
-            System.out.println("User doesn't take part in this Event or the Event doesn't exist.");
-        }
         return null;
     }
 
-    /*public ArrayList<Event> getAllEventsOfUser(int userID) {
-        ArrayList<Event> Events = new ArrayList<>();
-        String sql = "SELECT * FROM eventDetails WHERE ED_userID = ? AND ED_deleted = 0 ORDER BY ed_eventDate;";
-
-        try ( PreparedStatement stmt = con.prepareStatement(sql)) {
-            stmt.setInt(1, userID);
-            try ( ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    Events.add(getEvent(rs));
-                }
-            }
-        } catch (SQLException ex) {
-            System.out.println("get all Events of user" + ex.getMessage());
-        }
-
-        fillEventsWithParticipantsAndFiles(Events);
-        return Events;
-    }*/
+    /**
+     * returns an Event 
+     * @param EventID ID of the {@link Event}
+     * @return {@link Event}
+     */
     public Event getEventById(int EventID) {
         Event toBeReturned = null;
-        
+
         String sql = "SELECT * FROM eventDetails WHERE ED_EventID = ? AND ED_deleted = 0;";
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setInt(1, EventID);
@@ -1019,12 +924,18 @@ public class DatabaseHandler {
         } catch (SQLException ex) {
             System.out.println("Get Event By Id: " + ex.getMessage());
         }
-        
+
         toBeReturned.setParticipants(selectParticipantsByID(toBeReturned.getID()));
         toBeReturned.setAttachments(getEventsDocuments(toBeReturned.getID()));
         return toBeReturned;
     }
+
     
+    /**
+     * returns a List containing the IDs of Events a User ist taking part of
+     * @param userID ID of an {@link Operator}
+     * @return {@link ArrayList} of {@link Integer}
+     */
     private ArrayList<Integer> getEventIDsOfUser(int userID) {
         ArrayList<Integer> EventIDs = new ArrayList<>();
         String sql = "SELECT EM_EventID FROM eventmembers WHERE EM_userID = ? AND EM_deleted = 0;";
@@ -1038,10 +949,16 @@ public class DatabaseHandler {
         } catch (SQLException ex) {
             System.out.println("get EventIDs Of User" + ex.getMessage());
         }
-        
+
         return EventIDs;
     }
     
+    /**
+     * returns a list contaning all the Events of a User of a certain Day
+     * @param userId ID of the {@link Operator}
+     * @param eventDate {@link LocalDate} which is specified
+     * @return {@link ArrayList} of {@link Event}
+     */
     public ArrayList<Event> getUsersEventsOfCertainDay(int userId, LocalDate eventDate) {
         ArrayList<Integer> EventIDs = getEventIDsOfUser(userId);
         ArrayList<Event> usersEvents = new ArrayList<>();
@@ -1056,14 +973,21 @@ public class DatabaseHandler {
         } catch (SQLException ex) {
             System.out.println("getUsersEventsOfCertainDay: " + ex.getMessage());
         }
-        
+
         if (!usersEvents.isEmpty()) {
             fillEventsWithParticipantsAndFiles(usersEvents);
             return usersEvents;
         }
         return usersEvents;
     }
-    
+
+    /**
+     * returns a List containing the Users Events within a certain intervall
+     * @param userID ID of the {@link Operator}
+     * @param from {@link LocalDate} of the start of the intervall
+     * @param to {@link LocalDate} of the end of the intervall
+     * @return {@link ArrayList} of {@link Event}
+     */
     public ArrayList<Event> getEventsOfPeriod(int userID, LocalDate from, LocalDate to) {
         ArrayList<Integer> EventIDs = getEventIDsOfUser(userID);
         ArrayList<Event> usersEvents = new ArrayList<>();
@@ -1079,14 +1003,20 @@ public class DatabaseHandler {
         } catch (SQLException ex) {
             System.out.println("get Events Of Period: " + ex.getMessage());
         }
-        
+
         fillEventsWithParticipantsAndFiles(usersEvents);
         return usersEvents;
     }
+
     
+    /**
+     * resets the reminder of participants taking part in an Event
+     * @param participants {@link ArrayList} of {@link Operator}
+     * @param eventID ID of an {@link Event}
+     */
     private void resetReminder(ArrayList<Operator> participants, int eventID) {
         String sql = "UPDATE participant SET P_notified = 0 WHERE P_userID = ? AND P_eventID = ?;";
-        
+
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             for (Operator o : participants) {
                 stmt.setInt(1, o.getUserId());
@@ -1098,7 +1028,13 @@ public class DatabaseHandler {
             System.out.println("reset Reminder:" + ex.getMessage());
         }
     }
+
     
+    /**
+     * returns a List containing all the Attachments of a certain Event
+     * @param eventID ID of the {@link Event}
+     * @return {@link ArrayList} of {@link Attachment}
+     */
     public ArrayList<Attachment> getEventsDocuments(int eventID) {
         String sql = "SELECT F_fileID, F_fileName FROM File where F_eventID = ?";
         ArrayList<Attachment> attachments = new ArrayList<>();
@@ -1115,7 +1051,13 @@ public class DatabaseHandler {
         }
         return attachments;
     }
-    
+
+    /**
+     * returns the binary representation of an document which is identified by
+     * its ID
+     * @param FileID
+     * @return {@link Array } of {@link Byte}
+     */
     public byte[] getDocument(int FileID) {
         byte[] document;
         String getDoc = "SELECT F_file FROM file WHERE F_fileID = ?";
