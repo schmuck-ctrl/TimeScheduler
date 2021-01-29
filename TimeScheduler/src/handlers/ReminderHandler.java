@@ -71,8 +71,8 @@ public class ReminderHandler extends Thread {
                     new Thread(eHandler).start();
                     //build message string
                     message += evt.getName() + ": " + evt.getDate().getDayOfMonth() + "/" + evt.getDate().getMonthValue() + 
-                            "/" + evt.getDate().getYear() + " | " + (evt.getDate().getHour() > 10 ? evt.getDate().getHour() : ("0" + evt.getDate().getHour())) +
-                            ":" + (evt.getDate().getMinute() > 10 ? evt.getDate().getMinute() : ("0" + evt.getDate().getMinute()));
+                            "/" + evt.getDate().getYear() + " | " + (evt.getDate().getHour() >= 10 ? evt.getDate().getHour() : ("0" + evt.getDate().getHour())) +
+                            ":" + (evt.getDate().getMinute() >= 10 ? evt.getDate().getMinute() : ("0" + evt.getDate().getMinute()));
                     message += "\n";
                 }
 
