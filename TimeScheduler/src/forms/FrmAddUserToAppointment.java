@@ -44,6 +44,7 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
     public FrmAddUserToAppointment(java.awt.Frame parent, boolean modal, ArrayList<Operator> users, FrmEvent source,Operator host) {
         super(parent, modal);
         initComponents();
+        setIconImage(java.awt.Toolkit.getDefaultToolkit().getImage(getClass().getResource("/icons/calendar-todo-fill.png")));
         eventHost = host;
         dbHandler = new DatabaseHandler();
         this.frmEvent = source;

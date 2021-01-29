@@ -23,6 +23,7 @@ public class FrmLogin extends javax.swing.JFrame {
      */
     public FrmLogin() {
         initComponents();
+        setIconImage(java.awt.Toolkit.getDefaultToolkit().getImage(getClass().getResource("/icons/calendar-todo-fill.png")));
         this.pnlHeader.setBackground(new Color(255, 255, 255));
         this.pnlContent.setBackground(new Color(255, 255, 255));
         this.pnlFooter.setBackground(new Color(255, 255, 255));

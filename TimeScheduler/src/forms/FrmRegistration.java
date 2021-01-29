@@ -22,6 +22,9 @@ public class FrmRegistration extends javax.swing.JFrame {
      */
     public FrmRegistration() {
         initComponents();
+
+        setIconImage(java.awt.Toolkit.getDefaultToolkit().getImage(getClass().getResource("/icons/calendar-todo-fill.png")));
+
         this.pnlHeader.setBackground(new Color(255, 255, 255));
         this.pnlContent.setBackground(new Color(255, 255, 255));
         this.pnlFooter.setBackground(new Color(255, 255, 255));
@@ -152,7 +155,6 @@ public class FrmRegistration extends javax.swing.JFrame {
         txtFirstName.setBackground(new java.awt.Color(243, 242, 241));
         txtFirstName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         txtFirstName.setForeground(new java.awt.Color(0, 0, 0));
-        txtFirstName.setText("Soren");
         txtFirstName.setToolTipText("First name should contain at least two letters");
         txtFirstName.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -166,7 +168,6 @@ public class FrmRegistration extends javax.swing.JFrame {
         txtLastName.setBackground(new java.awt.Color(243, 242, 241));
         txtLastName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         txtLastName.setForeground(new java.awt.Color(0, 0, 0));
-        txtLastName.setText("Sorus");
         txtLastName.setToolTipText("Last name should contain at least two letters");
         txtLastName.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -180,7 +181,6 @@ public class FrmRegistration extends javax.swing.JFrame {
         txtEmail.setBackground(new java.awt.Color(243, 242, 241));
         txtEmail.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         txtEmail.setForeground(new java.awt.Color(0, 0, 0));
-        txtEmail.setText("SorenSorus@web.de");
         txtEmail.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 txtEmailFocusGained(evt);
@@ -193,7 +193,6 @@ public class FrmRegistration extends javax.swing.JFrame {
         ptxtPassword.setBackground(new java.awt.Color(243, 242, 241));
         ptxtPassword.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         ptxtPassword.setForeground(new java.awt.Color(0, 0, 0));
-        ptxtPassword.setText("Sorensorus123&");
         ptxtPassword.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 ptxtPasswordFocusGained(evt);
@@ -206,7 +205,6 @@ public class FrmRegistration extends javax.swing.JFrame {
         ptxtRepeatPassword.setBackground(new java.awt.Color(243, 242, 241));
         ptxtRepeatPassword.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         ptxtRepeatPassword.setForeground(new java.awt.Color(0, 0, 0));
-        ptxtRepeatPassword.setText("Sorensorus123&");
         ptxtRepeatPassword.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 ptxtRepeatPasswordFocusGained(evt);
@@ -409,17 +407,17 @@ public class FrmRegistration extends javax.swing.JFrame {
 //            reHandler.sendEmailVerificationCode(txtEmail.getText().trim(), rand);
 //            String userVerificationInput = JOptionPane.showInputDialog("Email with the verification code was send to you");
             if (reHandler.checkVerificationCode(txtEmail.getText()) == true) {
-            User user = new User(txtFirstName.getText().trim(), txtLastName.getText().trim(), txtEmail.getText().trim());
-            reHandler.createNewUser(user, ptxtPassword.getPassword());
-            JOptionPane.showMessageDialog(null, "User was created", "Registration Information", JOptionPane.INFORMATION_MESSAGE);
-            FrmLogin frmLogin = new FrmLogin();
-            frmLogin.setVisible(true);
-            this.dispose();
+                User user = new User(txtFirstName.getText().trim(), txtLastName.getText().trim(), txtEmail.getText().trim());
+                reHandler.createNewUser(user, ptxtPassword.getPassword());
+                JOptionPane.showMessageDialog(null, "Registration was successful", "Registration Information", JOptionPane.INFORMATION_MESSAGE);
+                FrmLogin frmLogin = new FrmLogin();
+                frmLogin.setVisible(true);
+                this.dispose();
 
-           } 
+            }
 
         }
-        
+
         ptxtPassword.setText("");
         ptxtRepeatPassword.setText("");
 

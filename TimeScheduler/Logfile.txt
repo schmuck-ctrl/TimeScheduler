@@ -56,3 +56,11 @@ Jan. 28, 2021 5:56:26 PM forms.FrmLogin loginFunction
 INFO: FrmLogin
 Jan. 28, 2021 5:57:16 PM forms.FrmLogin loginFunction
 INFO: FrmLogin
+Jan. 29, 2021 8:13:34 PM forms.FrmMain setConfigurations
+INFO: Basic settings set successfully.
+Jan. 29, 2021 8:13:34 PM forms.FrmMain setConfigurations
+SEVERE: Current user is NULL!
+Jan. 29, 2021 8:14:24 PM forms.FrmMain setConfigurations
+INFO: Basic settings set successfully.
+Jan. 29, 2021 8:14:24 PM forms.FrmMain setConfigurations
+SEVERE: Current user is NULL!
