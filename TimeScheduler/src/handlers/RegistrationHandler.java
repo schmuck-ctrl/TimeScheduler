@@ -11,6 +11,8 @@ import java.security.NoSuchAlgorithmException;
 import classes.User;
 import handlers.UserHandler;
 import handlers.EncryptionHandler;
+import java.util.regex.Matcher;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -112,5 +114,34 @@ public class RegistrationHandler {
             return true;
         }
         return false;
+    }
+    public boolean checkVerificationCode(String email){
+           int rand = getRandomEmailVerificationNumber();
+        System.out.println(rand);
+//        sendVerificationCode(dbHandler.getUserByUsername(email), rand);
+        JOptionPane.showMessageDialog(null, "An verifiacation Email was send to you ");
+        for (int i = 0; i < 2; i++) {
+
+            String userInputRand = JOptionPane.showInputDialog("Enter the Verification number:");
+            if (userInputRand == null) {
+                return false;
+            }
+            Pattern userInputPattern = Pattern.compile("[0-9]");
+            Matcher match = userInputPattern.matcher(userInputRand);
+            if (!match.find()) {
+                if (i == 0) {
+                    JOptionPane.showMessageDialog(null, "Last attempt ");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Your second attempt was incorrect please check your if your email is correct.", "Login error", JOptionPane.INFORMATION_MESSAGE);
+
+                }
+            } else {
+                if (Integer.valueOf(userInputRand) == rand) {
+                    return true;
+                }
+            }
+        }
+        return false;
+
     }
 }

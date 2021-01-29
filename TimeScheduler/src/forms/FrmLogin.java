@@ -18,7 +18,7 @@ import javax.swing.JOptionPane;
 public class FrmLogin extends javax.swing.JFrame {
 
     /**
-     * 
+     *
      * Creates new form FrmLogin
      */
     public FrmLogin() {
@@ -38,24 +38,28 @@ public class FrmLogin extends javax.swing.JFrame {
 //                int rand = lgHandler.getRandomNumber();
 //                lgHandler.sendVerificationCode(dbHandler.getUserByUsername(txtEmail.getText()), rand);
 //                String userInputRan = JOptionPane.showInputDialog("Check Email for the Verification code");
+//                
 //                if (Integer.valueOf(userInputRan) == rand) {
-                    LoggerHandler.setupLogger();
-                    LoggerHandler.logger.info("FrmLogin");
+//                    LoggerHandler.setupLogger();
+//                    LoggerHandler.logger.info("FrmLogin");
+                if (lgHandler.checkVerificationCode(txtEmail.getText()) == true) {
                     FrmMain frmMain = FrmMain.getInstance();
                     frmMain.setConfigurations(dbHandler.getUserByUsername(txtEmail.getText().trim()));
                     frmMain.setVisible(true);
                     this.dispose();
-//                }
                 } else {
-                    JOptionPane.showMessageDialog(null, "You did not sign in correctly.", "Login error", JOptionPane.INFORMATION_MESSAGE);
+
                     ptxtPassword.setText("");
                 }
             } else {
-                JOptionPane.showMessageDialog(null, "User does not exist", "Login error", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "You did not sign in correctly.", "Login error", JOptionPane.INFORMATION_MESSAGE);
                 ptxtPassword.setText("");
             }
+        } else {
+            JOptionPane.showMessageDialog(null, "User does not exist", "Login error", JOptionPane.INFORMATION_MESSAGE);
+            ptxtPassword.setText("");
         }
-    
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
