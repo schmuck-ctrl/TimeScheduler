@@ -22,14 +22,10 @@ public class DatabaseHandler {
     
     private Connection con = null;
     
-    public static void main(String[] Args) {
-        DatabaseHandler db = new DatabaseHandler();
-        ArrayList<Integer> test = new ArrayList<>();
-    }
     
     public DatabaseHandler() {
         con = getConnection();
-        //System.out.println("Bin da!");
+        
     }
 
     //PRIVATE FUNCTION SECTION 
