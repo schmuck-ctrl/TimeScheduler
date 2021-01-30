@@ -29,15 +29,6 @@ public class DatabaseHandler {
 
     }
 
-    public static void main(String[] Args) {
-        DatabaseHandler db = new DatabaseHandler();
-        LocalDate ld = LocalDate.of(2021, 1, 22);
-        System.out.println(ld);
-        for (Event e : db.getThisMonthsEventsByUserID(6)) {
-            System.out.println(e);
-        }
-    }
-
     //PRIVATE FUNCTION SECTION 
     /**
      * Stores the attachment files of a certain Event in the Database
