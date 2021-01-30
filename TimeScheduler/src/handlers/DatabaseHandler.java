@@ -7,11 +7,13 @@ package handlers;
 
 import classes.*;
 import classes.Event.Priority;
+import com.sun.mail.imap.ACL;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.ArrayList;
 
 /**
@@ -27,29 +29,16 @@ public class DatabaseHandler {
 
     }
 
-    //PRIVATE FUNCTION SECTION 
-    /**
-     * Returns the IDs of Events of a User of which he hasn't been notified yet
-     *
-     * @param userID the Id by which the user is Identified in the Database
-     * @return a List of IDs
-     */
-    private ArrayList<Integer> getEventIDsNotNotified(int userID) {
-        ArrayList<Integer> eventIDs = new ArrayList<>();
-        String notNotifiedIds = "SELECT P_eventID FROM participant WHERE P_userID = ? AND P_notified = 0;";
-        try ( PreparedStatement stmt = con.prepareStatement(notNotifiedIds)) {
-            stmt.setInt(1, userID);
-            try ( ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    eventIDs.add(rs.getInt(1));
-                }
-            }
-        } catch (SQLException ex) {
-            System.out.println("not Notified:" + ex.getMessage());
+    public static void main(String[] Args) {
+        DatabaseHandler db = new DatabaseHandler();
+        LocalDate ld = LocalDate.of(2021, 1, 22);
+        System.out.println(ld);
+        for (Event e : db.getThisMonthsEventsByUserID(6)) {
+            System.out.println(e);
         }
-        return eventIDs;
     }
 
+    //PRIVATE FUNCTION SECTION 
     /**
      * Stores the attachment files of a certain Event in the Database
      *
@@ -68,7 +57,7 @@ public class DatabaseHandler {
                 stmt.executeUpdate();
             }
         } catch (Exception ex) {
-            System.out.println("add Files: " + ex.getMessage());
+
         }
     }
 
@@ -90,7 +79,7 @@ public class DatabaseHandler {
             }
             stmt.executeBatch();
         } catch (SQLException ex) {
-            System.out.println("add participants: " + ex.getMessage());
+
         }
     }
 
@@ -112,7 +101,7 @@ public class DatabaseHandler {
             }
             stmt.executeBatch();
         } catch (SQLException ex) {
-            System.out.println("delete file: " + ex.getMessage());
+
         }
 
     }
@@ -130,7 +119,7 @@ public class DatabaseHandler {
             stmt.setInt(2, eventID);
             stmt.executeUpdate();
         } catch (SQLException ex) {
-            System.out.println("" + ex.getMessage());
+
         }
     }
 
@@ -149,7 +138,7 @@ public class DatabaseHandler {
                 return max;
             }
         } catch (SQLException ex) {
-            System.out.println("" + ex.getMessage());
+
         }
 
         return -1;
@@ -195,29 +184,7 @@ public class DatabaseHandler {
         return buffer.toString().substring(0, buffer.length() - 1);
     }
 
-    /**
-     * return the EventIDs of a Events a certain user hosts
-     *
-     * @param userID ID by which the host is identified
-     * @return a Integer List of Event IDs
-     */
-    /*private ArrayList<Integer> getHostsEventIDs(int userID) {
-        ArrayList<Integer> eventIDs = new ArrayList<>();
-        String sql = "SELECT HE_eventID, HE_deleted FROM hostevent WHERE HE_userID = ? AND HE_deleted = 0;";
-        try ( PreparedStatement stmt = con.prepareStatement(sql)) {
-            stmt.setInt(1, userID);
-            try ( ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    eventIDs.add(rs.getInt("HE_eventID"));
-                }
-            }
-        } catch (SQLException ex) {
-            System.out.println("" + ex.getMessage());
-        }
-
-        return eventIDs;
-
-    }*/
+    
     /**
      * Returns a {@link User} or an {@link Admin} Object respectively to their
      * role
@@ -238,7 +205,7 @@ public class DatabaseHandler {
             lastName = rs.getString(prefix + "_lastName");
             user = AdminOrUser(role, userID, firstName, lastName, email);
         } catch (SQLException ex) {
-            System.out.println("return User: " + ex.getMessage());
+
         }
         return user;
     }
@@ -277,7 +244,7 @@ public class DatabaseHandler {
             Priority = Event.Priority.valueOf(rs.getString("ED_priority"));
             notification = Event.Notification.valueOf(rs.getString("ED_notification"));
         } catch (SQLException ex) {
-            System.out.println("get Event: " + ex.getMessage());
+
         }
         event = new Event(eventID, eventName, host, eventDate, eventDuration, eventLocation,
                 participants, attachments, Priority, notification);
@@ -323,7 +290,7 @@ public class DatabaseHandler {
             con = DriverManager.getConnection(URL, USERNAME, PASSWORD);
             return con;
         } catch (SQLException ex) {
-            System.out.println("" + ex.getMessage());
+
         }
         return null;
     }
@@ -344,7 +311,7 @@ public class DatabaseHandler {
             stmt.setInt(2, eventID);
             stmt.executeUpdate();
         } catch (SQLException ex) {
-            System.out.println("setUserNotified" + ex.getMessage());
+
         }
 
     }
@@ -371,7 +338,7 @@ public class DatabaseHandler {
                 }
             }
         } catch (SQLException ex) {
-            System.out.println("getEventsNotNotified" + ex.getMessage());
+
         }
 
         fillEventsWithParticipantsAndFiles(events);
@@ -394,7 +361,7 @@ public class DatabaseHandler {
                 return rs.next();
             }
         } catch (SQLException ex) {
-            System.out.println("" + ex.getMessage());
+
         }
         return false;
     }
@@ -413,7 +380,7 @@ public class DatabaseHandler {
                 return rs.next();
             }
         } catch (SQLException ex) {
-            System.out.println("" + ex.getMessage());
+
         }
         return false;
     }
@@ -434,7 +401,7 @@ public class DatabaseHandler {
             stmt.setString(4, user.getRole().toString());
             stmt.setString(5, password);
         } catch (SQLException ex) {
-            System.out.println("" + ex.getMessage());
+
         }
         System.out.println("Nutzer Erfolgreich angelegt");
 
@@ -460,7 +427,6 @@ public class DatabaseHandler {
             }
         } catch (SQLException ex) {
 
-            System.out.println("" + ex.getMessage());
         }
         return null;
     }
@@ -485,7 +451,7 @@ public class DatabaseHandler {
                 }
             }
         } catch (SQLException ex) {
-            System.out.println("" + ex.getMessage());
+
         }
         return user;
 
@@ -509,7 +475,7 @@ public class DatabaseHandler {
                 }
             }
         } catch (SQLException ex) {
-            System.out.println("" + ex.getMessage());
+
         }
 
         return allUser;
@@ -672,7 +638,7 @@ public class DatabaseHandler {
             }
             stmt.executeBatch();
         } catch (SQLException ex) {
-            System.out.println("insert Participants: " + ex.getMessage());
+
         }
     }
 
@@ -695,7 +661,7 @@ public class DatabaseHandler {
             }
             stmt.executeBatch();
         } catch (SQLException ex) {
-            System.out.println("delete Participants: " + ex.getMessage());
+
         }
     }
 
@@ -717,9 +683,9 @@ public class DatabaseHandler {
 
         setParticipantsOfEvent(new_participants, toBeEdited.getID());
         setFilesOfEvent(toBeEdited.getAttachments(), toBeEdited.getID());
-        
+
         LoggerHandler.setupLogger();
-        
+
         try ( PreparedStatement stmt = con.prepareStatement(editEvent)) {
             stmt.setString(1, toBeEdited.getName());
             stmt.setInt(2, toBeEdited.getDuration());
@@ -815,7 +781,7 @@ public class DatabaseHandler {
                 }
             }
         } catch (SQLException ex) {
-            System.out.println("" + ex.getMessage());
+
         }
 
         fillEventsWithParticipantsAndFiles(usersEvents);
@@ -833,31 +799,36 @@ public class DatabaseHandler {
      */
     public ArrayList<Event> getUsersEventsOfACertainMonth(int userID, int month) {
         ArrayList<Event> usersEvents = new ArrayList<>();
-        ArrayList<Integer> usersEventIDs = getEventIDsOfUser(userID);
 
         String sql
                 = "SELECT * FROM eventdetails WHERE ed_eventdate >= "
                 + "(SELECT MAKEDATE(YEAR(CURDATE()),1) + INTERVAL ? MONTH) "
-                + "AND ed_eventdate <= (SELECT MAKEDATE(YEAR(CURDATE()),1) + INTERVAL ? MONTH) "
-                + "AND ed_eventID IN( " + listToString(usersEventIDs) + ") AND ed_deleted = 0 ORDER BY ed_eventDate;";
+                + "AND ed_eventdate < (SELECT MAKEDATE(YEAR(CURDATE()),1) + INTERVAL ? MONTH) "
+                + "AND ed_eventID IN( "
+                + "SELECT EM_EventID FROM eventmembers WHERE EM_userID = ? AND EM_deleted = 0 "
+                + ") AND ed_deleted = 0 ORDER BY ed_eventDate;";
 
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setInt(1, month - 1);
             stmt.setInt(2, month);
+            stmt.setInt(3, userID);
+            System.out.println(stmt.toString());
             try ( ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     Event temp = getEvent(rs);
 
                     usersEvents.add(temp);
                 }
+                if (!usersEvents.isEmpty()) {
+                    fillEventsWithParticipantsAndFiles(usersEvents);
+                    return usersEvents;
+                }
+
             }
         } catch (SQLException ex) {
-            System.out.println("get Users Appointment of a certain Month: " + ex.getMessage());
+
         }
-        if (!usersEvents.isEmpty()) {
-            fillEventsWithParticipantsAndFiles(usersEvents);
-            return usersEvents;
-        }
+
         return usersEvents;
     }
 
@@ -869,29 +840,31 @@ public class DatabaseHandler {
      */
     public ArrayList<Event> getThisMonthsEventsByUserID(int userID) {
         ArrayList<Event> usersEvents = new ArrayList<>();
-        ArrayList<Integer> usersEventIDs = getEventIDsOfUser(userID);
 
         String sql
-                = "SELECT * FROM eventdetails\n"
+                = "SELECT * FROM eventdetails"
                 + " WHERE ed_eventdate >= (SELECT MAKEDATE(YEAR(CURDATE()),1)) \n"
                 + " AND ed_eventdate <= (SELECT MAKEDATE(YEAR(CURDATE()),1) + INTERVAL 1 MONTH) "
-                + " AND IN (" + listToString(usersEventIDs)
+                + " AND ed_eventID IN ("
+                + " SELECT EM_EventID FROM eventmembers WHERE EM_userID = ? AND EM_deleted = 0 "
                 + ") AND ed_deleted = 0"
                 + " ORDER BY ed_eventDate;";
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setInt(1, userID);
             try ( ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     Event temp = getEvent(rs);
 
                     usersEvents.add(temp);
                 }
+
+                if (!usersEvents.isEmpty()) {
+                    fillEventsWithParticipantsAndFiles(usersEvents);
+                    return usersEvents;
+                }
             }
         } catch (SQLException ex) {
-            System.out.println("getThisMonthsEventsByUserID" + ex.getMessage());
-        }
-        if (!usersEvents.isEmpty()) {
-            fillEventsWithParticipantsAndFiles(usersEvents);
-            return usersEvents;
+
         }
 
         return usersEvents;
@@ -905,36 +878,39 @@ public class DatabaseHandler {
      */
     public ArrayList<Event> getThisWeeksEventsByUserID(int userID) {
         ArrayList<Event> usersEvents = new ArrayList<>();
-        ArrayList<Integer> usersEventIDs = getEventIDsOfUser(userID);
 
         String sql
                 = "SELECT * FROM eventdetails "
                 + "WHERE ED_eventDate >= (SELECT DATE_ADD(CURDATE(), INTERVAL - WEEKDAY(CURDATE()) DAY)) "
                 + "AND ED_eventDate <= (SELECT date(now() + INTERVAL 6 - weekday(now()) DAY)) "
-                + "AND ED_eventID IN(" + listToString(usersEventIDs)
+                + "AND ED_eventID IN ("
+                + "SELECT EM_EventID FROM eventmembers WHERE EM_userID = ? AND EM_deleted = 0"
                 + ") AND ED_deleted = 0 "
                 + "ORDER BY ED_eventDate;";
 
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setInt(1, userID);
             try ( ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     Event temp = getEvent(rs);
-
                     usersEvents.add(temp);
                 }
+
+                if (!usersEvents.isEmpty()) {
+                    fillEventsWithParticipantsAndFiles(usersEvents);
+                    return usersEvents;
+                }
+
             }
         } catch (SQLException ex) {
-            System.out.println("This Weeks: " + ex.getMessage());
+
         }
-        if (!usersEvents.isEmpty()) {
-            fillEventsWithParticipantsAndFiles(usersEvents);
-            return usersEvents;
-        }
+
         return usersEvents;
     }
 
     /**
-     * returns an either an Event if User takes part in it or null if not
+     * returns either an Event if User takes part in it or null if not
      *
      * @param userID ID of the {@link Operator}
      * @param eventID ID of the {@link Event}
@@ -967,7 +943,7 @@ public class DatabaseHandler {
                 }
             }
         } catch (SQLException ex) {
-            System.out.println("Get Event By Id: " + ex.getMessage());
+
         }
 
         toBeReturned.setParticipants(selectParticipantsByID(toBeReturned.getID()));
@@ -992,7 +968,7 @@ public class DatabaseHandler {
                 }
             }
         } catch (SQLException ex) {
-            System.out.println("get EventIDs Of User" + ex.getMessage());
+
         }
 
         return EventIDs;
@@ -1006,18 +982,21 @@ public class DatabaseHandler {
      * @return {@link ArrayList} of {@link Event}
      */
     public ArrayList<Event> getUsersEventsOfCertainDay(int userId, LocalDate eventDate) {
-        ArrayList<Integer> EventIDs = getEventIDsOfUser(userId);
         ArrayList<Event> usersEvents = new ArrayList<>();
-        String sql = "SELECT * FROM eventDetails WHERE ED_eventID IN(" + listToString(EventIDs) + ")AND ED_eventDate LIKE ? AND ED_deleted = 0 ORDER BY ed_eventDate;";
+        String sql = "SELECT * FROM eventDetails WHERE ED_eventID IN("
+                + "SELECT EM_EventID FROM eventmembers WHERE EM_userID = ? AND EM_deleted = 0"
+                + ") AND ED_eventDate LIKE ? AND ED_deleted = 0 ORDER BY ed_eventDate;";
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
-            stmt.setString(1, eventDate.toString() + "%");
+            stmt.setInt(1, userId);
+            stmt.setString(2, eventDate.toString() + "%");
+            System.out.println(stmt.toString());
             try ( ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     usersEvents.add(getEvent(rs));
                 }
             }
         } catch (SQLException ex) {
-            System.out.println("getUsersEventsOfCertainDay: " + ex.getMessage());
+
         }
 
         if (!usersEvents.isEmpty()) {
@@ -1036,9 +1015,12 @@ public class DatabaseHandler {
      * @return {@link ArrayList} of {@link Event}
      */
     public ArrayList<Event> getEventsOfPeriod(int userID, LocalDate from, LocalDate to) {
-        ArrayList<Integer> EventIDs = getEventIDsOfUser(userID);
         ArrayList<Event> usersEvents = new ArrayList<>();
-        String sql = "SELECT * FROM eventDetails WHERE ED_eventID IN (" + listToString(EventIDs) + ") AND ED_eventDate >= ? AND ED_eventDate <= ? AND ED_deleted = 0 ORDER BY ED_eventDate;";
+        String sql
+                = "SELECT * FROM eventDetails WHERE ED_eventID IN ("
+                + "SELECT EM_EventID FROM eventmembers WHERE EM_userID = ? AND EM_deleted = 0"
+                + ") AND ED_eventDate >= ? AND ED_eventDate <= ? AND ED_deleted = 0 ORDER BY ED_eventDate;";
+
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setTimestamp(1, Timestamp.valueOf(from.atStartOfDay()));
             stmt.setTimestamp(2, Timestamp.valueOf(to.atTime(23, 59, 59, 59)));
@@ -1048,7 +1030,7 @@ public class DatabaseHandler {
                 }
             }
         } catch (SQLException ex) {
-            System.out.println("get Events Of Period: " + ex.getMessage());
+
         }
 
         fillEventsWithParticipantsAndFiles(usersEvents);
@@ -1072,7 +1054,7 @@ public class DatabaseHandler {
             }
             stmt.executeBatch();
         } catch (SQLException ex) {
-            System.out.println("reset Reminder:" + ex.getMessage());
+
         }
     }
 
@@ -1094,7 +1076,7 @@ public class DatabaseHandler {
                 }
             }
         } catch (Exception ex) {
-            System.out.println("getEventsDocuments: " + ex.getMessage());
+
         }
         return attachments;
     }
@@ -1119,7 +1101,7 @@ public class DatabaseHandler {
                 }
             }
         } catch (Exception ex) {
-            System.out.println("getDocument:" + ex.getMessage());
+
         }
         return null;
     }
