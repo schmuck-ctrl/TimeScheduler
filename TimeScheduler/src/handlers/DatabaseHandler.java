@@ -803,7 +803,6 @@ public class DatabaseHandler {
             stmt.setInt(1, month - 1);
             stmt.setInt(2, month);
             stmt.setInt(3, userID);
-            System.out.println(stmt.toString());
             try ( ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     Event temp = getEvent(rs);
@@ -980,7 +979,6 @@ public class DatabaseHandler {
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setInt(1, userId);
             stmt.setString(2, eventDate.toString() + "%");
-            System.out.println(stmt.toString());
             try ( ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     usersEvents.add(getEvent(rs));
@@ -1013,8 +1011,9 @@ public class DatabaseHandler {
                 + ") AND ED_eventDate >= ? AND ED_eventDate <= ? AND ED_deleted = 0 ORDER BY ED_eventDate;";
 
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
-            stmt.setTimestamp(1, Timestamp.valueOf(from.atStartOfDay()));
-            stmt.setTimestamp(2, Timestamp.valueOf(to.atTime(23, 59, 59, 59)));
+            stmt.setInt(1, userID);
+            stmt.setTimestamp(2, Timestamp.valueOf(from.atStartOfDay()));
+            stmt.setTimestamp(3, Timestamp.valueOf(to.atTime(23, 59, 59, 59)));
             try ( ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     usersEvents.add(getEvent(rs));
