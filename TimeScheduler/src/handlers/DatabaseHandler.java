@@ -201,7 +201,7 @@ public class DatabaseHandler {
      * @param userID ID by which the host is identified
      * @return a Integer List of Event IDs
      */
-    private ArrayList<Integer> getHostsEventIDs(int userID) {
+    /*private ArrayList<Integer> getHostsEventIDs(int userID) {
         ArrayList<Integer> eventIDs = new ArrayList<>();
         String sql = "SELECT HE_eventID, HE_deleted FROM hostevent WHERE HE_userID = ? AND HE_deleted = 0;";
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
@@ -217,8 +217,7 @@ public class DatabaseHandler {
 
         return eventIDs;
 
-    }
-
+    }*/
     /**
      * Returns a {@link User} or an {@link Admin} Object respectively to their
      * role
@@ -460,6 +459,7 @@ public class DatabaseHandler {
                 }
             }
         } catch (SQLException ex) {
+
             System.out.println("" + ex.getMessage());
         }
         return null;
@@ -544,11 +544,14 @@ public class DatabaseHandler {
 
     /**
      * Function which edits a User
+     *
      * @param toBeEdited {@link Operator} Object which has to be Edited
      */
     public void editUser(Operator toBeEdited) {
+
         String sqlUpdate
                 = "UPDATE user SET U_email = ?,U_firstName =?, U_lastName = ?,U_role = ? WHERE U_userID = ?;";
+        LoggerHandler.setupLogger();
         try ( PreparedStatement stmt = con.prepareStatement(sqlUpdate)) {
             stmt.setString(1, toBeEdited.getEmail());
             stmt.setString(2, toBeEdited.getFirstName());
@@ -556,40 +559,57 @@ public class DatabaseHandler {
             stmt.setString(4, toBeEdited.getRole().toString());
             stmt.setInt(5, toBeEdited.getUserId());
             stmt.executeUpdate();
+            forms.FrmMain.getInstance().setFeedback("User edited successfully", false);
+            LoggerHandler.logger.info("User was edited successfully");
         } catch (SQLException ex) {
-            System.out.println("" + ex.getMessage());
+
+            LoggerHandler.logger.severe("Not able to Edit User");
+            forms.FrmMain.getInstance().setFeedback("Not able to Edit the User!", true);
         }
+
     }
+
     /**
      * Function which deletes a User from the Database.
+     *
      * @param toBeDeleted {@link Operator}
      */
     public void deleteUser(Operator toBeDeleted) {
-        String eventIDs = listToString(getHostsEventIDs(toBeDeleted.getUserId()));
+        //String eventIDs = listToString(getHostsEventIDs(toBeDeleted.getUserId()));
         String deleteUser = "UPDATE user SET U_deleted = 1 WHERE U_userID = ?;";
-        String deleteUsersEvents = "UPDATE Event SET E_deleted = 1 WHERE E_EventID IN (" + eventIDs + ");";
-
+        String deleteUsersEvents = "UPDATE Event SET E_deleted = 1 WHERE E_EventID IN ("
+                + "SELECT HE_eventID, HE_deleted FROM hostevent WHERE HE_userID = ? AND HE_deleted = 0"
+                + ");";
+        LoggerHandler.setupLogger();
         try ( PreparedStatement stmt = con.prepareStatement(deleteUser)) {
             stmt.setInt(1, toBeDeleted.getUserId());
             stmt.executeUpdate();
+            LoggerHandler.logger.info("User was deleted successfully");
+            forms.FrmMain.getInstance().setFeedback("User was deleted successfully", false);
         } catch (SQLException ex) {
-            System.out.println("" + ex.getMessage());
+            forms.FrmMain.getInstance().setFeedback("User couldn't be deleted", true);
+            LoggerHandler.logger.severe("Failed to Delete the User");
         }
 
         try ( PreparedStatement stmt = con.prepareStatement(deleteUsersEvents)) {
+            stmt.setInt(1, toBeDeleted.getUserId());
             stmt.executeUpdate();
+            LoggerHandler.logger.info("Users Events were deleted successfully");
+            forms.FrmMain.getInstance().setFeedback("Users Events were deleted successfully", false);
         } catch (SQLException ex) {
-            System.out.println("" + ex.getMessage());
+            LoggerHandler.logger.info("Failed to Delete the Users Events");
+            forms.FrmMain.getInstance().setFeedback("Users Events couldn't be deleted", true);
         }
     }
 
     //Event Methods
     /**
      * sets the Participants of an Event
-     * @param participants {@link ArrayList} of {@link User} containing the 
+     *
+     * @param participants {@link ArrayList} of {@link User} containing the
      * participants of an {@link Event}
-     * @param eventID ID of the {@link Event} of which the Participants will 
-     * be newly set
+     * @param eventID ID of the {@link Event} of which the Participants will be
+     * newly set
      */
     public void setParticipantsOfEvent(ArrayList<Operator> participants, int eventID) {
         ArrayList<Operator> event_old = selectParticipantsByID(eventID); //old
@@ -603,12 +623,12 @@ public class DatabaseHandler {
         deleteParticipants(toBeDeleted, eventID);
         insertParticipants(toBeAdded, eventID);
     }
-    
-    
+
     /**
      * sets the Files of an Event
-     * @param attachments {@link ArrayList} of {@link Attachment} containing
-     * the Attachments of an Event
+     *
+     * @param attachments {@link ArrayList} of {@link Attachment} containing the
+     * Attachments of an Event
      * @param eventID ID of an {@link Event}
      */
     public void setFilesOfEvent(ArrayList<Attachment> attachments, int eventID) {
@@ -634,8 +654,9 @@ public class DatabaseHandler {
 
     /**
      * Helper method for inserting Participants into the database
-     * @param toBeAdded {@link ArrayList} of {@link Operator} containining
-     * the datasets of the participants of an {@link Event}
+     *
+     * @param toBeAdded {@link ArrayList} of {@link Operator} containining the
+     * datasets of the participants of an {@link Event}
      * @param eventID ID of an {@link Event} the participants will be assigned
      * to
      */
@@ -655,9 +676,9 @@ public class DatabaseHandler {
         }
     }
 
-    
     /**
      * Method to delete Participants from an Event in the Database
+     *
      * @param toBeDeleted {@link ArrayList} of {@link Operator} containing the
      * datasets of User which will be deleted
      * @param eventID ID of the Event {@link Event}
@@ -680,12 +701,13 @@ public class DatabaseHandler {
 
     /**
      * Edits the Eventinformations withing the database
-     * @param toBeEdited {@link Event} Object containing all relevant 
+     *
+     * @param toBeEdited {@link Event} Object containing all relevant
      * informations which have to be processed withing the database
-     * @return 
+     * @return
      */
     public void editEvent(Event toBeEdited) {
-        
+
         ArrayList<Operator> new_participants = (ArrayList<Operator>) toBeEdited.getParticipants().clone();
 
         String editEvent
@@ -694,8 +716,10 @@ public class DatabaseHandler {
                 + "WHERE E_eventID = ?;";
 
         setParticipantsOfEvent(new_participants, toBeEdited.getID());
-
         setFilesOfEvent(toBeEdited.getAttachments(), toBeEdited.getID());
+        
+        LoggerHandler.setupLogger();
+        
         try ( PreparedStatement stmt = con.prepareStatement(editEvent)) {
             stmt.setString(1, toBeEdited.getName());
             stmt.setInt(2, toBeEdited.getDuration());
@@ -705,27 +729,32 @@ public class DatabaseHandler {
             stmt.setString(6, toBeEdited.getNotification().toString());
             stmt.setInt(7, toBeEdited.getID());
             stmt.executeUpdate();
+            if (LocalDateTime.now().isBefore(toBeEdited.getReminder())) {
+                resetReminder(toBeEdited.getParticipants(), toBeEdited.getID());
 
+            }
+            LoggerHandler.logger.info("Editing Event was successfull");
+            forms.FrmMain.getInstance().setFeedback("Editing Event was successfull", false);
         } catch (SQLException ex) {
-            System.out.println("editEvent: " + ex.getMessage());
+            LoggerHandler.logger.severe("Editing Event has failed");
+            forms.FrmMain.getInstance().setFeedback("Editing Event has failed", true);
         }
 
-        if (LocalDateTime.now().isBefore(toBeEdited.getReminder())) {
-            resetReminder(toBeEdited.getParticipants(), toBeEdited.getID());
-
-        }
-        
     }
-    
+
     /**
      * Function to insert data of a new Event into the database
-     * @param new_event {@link Event} Object containing all relevant
-     * information of the Event which has to be processed
+     *
+     * @param new_event {@link Event} Object containing all relevant information
+     * of the Event which has to be processed
      */
     public void createNewEvent(Event new_event) {
-        String sqlEvent = "INSERT INTO event (E_eventName, E_eventDuration, E_eventDate, E_priority, E_eventLocation, E_notification) VALUES (?, ?, ?, ?, ?, ?);";
+        String sqlEvent = "INSERT INTO event "
+                + "(E_eventName, E_eventDuration, E_eventDate,"
+                + " E_priority, E_eventLocation, E_notification)"
+                + " VALUES (?, ?, ?, ?, ?, ?);";
         ArrayList<Operator> temp = new_event.getParticipants();
-
+        LoggerHandler.setupLogger();
         try ( PreparedStatement stmt = con.prepareStatement(sqlEvent)) {
             stmt.setString(1, new_event.getName());
             stmt.setInt(2, new_event.getDuration());
@@ -734,29 +763,40 @@ public class DatabaseHandler {
             stmt.setString(5, new_event.getLocation());
             stmt.setString(6, new_event.getNotification().toString());
             stmt.executeUpdate();
+            setHostOfEvent(new_event.getHost().getUserId(), getMaxEventID());
+            setParticipantsOfEvent(temp, getMaxEventID());
+            setFilesOfEvent(new_event.getAttachments(), getMaxEventID());
+            LoggerHandler.logger.info("Creating new Event was successfull");
+            forms.FrmMain.getInstance().setFeedback("Event was created successfully", false);
         } catch (SQLException ex) {
-            System.out.println("Create new Event: " + ex.getMessage());
+            LoggerHandler.logger.severe("Creating new Event failed");
+            forms.FrmMain.getInstance().setFeedback("Event couldn't be created", true);
         }
 
-        setHostOfEvent(new_event.getHost().getUserId(), getMaxEventID());
-        setParticipantsOfEvent(temp, getMaxEventID());
-        setFilesOfEvent(new_event.getAttachments(), getMaxEventID());
     }
+
     /**
      * deletes an {@link Event} withing the database
+     *
      * @param EventID ID of the {@link Event} which is to be deleted
      */
     public void deleteEvent(int EventID) {
         String sql = "UPDATE Event SET E_deleted = 1 WHERE E_EventID = ?;";
+        LoggerHandler.setupLogger();
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setInt(1, EventID);
             stmt.executeUpdate();
+            LoggerHandler.logger.info("Deleting event was successfull");
+            forms.FrmMain.getInstance().setFeedback("Event was deleted successfully", false);
         } catch (SQLException ex) {
-            System.out.println("delete event:" + ex.getMessage());
+            LoggerHandler.logger.info("Deleting event failed");
+            forms.FrmMain.getInstance().setFeedback("Event couldn't get deleted", true);
         }
     }
+
     /**
      * Returns a list of events containing all of the users events
+     *
      * @param userID
      * @return {@link ArrayList} of {@link ArrayList}
      */
@@ -785,10 +825,11 @@ public class DatabaseHandler {
 
     /**
      * fetches all the Events of a user within a certain month
+     *
      * @param userID ID of the {@link Operator}
-     * @param month number respective to the occurence of the month within a 
+     * @param month number respective to the occurence of the month within a
      * year
-     * @return {@link ArrayList} of {@link Event}  
+     * @return {@link ArrayList} of {@link Event}
      */
     public ArrayList<Event> getUsersEventsOfACertainMonth(int userID, int month) {
         ArrayList<Event> usersEvents = new ArrayList<>();
@@ -819,9 +860,10 @@ public class DatabaseHandler {
         }
         return usersEvents;
     }
-    
+
     /**
      * returns a List containing all Events of this month of a user
+     *
      * @param userID ID of the {@link Operator}
      * @return {@link ArrayList} of {@link Event}
      */
@@ -857,6 +899,7 @@ public class DatabaseHandler {
 
     /**
      * returns a List of this Weeks Event of the User
+     *
      * @param userID
      * @return {@link ArrayList} of {@link Event}
      */
@@ -871,7 +914,7 @@ public class DatabaseHandler {
                 + "AND ED_eventID IN(" + listToString(usersEventIDs)
                 + ") AND ED_deleted = 0 "
                 + "ORDER BY ED_eventDate;";
-        
+
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             try ( ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
@@ -890,9 +933,9 @@ public class DatabaseHandler {
         return usersEvents;
     }
 
-    
     /**
      * returns an either an Event if User takes part in it or null if not
+     *
      * @param userID ID of the {@link Operator}
      * @param eventID ID of the {@link Event}
      * @return {@link Event}
@@ -900,13 +943,15 @@ public class DatabaseHandler {
     public Event getEventByUser(int userID, int eventID) {
         ArrayList<Integer> EventIDs = getEventIDsOfUser(userID);
 
-        if (EventIDs.contains(eventID))
+        if (EventIDs.contains(eventID)) {
             return getEventById(eventID);
+        }
         return null;
     }
 
     /**
-     * returns an Event 
+     * returns an Event
+     *
      * @param EventID ID of the {@link Event}
      * @return {@link Event}
      */
@@ -930,9 +975,9 @@ public class DatabaseHandler {
         return toBeReturned;
     }
 
-    
     /**
      * returns a List containing the IDs of Events a User ist taking part of
+     *
      * @param userID ID of an {@link Operator}
      * @return {@link ArrayList} of {@link Integer}
      */
@@ -952,9 +997,10 @@ public class DatabaseHandler {
 
         return EventIDs;
     }
-    
+
     /**
      * returns a list contaning all the Events of a User of a certain Day
+     *
      * @param userId ID of the {@link Operator}
      * @param eventDate {@link LocalDate} which is specified
      * @return {@link ArrayList} of {@link Event}
@@ -983,6 +1029,7 @@ public class DatabaseHandler {
 
     /**
      * returns a List containing the Users Events within a certain intervall
+     *
      * @param userID ID of the {@link Operator}
      * @param from {@link LocalDate} of the start of the intervall
      * @param to {@link LocalDate} of the end of the intervall
@@ -1008,9 +1055,9 @@ public class DatabaseHandler {
         return usersEvents;
     }
 
-    
     /**
      * resets the reminder of participants taking part in an Event
+     *
      * @param participants {@link ArrayList} of {@link Operator}
      * @param eventID ID of an {@link Event}
      */
@@ -1029,9 +1076,9 @@ public class DatabaseHandler {
         }
     }
 
-    
     /**
      * returns a List containing all the Attachments of a certain Event
+     *
      * @param eventID ID of the {@link Event}
      * @return {@link ArrayList} of {@link Attachment}
      */
@@ -1055,6 +1102,7 @@ public class DatabaseHandler {
     /**
      * returns the binary representation of an document which is identified by
      * its ID
+     *
      * @param FileID
      * @return {@link Array } of {@link Byte}
      */
