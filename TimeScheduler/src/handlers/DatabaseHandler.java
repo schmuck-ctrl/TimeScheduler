@@ -391,10 +391,12 @@ public class DatabaseHandler {
             stmt.setString(3, user.getLastName());
             stmt.setString(4, user.getRole().toString());
             stmt.setString(5, password);
+            stmt.executeUpdate();
+            System.out.println("Nutzer Erfolgreich angelegt");
         } catch (SQLException ex) {
-
+            System.out.println(ex.getMessage());
         }
-        System.out.println("Nutzer Erfolgreich angelegt");
+        
 
     }
 
