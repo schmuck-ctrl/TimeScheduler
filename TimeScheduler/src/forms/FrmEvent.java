@@ -9,6 +9,7 @@ import classes.Attachment;
 import classes.Event;
 import classes.Operator;
 import handlers.EventHandler;
+import handlers.LoggerHandler;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -217,6 +218,7 @@ public class FrmEvent extends javax.swing.JPanel {
                 modelAttachments.addAll(event.getAttachments());
             }
 
+            LoggerHandler.logger.info("Event successfully loaded.");
         }
     }
 
@@ -349,9 +351,12 @@ public class FrmEvent extends javax.swing.JPanel {
         if (checkInput) {
             if (this.currentEvent.getID() == -1) {
                 newEvent = new Event(name, host, date, duration, location, participants, attachments, priority, notification);
+                LoggerHandler.logger.info("Changes correct.");
             } else {
                 newEvent = new Event(this.currentEvent.getID(), name, host, date, duration, location, participants, attachments, priority, notification);
+                LoggerHandler.logger.info("Input correct.");
             }
+            
         }
 
         return newEvent;
@@ -428,6 +433,7 @@ public class FrmEvent extends javax.swing.JPanel {
         clearFooter();
 
         if (view == View.NEW) {
+            LoggerHandler.logger.info("View: new");
             enableControls(true);
 
             setTitle("Create new event: ");
@@ -442,6 +448,7 @@ public class FrmEvent extends javax.swing.JPanel {
             });
             pnlFooter.add(btnNew);
         } else if (view == View.READ) {
+            LoggerHandler.logger.info("View: read");
             enableControls(false);
 
             setTitle("Deatils of " + this.currentEvent.toString() + ":");
@@ -461,7 +468,7 @@ public class FrmEvent extends javax.swing.JPanel {
                 pnlFooter.add(btnDisplayEditView);
             }
         } else if (view == View.EDIT) {
-
+            LoggerHandler.logger.info("View: edit");
             //If the event is in the past, display the View.Read settings.
             //Otherwise display a delete and save button.
             if (this.currentEvent.getDate().isBefore(LocalDateTime.now())) {

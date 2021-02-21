@@ -6,6 +6,7 @@
 package forms;
 
 import classes.Event;
+import handlers.LoggerHandler;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.JDialog;
@@ -39,6 +40,7 @@ public class FrmEventsOfDay extends javax.swing.JPanel {
         prepareList();
 
         setEvents(eventsOfDay);
+        LoggerHandler.logger.info("EventsOfDay ready.");
     }
 
     // </editor-fold>
