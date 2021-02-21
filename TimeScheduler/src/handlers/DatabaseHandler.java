@@ -385,7 +385,7 @@ public class DatabaseHandler {
     public void insertNewUser(Operator user, String password) {
 
         String sql = "INSERT INTO user (U_email, U_firstName, U_lastName, U_role, U_password) VALUES (?,?,?,?,?);";
-        LoggerHandler.setupLogger();
+        
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setString(1, user.getEmail());
             stmt.setString(2, user.getFirstName());
@@ -511,7 +511,7 @@ public class DatabaseHandler {
 
         String sqlUpdate
                 = "UPDATE user SET U_email = ?,U_firstName =?, U_lastName = ?,U_role = ? WHERE U_userID = ?;";
-        LoggerHandler.setupLogger();
+        
         try ( PreparedStatement stmt = con.prepareStatement(sqlUpdate)) {
             stmt.setString(1, toBeEdited.getEmail());
             stmt.setString(2, toBeEdited.getFirstName());
@@ -540,7 +540,7 @@ public class DatabaseHandler {
         String deleteUsersEvents = "UPDATE Event SET E_deleted = 1 WHERE E_EventID IN ("
                 + "SELECT HE_eventID, HE_deleted FROM hostevent WHERE HE_userID = ? AND HE_deleted = 0"
                 + ");";
-        LoggerHandler.setupLogger();
+
         try ( PreparedStatement stmt = con.prepareStatement(deleteUser)) {
             stmt.setInt(1, toBeDeleted.getUserId());
             stmt.executeUpdate();
@@ -678,8 +678,6 @@ public class DatabaseHandler {
         setParticipantsOfEvent(new_participants, toBeEdited.getID());
         setFilesOfEvent(toBeEdited.getAttachments(), toBeEdited.getID());
 
-        LoggerHandler.setupLogger();
-
         try ( PreparedStatement stmt = con.prepareStatement(editEvent)) {
             stmt.setString(1, toBeEdited.getName());
             stmt.setInt(2, toBeEdited.getDuration());
@@ -714,7 +712,7 @@ public class DatabaseHandler {
                 + " E_priority, E_eventLocation, E_notification)"
                 + " VALUES (?, ?, ?, ?, ?, ?);";
         ArrayList<Operator> temp = new_event.getParticipants();
-        LoggerHandler.setupLogger();
+        
         try ( PreparedStatement stmt = con.prepareStatement(sqlEvent)) {
             stmt.setString(1, new_event.getName());
             stmt.setInt(2, new_event.getDuration());
@@ -742,7 +740,7 @@ public class DatabaseHandler {
      */
     public void deleteEvent(int EventID) {
         String sql = "UPDATE Event SET E_deleted = 1 WHERE E_EventID = ?;";
-        LoggerHandler.setupLogger();
+        
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setInt(1, EventID);
             stmt.executeUpdate();
