@@ -385,6 +385,7 @@ public class DatabaseHandler {
     public void insertNewUser(Operator user, String password) {
 
         String sql = "INSERT INTO user (U_email, U_firstName, U_lastName, U_role, U_password) VALUES (?,?,?,?,?);";
+        LoggerHandler.setupLogger();
         try ( PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setString(1, user.getEmail());
             stmt.setString(2, user.getFirstName());
@@ -392,9 +393,9 @@ public class DatabaseHandler {
             stmt.setString(4, user.getRole().toString());
             stmt.setString(5, password);
             stmt.executeUpdate();
-            System.out.println("Nutzer Erfolgreich angelegt");
+            LoggerHandler.logger.info("User was created successfully");
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            LoggerHandler.logger.severe("User couldn't be created");
         }
         
 
