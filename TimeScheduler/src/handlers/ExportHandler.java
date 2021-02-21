@@ -42,23 +42,37 @@ public class ExportHandler {
         return directory;
     }
     
+    /**
+     * 
+     * This function is writing the weekly schedule into an .txt to the desired save path on the system.
+     * 
+     * @param eList List of events to be written in schedule txt
+     * @param start Startdate of the week
+     * @param end Endtime of the week
+     * @param path Desired save path
+     */
     public void writeWeeklySchedule(java.util.ArrayList<classes.Event> eList, java.time.LocalDate start, java.time.LocalDate end, String path) {
 
+        //check if the path is valid
         if (!this.checkIfPathIsValid(path)) {
             System.out.println(path + " is not valid!");
         }
 
+        //Add file name to the path
         path += "\\Weekly Schedule.txt";
 
+        //Creates the file in the file path
         this.createTxtFile(path);
 
         try {
             FileWriter myWriter = new FileWriter(path);
 
+            //Write Headline
             myWriter.write("Weekly Schedule from " + start.getDayOfMonth() + "." + start.getMonth() + "." + start.getYear() + " - "
                     + end.getDayOfMonth() + "." + end.getMonth() + "." + end.getYear());
             myWriter.write("\n\n");
 
+            //insert all necessary informations into the schedule for all events in eList
             for (classes.Event e : eList) {
 
                 myWriter.write("Event name:\t\t" + e.getName());
@@ -90,6 +104,13 @@ public class ExportHandler {
         }
     }
 
+    /**
+     * 
+     * Checks if the given file path is valid
+     * 
+     * @param path System path
+     * @return Returns true or false
+     */
     private boolean checkIfPathIsValid(String path) {
         File theDir = new File(path);
         if (theDir.exists()) {
@@ -99,6 +120,12 @@ public class ExportHandler {
         }
     }
 
+    /**
+     * 
+     * Creates the .txt file in the path
+     * 
+     * @param path System path
+     */
     private void createTxtFile(String path) {
         try {
             File report = new File(path);

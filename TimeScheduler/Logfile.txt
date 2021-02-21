@@ -108,3 +108,29 @@ Jan. 30, 2021 10:12:46 PM forms.FrmMain setConfigurations
 INFO: Basic settings set successfully.
 Jan. 30, 2021 10:12:46 PM forms.FrmMain setConfigurations
 SEVERE: Current user is NULL!
+Feb. 13, 2021 2:56:25 PM forms.FrmMain setConfigurations
+INFO: Basic settings set successfully.
+Feb. 13, 2021 2:56:25 PM forms.FrmMain setConfigurations
+SEVERE: Current user is NULL!
+Feb. 13, 2021 2:56:52 PM forms.FrmMain setConfigurations
+INFO: Basic settings set successfully.
+Feb. 13, 2021 2:56:52 PM forms.FrmMain setConfigurations
+SEVERE: Current user is NULL!
+Feb. 13, 2021 2:57:28 PM handlers.DatabaseHandler createNewEvent
+INFO: Creating new Event was successfull
+Feb. 13, 2021 2:57:51 PM handlers.DatabaseHandler deleteEvent
+INFO: Deleting event was successfull
+Feb. 13, 2021 2:58:10 PM handlers.DatabaseHandler createNewEvent
+INFO: Creating new Event was successfull
+Feb. 13, 2021 2:58:31 PM forms.FrmEvent liEventAttachmentsMousePressed
+SEVERE: C:\BLI_5.mdzip (Zugriff verweigert)
+Feb. 13, 2021 3:00:10 PM handlers.DatabaseHandler editEvent
+INFO: Editing Event was successfull
+Feb. 13, 2021 3:00:19 PM handlers.DatabaseHandler editEvent
+INFO: Editing Event was successfull
+Feb. 13, 2021 3:00:27 PM handlers.DatabaseHandler editEvent
+INFO: Editing Event was successfull
+Feb. 14, 2021 4:24:03 PM forms.FrmMain setConfigurations
+INFO: Basic settings set successfully.
+Feb. 14, 2021 4:24:03 PM forms.FrmMain setConfigurations
+SEVERE: Current user is NULL!
