@@ -6,7 +6,6 @@
 package handlers;
 
 import java.util.regex.Pattern;
-import handlers.EncryptionHandler;
 import java.security.NoSuchAlgorithmException;
 import classes.User;
 import handlers.UserHandler;
@@ -25,6 +24,9 @@ public class RegistrationHandler {
      * Object for the Encryption access.
      */
     EncryptionHandler encrypHandler = new EncryptionHandler();
+    
+    DatabaseHandler dbHandler = new DatabaseHandler();
+    
 
     /**
      * Checks if the user first and last name input is allowed.
@@ -125,6 +127,7 @@ public class RegistrationHandler {
         DatabaseHandler dbHandler;
         dbHandler = new DatabaseHandler();
         if (dbHandler.checkIfUserExists(email) == true) {
+            LoggerHandler.logger.info("User does not exist.");
             return false;
         }
         return true;
@@ -144,7 +147,7 @@ public class RegistrationHandler {
 //            String passwordEncrypted = EncryptionHandler.toHexString(EncryptionHandler.getShaEncrypt(password));
             String passwordEncrypted = EncryptionHandler.simpleEncryption(password);
             uaHandler.addUser(newUser, passwordEncrypted);
-
+            
 //        } catch (NoSuchAlgorithmException e) {
 //            System.out.println("Exception thrown");
 //        }
@@ -191,8 +194,7 @@ public class RegistrationHandler {
      */
     public boolean checkVerificationCode(String email) {
         int rand = getRandomEmailVerificationNumber();
-        System.out.println(rand);
-//        sendVerificationCode(dbHandler.getUserByUsername(email), rand);
+        sendEmailVerificationCode(email, rand);
         JOptionPane.showMessageDialog(null, "An verifiacation Email was send to you ");
         for (int i = 0; i < 2; i++) {
 

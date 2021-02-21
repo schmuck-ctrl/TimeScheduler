@@ -451,15 +451,16 @@ public class FrmRegistration extends javax.swing.JFrame {
         } else if (!reHandler.checkIfPasswordTheSame(ptxtPassword.getPassword(), ptxtRepeatPassword.getPassword())) {
             lblRepeatPasswordError.setText("Password does not match ");
             inputError = false;
+            
         }
         if (inputError == true) {
-//            int rand = reHandler.getRandomEmailVerificationNumber();
-//            reHandler.sendEmailVerificationCode(txtEmail.getText().trim(), rand);
-//            String userVerificationInput = JOptionPane.showInputDialog("Email with the verification code was send to you");
+            int rand = reHandler.getRandomEmailVerificationNumber();
+            reHandler.sendEmailVerificationCode(txtEmail.getText().trim(), rand);
             if (reHandler.checkVerificationCode(txtEmail.getText()) == true) {
                 User user = new User(txtFirstName.getText().trim(), txtLastName.getText().trim(), txtEmail.getText().trim());
                 reHandler.createNewUser(user, ptxtPassword.getPassword());
                 JOptionPane.showMessageDialog(null, "Registration was successful", "Registration Information", JOptionPane.INFORMATION_MESSAGE);
+                LoggerHandler.logger.info("New user was created correctly.");
                 FrmLogin frmLogin = new FrmLogin();
                 frmLogin.setVisible(true);
                 this.dispose();
@@ -470,7 +471,7 @@ public class FrmRegistration extends javax.swing.JFrame {
 
         ptxtPassword.setText("");
         ptxtRepeatPassword.setText("");
-
+        LoggerHandler.logger.info("New user was not created correctly.");
     }//GEN-LAST:event_btnRegistrationActionPerformed
     /**
      * Shows tooltip on question mark icon

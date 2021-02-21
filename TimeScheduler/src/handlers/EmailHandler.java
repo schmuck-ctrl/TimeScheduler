@@ -30,7 +30,8 @@ import javax.mail.internet.MimeMultipart;
 public class EmailHandler implements Runnable {
 
     /**
-     * Views ???
+     * Emails that will be send.
+     *
      * @see MailOperation#VERIFY_ACCOUNT
      * @see MailOperation#VERIFY_EMAIL
      * @see MailOperation#CREATE_EVENT
@@ -77,7 +78,8 @@ public class EmailHandler implements Runnable {
      */
     private Event event;
     /**
-     * Generated random number if a email verification or two step verification happens.
+     * Generated random number if a email verification or two step verification
+     * happens.
      */
     private int rand;
     /**
@@ -94,8 +96,8 @@ public class EmailHandler implements Runnable {
     private String email;
 
     /**
-     *  Constructs a new EmailHandler that is used to send an verification email.
-     * 
+     * Constructs a new EmailHandler that is used to send an verification email.
+     *
      * @param email of the user that trys to create an account.
      * @param rand generated random number.
      */
@@ -106,7 +108,9 @@ public class EmailHandler implements Runnable {
     }
 
     /**
-     * Constructs a new EmailHandler that is used to send a account verification to the user.
+     * Constructs a new EmailHandler that is used to send a account verification
+     * to the user.
+     *
      * @param user the User operator that trys to login.
      * @param rand A random number.
      */
@@ -117,8 +121,11 @@ public class EmailHandler implements Runnable {
     }
 
     /**
-     * Constructs a new EmailHandler that is used to send emails when the user edits, delets or creates events.
-     * @param operation The Operation that the user does like editing, deleting or creating a event.
+     * Constructs a new EmailHandler that is used to send emails when the user
+     * edits, delets or creates events.
+     *
+     * @param operation The Operation that the user does like editing, deleting
+     * or creating a event.
      * @param event The event that is used by the user.
      */
     public EmailHandler(MailOperation operation, Event event) {
@@ -129,8 +136,9 @@ public class EmailHandler implements Runnable {
     }
 
     /**
-     * Formates the time from this event into a string 
-     * @return A time string which contains the Time of the event. 
+     * Formates the time from this event into a string
+     *
+     * @return A time string which contains the Time of the event.
      */
     public String timeFormater() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
@@ -141,12 +149,14 @@ public class EmailHandler implements Runnable {
 
     /**
      * Sending an email to verify the user who trys to log in.
+     *
      * @param user The user that should get the email.
-     * @param rand The random number that the user should receive to verifiy his account
+     * @param rand The random number that the user should receive to verifiy his
+     * account
      */
     public void emailSenderVerifyAccount(Operator user, int rand) {
         // email string .
-        String from = "Javprojekt@gmail.com"; 
+        String from = "Javprojekt@gmail.com";
         // password of the email string.
         String password = "Javaprojekt123";
 
@@ -157,11 +167,11 @@ public class EmailHandler implements Runnable {
         //The port that is used by gmail.
         prop.put("mail.smtp.port", "465");
         prop.put("mail.smtp.auth", "true");
-        
+
         prop.put("mail.smtp.socketFactory.port", "465");
         //creats an secure socket. Socket = is one endpoint of a two-way communication link between two programs running on the network.
         prop.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-        
+
         //Creating a mail session with all above props and a new mail Authenticator.
         //The mail authenticator is necessery for the network connection.
         Session session = Session.getInstance(prop, new javax.mail.Authenticator() {
@@ -186,10 +196,11 @@ public class EmailHandler implements Runnable {
                 message.setText("Your Verification code: " + rand);
 
                 Transport.send(message);
-
+                LoggerHandler.logger.info("Email was send for the two step verification.");
                 System.out.println("Mail Sent...");
             } else {
                 System.out.println("fehler ist hier");
+                LoggerHandler.logger.severe("Error Email was not sended to the user.");
             }
 
         } catch (MessagingException e) {
@@ -199,6 +210,7 @@ public class EmailHandler implements Runnable {
 
     /**
      * Sending an email with a random number to verify a user account.
+     *
      * @param email The email of the user that trys to create a account.
      * @param rand The generated random number.
      */
@@ -229,10 +241,11 @@ public class EmailHandler implements Runnable {
                 message.setText("Your email verification code: " + rand);
 
                 Transport.send(message);
-
-                System.out.println("Mail Sent...");
+                LoggerHandler.logger.info("Email was send to verifiy the user email address");
+//                System.out.println("Mail Sent...");
             } else {
-                System.out.println("fehler ist hier");
+                LoggerHandler.logger.severe("Error Email was not sended to the user");
+//                System.out.println("fehler ist hier");
             }
 
         } catch (MessagingException e) {
@@ -242,6 +255,7 @@ public class EmailHandler implements Runnable {
 
     /**
      * Sending an email with a random number to verify a user account.
+     *
      * @param event Event that was new created by the user.
      */
     public void emailSenderAddEvent(Event event) {
@@ -268,7 +282,6 @@ public class EmailHandler implements Runnable {
 
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(from));
-       
 
             for (int i = 0; i < participants.size(); i++) {
                 text.append(participants.get(i).getLastName() + ", " + participants.get(i).getFirstName());
@@ -294,12 +307,13 @@ public class EmailHandler implements Runnable {
 //                    multipart.addBodyPart(mainMessage);
                     // Attachment
 //                    mainMessage = new MimeBodyPart();
-                    
-                    Transport.send(message);
 
-                    System.out.println("Mail Sent...");
+                    Transport.send(message);
+                    LoggerHandler.logger.info("Email was send to notify all participants about the new Event");
+//                    System.out.println("Mail Sent...");
                 } else {
-                    System.out.println("fehler ist hier");
+                    LoggerHandler.logger.severe("Error Email was not sended to the user.");
+//                    System.out.println("fehler ist hier");
                 }
             }
         } catch (MessagingException e) {
@@ -309,7 +323,9 @@ public class EmailHandler implements Runnable {
     }
 
     /**
-     * Sending an email to all participants of this event that this event was edited.
+     * Sending an email to all participants of this event that this event was
+     * edited.
+     *
      * @param event Event that was edited by the user.
      */
     public void emailSenderEditEvent(Event event) {
@@ -359,10 +375,11 @@ public class EmailHandler implements Runnable {
                             + text);
 
                     Transport.send(message);
-
-                    System.out.println("Mail Sent...");
+                    LoggerHandler.logger.info("Email was send to notify all participants about the edited event");
+//                    System.out.println("Mail Sent...");
                 } else {
-                    System.out.println("fehler ist hier");
+//                    System.out.println("fehler ist hier");
+                    LoggerHandler.logger.severe("Error Email was not sended to the user.");
                 }
             }
         } catch (MessagingException e) {
@@ -372,7 +389,9 @@ public class EmailHandler implements Runnable {
     }
 
     /**
-     * Sending an email to all participants of this event that the event was deleted.
+     * Sending an email to all participants of this event that the event was
+     * deleted.
+     *
      * @param event Event which was deleted by the user.
      */
     public void emailSenderDeleteEvent(Event event) {
@@ -405,13 +424,14 @@ public class EmailHandler implements Runnable {
 
                     message.setSubject("The event: \"" + event.getName() + "\" was deleted");
                     message.setText("Dear Mrs/Mr" + participants.get(i).getLastName() + ",\n"
-                            + "the meeting: \"" + event.getName() + "\" on the: " + event.getDate().getDayOfMonth()+ "." + event.getDate().getMonth() + "." + event.getDate().getYear() + " at: " + time + " was deleted.");
+                            + "the meeting: \"" + event.getName() + "\" on the: " + event.getDate().getDayOfMonth() + "." + event.getDate().getMonth() + "." + event.getDate().getYear() + " at: " + time + " was deleted.");
 
                     Transport.send(message);
-
-                    System.out.println("Mail Sent...");
+                    LoggerHandler.logger.info("Email was send to notify all participants about the deleted event");
+//                    System.out.println("Mail Sent...");
                 } else {
-                    System.out.println("fehler ist hier");
+//                    System.out.println("fehler ist hier");
+                    LoggerHandler.logger.severe("Error Email was not sended to the user.");
                 }
             }
         } catch (MessagingException e) {
@@ -421,7 +441,8 @@ public class EmailHandler implements Runnable {
     }
 
     /**
-     * Sends an Email to all Participants of the Event when the reminder is activated
+     * Sends an Email to all Participants of the Event when the reminder is
+     * activated
      *
      * @param event Event which should be send as a reminder.
      */
@@ -468,13 +489,14 @@ public class EmailHandler implements Runnable {
                     // Edit benachrichtigung
                     message.setSubject("Event reminder");
                     message.setText("Dear Mrs/Mr" + participants.get(i).getLastName() + ",\n\n"
-                        + notify +" on the: " + event.getDate().getDayOfMonth()+ "." + event.getDate().getMonth() + "." + event.getDate().getYear() + " at: " + time);
+                            + notify + " on the: " + event.getDate().getDayOfMonth() + "." + event.getDate().getMonth() + "." + event.getDate().getYear() + " at: " + time);
 
                     Transport.send(message);
-
-                    System.out.println("Mail Sent...");
+                    LoggerHandler.logger.info("Email was send to notify all participants about the event time (Reminder)");
+//                    System.out.println("Mail Sent...");
                 } else {
-                    System.out.println("fehler ist hier");
+//                    System.out.println("fehler ist hier");
+                    LoggerHandler.logger.severe("Error Email was not sended to the user.");
                 }
             }
         } catch (MessagingException e) {
@@ -484,9 +506,15 @@ public class EmailHandler implements Runnable {
     }
 
     /**
-     * !! KEINE AHNUNG !!
+     *
      */
     @Override
+    /**
+     * The run method is called if the thread was constructed using separate
+     * Runnable object otherwise this method does nothing and returns. The run
+     * method checks with an switch operation which email will be triggered and
+     * sended to the users email address.
+     */
     public void run() {
         switch (this.operation) {
             case VERIFY_ACCOUNT:

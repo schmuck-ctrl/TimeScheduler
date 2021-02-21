@@ -15,19 +15,28 @@ import java.util.logging.Logger;
 
 /**
  *
+ *
  * @author Benny / Vadym
  */
 public class LoggerHandler {
 
+    //Static variable of the logger class.
     public static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-    public Formatter logFormatter = null;
-    public static FileHandler fileHandler = null;
+    //Formatter to formatting the file handler 
+    private static Formatter logFormatter = null;
+    //FileHandler 
+    private static FileHandler fileHandler = null;
 
-    public static void setupLogger(){
-        
+    /**
+     * Setups logger allocates the static variables.
+     *
+     */
+    public static void setupLogger() {
+        //sets the log level of the logger into (info, severe and warning) 
         logger.setLevel(Level.INFO);
         try {
-            fileHandler = new FileHandler("Logfile.txt",true);
+            //Fileshandler to create the logfile.
+            fileHandler = new FileHandler("Logfile.txt", true);
         } catch (IOException ex) {
             Logger.getLogger(LoggerHandler.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SecurityException ex) {

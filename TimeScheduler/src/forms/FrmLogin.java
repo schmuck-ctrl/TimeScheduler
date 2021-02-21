@@ -52,6 +52,7 @@ public class FrmLogin extends javax.swing.JFrame {
                 if (lgHandler.checkVerificationCode(txtEmail.getText()) == true) {
                     FrmMain frmMain = FrmMain.getInstance();
                     frmMain.setConfigurations(dbHandler.getUserByUsername(txtEmail.getText().trim()));
+                    LoggerHandler.logger.info("User log in correct");
                     frmMain.setVisible(true);
                     this.dispose();
                 } else {

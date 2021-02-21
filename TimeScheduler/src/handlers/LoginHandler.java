@@ -100,8 +100,8 @@ public class LoginHandler {
      */
     public boolean checkVerificationCode(String email) {
         int rand = getRandomNumber();
-        System.out.println(rand);
-//        sendVerificationCode(dbHandler.getUserByUsername(email), rand);
+        
+        sendVerificationCode(dbHandler.getUserByUsername(email), rand);
         JOptionPane.showMessageDialog(null, "An verifiacation Email was send to you ");
         for (int i = 0; i < 2; i++) {
 
@@ -124,7 +124,7 @@ public class LoginHandler {
                 }
             }
         }
-
+        LoggerHandler.logger.info("Log in verification number input was incorrect.");
         return false;
     }
 
