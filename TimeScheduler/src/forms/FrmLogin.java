@@ -12,8 +12,9 @@ import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 
 /**
+ * Shows the Login window for the user.
  *
- * @author Vadym
+ * @author Vadym Kuzmenko
  */
 public class FrmLogin extends javax.swing.JFrame {
 
@@ -30,6 +31,11 @@ public class FrmLogin extends javax.swing.JFrame {
 
     }
 
+    /**
+     * Excecutes the login process with all included methodes from the login handler and database handler.
+     * If everything is correct the login window disposes and the main window opens.
+     * 
+     */
     private void loginFunction() {
         LoginHandler lgHandler = new LoginHandler();
         DatabaseHandler dbHandler = new DatabaseHandler();
@@ -239,12 +245,19 @@ public class FrmLogin extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
+    /**
+     * Executes the loginFunction() method when login button is pressed.
+     *
+     * @param evt The action event.
+     */
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
 
         loginFunction();
     }//GEN-LAST:event_btnLoginActionPerformed
-
+    /**
+     * Opens the Registration window.
+     * @param evt The mouse event.
+     */
     private void lblRegisterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRegisterMouseClicked
 
         this.dispose();
@@ -252,38 +265,63 @@ public class FrmLogin extends javax.swing.JFrame {
         newAccount.setLocationRelativeTo(null);
         newAccount.setVisible(true);
     }//GEN-LAST:event_lblRegisterMouseClicked
-
+    /**
+     * Change color of email text field.
+     *
+     * @param evt The focus gained event.
+     */
     private void txtEmailFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtEmailFocusGained
 
         txtEmail.setBackground(Color.WHITE);
     }//GEN-LAST:event_txtEmailFocusGained
-
+    /**
+     * Change color of email text field.
+     *
+     * @param evt The focus lost event.
+     */
     private void txtEmailFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtEmailFocusLost
 
         txtEmail.setBackground(new Color(243, 242, 241));
     }//GEN-LAST:event_txtEmailFocusLost
-
+    /**
+     * Change color of password text field.
+     *
+     * @param evt The focus gained event.
+     */
     private void ptxtPasswordFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_ptxtPasswordFocusGained
 
         ptxtPassword.setBackground(Color.WHITE);
     }//GEN-LAST:event_ptxtPasswordFocusGained
-
+    /**
+     * Change color of password text field.
+     *
+     * @param evt The focus lost event.
+     */
     private void ptxtPasswordFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_ptxtPasswordFocusLost
 
         ptxtPassword.setBackground(new Color(243, 242, 241));
     }//GEN-LAST:event_ptxtPasswordFocusLost
 
+    /**
+     * Allows the user to use the login button via pressing the enter key if the
+     * text fields are not emtpy.
+     *
+     * @param evt Key event
+     */
     private void ptxtPasswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ptxtPasswordKeyPressed
-        // TODO add your handling code here:
         if (txtEmail.getText() != null && txtEmail.getText().isEmpty() == false && ptxtPassword.getPassword() != null && ptxtPassword.getPassword().length > 0) {
             if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
                 loginFunction();
             }
         }
     }//GEN-LAST:event_ptxtPasswordKeyPressed
-
+    /**
+     * Allows the user to use the login button via pressing the enter key if the
+     * text fields are not empty.
+     *
+     * @param evt Key event
+     */
     private void txtEmailKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtEmailKeyPressed
-//         TODO add your handling code here:
         if (txtEmail.getText() != null && txtEmail.getText().isEmpty() == false && ptxtPassword.getPassword() != null && ptxtPassword.getPassword().length > 0) {
             if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
                 loginFunction();

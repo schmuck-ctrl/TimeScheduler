@@ -148,8 +148,8 @@ public class EventHandler {
      */
     public void addEvent(Event event) {
         dbHandler.createNewEvent(event);
-//        EmailHandler eHandler = new EmailHandler(EmailHandler.MailOperation.CREATE_EVENT, event);
-//        new Thread(eHandler).start();
+        EmailHandler eHandler = new EmailHandler(EmailHandler.MailOperation.CREATE_EVENT, event);
+        new Thread(eHandler).start();
 
     }
 
@@ -161,8 +161,8 @@ public class EventHandler {
      */
     public void editEvent(Event event) {
         dbHandler.editEvent(event);
-//        EmailHandler eHandler = new EmailHandler(EmailHandler.MailOperation.EDIT_EVENT, event);
-//        new Thread(eHandler).start();
+        EmailHandler eHandler = new EmailHandler(EmailHandler.MailOperation.EDIT_EVENT, event);
+        new Thread(eHandler).start();
     }
 
     /**
@@ -172,8 +172,8 @@ public class EventHandler {
      * @param eventID The id of the event that is deleted
      */
     public void deleteEvent(int eventID) {
-//        EmailHandler eHandler = new EmailHandler(EmailHandler.MailOperation.DELETE_EVENT,dbHandler.getEventById(eventID));
-//        new Thread(eHandler).start();
+        EmailHandler eHandler = new EmailHandler(EmailHandler.MailOperation.DELETE_EVENT,dbHandler.getEventById(eventID));
+        new Thread(eHandler).start();
         dbHandler.deleteEvent(eventID);
 
     }

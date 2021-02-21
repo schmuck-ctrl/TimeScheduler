@@ -11,13 +11,17 @@ import java.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
 import java.util.Properties;
+import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.Multipart;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 
 /**
  *
@@ -26,28 +30,74 @@ import javax.mail.internet.MimeMessage;
 public class EmailHandler implements Runnable {
 
     /**
-     *
+     * Views ???
+     * @see MailOperation#VERIFY_ACCOUNT
+     * @see MailOperation#VERIFY_EMAIL
+     * @see MailOperation#CREATE_EVENT
+     * @see MailOperation#EDIT_EVENT
+     * @see MailOperation#DELETE_EVENT
+     * @see MailOperation#REMIND_EVENT
      */
     public enum MailOperation {
+        /**
+         * Send email to verify Login.
+         */
         VERIFY_ACCOUNT,
+        /**
+         * Send email to verify Email.
+         */
         VERIFY_EMAIL,
+        /**
+         * Send email if event is created.
+         */
         CREATE_EVENT,
+        /**
+         * Send email if event is edited.
+         */
         EDIT_EVENT,
+        /**
+         * Send email if event is deleted.
+         */
         DELETE_EVENT,
+        /**
+         * Send email if reminder is triggered.
+         */
         REMIND_EVENT;
     }
+    /**
+     * The user which is displayed if an event is edited,deleted or created..
+     */
     private Operator user;
+    /**
+     * All participants of an event if an event is edited,deleted or created..
+     */
     private ArrayList<Operator> participants;
+    /**
+     * Current event if an event is edited,deleted or created..
+     */
     private Event event;
+    /**
+     * Generated random number if a email verification or two step verification happens.
+     */
     private int rand;
+    /**
+     * Organizer of an event if an event is edited,deleted or created.
+     */
     private Operator organizer;
+    /**
+     * The enum that is used.
+     */
     private MailOperation operation;
+    /**
+     * Email address of the user used for the email verification.
+     */
     private String email;
 
     /**
-     *
-     * @param email
-     * @param rand
+     *  Constructs a new EmailHandler that is used to send an verification email.
+     * 
+     * @param email of the user that trys to create an account.
+     * @param rand generated random number.
      */
     public EmailHandler(String email, int rand) {
         this.operation = MailOperation.VERIFY_EMAIL;
@@ -56,9 +106,9 @@ public class EmailHandler implements Runnable {
     }
 
     /**
-     *
-     * @param user
-     * @param rand
+     * Constructs a new EmailHandler that is used to send a account verification to the user.
+     * @param user the User operator that trys to login.
+     * @param rand A random number.
      */
     public EmailHandler(Operator user, int rand) {
         this.operation = MailOperation.VERIFY_ACCOUNT;
@@ -67,9 +117,9 @@ public class EmailHandler implements Runnable {
     }
 
     /**
-     *
-     * @param operation
-     * @param event
+     * Constructs a new EmailHandler that is used to send emails when the user edits, delets or creates events.
+     * @param operation The Operation that the user does like editing, deleting or creating a event.
+     * @param event The event that is used by the user.
      */
     public EmailHandler(MailOperation operation, Event event) {
         this.operation = operation;
@@ -79,8 +129,8 @@ public class EmailHandler implements Runnable {
     }
 
     /**
-     *
-     * @return
+     * Formates the time from this event into a string 
+     * @return A time string which contains the Time of the event. 
      */
     public String timeFormater() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
@@ -90,33 +140,47 @@ public class EmailHandler implements Runnable {
     }
 
     /**
-     *
-     * @param user
-     * @param rand
+     * Sending an email to verify the user who trys to log in.
+     * @param user The user that should get the email.
+     * @param rand The random number that the user should receive to verifiy his account
      */
     public void emailSenderVerifyAccount(Operator user, int rand) {
-        String from = "Javprojekt@gmail.com"; // from address. As this is using Gmail SMTP your from address should be gmail
-        String password = "Javaprojekt123"; // password for from gmail address that you have used in above line. 
+        // email string .
+        String from = "Javprojekt@gmail.com"; 
+        // password of the email string.
+        String password = "Javaprojekt123";
 
+        //Allows to combine (value pairs)multiple properties to one list/propertie. The prop will be used as an setting.
         Properties prop = new Properties();
+        //The host that is used here it is gmail
         prop.put("mail.smtp.host", "smtp.gmail.com");
+        //The port that is used by gmail.
         prop.put("mail.smtp.port", "465");
         prop.put("mail.smtp.auth", "true");
+        
         prop.put("mail.smtp.socketFactory.port", "465");
+        //creats an secure socket. Socket = is one endpoint of a two-way communication link between two programs running on the network.
         prop.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-
+        
+        //Creating a mail session with all above props and a new mail Authenticator.
+        //The mail authenticator is necessery for the network connection.
         Session session = Session.getInstance(prop, new javax.mail.Authenticator() {
+            // The getPasswordAuthentication() method is needed for a password authorization for basic HTTP authentication.
+            //Socket classes are used to represent the connection between a client program and a server program.
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(from, password);
             }
         });
 
         try {
-
+            //An mime message is an internet standard  that extends the format of email messages to support text and attachments.
             Message message = new MimeMessage(session);
+            //Who sends the mail
             message.setFrom(new InternetAddress(from));
+            // !!!!!!!!! Später entfernen !!!!!!
             System.out.println(user.getLastName());
             if (user.getEmail() != null && !user.getEmail().isEmpty()) {
+                //Who gets the Email.
                 message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(user.getEmail()));
                 message.setSubject("Verification Number");
                 message.setText("Your Verification code: " + rand);
@@ -134,9 +198,9 @@ public class EmailHandler implements Runnable {
     }
 
     /**
-     *
-     * @param email
-     * @param rand
+     * Sending an email with a random number to verify a user account.
+     * @param email The email of the user that trys to create a account.
+     * @param rand The generated random number.
      */
     public void emailSenderVerifyEmail(String email, int rand) {
         String from = "Javprojekt@gmail.com"; // from address. As this is using Gmail SMTP your from address should be gmail
@@ -177,8 +241,8 @@ public class EmailHandler implements Runnable {
     }
 
     /**
-     *
-     * @param event
+     * Sending an email with a random number to verify a user account.
+     * @param event Event that was new created by the user.
      */
     public void emailSenderAddEvent(Event event) {
         //String to = ""; // to address. It can be any like gmail, yahoo etc.
@@ -204,6 +268,7 @@ public class EmailHandler implements Runnable {
 
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(from));
+       
 
             for (int i = 0; i < participants.size(); i++) {
                 text.append(participants.get(i).getLastName() + ", " + participants.get(i).getFirstName());
@@ -214,6 +279,7 @@ public class EmailHandler implements Runnable {
                 if (participants.get(i).getEmail() != null && !participants.get(i).getEmail().isEmpty()) {
                     message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(participants.get(i).getEmail()));
                     message.setSubject("You where invited to the: \"" + event.getName() + "\" meeting");
+//                    BodyPart mainMessage = new MimeBodyPart();
                     message.setText("Dear Mrs/Mr " + participants.get(i).getLastName() + ",\n\n"
                             + "all informations about the new meeting are below." + "\n" + "\n"
                             + "Appointment name: " + event.getName() + "\n"
@@ -224,7 +290,11 @@ public class EmailHandler implements Runnable {
                             + "Place: " + event.getLocation() + "\n"
                             + "Participants of the meeting: \n"
                             + text);
-
+//                    Multipart multipart = new MimeMultipart();
+//                    multipart.addBodyPart(mainMessage);
+                    // Attachment
+//                    mainMessage = new MimeBodyPart();
+                    
                     Transport.send(message);
 
                     System.out.println("Mail Sent...");
@@ -239,8 +309,8 @@ public class EmailHandler implements Runnable {
     }
 
     /**
-     *
-     * @param event
+     * Sending an email to all participants of this event that this event was edited.
+     * @param event Event that was edited by the user.
      */
     public void emailSenderEditEvent(Event event) {
         String from = "Javprojekt@gmail.com"; // from address. As this is using Gmail SMTP your from address should be gmail
@@ -302,8 +372,8 @@ public class EmailHandler implements Runnable {
     }
 
     /**
-     *
-     * @param event
+     * Sending an email to all participants of this event that the event was deleted.
+     * @param event Event which was deleted by the user.
      */
     public void emailSenderDeleteEvent(Event event) {
         String from = "Javprojekt@gmail.com"; // from address. As this is using Gmail SMTP your from address should be gmail
@@ -351,9 +421,9 @@ public class EmailHandler implements Runnable {
     }
 
     /**
-     * Sends an Email to all Participants of the Event
+     * Sends an Email to all Participants of the Event when the reminder is activated
      *
-     * @param event
+     * @param event Event which should be send as a reminder.
      */
     public void emailSenderAppointmentReminder(Event event) {
         String from = "Javprojekt@gmail.com"; // from address. As this is using Gmail SMTP your from address should be gmail
@@ -414,7 +484,7 @@ public class EmailHandler implements Runnable {
     }
 
     /**
-     *
+     * !! KEINE AHNUNG !!
      */
     @Override
     public void run() {

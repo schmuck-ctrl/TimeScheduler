@@ -12,6 +12,7 @@ import javax.swing.ToolTipManager;
 import javax.swing.JOptionPane;
 
 /**
+ * The Registration window of the application.
  *
  * @author Vadym
  */
@@ -19,6 +20,8 @@ public class FrmRegistration extends javax.swing.JFrame {
 
     /**
      * Creates new form FrmRegistration
+     * 
+     * 
      */
     public FrmRegistration() {
         initComponents();
@@ -29,6 +32,7 @@ public class FrmRegistration extends javax.swing.JFrame {
         this.pnlContent.setBackground(new Color(255, 255, 255));
         this.pnlFooter.setBackground(new Color(255, 255, 255));
         int dismissDelay = ToolTipManager.sharedInstance().getDismissDelay();
+        //Sets the display time of the Tooltip to max value not only 5 seconds.
         dismissDelay = Integer.MAX_VALUE;
         ToolTipManager.sharedInstance().setDismissDelay(dismissDelay);
     }
@@ -319,56 +323,102 @@ public class FrmRegistration extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Change color of First name text field.
+     * 
+     * @param evt The gained focus event.
+     */
     private void txtFirstNameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtFirstNameFocusGained
 
         txtFirstName.setBackground(Color.WHITE);
     }//GEN-LAST:event_txtFirstNameFocusGained
-
+    /**
+     * Change color of fist name text field.
+     * 
+     * @param evt The focus lost event.
+     */
     private void txtFirstNameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtFirstNameFocusLost
 
         txtFirstName.setBackground(new Color(243, 242, 241));
     }//GEN-LAST:event_txtFirstNameFocusLost
-
+    /**
+     * Change color of last name text field.
+     * 
+     * @param evt The gained focus event.
+     */
     private void txtLastNameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtLastNameFocusGained
 
         txtLastName.setBackground(Color.WHITE);
     }//GEN-LAST:event_txtLastNameFocusGained
-
+    /**
+     * Change color of last name text field.
+     * 
+     * @param evt The focus lost event.
+     */
     private void txtLastNameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtLastNameFocusLost
 
         txtLastName.setBackground(new Color(243, 242, 241));
     }//GEN-LAST:event_txtLastNameFocusLost
-
+    /**
+     * Change color of Email text field.
+     * 
+     * @param evt The gained focus event.
+     */
     private void txtEmailFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtEmailFocusGained
 
         txtEmail.setBackground(Color.WHITE);
     }//GEN-LAST:event_txtEmailFocusGained
-
+    /**
+     * Change color of email text field.
+     * 
+     * @param evt The focus lost event.
+     */
     private void txtEmailFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtEmailFocusLost
 
         txtEmail.setBackground(new Color(243, 242, 241));
     }//GEN-LAST:event_txtEmailFocusLost
-
+    /**
+     * Change color of password text field.
+     * 
+     * @param evt The gained focus event.
+     */
     private void ptxtPasswordFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_ptxtPasswordFocusGained
 
         ptxtPassword.setBackground(Color.WHITE);
     }//GEN-LAST:event_ptxtPasswordFocusGained
-
+    /**
+     * Change color of password text field.
+     * 
+     * @param evt The focus lost event.
+     */
     private void ptxtPasswordFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_ptxtPasswordFocusLost
 
         ptxtPassword.setBackground(new Color(243, 242, 241));
     }//GEN-LAST:event_ptxtPasswordFocusLost
-
+    /**
+     * Change color of repeat password text field.
+     * 
+     * @param evt The gained focus event.
+     */
     private void ptxtRepeatPasswordFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_ptxtRepeatPasswordFocusGained
 
         ptxtRepeatPassword.setBackground(Color.WHITE);
     }//GEN-LAST:event_ptxtRepeatPasswordFocusGained
-
+    /**
+     * Change color of repeat password text field.
+     * 
+     * @param evt The focus lost event.
+     */
     private void ptxtRepeatPasswordFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_ptxtRepeatPasswordFocusLost
 
         ptxtRepeatPassword.setBackground(new Color(243, 242, 241));
     }//GEN-LAST:event_ptxtRepeatPasswordFocusLost
-
+    /**
+     * Checks the user input if the input is correct via the Registration handler and database handler.
+     * Creates new user object and stores him in the database. 
+     * 
+     * @param evt The action event.
+     */
     private void btnRegistrationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrationActionPerformed
         lblFirstNameError.setText("");
         lblLastNameError.setText("");
@@ -422,14 +472,20 @@ public class FrmRegistration extends javax.swing.JFrame {
         ptxtRepeatPassword.setText("");
 
     }//GEN-LAST:event_btnRegistrationActionPerformed
-
+    /**
+     * Shows tooltip on question mark icon
+     * @param evt mouse event.
+     */
     private void lblPasswordToolTipMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblPasswordToolTipMouseEntered
 
-        lblPasswordToolTip.setToolTipText("<html>Your password should contain at least 8 characters <br> at least one upper case letter <br> at least one lower case letter <br> at least one digit <br> at least one of those special symbols (@#$%^&+=]) </html>");
+        lblPasswordToolTip.setToolTipText("<html>Your password should contain <br> at least 8 characters <br> at least one upper case letter <br> at least one lower case letter <br> at least one digit <br> at least one of those special symbols (@#$%^&+=^!§/()?) </html>");
     }//GEN-LAST:event_lblPasswordToolTipMouseEntered
-
+    /**
+     * Shows the Login window and dispose the registration window.
+     * @param evt The action event.
+     */
     private void btnBackToLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackToLoginActionPerformed
-        // TODO add your handling code here:
+
         new FrmLogin().setVisible(true);
         this.dispose();
 

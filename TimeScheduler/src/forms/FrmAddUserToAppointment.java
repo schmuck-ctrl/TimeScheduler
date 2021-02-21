@@ -16,12 +16,11 @@ import javax.swing.table.TableRowSorter;
 import javax.swing.table.TableColumn;
 
 /**
- *  
+ *
  * @author Vadym
  */
 public class FrmAddUserToAppointment extends javax.swing.JDialog {
 
-    
     private DefaultTableModel tabSearchForUserModel = null;
     private DefaultTableModel tabAddedUserModel = null;
     private DatabaseHandler dbHandler = null;
@@ -32,16 +31,16 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
 
     /**
      * Creates new form FrmAddUserToAppointment
+     *
      * @param parent Frame from which the dialog is displayed.
-     * @param modal Specifies if the dialog blocks user input to other windows when shown.
+     * @param modal Specifies if the dialog blocks user input to other windows
+     * when shown.
      * @param users list of all users.
      * @param source ???????????????????????????????????????????
      * @param host the host of the event.
-     * 
+     *
      */
-
-
-    public FrmAddUserToAppointment(java.awt.Frame parent, boolean modal, ArrayList<Operator> users, FrmEvent source,Operator host) {
+    public FrmAddUserToAppointment(java.awt.Frame parent, boolean modal, ArrayList<Operator> users, FrmEvent source, Operator host) {
         super(parent, modal);
         initComponents();
         setIconImage(java.awt.Toolkit.getDefaultToolkit().getImage(getClass().getResource("/icons/calendar-todo-fill.png")));
@@ -65,7 +64,13 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
         colAddedUser.setPreferredWidth(0);
 
     }
-    
+
+    /**
+     * Adds rows in the "search for user" chart and fills it with user
+     * information
+     *
+     * @param users A list of all users
+     */
     private void bindDataToTableSearchUsers(ArrayList<Operator> users) {
         if (users != null) {
 
@@ -83,6 +88,12 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
         }
     }
 
+    /**
+     * Adds a row in the search for user chart and fills it with user
+     * information
+     *
+     * @param user the user that is to Add
+     */
     private void bindDataToTableSearchUser(Operator user) {
         if (user != null) {
 
@@ -95,6 +106,9 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
         }
     }
 
+    /**
+     * Deletes a row in the "search for user" chart.
+     */
     private void deleteDataFromRow() {
 
         for (int i = 0; i < this.tabAddedUserModel.getRowCount(); i++) {
@@ -106,6 +120,12 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
         }
     }
 
+    /**
+     * Adds a row in the "Add user to event table" and fills it with user
+     * information.
+     *
+     * @param users The user that is to add
+     */
     private void bindDataToTableAddedUser(Operator users) {
         this.tabAddedUserModel.addRow(new Object[]{
             users.getFirstName().toString(),
@@ -117,6 +137,12 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
         this.repaint();
     }
 
+    /**
+     * Adds rows in the "add user to event table" chart and fills it with user
+     * information and delets the added user from the "search for user table".
+     * 
+     * @param users A list of all users
+     */
     private void bindExistingDataToTableAddedUser(ArrayList<Operator> users) {
         if (users != null) {
             for (int i = 0; i < users.size(); i++) {
@@ -135,19 +161,33 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
 
         }
     }
-
+    /**
+     * Gets all operators from the database.
+     * 
+     * @return an arraylist with all operators from the database.
+     */
     private ArrayList<Operator> getUsers() {
         UserHandler uHandler = new UserHandler();
 
         return uHandler.getAllUser();
     }
-
+    /**
+     * Gets a specified operator by the id.
+     *
+     * @param userId The id of the operator.
+     * @return The operator with this id.
+     */
     private Operator getUserByUserID(int userID) {
         UserHandler uHandler = new UserHandler();
 
         return uHandler.getUser(userID);
     }
-
+    /**
+     * Returns the Operator at the specified position in this table.
+     *
+     * @param rowIndex Index of the operator to return.
+     * @return The operator at the specified position in this table.
+     */
     private Operator getSelectedUserFromSearchUserTab(int rowIndex) {
         Operator selectedUser = null;
         UserHandler uHandler = new UserHandler();
@@ -158,7 +198,12 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
         }
         return selectedUser;
     }
-
+    /**
+     * Returns the Operator at the specified position in this table.
+     *
+     * @param rowIndex Index of the operator to return.
+     * @return The operator at the specified position in this table.
+     */
     private Operator getSelectedUserFromAddUserTable(int rowIndex) {
         Operator selectedUser = null;
         UserHandler uHandler = new UserHandler();
@@ -411,7 +456,11 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-
+    /**
+     * Adds the selected user from {@link FrmAddUserToAppointment#tabSearchUser} to the {@link FrmAddUserToAppointment#tabAddedUserModel
+     * }
+     * @param evt action event
+     */
     private void btnAddUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddUserActionPerformed
         txtErrorAdd.setText("");
         int selectedRowIndex = tabSearchUser.getSelectedRow();
@@ -429,9 +478,13 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
         }
 
     }//GEN-LAST:event_btnAddUserActionPerformed
-
+    /**
+     * Add all users from the {@link FrmAddUserToAppointment#tabAddedUserModel} into the {@link FrmEvent#liEventParticipants}
+     * 
+     * @param evt the action event.
+     */
     private void btnAddToAppointmentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddToAppointmentActionPerformed
-        // TODO add your handling code here:
+        
         int count = tabAddedUser.getModel().getRowCount();
 
         if (count > 0) {
@@ -450,7 +503,11 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
         frmEvent.revalidate();
         frmEvent.repaint();
     }//GEN-LAST:event_btnAddToAppointmentActionPerformed
-
+    /**
+     * 
+     * 
+     * @param evt 
+     */
     private void btnDeleteUserFromAppointmentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteUserFromAppointmentActionPerformed
         // TODO add your handling code here:
         txtErrorWarning.setText("");
@@ -458,7 +515,7 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
         if (getSelectedUserFromAddUserTable(selectedRowIndex) != null) {
             this.selectedUser = getSelectedUserFromAddUserTable(selectedRowIndex);
             if (this.eventHost.getUserId() == (Integer) this.selectedUser.getUserId()) {
-            JOptionPane.showMessageDialog(null, "You can not delete the Host of the event ");
+                JOptionPane.showMessageDialog(null, "You can not delete the Host of the event ");
             } else {
                 bindDataToTableSearchUser(this.selectedUser);
                 tabAddedUserModel.removeRow(selectedRowIndex);
@@ -474,7 +531,12 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
         frmEvent.repaint();
 
     }//GEN-LAST:event_btnDeleteUserFromAppointmentActionPerformed
-
+    /**
+     * Shows only the rows from the {@link FrmAddUserToAppointment#tabSearchForUserModel} if the content 
+     * of the rows matches with the content of the Text field of this window.
+     * 
+     * @param evt Key event. 
+     */
     private void txtSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyReleased
         // TODO add your handling code here:
         DefaultTableModel model = (DefaultTableModel) tabSearchUser.getModel();
@@ -484,12 +546,18 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
         this.revalidate();
         this.repaint();
     }//GEN-LAST:event_txtSearchKeyReleased
-
+    /**
+     * Clears the selection in the "add user table".
+     * @param evt The focus event
+     */
     private void tabSearchUserFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tabSearchUserFocusGained
-        // TODO add your handling code here:
+
         tabAddedUser.clearSelection();
     }//GEN-LAST:event_tabSearchUserFocusGained
-
+    /**
+     * Clears the selection in the "search user table".
+     * @param evt The focus event
+     */
     private void tabAddedUserFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tabAddedUserFocusGained
         // TODO add your handling code here:
         tabSearchUser.clearSelection();
