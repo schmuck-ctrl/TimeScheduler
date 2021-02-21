@@ -24,6 +24,7 @@ public class ReminderHandler extends Thread {
         if (op != null) {
             this.op = op;
         } else {
+            LoggerHandler.logger.severe("Operator can't be null.");
             throw new Exception("Operator can't be null.");
         }
     }
@@ -32,6 +33,8 @@ public class ReminderHandler extends Thread {
      * run() is called if ReminderHandler.start() is called.
      */
     public void run() {
+        
+        LoggerHandler.logger.info("Reminder Thread started.");
         
         //create new List for Events, where the user will be reminded
         java.util.ArrayList<classes.Event> toBeRemindedList = new java.util.ArrayList<classes.Event>();
@@ -82,8 +85,10 @@ public class ReminderHandler extends Thread {
                 }
 
             } catch (InterruptedException e) {
+                LoggerHandler.logger.severe("Reminder Thread aborted. " + e.getMessage());
                 e.printStackTrace();
             } catch (java.lang.NullPointerException e){
+                LoggerHandler.logger.severe(e.getMessage());
                 System.out.println(e.getMessage());
             }
         }

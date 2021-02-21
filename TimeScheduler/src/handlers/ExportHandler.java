@@ -51,11 +51,12 @@ public class ExportHandler {
      * @param end Endtime of the week
      * @param path Desired save path
      */
-    public void writeWeeklySchedule(java.util.ArrayList<classes.Event> eList, java.time.LocalDate start, java.time.LocalDate end, String path) {
+    public void writeWeeklySchedule(java.util.ArrayList<classes.Event> eList, java.time.LocalDate start, java.time.LocalDate end, String path) throws Exception {
 
         //check if the path is valid
         if (!this.checkIfPathIsValid(path)) {
-            System.out.println(path + " is not valid!");
+            LoggerHandler.logger.severe(path + " is not valid.");
+            throw new Exception(path + " is not valid.");
         }
 
         //Add file name to the path
@@ -96,10 +97,11 @@ public class ExportHandler {
 
             }
 
-            System.out.println("Successfully write to Weekly Schedule file");
+            LoggerHandler.logger.info("Successfully write to Weekly Schedule file");
 
             myWriter.close();
         } catch (IOException e) {
+            LoggerHandler.logger.severe(e.getMessage());
             e.printStackTrace();
         }
     }
@@ -130,12 +132,12 @@ public class ExportHandler {
         try {
             File report = new File(path);
             if (report.createNewFile()) {
-                System.out.println("Weekly report created: " + report.getName());
+                LoggerHandler.logger.info("Weekly report created: " + report.getName());
             } else {
-                System.out.println("Weekly Report already exists.");
+                LoggerHandler.logger.warning("Weekly Report already exists.");
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            LoggerHandler.logger.warning(e.getMessage());
         }
     }
 

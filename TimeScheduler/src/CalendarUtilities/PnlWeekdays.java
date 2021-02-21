@@ -5,6 +5,7 @@
  */
 package CalendarUtilities;
 
+import handlers.LoggerHandler;
 import java.awt.event.ComponentAdapter;
 import java.util.ArrayList;
 
@@ -43,6 +44,17 @@ public class PnlWeekdays extends javax.swing.JPanel {
         this.createWeekdayLabels();
 
         //add ComponentListener with resize, so labels will be resized if calendar gets resized
+        this.addListener();
+        
+        LoggerHandler.logger.info("PnlWeekdays was created.");
+    }
+    
+    /**
+     * 
+     * Adds fomponentlistener for resize and HierachyBoundsListener to resize if anchestor is resized.
+     * 
+     */
+    private void addListener(){
         this.addComponentListener(new ComponentAdapter() {
 
             public void componentResized(java.awt.event.ComponentEvent evt) {

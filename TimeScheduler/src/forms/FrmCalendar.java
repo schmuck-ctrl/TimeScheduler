@@ -7,6 +7,7 @@ package forms;
 
 import CalendarUtilities.PnlDayPanel;
 import CalendarUtilities.PnlWeekdays;
+import handlers.LoggerHandler;
 
 /**
  *
@@ -152,6 +153,7 @@ public class FrmCalendar extends javax.swing.JPanel {
         }
         //at the end call scaleview
         this.scaleView();
+        LoggerHandler.logger.info("Month view created.");
     }
 
     /**
@@ -396,6 +398,7 @@ public class FrmCalendar extends javax.swing.JPanel {
                 }
             }
         }
+        LoggerHandler.logger.warning("getPnlDayPanelByDay does not have " + ld.toString());
         return null;
     }
 
@@ -437,6 +440,7 @@ public class FrmCalendar extends javax.swing.JPanel {
                 dayPanel.addAppointment(event);
             }
         }
+        LoggerHandler.logger.info("Events added to Calendar.");
     }
 
     /**
@@ -487,6 +491,7 @@ public class FrmCalendar extends javax.swing.JPanel {
                 return this.panelArray[0][0].getDay();
             }
         }
+        LoggerHandler.logger.severe("getFirstDayOfView is null.");
         return null;
     }
 
@@ -502,6 +507,7 @@ public class FrmCalendar extends javax.swing.JPanel {
                 return this.panelArray[this.panelArray.length - 1][6].getDay();
             }
         }
+        LoggerHandler.logger.severe("getLastDayOfView is null.");
         return null;
     }
 
@@ -519,6 +525,7 @@ public class FrmCalendar extends javax.swing.JPanel {
                 }
             }
         }
+        LoggerHandler.logger.severe("getSelectedLocalDate is null.");
         return null;
     }
 

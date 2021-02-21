@@ -16,6 +16,8 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Timer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * The main window of the application.
@@ -517,7 +519,11 @@ public class FrmMain extends javax.swing.JFrame {
         handlers.ExportHandler expHandler = new handlers.ExportHandler();
         String path = expHandler.openSaveDialog();
         if (path != null) {
-            expHandler.writeWeeklySchedule(this.eventHandler.getEventsOfWeek(this.user.getUserId()), LocalDate.now().with(DayOfWeek.MONDAY), LocalDate.now().with(DayOfWeek.SUNDAY), path);
+            try {
+                expHandler.writeWeeklySchedule(this.eventHandler.getEventsOfWeek(this.user.getUserId()), LocalDate.now().with(DayOfWeek.MONDAY), LocalDate.now().with(DayOfWeek.SUNDAY), path);
+            } catch (Exception ex) {
+                LoggerHandler.logger.severe("Path is not valid.");
+            }
         }
     }//GEN-LAST:event_btnExportActionPerformed
 
