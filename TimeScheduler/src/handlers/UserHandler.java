@@ -30,6 +30,7 @@ public class UserHandler {
      */
     public UserHandler() {
         dbHandler = new DatabaseHandler();
+        LoggerHandler.logger.info("UserHandler called.");
     }
 
     // </editor-fold>

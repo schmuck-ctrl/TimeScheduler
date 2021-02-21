@@ -30,6 +30,7 @@ public class EventHandler {
      */
     public EventHandler() {
         dbHandler = new DatabaseHandler();
+        LoggerHandler.logger.info("EventHandler called.");
 
     }
 
