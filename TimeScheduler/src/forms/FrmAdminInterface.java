@@ -6,6 +6,7 @@
 package forms;
 
 import classes.Operator;
+import handlers.LoggerHandler;
 import handlers.UserHandler;
 import java.util.ArrayList;
 import javax.swing.JFrame;
@@ -48,6 +49,8 @@ public class FrmAdminInterface extends javax.swing.JDialog {
         tabUserModel = (DefaultTableModel) tabUser.getModel();
 
         bindDataToTable(getUsers());
+        
+        LoggerHandler.logger.info("AdminInterface ready.");
 
     }
 
@@ -278,6 +281,7 @@ public class FrmAdminInterface extends javax.swing.JDialog {
                     UserHandler uHander = new UserHandler();
                     uHander.deleteUser(this.selectedUser);
                     this.refreshTable();
+                    LoggerHandler.logger.info("User with ID " + selectedUser.getUserId() + "deleted.");
                 }
             } else if (this.selectedUser.getUserId() == FrmMain.getInstance().getCurrentUser().getUserId()) {
                 JOptionPane.showMessageDialog(this, "It is not possible to delete yourself.", "Not a verified operation", JOptionPane.INFORMATION_MESSAGE);

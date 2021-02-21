@@ -8,6 +8,7 @@ package forms;
 import classes.Admin;
 import classes.Operator;
 import classes.User;
+import handlers.LoggerHandler;
 import handlers.UserHandler;
 import java.awt.Color;
 import java.util.regex.Matcher;
@@ -76,6 +77,10 @@ public class FrmEditUser extends javax.swing.JDialog {
             txtEmail.setText(this.user.getEmail());
 
             chkAdminPrivileges.setSelected(this.user.getRole() == Operator.Role.ADMIN ? true : false);
+            
+            LoggerHandler.logger.info("User successfully loaded.");
+        } else {
+            LoggerHandler.logger.severe("User is NULL.");
         }
     }
 
@@ -181,14 +186,17 @@ public class FrmEditUser extends javax.swing.JDialog {
                 } else {
                     this.user = new User(id, firstName, lastNString, email);
                 }
-
+                
+                LoggerHandler.logger.info("Input correct");
                 return 1;
             } else {
+                LoggerHandler.logger.info("Input not correct.");
                 return -1;
             }
 
         } else {
-            return 0;
+            LoggerHandler.logger.info("Data  not changed.");
+            return 0;  
         }
 
     }
@@ -213,11 +221,12 @@ public class FrmEditUser extends javax.swing.JDialog {
         checkEmail = validateEmail(txtEmail.getText().trim());
 
         if (checkFirstName && checkLastName && checkEmail) {
+            LoggerHandler.logger.info("Validation successful.");
             return true;
+        } else {
+            LoggerHandler.logger.info("Validation failed.");
+            return false;
         }
-
-        return false;
-
     }
 
     /**
@@ -247,7 +256,7 @@ public class FrmEditUser extends javax.swing.JDialog {
             }
 
         } catch (NullPointerException e) {
-            System.out.println("NullPointerException - FrmEditUser: " + e);
+            LoggerHandler.logger.severe(e.getMessage());
         }
 
         return dataChanged;
