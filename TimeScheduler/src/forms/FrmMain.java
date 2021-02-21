@@ -122,9 +122,6 @@ public class FrmMain extends javax.swing.JFrame {
 
             eventHandler = new EventHandler();
 
-            setFeedback("Hallo das ist ein Test!", true);
-
-            //Check is
             if (this.user.getRole().equals(Operator.Role.USER)) {
                 mnuAdminInterface.setVisible(false);
                 mnuAdminInterface.setEnabled(false);
@@ -145,12 +142,11 @@ public class FrmMain extends javax.swing.JFrame {
 
             reminderHandler.start();
 
-            LoggerHandler.setupLogger();
             LoggerHandler.logger.info("Basic settings set successfully.");
-        }
+        } else {
 
-        LoggerHandler.setupLogger();
-        LoggerHandler.logger.severe("Current user is NULL!");
+            LoggerHandler.logger.severe("Current user is NULL!");
+        }
     }
 
     /**
@@ -242,6 +238,8 @@ public class FrmMain extends javax.swing.JFrame {
         pnlEventRoot.add(frmEvent);
         frmEvent.setVisible(true);
 
+        LoggerHandler.logger.info("Display event with id " + eventID + "in view READ.");
+
     }
 
     /**
@@ -270,6 +268,7 @@ public class FrmMain extends javax.swing.JFrame {
         this.revalidate();
         this.repaint();
 
+        LoggerHandler.logger.info("Display event with id " + eventID + "in view EDIT.");
     }
 
     /**
@@ -294,6 +293,8 @@ public class FrmMain extends javax.swing.JFrame {
         FrmEventsOfDay frmEventsOfDay = new FrmEventsOfDay(events);
         pnlEventRoot.add(frmEventsOfDay);
         frmEventsOfDay.setVisible(true);
+
+        LoggerHandler.logger.info("Display all events of day with date" + today + "");
     }
 
     /**
@@ -316,6 +317,8 @@ public class FrmMain extends javax.swing.JFrame {
         FrmEvent frmEvent = new FrmEvent(FrmEvent.View.NEW, date);
         pnlEventRoot.add(frmEvent);
         frmEvent.setVisible(true);
+        
+        LoggerHandler.logger.info("Display create new event.");
     }
 
     /**
