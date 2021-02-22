@@ -454,8 +454,7 @@ public class FrmRegistration extends javax.swing.JFrame {
             
         }
         if (inputError == true) {
-            int rand = reHandler.getRandomEmailVerificationNumber();
-            reHandler.sendEmailVerificationCode(txtEmail.getText().trim(), rand);
+
             if (reHandler.checkVerificationCode(txtEmail.getText()) == true) {
                 User user = new User(txtFirstName.getText().trim(), txtLastName.getText().trim(), txtEmail.getText().trim());
                 reHandler.createNewUser(user, ptxtPassword.getPassword());
@@ -479,7 +478,7 @@ public class FrmRegistration extends javax.swing.JFrame {
      */
     private void lblPasswordToolTipMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblPasswordToolTipMouseEntered
 
-        lblPasswordToolTip.setToolTipText("<html>Your password should contain <br> at least 8 characters <br> at least one upper case letter <br> at least one lower case letter <br> at least one digit <br> at least one of those special symbols (@#$%^&+=^!§/()?) </html>");
+        lblPasswordToolTip.setToolTipText("<html>Your password should contain <br> at least 8 characters <br> at least one upper case letter <br> at least one lower case letter <br> at least one digit <br> at least one of those special symbols (*@#$%^&+=^!§/()?) </html>");
     }//GEN-LAST:event_lblPasswordToolTipMouseEntered
     /**
      * Shows the Login window and dispose the registration window.

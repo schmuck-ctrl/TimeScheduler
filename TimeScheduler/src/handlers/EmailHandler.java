@@ -11,17 +11,13 @@ import java.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
 import java.util.Properties;
-import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.MessagingException;
-import javax.mail.Multipart;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
 
 /**
  *
@@ -187,8 +183,6 @@ public class EmailHandler implements Runnable {
             Message message = new MimeMessage(session);
             //Who sends the mail
             message.setFrom(new InternetAddress(from));
-            // !!!!!!!!! Später entfernen !!!!!!
-            System.out.println(user.getLastName());
             if (user.getEmail() != null && !user.getEmail().isEmpty()) {
                 //Who gets the Email.
                 message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(user.getEmail()));
@@ -197,9 +191,9 @@ public class EmailHandler implements Runnable {
 
                 Transport.send(message);
                 LoggerHandler.logger.info("Email was send for the two step verification.");
-                System.out.println("Mail Sent...");
+         
             } else {
-                System.out.println("fehler ist hier");
+       
                 LoggerHandler.logger.severe("Error Email was not sended to the user.");
             }
 
@@ -215,7 +209,7 @@ public class EmailHandler implements Runnable {
      * @param rand The generated random number.
      */
     public void emailSenderVerifyEmail(String email, int rand) {
-        String from = "Javprojekt@gmail.com"; // from address. As this is using Gmail SMTP your from address should be gmail
+        String from = "Javprojekt@gmail.com"; // Email address hardcoded for the email sending system
         String password = "Javaprojekt123"; // password for from gmail address that you have used in above line. 
 
         Properties prop = new Properties();
@@ -242,10 +236,10 @@ public class EmailHandler implements Runnable {
 
                 Transport.send(message);
                 LoggerHandler.logger.info("Email was send to verifiy the user email address");
-//                System.out.println("Mail Sent...");
+
             } else {
                 LoggerHandler.logger.severe("Error Email was not sended to the user");
-//                System.out.println("fehler ist hier");
+
             }
 
         } catch (MessagingException e) {
@@ -284,15 +278,13 @@ public class EmailHandler implements Runnable {
             message.setFrom(new InternetAddress(from));
 
             for (int i = 0; i < participants.size(); i++) {
-                text.append(participants.get(i).getLastName() + ", " + participants.get(i).getFirstName());
+                text.append("   " + participants.get(i).getLastName() + ", " + participants.get(i).getFirstName());
                 text.append("\n");
             }
             for (int i = 0; i < participants.size(); i++) {
-                System.out.println(participants.get(i).getLastName());
                 if (participants.get(i).getEmail() != null && !participants.get(i).getEmail().isEmpty()) {
                     message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(participants.get(i).getEmail()));
-                    message.setSubject("You where invited to the: \"" + event.getName() + "\" meeting");
-//                    BodyPart mainMessage = new MimeBodyPart();
+                    message.setSubject("You have been invited to the: \"" + event.getName() + "\" meeting");
                     message.setText("Dear Mrs/Mr " + participants.get(i).getLastName() + ",\n\n"
                             + "all informations about the new meeting are below." + "\n" + "\n"
                             + "Appointment name: " + event.getName() + "\n"
@@ -300,20 +292,16 @@ public class EmailHandler implements Runnable {
                             + "Date: " + event.getDate().getDayOfMonth() + "." + event.getDate().getMonth() + "." + event.getDate().getYear() + "\n"
                             + "Time: " + time + "\n"
                             + "Meeting duration: " + event.getDuration() + " Minutes" + "\n"
-                            + "Place: " + event.getLocation() + "\n"
+                            + "Location: " + event.getLocation() + "\n"
                             + "Participants of the meeting: \n"
                             + text);
-//                    Multipart multipart = new MimeMultipart();
-//                    multipart.addBodyPart(mainMessage);
-                    // Attachment
-//                    mainMessage = new MimeBodyPart();
 
                     Transport.send(message);
                     LoggerHandler.logger.info("Email was send to notify all participants about the new Event");
-//                    System.out.println("Mail Sent...");
+
                 } else {
                     LoggerHandler.logger.severe("Error Email was not sended to the user.");
-//                    System.out.println("fehler ist hier");
+
                 }
             }
         } catch (MessagingException e) {
@@ -358,7 +346,7 @@ public class EmailHandler implements Runnable {
 
             for (int i = 0; i < participants.size(); i++) {
 
-                System.out.println(participants.get(i).getLastName());
+ 
                 if (participants.get(i).getEmail() != null && !participants.get(i).getEmail().isEmpty()) {
                     message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(participants.get(i).getEmail()));
 
@@ -370,15 +358,15 @@ public class EmailHandler implements Runnable {
                             + "Date: " + event.getDate().getDayOfMonth() + "." + event.getDate().getMonth() + "." + event.getDate().getYear() + "\n"
                             + "Time: " + time + "\n"
                             + "Meeting duration: " + event.getDuration() + " Minutes" + "\n"
-                            + "Place: " + event.getLocation() + "\n"
+                            + "Location: " + event.getLocation() + "\n"
                             + "Participants of the meeting: \n"
                             + text);
 
                     Transport.send(message);
                     LoggerHandler.logger.info("Email was send to notify all participants about the edited event");
-//                    System.out.println("Mail Sent...");
+
                 } else {
-//                    System.out.println("fehler ist hier");
+
                     LoggerHandler.logger.severe("Error Email was not sended to the user.");
                 }
             }
@@ -418,19 +406,19 @@ public class EmailHandler implements Runnable {
             message.setFrom(new InternetAddress(from));
 
             for (int i = 0; i < participants.size(); i++) {
-                System.out.println(participants.get(i).getLastName());
+  
                 if (participants.get(i).getEmail() != null && !participants.get(i).getEmail().isEmpty()) {
                     message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(participants.get(i).getEmail()));
 
                     message.setSubject("The event: \"" + event.getName() + "\" was deleted");
-                    message.setText("Dear Mrs/Mr" + participants.get(i).getLastName() + ",\n"
+                    message.setText("Dear Mrs/Mr " + participants.get(i).getLastName() + ",\n"
                             + "the meeting: \"" + event.getName() + "\" on the: " + event.getDate().getDayOfMonth() + "." + event.getDate().getMonth() + "." + event.getDate().getYear() + " at: " + time + " was deleted.");
 
                     Transport.send(message);
                     LoggerHandler.logger.info("Email was send to notify all participants about the deleted event");
-//                    System.out.println("Mail Sent...");
+
                 } else {
-//                    System.out.println("fehler ist hier");
+
                     LoggerHandler.logger.severe("Error Email was not sended to the user.");
                 }
             }
@@ -451,6 +439,7 @@ public class EmailHandler implements Runnable {
         String password = "Javaprojekt123"; // password for from gmail address that you have used in above line. 
         String time = timeFormater();
         String notify = null;
+        //Checks which Reminder notification to send.
         switch (event.getNotification()) {
             case TEN_MINUTES:
                 notify = "Your meeting: \"" + event.getName() + "\" will start in 10 minutes";
@@ -483,19 +472,18 @@ public class EmailHandler implements Runnable {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(from));
             for (int i = 0; i < participants.size(); i++) {
-                System.out.println(participants.get(i).getLastName());
+       
                 if (participants.get(i).getEmail() != null && !participants.get(i).getEmail().isEmpty()) {
                     message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(participants.get(i).getEmail()));
-                    // Edit benachrichtigung
-                    message.setSubject("Event reminder");
-                    message.setText("Dear Mrs/Mr" + participants.get(i).getLastName() + ",\n\n"
+                    message.setSubject("Event Reminder");
+                    message.setText("Dear Mrs/Mr " + participants.get(i).getLastName() + ",\n\n"
                             + notify + " on the: " + event.getDate().getDayOfMonth() + "." + event.getDate().getMonth() + "." + event.getDate().getYear() + " at: " + time);
 
                     Transport.send(message);
                     LoggerHandler.logger.info("Email was send to notify all participants about the event time (Reminder)");
-//                    System.out.println("Mail Sent...");
+
                 } else {
-//                    System.out.println("fehler ist hier");
+
                     LoggerHandler.logger.severe("Error Email was not sended to the user.");
                 }
             }
@@ -505,9 +493,7 @@ public class EmailHandler implements Runnable {
 
     }
 
-    /**
-     *
-     */
+ 
     @Override
     /**
      * The run method is called if the thread was constructed using separate

@@ -36,7 +36,7 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
      * @param modal Specifies if the dialog blocks user input to other windows
      * when shown.
      * @param users list of all users.
-     * @param source ???????????????????????????????????????????
+     * @param source Used event that will be edit.
      * @param host the host of the event.
      *
      */
@@ -467,7 +467,6 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
         if (getSelectedUserFromSearchUserTab(selectedRowIndex) != null) {
             this.selectedUser = getSelectedUserFromSearchUserTab(selectedRowIndex);
             userEmail = getSelectedUserFromSearchUserTab(selectedRowIndex).getEmail();
-            System.out.println(userEmail);
             if (this.selectedUser != null) {
                 bindDataToTableAddedUser(this.selectedUser);
                 this.revalidate();
@@ -504,12 +503,12 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
         frmEvent.repaint();
     }//GEN-LAST:event_btnAddToAppointmentActionPerformed
     /**
+     * Delete a user from the "Add to appointment table" (Deletes the user from the Event)
      * 
-     * 
-     * @param evt 
+     * @param evt The Action event
      */
     private void btnDeleteUserFromAppointmentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteUserFromAppointmentActionPerformed
-        // TODO add your handling code here:
+
         txtErrorWarning.setText("");
         int selectedRowIndex = tabAddedUser.getSelectedRow();
         if (getSelectedUserFromAddUserTable(selectedRowIndex) != null) {
@@ -538,7 +537,7 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
      * @param evt Key event. 
      */
     private void txtSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyReleased
-        // TODO add your handling code here:
+
         DefaultTableModel model = (DefaultTableModel) tabSearchUser.getModel();
         TableRowSorter<DefaultTableModel> tableRowSorter = new TableRowSorter<DefaultTableModel>(model);
         tabSearchUser.setRowSorter(tableRowSorter);
@@ -548,7 +547,7 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
     }//GEN-LAST:event_txtSearchKeyReleased
     /**
      * Clears the selection in the "add user table".
-     * @param evt The focus event
+     * @param evt The focus event.
      */
     private void tabSearchUserFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tabSearchUserFocusGained
 

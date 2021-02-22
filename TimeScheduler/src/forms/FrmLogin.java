@@ -5,7 +5,6 @@
  */
 package forms;
 
-import classes.*;
 import handlers.*;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
@@ -32,9 +31,10 @@ public class FrmLogin extends javax.swing.JFrame {
     }
 
     /**
-     * Excecutes the login process with all included methodes from the login handler and database handler.
-     * If everything is correct the login window disposes and the main window opens.
-     * 
+     * Excecutes the login process with all included methodes from the login
+     * handler and database handler. If everything is correct the login window
+     * disposes and the main window opens.
+     *
      */
     private void loginFunction() {
         LoginHandler lgHandler = new LoginHandler();
@@ -42,13 +42,7 @@ public class FrmLogin extends javax.swing.JFrame {
 
         if (lgHandler.checkIfUserInputExist(txtEmail.getText()) == true) {
             if (lgHandler.checkUserInput(txtEmail.getText().trim(), ptxtPassword.getPassword()) == true) {
-//                int rand = lgHandler.getRandomNumber();
-//                lgHandler.sendVerificationCode(dbHandler.getUserByUsername(txtEmail.getText()), rand);
-//                String userInputRan = JOptionPane.showInputDialog("Check Email for the Verification code");
-//                
-//                if (Integer.valueOf(userInputRan) == rand) {
-//                    LoggerHandler.setupLogger();
-//                    LoggerHandler.logger.info("FrmLogin");
+
                 if (lgHandler.checkVerificationCode(txtEmail.getText()) == true) {
                     FrmMain frmMain = FrmMain.getInstance();
                     frmMain.setConfigurations(dbHandler.getUserByUsername(txtEmail.getText().trim()));
@@ -171,7 +165,6 @@ public class FrmLogin extends javax.swing.JFrame {
         txtEmail.setBackground(new java.awt.Color(243, 242, 241));
         txtEmail.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         txtEmail.setForeground(new java.awt.Color(0, 0, 0));
-        txtEmail.setText("Javaprojekt@gmail.de");
         txtEmail.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 txtEmailFocusGained(evt);
@@ -189,7 +182,6 @@ public class FrmLogin extends javax.swing.JFrame {
         ptxtPassword.setBackground(new java.awt.Color(243, 242, 241));
         ptxtPassword.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         ptxtPassword.setForeground(new java.awt.Color(0, 0, 0));
-        ptxtPassword.setText("Lukasbauer123&");
         ptxtPassword.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 ptxtPasswordFocusGained(evt);
@@ -257,6 +249,7 @@ public class FrmLogin extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLoginActionPerformed
     /**
      * Opens the Registration window.
+     *
      * @param evt The mouse event.
      */
     private void lblRegisterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRegisterMouseClicked
