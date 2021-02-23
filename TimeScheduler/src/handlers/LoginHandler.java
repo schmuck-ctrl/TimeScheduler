@@ -107,7 +107,7 @@ public class LoginHandler {
         int rand = getRandomNumber();
 
         sendVerificationCode(dbHandler.getUserByUsername(email), rand);
-        JOptionPane.showMessageDialog(null, "An verifiacation Email was send to you ");
+        JOptionPane.showMessageDialog(null, "An verification Email was sent to you ");
         for (int i = 0; i < 2; i++) {
 
             String userInputRand = JOptionPane.showInputDialog("Enter the Verification number:");

@@ -194,7 +194,7 @@ public class RegistrationHandler {
     public boolean checkVerificationCode(String email) {
         int rand = getRandomEmailVerificationNumber();
         sendEmailVerificationCode(email, rand);
-        JOptionPane.showMessageDialog(null, "A verifiacation Email was send to you ");
+        JOptionPane.showMessageDialog(null, "A verification Email was sent to you ");
         for (int i = 0; i < 2; i++) {
 
             String userInputRand = JOptionPane.showInputDialog("Enter the Verification number:");
