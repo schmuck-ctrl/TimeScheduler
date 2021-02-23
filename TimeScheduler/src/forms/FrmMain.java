@@ -376,6 +376,7 @@ public class FrmMain extends javax.swing.JFrame {
         filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("TimeScheduler");
         setFocusCycleRoot(false);
 
         pnlHeader.setMinimumSize(new java.awt.Dimension(145, 88));

@@ -10,7 +10,7 @@ import java.awt.event.ComponentAdapter;
 import java.util.ArrayList;
 
 /**
- *
+ * Headline providing the layout of the days of a week
  * @author Benny
  */
 public class PnlWeekdays extends javax.swing.JPanel {

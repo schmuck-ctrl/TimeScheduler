@@ -6,7 +6,7 @@
 package classes;
 
 /**
- *
+ * The class of a user without any priveleges
  * @author Vadym
  */
 public class User extends Operator {

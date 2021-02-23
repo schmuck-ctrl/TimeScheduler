@@ -38,7 +38,7 @@ public class FrmAdminInterface extends javax.swing.JDialog {
      * Creates a new dialog with the specified modality and Frame as its owner.
      * In addition the specified user will be set.
      *
-     * @param parentThe Frame from which the dialog is displayed.
+     * @param parent The Frame from which the dialog is displayed.
      * @param modal Specifies if the dialog blocks user input to other windows
      * when shown.
      */

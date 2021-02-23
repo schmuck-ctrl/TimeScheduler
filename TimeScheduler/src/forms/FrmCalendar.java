@@ -10,7 +10,7 @@ import CalendarUtilities.PnlWeekdays;
 import handlers.LoggerHandler;
 
 /**
- *
+ * The calendar form of the project
  * @author Benny
  */
 public class FrmCalendar extends javax.swing.JPanel {

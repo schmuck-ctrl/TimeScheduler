@@ -85,6 +85,7 @@ public class FrmLogin extends javax.swing.JFrame {
         lblPassword = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("TimeScheduler");
         setResizable(false);
 
         lblLogin.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
@@ -164,7 +165,6 @@ public class FrmLogin extends javax.swing.JFrame {
 
         txtEmail.setBackground(new java.awt.Color(243, 242, 241));
         txtEmail.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtEmail.setForeground(new java.awt.Color(0, 0, 0));
         txtEmail.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 txtEmailFocusGained(evt);
@@ -181,7 +181,6 @@ public class FrmLogin extends javax.swing.JFrame {
 
         ptxtPassword.setBackground(new java.awt.Color(243, 242, 241));
         ptxtPassword.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        ptxtPassword.setForeground(new java.awt.Color(0, 0, 0));
         ptxtPassword.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 ptxtPasswordFocusGained(evt);

@@ -17,7 +17,7 @@ import java.time.Month;
 import java.util.ArrayList;
 
 /**
- *
+ * Handles the access between users and the database
  * @author joshua
  */
 public class DatabaseHandler {
@@ -664,7 +664,6 @@ public class DatabaseHandler {
      *
      * @param toBeEdited {@link Event} Object containing all relevant
      * informations which have to be processed withing the database
-     * @return
      */
     public void editEvent(Event toBeEdited) {
 

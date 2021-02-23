@@ -49,7 +49,7 @@ public abstract class Operator {
         return email;
     }
     /**
-     * Sets the value to this {@link Operator#newEmail}.
+     * Sets the value to this {@link Operator#email}.
      * 
      * @param newEmail The newEmail of this Operator.
      */

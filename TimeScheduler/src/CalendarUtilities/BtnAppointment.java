@@ -6,7 +6,7 @@
 package CalendarUtilities;
 
 /**
- *
+ * Represents a single appointment in the calendar
  * @author Benny
  */
 public class BtnAppointment extends javax.swing.JButton implements Comparable<BtnAppointment>{

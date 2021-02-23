@@ -14,8 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
- *
+ * Provides functions to log bugs or certain other important information
  * @author Benny / Vadym
  */
 public class LoggerHandler {

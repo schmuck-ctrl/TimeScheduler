@@ -16,7 +16,7 @@ import javax.swing.table.TableRowSorter;
 import javax.swing.table.TableColumn;
 
 /**
- *
+ * a Form which manages the participation of certain Events
  * @author Vadym
  */
 public class FrmAddUserToAppointment extends javax.swing.JDialog {
@@ -243,6 +243,7 @@ public class FrmAddUserToAppointment extends javax.swing.JDialog {
         btnAddUser = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Add user to appointment");
         setResizable(false);
 
         txtSearch.addKeyListener(new java.awt.event.KeyAdapter() {

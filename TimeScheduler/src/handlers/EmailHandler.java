@@ -20,7 +20,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 /**
- *
+ * Manages the email correspondence of users
  * @author Vadym
  */
 public class EmailHandler implements Runnable {

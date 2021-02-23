@@ -70,6 +70,7 @@ public class FrmRegistration extends javax.swing.JFrame {
         lblPasswordToolTip = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("TimeScheduler");
         setResizable(false);
 
         btnRegistration.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -137,28 +138,22 @@ public class FrmRegistration extends javax.swing.JFrame {
         getContentPane().add(pnlHeader, java.awt.BorderLayout.PAGE_START);
 
         lblFirstName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lblFirstName.setForeground(new java.awt.Color(0, 0, 0));
         lblFirstName.setText("First Name:");
 
         lblLastName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lblLastName.setForeground(new java.awt.Color(0, 0, 0));
         lblLastName.setText("Last Name:");
 
         lblEmail.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lblEmail.setForeground(new java.awt.Color(0, 0, 0));
         lblEmail.setText("E-Mail:");
 
         lblPassword.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lblPassword.setForeground(new java.awt.Color(0, 0, 0));
         lblPassword.setText("Password:");
 
         lblRepeatPassword.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lblRepeatPassword.setForeground(new java.awt.Color(0, 0, 0));
         lblRepeatPassword.setText("Repeat Password:");
 
         txtFirstName.setBackground(new java.awt.Color(243, 242, 241));
         txtFirstName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtFirstName.setForeground(new java.awt.Color(0, 0, 0));
         txtFirstName.setToolTipText("First name should contain at least two letters");
         txtFirstName.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -171,7 +166,6 @@ public class FrmRegistration extends javax.swing.JFrame {
 
         txtLastName.setBackground(new java.awt.Color(243, 242, 241));
         txtLastName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtLastName.setForeground(new java.awt.Color(0, 0, 0));
         txtLastName.setToolTipText("Last name should contain at least two letters");
         txtLastName.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -184,7 +178,6 @@ public class FrmRegistration extends javax.swing.JFrame {
 
         txtEmail.setBackground(new java.awt.Color(243, 242, 241));
         txtEmail.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtEmail.setForeground(new java.awt.Color(0, 0, 0));
         txtEmail.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 txtEmailFocusGained(evt);
@@ -196,7 +189,6 @@ public class FrmRegistration extends javax.swing.JFrame {
 
         ptxtPassword.setBackground(new java.awt.Color(243, 242, 241));
         ptxtPassword.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        ptxtPassword.setForeground(new java.awt.Color(0, 0, 0));
         ptxtPassword.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 ptxtPasswordFocusGained(evt);
@@ -208,7 +200,6 @@ public class FrmRegistration extends javax.swing.JFrame {
 
         ptxtRepeatPassword.setBackground(new java.awt.Color(243, 242, 241));
         ptxtRepeatPassword.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        ptxtRepeatPassword.setForeground(new java.awt.Color(0, 0, 0));
         ptxtRepeatPassword.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 ptxtRepeatPasswordFocusGained(evt);

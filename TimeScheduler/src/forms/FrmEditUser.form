@@ -51,7 +51,7 @@
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="lblLastName" pref="68" max="32767" attributes="0"/>
+                                  <Component id="lblLastName" max="32767" attributes="0"/>
                                   <Component id="lblEmail" max="32767" attributes="0"/>
                               </Group>
                               <Component id="lblFirstName" alignment="0" min="-2" pref="68" max="-2" attributes="0"/>

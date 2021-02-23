@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import javax.swing.JLabel;
 
 /**
- *
+ * Representing the day which he selected and all its events
  * @author Benny
  */
 public class PnlDayPanel extends javax.swing.JPanel {
